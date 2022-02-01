@@ -15,6 +15,7 @@ public class BoardSocket
 
 public class PawnMovement : MonoBehaviour 
 {
+    public float Movespeed;
     void Start ()
     {
 
