@@ -6,7 +6,7 @@ Public class PawnMovement
     {
 
     }
-    void Update
+    void Update()
     {
         
     }
