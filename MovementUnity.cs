@@ -22,7 +22,6 @@ public class PawnMovement : MonoBehaviour
     }
     void Update()
     {
-        MovX=Input.GetAxisRaw("Horizontal");
-        MovY=Input.GetAxisRaw("Vertical");     
+    
     }
 }
