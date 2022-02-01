@@ -136,7 +136,10 @@ GameObject:
   - component: {fileID: 251552478}
   - component: {fileID: 251552477}
   - component: {fileID: 251552481}
+<<<<<<< HEAD
   - component: {fileID: 251552482}
+=======
+>>>>>>> First Unity project upload test.
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -236,6 +239,7 @@ MonoBehaviour:
   y: 0
   z: 0
   speed: 1
+<<<<<<< HEAD
 --- !u!114 &251552482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -248,6 +252,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 082620f1336a64fb3a9142b23412dc10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+=======
+>>>>>>> First Unity project upload test.
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -424,6 +430,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD
 --- !u!1 &2091751149
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,3 +544,5 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+=======
+>>>>>>> First Unity project upload test.

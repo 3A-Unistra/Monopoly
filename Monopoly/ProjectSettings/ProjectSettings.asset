@@ -342,9 +342,13 @@ PlayerSettings:
     Android: 1
     iPhone: 1
     tvOS: 1
+<<<<<<< HEAD
   m_BuildTargetGroupLightmapEncodingQuality:
   - m_BuildTarget: WebGL
     m_EncodingQuality: 1
+=======
+  m_BuildTargetGroupLightmapEncodingQuality: []
+>>>>>>> First Unity project upload test.
   m_BuildTargetGroupLightmapSettings: []
   m_BuildTargetNormalMapEncoding: []
   playModeTestRunnerEnabled: 0
@@ -583,14 +587,22 @@ PlayerSettings:
   webGLDebugSymbols: 0
   webGLEmscriptenArgs: 
   webGLModulesDirectory: 
+<<<<<<< HEAD
   webGLTemplate: APPLICATION:Minimal
+=======
+  webGLTemplate: APPLICATION:Default
+>>>>>>> First Unity project upload test.
   webGLAnalyzeBuildSize: 0
   webGLUseEmbeddedResources: 0
   webGLCompressionFormat: 1
   webGLWasmArithmeticExceptions: 0
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
+<<<<<<< HEAD
   webGLDecompressionFallback: 1
+=======
+  webGLDecompressionFallback: 0
+>>>>>>> First Unity project upload test.
   scriptingDefineSymbols: {}
   additionalCompilerArguments: {}
   platformArchitecture: {}

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 3d071ca711a154bfe8092f07839cd9fa
+=======
+guid: f371089be649148fc989d2e7e334657a
+>>>>>>> First Unity project upload test.
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
