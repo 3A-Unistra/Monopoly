@@ -18,7 +18,7 @@ public class PawnMovement : MonoBehaviour
     public float Movespeed;
     void Start ()
     {
-
+        Movespeed=10f;
     }
     void Update()
     {
