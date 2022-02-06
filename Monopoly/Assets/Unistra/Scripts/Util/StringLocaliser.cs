@@ -63,7 +63,7 @@ namespace Monopoly.Util
             }
         }
 
-        private static List<StringLanguage> languages;
+        private static readonly List<StringLanguage> languages;
         private static StringLanguage languageSelector;
 
         static StringLocaliser()
@@ -180,6 +180,28 @@ namespace Monopoly.Util
             if (languageSelector == null)
                 return "null";
             return languageSelector.FriendlyName;
+        }
+
+        /**
+         *  <summary>
+         *      Return a string array of the internal id strings for each
+         *      language that has been loaded with
+         *      <see cref="LoadStrings(string, string, string)"/>.
+         *      If no languages have yet been loaded, then <c>null</c> is
+         *      returned.
+         *  </summary>
+         *  <returns>
+         *      A string array consisting of all internal id names for loaded
+         *      languages.
+         *  </returns>
+         */
+        public static string[] GetLanguageList()
+        {
+            string[] languages = new string[StringLocaliser.languages.Count];
+            int i = 0;
+            foreach (StringLanguage l in StringLocaliser.languages)
+                languages[i++] = l.Name;
+            return languages;
         }
 
         /**
