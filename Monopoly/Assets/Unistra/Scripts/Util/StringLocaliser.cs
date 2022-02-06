@@ -197,6 +197,8 @@ namespace Monopoly.Util
          */
         public static string[] GetLanguageList()
         {
+            if (StringLocaliser.languages.Count == 0)
+                return null;
             string[] languages = new string[StringLocaliser.languages.Count];
             int i = 0;
             foreach (StringLanguage l in StringLocaliser.languages)
