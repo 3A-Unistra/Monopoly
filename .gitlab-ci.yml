@@ -26,8 +26,6 @@ get-unity-version:
   artifacts:
     reports:
       dotenv: prepare.env
-  rules:
-    - if: '($CI_BUILD_REF_NAME == "main" && $CI_PIPELINE_SOURCE == "push") || $CI_PIPELINE_SOURCE == "merge_request_event"'
 
 .unity_before_script: &unity_before_script
   before_script:
@@ -81,8 +79,6 @@ get-activation-file:
   tags:
     - gitlab-org
   coverage: /<Linecoverage>(.*?)</Linecoverage>/
-  rules:
-    - if: '($CI_BUILD_REF_NAME == "main" && $CI_PIPELINE_SOURCE == "push") || $CI_PIPELINE_SOURCE == "merge_request_event"'
 
 test-playmode:
   <<: *test
@@ -144,8 +140,6 @@ test-editmode:
   # you may need to remove or replace these to fit your need if you are using your own runners
   tags:
     - gitlab-org
-  rules:
-    - if: '($CI_BUILD_REF_NAME == "main" && $CI_PIPELINE_SOURCE == "push") || $CI_PIPELINE_SOURCE == "merge_request_event"'
 
 build-StandaloneLinux64:
   <<: *build
@@ -247,7 +241,7 @@ pages:
 workflow:
   rules:
     - if: $CI_MERGE_REQUEST_ID
-      when: never
-    - if: $CI_COMMIT_TAG
-      when: never
-    - when: always
+      when: always
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"
+      when: always
+    - when: never
