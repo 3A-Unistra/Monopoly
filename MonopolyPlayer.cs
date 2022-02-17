@@ -137,42 +137,4 @@ namespace MonopolyPlayer
         }
     }
  }
- class Card
- {
-     public string type;
-     public int id;
-     public string desc;
-     public Card(string type,int id,string desc)
-     {
-        this.id=id;
-        this.type=type;
-        this.desc=desc;
-
-     }
- }
- class Bank 
- {
-     public int nb_house;
-     public int nb_hotel;
-     public int stored_money;
-     public Bank(int nb_house,int nb_hotel,int stored_money)
-     {
-         this.nb_house=nb_house;
-         this.nb_hotel=nb_hotel;
-         this.stored_money=stored_money;
-
-     }
- }
- class Train_Station
- {
-    public int owner;
-    public int price;
-    public int base_rent;     
-    public Train_Station()
-    {
-        this.owner=0;
-        this.price=200;
-        this.base_rent=50;
-    }
- }
 }
