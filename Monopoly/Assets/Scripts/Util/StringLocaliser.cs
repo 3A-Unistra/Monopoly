@@ -125,8 +125,9 @@ namespace Monopoly.Util
             catch (JsonException e)
             {
                 Debug.LogError(string.Format(
-                    "Failed to deserialise JSON asset '{0}': {1}",
-                    filename, e.ToString()));
+                    "Failed to deserialise JSON asset '{0}'",
+                    filename));
+                Debug.LogException(e);
             }
         }
 
