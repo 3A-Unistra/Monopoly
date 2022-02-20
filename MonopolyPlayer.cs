@@ -136,5 +136,129 @@ namespace MonopolyPlayer
             Bankrupt = true;
         }
     }
+    void transferProperty(Player to, Ownable p)
+    {
+        p.setOwner(to);
+    }
+
+    void transferCard(Player to, Card card)
+    {
+        if ((card.type == "CHANCE") && (ChanceJailCard == true))
+        {
+            ChanceJailCard = false;
+            to.ChanceJailCard = true;
+        }
+        else if((card.type == "COMMUNITY")&& (CommunityJailCard == true))
+        {
+            CommunityJailCard = false;
+            to.CommunityJailCard = true;
+        }
+        else
+        {
+            throw new InvalidOperationException("Erreur vous ne pouvez pas échanger une carte que vous ne possèdez pas.");
+        }
+    }
+ }
+ class Card
+ {
+     public string type;
+     public int id;
+     public string desc;
+     public Card(string type,int id,string desc)
+     {
+        this.id = id;
+        this.type = type;
+        this.desc = desc;
+
+     }
+ }
+ class Bank 
+ {
+    private int nbHouse;
+    private int nbHotel;
+     public Bank()
+    {
+        this.nb_house = 32;
+        this.nb_hotel = 12;
+
+    }
+    public int NbHouse
+    {
+        get => nbHouse;
+        set => nbHouse = value;
+    }
+    public int NbHotel
+    {
+        get => nbHotel;
+        set => nbHotel = value;
+    }
+
+    bool buyHouse()
+    {
+        if( NbHouse > 0)
+        {
+            NbHouse -= 1;
+            return true
+        }
+        return false;
+    }
+    bool buyHotel()
+    {
+        if( NbHotel > 0)
+        {
+            NbHotel -= 1;
+            return true
+        }   
+        return false;
+    }
+    void sellHouse()
+    {
+        NbHouse ++;
+    }
+    void sellHotel()
+    {
+        NbHotel ++;
+    }
+    void buyProperty(Player p, Ownable s)
+    {
+        if(p.Money > s.price )
+        {
+            s.setowner(p);
+            p.Money -=s.price;
+        }
+    }
+    void sellProperty(Player p, Ownable s)
+    {
+
+        s.setowner(NULL);
+        p.Money +=s.price/2;
+
+    }
  }
 }
+ class Board
+ {
+    private Square board[];
+    private List<Card> deckCommunity;
+    private List<Card> deckChance;
+    private int prisonSquare;
+    private int boardMoney;
+    public Square getSquare(int pos)
+    {
+        return board[pos];
+    }
+    public List<Square> squareOwned(Player p)
+    {
+        List<square> tempList = new List<square>()
+        for( int i=0; i<40; i++)
+        {
+            if(board[i].owner == p)
+                tempList.Add(board[i]);
+        }
+        return tempList;
+    }
+    public static List<property> getPropertySet(color c)
+    {
+
+    }
+ }
