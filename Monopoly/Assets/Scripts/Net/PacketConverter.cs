@@ -16,6 +16,58 @@ namespace Monopoly.Net
     public class PacketConverter : JsonConverter
     {
 
+        private static readonly Dictionary<string, Type> packetTypes =
+            new Dictionary<string, Type>()
+        {
+            { "AppletPrepare", typeof(PacketAppletPrepare) },
+            { "AppletReady", typeof(PacketAppletReady) },
+            { "GameStart", typeof(PacketGameStart) },
+            { "PlayerReconnect", typeof(PacketPlayerReconnect) },
+            { "PlayerDisconnect", typeof(PacketPlayerDisconnect) },
+            { "GameStartDice", typeof(PacketGameStartDice) },
+            { "GameStartDiceThrow", typeof(PacketGameStartDiceThrow) },
+            { "GameStartDiceResults", typeof(PacketGameStartDiceResults) },
+            { "RoundStart", typeof(PacketRoundStart) },
+            { "RoundDiceThrow", typeof(PacketRoundDiceThrow) },
+            { "RoundDiceChoice", typeof(PacketRoundDiceChoice) },
+            { "RoundDiceResults", typeof(PacketRoundDiceResults) },
+            { "RoundRandomCard", typeof(PacketRoundRandomCard) },
+            { "RoundMove", typeof(PacketRoundMove) },
+            { "PlayerEnterPrison", typeof(PacketPlayerEnterPrison) },
+            { "PlayerExitPrion", typeof(PacketPlayerExitPrison) },
+            { "ActionExchange", typeof(PacketActionExchange) },
+            { "ActionExchangePlayerSelect",
+                typeof(PacketActionExchangePlayerSelect) },
+            { "ActionExchangeTradeSelect",
+                typeof(PacketActionExchangeTradeSelect) },
+            { "ActionExchangeSend", typeof(PacketActionExchangeSend) },
+            { "ActionExchangeDecline", typeof(PacketActionExchangeDecline) },
+            { "AcitonExchangeCounter", typeof(PacketActionExchangeCounter) },
+            { "ActionExchangeAccept", typeof(PacketActionExchangeAccept) },
+            { "ActionExchangeCancel", typeof(PacketActionExchangeCancel) },
+            { "PlayerUpdateProperty", typeof(PacketPlayerUpdateProperty) },
+            { "PlayerUpdateBalance", typeof(PacketPlayerUpdateBalance) },
+            { "ActionAuctionProperty", typeof(PacketActionAuctionProperty) },
+            { "AuctionRound", typeof(PacketAuctionRound) },
+            { "AuctionBid", typeof(PacketAuctionBid) },
+            { "AuctionConcede", typeof(PacketAuctionConcede) },
+            { "AuctionEnd", typeof(PacketAuctionEnd) },
+            { "ActionBuyProperty", typeof(PacketActionBuyProperty) },
+            { "ActionBuyPropertySucceed",
+                typeof(PacketActionBuyPropertySucceed) },
+            { "ActionMortgageProperty", typeof(PacketActionMortgageProperty) },
+            { "ActionMortgagePropertySucceed",
+                typeof(PacketActionMortgagePropertySucceed) },
+            { "ActionUnmortgageProperty",
+                typeof(PacketActionUnmortgageProperty) },
+            { "ActionUnmortgagePropertySucceed",
+                typeof(PacketActionUnmortgagePropertySucceed) },
+            { "ActionBuyHouse", typeof(PacketActionBuyHouse) },
+            { "ActionBuyHouseSucceed", typeof(PacketActionBuyHouseSucceed) },
+            { "ActionSellHouse", typeof(PacketActionSellHouse) },
+            { "ActionSellHouseSucceed", typeof(PacketActionSellHouseSucceed) }
+        };
+
         private class PacketClassConverter : DefaultContractResolver
         {
             protected override JsonConverter ResolveContractConverter
@@ -51,18 +103,8 @@ namespace Monopoly.Net
             JObject jo = JObject.Load(reader);
             string name = jo["name"].Value<string>();
             Type type = null;
-            switch (name)
-            {
-            /* TODO: the rest */
-            case "AppletPrepare":
-                type = typeof(PacketAppletPrepare);
-                break;
-            case "AppletReady":
-                type = typeof(PacketAppletReady);
-                break;
-            default:
-                break;
-            }
+            if (packetTypes.ContainsKey(name))
+                type = packetTypes[name];
             if (type != null)
             {
                 return (Packet)
