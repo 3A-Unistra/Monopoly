@@ -10,7 +10,7 @@ namespace Monopoly.Net
     public abstract class Packet
     {
 
-        [JsonProperty("packet_name")]
+        [JsonProperty("name")]
         public string Name
         {
             get;

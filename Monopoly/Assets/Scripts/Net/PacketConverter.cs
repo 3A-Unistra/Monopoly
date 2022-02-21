@@ -49,19 +49,26 @@ namespace Monopoly.Net
                                         JsonSerializer serializer)
         {
             JObject jo = JObject.Load(reader);
-            string name = jo["packet_name"].Value<string>();
+            string name = jo["name"].Value<string>();
+            Type type = null;
             switch (name)
             {
+            /* TODO: the rest */
             case "AppletPrepare":
-                return JsonConvert.DeserializeObject<PacketAppletPrepare>(
-                    jo.ToString(), SpecifiedSubclassConversion
-                );
+                type = typeof(PacketAppletPrepare);
+                break;
             case "AppletReady":
-                return JsonConvert.DeserializeObject<PacketAppletReady>(
-                    jo.ToString(), SpecifiedSubclassConversion
-                );
+                type = typeof(PacketAppletReady);
+                break;
             default:
                 break;
+            }
+            if (type != null)
+            {
+                return (Packet)
+                    JsonConvert.DeserializeObject(jo.ToString(),
+                                                  type,
+                                                  SpecifiedSubclassConversion);
             }
             throw new NotImplementedException();
         }
