@@ -342,7 +342,13 @@ PlayerSettings:
     Android: 1
     iPhone: 1
     tvOS: 1
+<<<<<<< HEAD
   m_BuildTargetGroupLightmapEncodingQuality: []
+=======
+  m_BuildTargetGroupLightmapEncodingQuality:
+  - m_BuildTarget: WebGL
+    m_EncodingQuality: 1
+>>>>>>> d494e76251554b12d9ee6be698ea44d82a71a272
   m_BuildTargetGroupLightmapSettings: []
   m_BuildTargetNormalMapEncoding: []
   playModeTestRunnerEnabled: 0
@@ -581,14 +587,22 @@ PlayerSettings:
   webGLDebugSymbols: 0
   webGLEmscriptenArgs: 
   webGLModulesDirectory: 
+<<<<<<< HEAD
   webGLTemplate: APPLICATION:Default
+=======
+  webGLTemplate: APPLICATION:Minimal
+>>>>>>> d494e76251554b12d9ee6be698ea44d82a71a272
   webGLAnalyzeBuildSize: 0
   webGLUseEmbeddedResources: 0
   webGLCompressionFormat: 1
   webGLWasmArithmeticExceptions: 0
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
+<<<<<<< HEAD
   webGLDecompressionFallback: 0
+=======
+  webGLDecompressionFallback: 1
+>>>>>>> d494e76251554b12d9ee6be698ea44d82a71a272
   scriptingDefineSymbols: {}
   additionalCompilerArguments: {}
   platformArchitecture: {}
