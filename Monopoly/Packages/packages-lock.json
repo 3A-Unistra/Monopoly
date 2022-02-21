@@ -1,7 +1,10 @@
 {
   "dependencies": {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 3e4e842ffee9078e26b4181c13787d9e2a709913
     "com.unity.collab-proxy": {
       "version": "1.15.7",
       "depth": 0,
@@ -12,7 +15,12 @@
       },
       "url": "https://packages.unity.com"
     },
+<<<<<<< HEAD
 >>>>>>> First Unity project upload test.
+=======
+=======
+>>>>>>> d494e76251554b12d9ee6be698ea44d82a71a272
+>>>>>>> 3e4e842ffee9078e26b4181c13787d9e2a709913
     "com.unity.ext.nunit": {
       "version": "1.0.6",
       "depth": 1,
@@ -20,6 +28,7 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+<<<<<<< HEAD
 <<<<<<< HEAD
     "com.unity.ide.visualstudio": {
       "version": "2.0.14",
@@ -36,6 +45,23 @@
     "com.unity.ide.visualstudio": {
       "version": "2.0.12",
 >>>>>>> First Unity project upload test.
+=======
+    "com.unity.ide.rider": {
+      "version": "2.0.7",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.test-framework": "1.1.1"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.ide.visualstudio": {
+      "version": "2.0.12",
+=======
+    "com.unity.ide.visualstudio": {
+      "version": "2.0.14",
+>>>>>>> d494e76251554b12d9ee6be698ea44d82a71a272
+>>>>>>> 3e4e842ffee9078e26b4181c13787d9e2a709913
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -51,18 +77,48 @@
       "url": "https://packages.unity.com"
     },
 <<<<<<< HEAD
+<<<<<<< HEAD
     "com.unity.settings-manager": {
       "version": "1.0.1",
 =======
     "com.unity.nuget.newtonsoft-json": {
       "version": "2.0.0",
 >>>>>>> First Unity project upload test.
+=======
+    "com.unity.nuget.newtonsoft-json": {
+      "version": "2.0.0",
+=======
+    "com.unity.settings-manager": {
+      "version": "1.0.1",
+>>>>>>> d494e76251554b12d9ee6be698ea44d82a71a272
+>>>>>>> 3e4e842ffee9078e26b4181c13787d9e2a709913
       "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    "com.unity.services.core": {
+      "version": "1.0.1",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.unitywebrequest": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.test-framework": {
+      "version": "1.1.29",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.ext.nunit": "1.0.6",
+        "com.unity.modules.imgui": "1.0.0",
+        "com.unity.modules.jsonserialize": "1.0.0"
+=======
+>>>>>>> 3e4e842ffee9078e26b4181c13787d9e2a709913
     "com.unity.test-framework": {
       "version": "1.1.30",
       "depth": 0,
@@ -81,6 +137,7 @@
       "dependencies": {
         "com.unity.test-framework": "1.0.16",
         "com.unity.settings-manager": "1.0.1"
+<<<<<<< HEAD
 =======
     "com.unity.services.core": {
       "version": "1.0.1",
@@ -100,6 +157,9 @@
         "com.unity.modules.imgui": "1.0.0",
         "com.unity.modules.jsonserialize": "1.0.0"
 >>>>>>> First Unity project upload test.
+=======
+>>>>>>> d494e76251554b12d9ee6be698ea44d82a71a272
+>>>>>>> 3e4e842ffee9078e26b4181c13787d9e2a709913
       },
       "url": "https://packages.unity.com"
     },
