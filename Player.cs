@@ -21,7 +21,7 @@ namespace Monopoly.Classes
             get;
             set;
         }
-        private string name;
+        public string name;
         {
             get;
             set;
@@ -36,7 +36,7 @@ namespace Monopoly.Classes
             get;
             set;
         }
-        private int score;
+        public int score;
         {
             get;
             set;
@@ -92,17 +92,17 @@ namespace Monopoly.Classes
         this.communityJailCard = false;
         this.bot = false;
     }
-    void enterPrison()
+    void EnterPrison()
     {
         Position = 9;
         InJail = true;
     }
-    void exitPrison()
+    void ExitPrison()
     {
         InJail = false;
     }
 
-    void transferMoney(Player to, int amount)
+    void TransferMoney(Player to, int amount)
     {
         if( Money > amount)
         {
@@ -116,12 +116,12 @@ namespace Monopoly.Classes
             Bankrupt = true;
         }
     }
-    void transferProperty(Player to, Ownable p)
+    void TransferProperty(Player to, Ownable p)
     {
         p.setOwner(to);
     }
 
-    void transferCard(Player to, Card card)
+    void TransferCard(Player to, Card card)
     {
         if ((card.type == "CHANCE") && (ChanceJailCard == true))
         {
