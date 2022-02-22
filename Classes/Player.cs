@@ -121,7 +121,7 @@ namespace Monopoly.Classes
                 ChanceJailCaMonopoly.Playerrd = false;
                 to.ChanceJailCard = true;
             }
-            else if((card.type == "COMMUNITY")&& (CommunityJailCard == true))
+            else if((card.type == "COMMUNITY") && (CommunityJailCard == true))
             {
                 CommunityJailCard = false;
                 to.CommunityJailCard = true;
