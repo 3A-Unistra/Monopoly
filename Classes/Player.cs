@@ -109,7 +109,7 @@ namespace Monopoly.Classes
                 Bankrupt = true;
             }
         }
-        void TransferProperty(Player to, Ownable p)
+        void TransferProperty(Player to, OwnableSquare p)
         {
             p.setOwner(to);
         }
