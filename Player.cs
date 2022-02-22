@@ -3,32 +3,79 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Monopoly.Player
+namespace Monopoly.Classes
 {
 
- public class Character
- {
-    private int id;
-    public int Id
+    public class Character
     {
-        get => id;
-        set => id = value;
-    }    
- }
- public class Player
- {
-    private int id;
-    private string name;
-    private Character character;
-    private int position;
-    private int score;
-    private int money;
-    private int jailTurns;
-    private bool inJail;
-    private bool bankrupt;
-    private bool chanceJailCard;
-    private bool communityJailCard;
-    private bool bot; 
+        public int id
+        {
+            get;
+            set;
+        }    
+    }
+    public class Player
+    {
+        private int id;
+        {
+            get;
+            set;
+        }
+        private string name;
+        {
+            get;
+            set;
+        }
+        private Character character;
+        {
+            get;
+            set;
+        }
+        private int position;
+        {
+            get;
+            set;
+        }
+        private int score;
+        {
+            get;
+            set;
+        }
+        private int money;
+        {
+            get;
+            set;
+        }
+        private int jailTurns;
+        {
+            get;
+            set;
+        }
+        private bool inJail;
+        {
+            get;
+            set;
+        }
+        private bool bankrupt;
+        {
+            get;
+            set;
+        }
+        private bool chanceJailCard;
+        {
+            get;
+            set;
+        }
+        private bool communityJailCard;
+        {
+            get;
+            set;
+        }
+        private bool bot;
+        {
+            get;
+            set;
+        } 
     public Player (int id,string name,Character character)
     {
 
@@ -45,73 +92,6 @@ namespace Monopoly.Player
         this.communityJailCard = false;
         this.bot = false;
     }
-    public int Id
-    {
-        get => id;
-        set => id = value;
-    }
-    public Character Character
-    {
-        get => character;
-        set => character = value;
-    }
-    public string Name
-    {
-        get => name;
-        set => name = value;
-    }
-    public int Money
-    {
-        get => money;
-        set => money = value;
-    }
-
-    public int Score
-    {
-        get => score;
-        set => score = value;
-    }
-
-    public int Position
-    {
-        get => position;
-        set => position = value;
-    }
-
-    public int JailTurns 
-    {
-        get => jailTurns;
-        set => jailTurns = value;
-    }
-
-    public bool InJail 
-    {
-        get => inJail;
-        set => inJail = value;
-    }
-
-    public bool Bankrupt 
-    {
-        get => bankrupt;
-        set => bankrupt = value;
-    }
-
-    public bool ChanceJailCard
-    {
-        get => chanceJailCard;
-        set => chanceJailCard = value;
-    }
-    public bool CommunityJailCard 
-    {
-        get => communityJailCard ;
-        set => communityJailCard  = value;
-    }
-    public bool Bot
-    {
-        get => bot;
-        set => bot  = value;
-    }
-
     void enterPrison()
     {
         Position = 9;
