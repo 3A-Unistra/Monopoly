@@ -127,7 +127,7 @@ namespace Monopoly.Classes
             }
             else
             {
-                throw new InvalidOperationException("Erreur vous ne pouvez pas échanger une carte que vous ne possèdez pas.");
+                throw new InvalidOperationException("Carte indisponible");
             }
         }
     }
