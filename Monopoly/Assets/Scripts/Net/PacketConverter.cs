@@ -1,3 +1,11 @@
+/*
+ * PacketConverter.cs
+ * JSON string deserialiser class for communication packets.
+ * 
+ * Date created : 19/02/2022
+ * Author       : Finn RAYMENT <rayment@etu.unistra.fr>
+ */
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,6 +20,11 @@ namespace Monopoly.Net
 
     /*
      * See: https://stackoverflow.com/a/30579193
+     */
+    /**
+     * <summary>
+     *     JSON string deserialiser for communication packets.
+     * </summary>
      */
     public class PacketConverter : JsonConverter
     {
@@ -32,7 +45,7 @@ namespace Monopoly.Net
             { "RoundDiceChoice", typeof(PacketRoundDiceChoice) },
             { "RoundDiceResults", typeof(PacketRoundDiceResults) },
             { "RoundRandomCard", typeof(PacketRoundRandomCard) },
-            { "RoundMove", typeof(PacketRoundMove) },
+            { "PlayerMove", typeof(PacketPlayerMove) },
             { "PlayerEnterPrison", typeof(PacketPlayerEnterPrison) },
             { "PlayerExitPrion", typeof(PacketPlayerExitPrison) },
             { "ActionExchange", typeof(PacketActionExchange) },
@@ -42,7 +55,7 @@ namespace Monopoly.Net
                 typeof(PacketActionExchangeTradeSelect) },
             { "ActionExchangeSend", typeof(PacketActionExchangeSend) },
             { "ActionExchangeDecline", typeof(PacketActionExchangeDecline) },
-            { "AcitonExchangeCounter", typeof(PacketActionExchangeCounter) },
+            { "ActionExchangeCounter", typeof(PacketActionExchangeCounter) },
             { "ActionExchangeAccept", typeof(PacketActionExchangeAccept) },
             { "ActionExchangeCancel", typeof(PacketActionExchangeCancel) },
             { "PlayerUpdateProperty", typeof(PacketPlayerUpdateProperty) },
@@ -56,18 +69,24 @@ namespace Monopoly.Net
             { "ActionBuyPropertySucceed",
                 typeof(PacketActionBuyPropertySucceed) },
             { "ActionMortgageProperty", typeof(PacketActionMortgageProperty) },
-            { "ActionMortgagePropertySucceed",
-                typeof(PacketActionMortgagePropertySucceed) },
+            { "ActionMortgageSucceed",
+                typeof(PacketActionMortgageSucceed) },
             { "ActionUnmortgageProperty",
                 typeof(PacketActionUnmortgageProperty) },
-            { "ActionUnmortgagePropertySucceed",
-                typeof(PacketActionUnmortgagePropertySucceed) },
+            { "ActionUnmortgageSucceed",
+                typeof(PacketActionUnmortgageSucceed) },
             { "ActionBuyHouse", typeof(PacketActionBuyHouse) },
             { "ActionBuyHouseSucceed", typeof(PacketActionBuyHouseSucceed) },
             { "ActionSellHouse", typeof(PacketActionSellHouse) },
             { "ActionSellHouseSucceed", typeof(PacketActionSellHouseSucceed) }
         };
 
+        /**
+         * <summary>
+         *     Packet converter class to be used by Newtonsoft for
+         *     deserialisation resolution.
+         * </summary>
+         */
         private class PacketClassConverter : DefaultContractResolver
         {
             protected override JsonConverter ResolveContractConverter
