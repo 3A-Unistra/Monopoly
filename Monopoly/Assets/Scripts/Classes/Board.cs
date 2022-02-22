@@ -17,7 +17,7 @@ namespace Monopoly.Classes
 {
     public class Board
     {
-        public Square Board[]
+        public static List<Square> Elements
         {
             get;
             set;
@@ -34,25 +34,33 @@ namespace Monopoly.Classes
         }
         public Square GetSquare(int pos)
         {
-            return Board[pos];
+            return Elements[pos];
         }
-        public List<Square> SquareOwned(Player p)
-        {  
-            List<square> tempList = new List<square>()
-            for(int i = 0;i < 40;i++)
+        public List<OwnableSquare> SquareOwned(Player p)
+        {
+            List<OwnableSquare> tempList = new List<OwnableSquare>();
+            foreach (Square s in Elements)
             {
-                if(Board[i].Owner == p)
-                    tempList.Add(Board[i]);
+                if (s.GetType() == typeof(OwnableSquare))
+                {
+                    OwnableSquare sos = (OwnableSquare) s; 
+                    if(sos.Owner == p)
+                        tempList.Add(sos); 
+                }
             }
             return tempList;
         }
-        public static List<property> GetPropertySet(color c)
+        public static List<PropertySquare> GetPropertySet(Color c)
         {
-            static List<property> propertySet = new List<property>();
-            for(int i = 0; i < 40; i++)
+            List<PropertySquare> propertySet = new List<PropertySquare>();
+            foreach (Square s in Elements)
             {
-                if(Board[i].color == c)
-                    propertySet.add(Board[i]);
+                if (s.GetType() == typeof(PropertySquare))
+                {
+                    PropertySquare sps = (PropertySquare) s; 
+                    if(sps.Col.Equals(c))
+                        propertySet.Add(sps); 
+                }
             }
             return propertySet;
         }
@@ -61,7 +69,7 @@ namespace Monopoly.Classes
             p.Money += BoardMoney;
             BoardMoney = 0;
         }
-        public void AddMoney(Player p; int i)
+        public void AddMoney(Player p, int i)
         {
             p.Money += i;
         }

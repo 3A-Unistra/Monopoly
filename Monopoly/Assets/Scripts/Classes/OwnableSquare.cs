@@ -24,7 +24,7 @@ namespace Monopoly.Classes
          * playing the game.
          * </exception>
          */
-        public Player Owner{ get; private set; }
+        public Player Owner { get; set; }
   
         /**
          * <summary>
@@ -86,6 +86,7 @@ namespace Monopoly.Classes
             Material imageCons, int priceCons, int rentCons)
             : base(typeCons, idCons, nameCons, imageCons)
         {
+            Owner = null;
             Mortgaged = false;
             Price = priceCons;
             Rent = rentCons;

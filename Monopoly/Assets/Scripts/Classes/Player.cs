@@ -16,57 +16,57 @@ namespace Monopoly.Classes
 {
     public class Player
     {
-        public string Id;
+        public string Id
         {
             get;
             set;
         }
-        public string Name;
+        public string Name
         {
             get;
             set;
         }
-        public Character Character;
+        public Character Character
         {
             get;
             set;
         }
-        public int Position;
+        public int Position
         {
             get;
             set;
         }
-        public int Score;
+        public int Score
         {
             get;
             set;
         }
-        public int Money;
+        public int Money
         {
             get;
             set;
         }
-        public bool InJail;
+        public bool InJail
         {
             get;
             set;
         }
-        public bool Bankrupt;
+        public bool Bankrupt
         {
             get;
             set;
         }
-        public bool ChanceJailCard;
+        public bool ChanceJailCard
         {
             get;
             set;
         }
-        public bool CommunityJailCard;
+        public bool CommunityJailCard
         {
             get;
             set;
         }
-        public bool Bot;
+        public bool Bot
         {
             get;
             set;
@@ -111,14 +111,14 @@ namespace Monopoly.Classes
         }
         void TransferProperty(Player to, OwnableSquare p)
         {
-            p.setOwner(to);
+            p.Owner = to;
         }
 
         void TransferCard(Player to, Card card)
         {
             if ((card.type == "CHANCE") && (ChanceJailCard == true))
             {
-                ChanceJailCaMonopoly.Playerrd = false;
+                ChanceJailCard = false;
                 to.ChanceJailCard = true;
             }
             else if((card.type == "COMMUNITY") && (CommunityJailCard == true))

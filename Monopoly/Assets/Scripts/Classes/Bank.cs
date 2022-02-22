@@ -28,15 +28,15 @@ namespace Monopoly.Classes
         }        
         public Bank()
         {
-            this.Nb_house = 32;
-            this.Nb_hotel = 12;
+            this.NbHouse = 32;
+            this.NbHotel = 12;
         }
         bool BuyHouse()
         {
             if( NbHouse > 0)
             {
                 NbHouse -= 1;
-                return true
+                return true;
             }
             return false;
         }
@@ -45,30 +45,30 @@ namespace Monopoly.Classes
             if(NbHotel > 0)
             {
                 NbHotel -= 1;
-                return true
+                return true;
             }   
             return false;
         }
         void SellHouse()
         {
-            NbHouse ++;
+            NbHouse++;
         }
         void SellHotel()
         {
-            NbHotel ++;
+            NbHotel++;
         }
-        void BuyProperty(Player p, Ownable s)
+        void BuyProperty(Player p, OwnableSquare s)
         {
-            if(p.Money > s.price)
+            if(p.Money > s.Price)
             {
-                s.setowner(p);
-                p.Money -= s.price;
+                s.Owner = p;
+                p.Money -= s.Price;
             }
         }
-        void SellProperty(Player p, Ownable s)
+        void SellProperty(Player p, OwnableSquare s)
         {
-            s.Setowner(NULL);
-            p.Money += s.price/2;
+            s.Owner = null;
+            p.Money += s.Price/2;
         }
     }
 }
