@@ -5,14 +5,6 @@ using UnityEngine;
 
 namespace Monopoly.Classes
 {
-    public class Character
-    {
-        public int Id
-        {
-            get;
-            set;
-        }    
-    }
     public class Player
     {
         public string Id;
