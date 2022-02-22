@@ -6,10 +6,11 @@ using Monopoly.Net;
 namespace Monopoly.Net.Packets
 {
 
-    public class PacketRoundMove : Packet
+    public class PacketActionMortgageSucceed : Packet
     {
 
-        public PacketRoundMove() : base("RoundMove")
+        public PacketActionMortgageSucceed() :
+            base("ActionMortgageSucceed")
         {
 
         }
