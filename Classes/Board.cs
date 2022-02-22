@@ -7,10 +7,16 @@ namespace Monopoly.Classes
 {
     public class Board
     {
-        private Square board[];
-        private List<Card> deckCommunity;
-        private List<Card> deckChance;
-        private int prisonSquare;
+        public Square Board[]
+        {
+            get;
+            set;
+        }
+        public int PrisonSquare
+        {
+            get;
+            set;
+        }
         public int BoardMoney
         {
             get;
@@ -18,15 +24,15 @@ namespace Monopoly.Classes
         }
         public Square GetSquare(int pos)
         {
-            return board[pos];
+            return Board[pos];
         }
         public List<Square> SquareOwned(Player p)
         {  
             List<square> tempList = new List<square>()
             for(int i = 0;i < 40;i++)
             {
-                if(board[i].owner == p)
-                    tempList.Add(board[i]);
+                if(Board[i].Owner == p)
+                    tempList.Add(Board[i]);
             }
             return tempList;
         }
@@ -48,14 +54,6 @@ namespace Monopoly.Classes
         public void AddMoney(Player p; int i)
         {
             p.Money += i;
-        }
-        Card GetRandomChanceCard()
-        {
-            return deckChance[rnd.Next(1,deckChance.Count)]
-        }
-        Card GetRandomCommunityCard()
-        {
-            return deckCommunity[rnd.Next(1,deckCommunity.Count)]
         }
     }
 }
