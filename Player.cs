@@ -16,129 +16,123 @@ namespace Monopoly.Classes
     }
     public class Player
     {
-        private int id;
+        public int Id;
         {
             get;
             set;
         }
-        public string name;
+        public string Name;
         {
             get;
             set;
         }
-        private Character character;
+        public Character Character;
         {
             get;
             set;
         }
-        private int position;
+        public int Position;
         {
             get;
             set;
         }
-        public int score;
+        public int Score;
         {
             get;
             set;
         }
-        private int money;
+        public int Money;
         {
             get;
             set;
         }
-        private int jailTurns;
+        public bool InJail;
         {
             get;
             set;
         }
-        private bool inJail;
+        public bool Bankrupt;
         {
             get;
             set;
         }
-        private bool bankrupt;
+        public bool ChanceJailCard;
         {
             get;
             set;
         }
-        private bool chanceJailCard;
+        public bool CommunityJailCard;
         {
             get;
             set;
         }
-        private bool communityJailCard;
-        {
-            get;
-            set;
-        }
-        private bool bot;
+        public bool Bot;
         {
             get;
             set;
         } 
-    public Player (int id,string name,Character character)
-    {
+        public Player(int id, string name, Character character)
+        {
+            this.Id = id;
+            this.Character = character;
+            this.Name = name;
+            this.Money = 1500;
+            this.Score = 0;
+            this.Position = 0;
+            this.InJail = false;
+            this.Bankrupt = false;
+            this.ChanceJailCard = false;
+            this.CommunityJailCard = false;
+            this.Bot = false;
+        }
+        public void EnterPrison()
+        {
+            Position = 9;
+            InJail = true;
+        }
+        public void ExitPrison()
+        {
+            InJail = false;
+        }
 
-        this.id = id;
-        this.character = character;
-        this.name = name;
-        this.money = 1500;
-        this.score = 0;
-        this.position = 0;
-        this.jailTurns = 0;
-        this.inJail = false;
-        this.bankrupt = false;
-        this.chanceJailCard = false;
-        this.communityJailCard = false;
-        this.bot = false;
-    }
-    void EnterPrison()
-    {
-        Position = 9;
-        InJail = true;
-    }
-    void ExitPrison()
-    {
-        InJail = false;
-    }
+        public void TransferMoney(Player to, int amount)
+        {
+            if( Money > amount)
+            {
+                Money -= amount;
+                to.Money += amount;
+            }
+            else
+            {
+                to.Money += Money;
+                Money = 0;
+                Bankrupt = true;
+            }
+        }
+        void TransferProperty(Player to, Ownable p)
+        {
+            p.setOwner(to);
+        }
 
-    void TransferMoney(Player to, int amount)
-    {
-        if( Money > amount)
+        void TransferCard(Player to, Card card)
         {
-            Money -= amount;
-            to.Money += amount;
-        }
-        else
-        {
-            to.Money += Money;
-            Money = 0;
-            Bankrupt = true;
-        }
-    }
-    void TransferProperty(Player to, Ownable p)
-    {
-        p.setOwner(to);
-    }
-
-    void TransferCard(Player to, Card card)
-    {
-        if ((card.type == "CHANCE") && (ChanceJailCard == true))
-        {
-            ChanceJailCard = false;
-            to.ChanceJailCard = true;
-        }
-        else if((card.type == "COMMUNITY")&& (CommunityJailCard == true))
-        {
-            CommunityJailCard = false;
-            to.CommunityJailCard = true;
-        }
-        else
-        {
-            throw new InvalidOperationException("Erreur vous ne pouvez pas échanger une carte que vous ne possèdez pas.");
+            if ((card.type == "CHANCE") && (ChanceJailCard == true))
+            {
+                ChanceJailCaMonopoly.Playerrd = false;
+                to.ChanceJailCard = true;
+            }
+            else if((card.type == "COMMUNITY")&& (CommunityJailCard == true))
+            {
+                CommunityJailCard = false;
+                to.CommunityJailCard = true;
+            }
+            else
+            {
+                throw new InvalidOperationException("Erreur vous ne pouvez pas échanger une carte que vous ne possèdez pas.");
+            }
         }
     }
- }
+}
  public class Card
  {
      public string type;
