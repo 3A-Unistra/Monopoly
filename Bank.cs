@@ -5,67 +5,62 @@ using UnityEngine;
 
 namespace Monopoly.Bank
 {
-public class Bank 
- {
-    private int nbHouse;
-    private int nbHotel;
-     public Bank()
+    public class Bank 
     {
-        this.nb_house = 32;
-        this.nb_hotel = 12;
-
-    }
-    public int NbHouse
-    {
-        get => nbHouse;
-        set => nbHouse = value;
-    }
-    public int NbHotel
-    {
-        get => nbHotel;
-        set => nbHotel = value;
-    }
-
-    bool buyHouse()
-    {
-        if( NbHouse > 0)
+        public int NbHouse
         {
-            NbHouse -= 1;
-            return true
+            get;
+            set;
         }
-        return false;
-    }
-    bool buyHotel()
-    {
-        if(NbHotel > 0)
+        public int NbHotel
         {
-            NbHotel -= 1;
-            return true
-        }   
-        return false;
-    }
-    void sellHouse()
-    {
-        NbHouse ++;
-    }
-    void sellHotel()
-    {
-        NbHotel ++;
-    }
-    void buyProperty(Player p, Ownable s)
-    {
-        if(p.Money > s.price)
+            get;
+            set;
+        }        
+        public Bank()
         {
-            s.setowner(p);
-            p.Money -= s.price;
+            this.Nb_house = 32;
+            this.Nb_hotel = 12;
+        }
+        bool BuyHouse()
+        {
+            if( NbHouse > 0)
+            {
+                NbHouse -= 1;
+                return true
+            }
+            return false;
+        }
+        bool BuyHotel()
+        {
+            if(NbHotel > 0)
+            {
+                NbHotel -= 1;
+                return true
+            }   
+            return false;
+        }
+        void SellHouse()
+        {
+            NbHouse ++;
+        }
+        void SellHotel()
+        {
+            NbHotel ++;
+        }
+        void BuyProperty(Player p, Ownable s)
+        {
+            if(p.Money > s.price)
+            {
+                s.setowner(p);
+                p.Money -= s.price;
+            }
+        }
+        void SellProperty(Player p, Ownable s)
+        {
+            s.Setowner(NULL);
+            p.Money += s.price/2;
+
         }
     }
-    void sellProperty(Player p, Ownable s)
-    {
-
-        s.setowner(NULL);
-        p.Money += s.price/2;
-
-    }
- }
 }
