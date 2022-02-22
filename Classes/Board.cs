@@ -1,3 +1,13 @@
+/*
+ * Fichier.cs
+ * Fichier définissant la classe plateau et ses 
+ * interaction avec les différentes cases
+ * 
+ * Date created : 22/02/2022
+ * Author       : Christophe Pierson <christophe.pierson@etu.unistra.fr>
+ */
+
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
