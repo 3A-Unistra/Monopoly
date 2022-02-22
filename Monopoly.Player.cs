@@ -235,7 +235,7 @@ namespace Monopoly.Player
 
     }
  }
-}
+
  public class Board
  {
     private Square board[];
@@ -261,4 +261,5 @@ namespace Monopoly.Player
     {
 
     }
- }
+}
+}
