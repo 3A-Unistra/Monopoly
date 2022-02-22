@@ -5,10 +5,9 @@ using UnityEngine;
 
 namespace Monopoly.Classes
 {
-
     public class Character
     {
-        public int id
+        public int Id
         {
             get;
             set;
