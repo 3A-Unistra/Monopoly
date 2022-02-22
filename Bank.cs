@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Monopoly.Bank
+namespace Monopoly.Classes
 {
     public class Bank 
     {
