@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MonopolyPlayer
+namespace Monopoly.Player
 {
 
- class Character
+ public class Character
  {
     private int id;
     public int Id
@@ -15,7 +15,7 @@ namespace MonopolyPlayer
         set => id = value;
     }    
  }
- class Player
+ public class Player
  {
     private int id;
     private string name;
@@ -159,7 +159,7 @@ namespace MonopolyPlayer
         }
     }
  }
- class Card
+ public class Card
  {
      public string type;
      public int id;
@@ -172,7 +172,7 @@ namespace MonopolyPlayer
 
      }
  }
- class Bank 
+ public class Bank 
  {
     private int nbHouse;
     private int nbHotel;
@@ -236,7 +236,7 @@ namespace MonopolyPlayer
     }
  }
 }
- class Board
+ public class Board
  {
     private Square board[];
     private List<Card> deckCommunity;
