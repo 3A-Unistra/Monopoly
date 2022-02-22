@@ -60,7 +60,6 @@ namespace Monopoly.Bank
         {
             s.Setowner(NULL);
             p.Money += s.price/2;
-
         }
     }
 }
