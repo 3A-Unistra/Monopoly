@@ -15,7 +15,7 @@ namespace Monopoly.Classes
     }
     public class Player
     {
-        public int Id;
+        public string Id;
         {
             get;
             set;
@@ -70,7 +70,7 @@ namespace Monopoly.Classes
             get;
             set;
         } 
-        public Player(int id, string name, Character character)
+        public Player(string id, string name, Character character)
         {
             this.Id = id;
             this.Character = character;
