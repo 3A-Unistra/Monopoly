@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Monopoly.Player
+namespace Monopoly.Classes
 {
 
     public class Board
