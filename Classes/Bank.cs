@@ -1,3 +1,12 @@
+/*
+ * Fichier.cs
+ * Fichier définissant la classe Banque et ses interaction
+ * 
+ * Date created : 22/02/2022
+ * Author       : Christophe Pierson <christophe.pierson@etu.unistra.fr>
+ */
+
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
