@@ -14,7 +14,7 @@ using UnityEngine;
 /**
 * <summary>
 *   Class defining the role of the bank, has limited houses and hotels
-*   for the player to buy
+*   for the player to buy, maximum 32 houses and 12 hotels
 *   Stores money for the player to get at the free parking square
 * </summary>
 */
@@ -31,12 +31,25 @@ namespace Monopoly.Classes
         {
             get;
             set;
-        }        
+        }
+        /**
+        * <summary>
+        *   sets the number of houses and hotel at the beginning of the game
+        * </summary>
+        */        
         public Bank()
         {
             this.NbHouse = 32;
             this.NbHotel = 12;
         }
+         /**
+        * <summary>
+        *   take a house from the bank if there are any
+        *  <return>
+        *   true if you took a house frm the bank, false if there are none
+        *  </return>
+        * </summary>
+        */ 
         bool BuyHouse()
         {
             if( NbHouse > 0)
