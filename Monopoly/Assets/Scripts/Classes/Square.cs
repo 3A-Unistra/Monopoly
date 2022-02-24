@@ -138,10 +138,12 @@ namespace Monopoly.Classes
         }
         /**
           * <summary>
-          * This function is used to verify if a given square is the go to jail square.
+          * This function is used to verify if a given square is the go to jail
+          * square.
           * </summary>
           * <returns>
-          * true if the given square is is the go to jail square and false if not.
+          * true if the given square is is the go to jail square and false if
+          * not.
           * </returns>
           */
         bool IsGoToJail()
@@ -151,7 +153,8 @@ namespace Monopoly.Classes
         
         /**
           * <summary>
-          * This function is used to verify if a given square is a community square.
+          * This function is used to verify if a given square is a community
+          * square.
           * </summary>
           * <returns>
           * true if the given square is a community square and false if not.

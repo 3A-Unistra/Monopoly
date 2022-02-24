@@ -1,6 +1,7 @@
 /*
  * OwnableSquare.cs
- * Description du fichier.
+ * This file contain all the methods that handles the ownable squares on the
+ * game board.
  * 
  * Date created : 21/02/2022
  * Author       : Rayan MARMAR <rayan.marmar@etu.unistra.fr>
@@ -26,8 +27,8 @@ namespace Monopoly.Classes
          * The owner of the property.
          * </summary>
          * <exception cref="InvalidPlayer">
-         * Throws an exception if the given player is not in the list of the players
-         * playing the game.
+         * Throws an exception if the given player is not in the list of the
+         * players playing the game.
          * </exception>
          */
         public Player Owner { get; set; }
@@ -41,7 +42,8 @@ namespace Monopoly.Classes
   
         /**
          * <summary>
-         * The price of the property that a player needs to pay if he chose to buy
+         * The price of the property that a player needs to pay if he chose to
+         * buy.
          * </summary>
          */
         public int Price{ get; set; }
@@ -101,11 +103,16 @@ namespace Monopoly.Classes
 
         /**
           * <summary>
-          * This function is used to deduct the given rent from the player's money.
+          * This function is used to deduct the given rent from the player's
+          * money.
           * </summary>
+          * <param name="renter">
+          * The player that lands on another player's owned property and has
+          * to pay the rent for its owner.
+          * </param>
           * <exception cref="InvalidPlayer">
-          * Throws an exception if the given player is not in the list of the players
-          * playing the game.
+          * Throws an exception if the given player is not in the list of the
+          * players playing the game.
           * </exception>
           */
         public virtual void PayRent(Player renter)
@@ -113,6 +120,22 @@ namespace Monopoly.Classes
             renter.Money -= Rent;
         }
 
+        /**
+         * <summary>
+         * This function verifies if two ownable squares belongs to the same
+         * group (ex: two stations, two companies or two fields with the same
+         * color).
+         * </summary>
+         * <param name="a">
+         * The first ownable square to be compared.
+         * </param>
+         * <param name="b">
+         * The second ownable square to be compared.
+         * </param>
+         * <returns>
+         * true if the two squares belongs to the same group and false if not
+         * </returns>
+         */
         public static bool IsSameGroup(OwnableSquare a, OwnableSquare b)
         {
             if (a.Type == SquareType.Field && b.Type == SquareType.Field)
