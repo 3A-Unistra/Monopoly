@@ -11,7 +11,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/**
+* <summary>
+*   Class defining the role of the bank, has limited houses and hotels
+*   for the player to buy
+*   Stores money for the player to get at the free parking square
+* </summary>
+*/
 namespace Monopoly.Classes
 {
     public class Bank 
