@@ -53,16 +53,16 @@ namespace Monopoly.Classes
          * <summary>
          * Constructor of the class <c>Square</c>.
          * </summary>
-         * <param name="typeCons">
+         * <param name="type">
          * The new type of the square.
          * </param>
-         * <param name="idCons">
+         * <param name="id">
          * The new id of the square.
          * </param>
-         * <param name="nameCons">
+         * <param name="name">
          * The new name of the square on the board.
          * </param>
-         * <param name="imageCons">
+         * <param name="image">
          * The new image of the square on the board.
          * </param>
          * <returns>
@@ -74,13 +74,12 @@ namespace Monopoly.Classes
          * greater than 39.
          * </exception>
          */
-        protected Square(SquareType typeCons, int idCons, 
-            string nameCons, Material imageCons)
+        protected Square(SquareType type, int id, string name, Material image)
         {
-            Type = typeCons;
-            Id = idCons;
-            Name = nameCons;
-            Image = imageCons;
+            Type = type;
+            Id = id;
+            Name = name;
+            Image = image;
         }
 
         /**
@@ -139,10 +138,12 @@ namespace Monopoly.Classes
         }
         /**
           * <summary>
-          * This function is used to verify if a given square is the go to jail square.
+          * This function is used to verify if a given square is the go to jail
+          * square.
           * </summary>
           * <returns>
-          * true if the given square is is the go to jail square and false if not.
+          * true if the given square is is the go to jail square and false if
+          * not.
           * </returns>
           */
         bool IsGoToJail()
@@ -152,7 +153,8 @@ namespace Monopoly.Classes
         
         /**
           * <summary>
-          * This function is used to verify if a given square is a community square.
+          * This function is used to verify if a given square is a community
+          * square.
           * </summary>
           * <returns>
           * true if the given square is a community square and false if not.
