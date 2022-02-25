@@ -12,12 +12,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 /*
-  *<summary>
-    *Class Card defining the cards of a monopoly
-    *type telling if the card is CHANCE or COMMUNITY
-    *a different id for each cards of a deck
-    *desc is a string telling what the card does
-  *</summary>
+* <summary>
+* Class Card defining the cards of a monopoly
+* type telling if the card is CHANCE or COMMUNITY
+* a different id for each cards of a deck
+* desc is a string telling what the card does
+* </summary>
 */
 
 namespace Monopoly.Classes
