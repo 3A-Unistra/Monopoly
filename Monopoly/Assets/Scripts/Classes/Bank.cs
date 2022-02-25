@@ -13,8 +13,8 @@ using System.Collections.Generic;
 using UnityEngine;
 /**
 * <summary>
-*   Class defining the role of the bank, has limited houses and hotels
-*   for the player to buy, maximum 32 houses and 12 hotels
+* Class defining the role of the bank, has limited houses and hotels
+* for the player to buy, maximum 32 houses and 12 hotels
 * </summary>
 */
 namespace Monopoly.Classes
