@@ -43,10 +43,10 @@ namespace Monopoly.Classes
         }
          /**
         * <summary>
-        *   take a house from the bank if there are any
-        *  <return>
-        *   true if you took a house frm the bank, false if there are none
-        *  </return>
+        * takes a house from the bank if there are any
+        * <return>
+        * true if you took a house frm the bank, false if there are none
+        * </return>
         * </summary>
         */ 
         bool BuyHouse()
@@ -60,10 +60,10 @@ namespace Monopoly.Classes
         }
         /**
         * <summary>
-        *   take a hotel from the bank if there are any
-        *  <return>
-        *   true if you took a hotel frm the bank, false if there are none
-        *  </return>
+        * take a hotel from the bank if there are any
+        * <return>
+        * true if you took a hotel frm the bank, false if there are none
+        * </return>
         * </summary>
         */
         bool BuyHotel()
@@ -77,7 +77,7 @@ namespace Monopoly.Classes
         }
         /**
         * <summary>
-        *   increment the number of houses by one as the player sells one
+        * increment the number of houses by one as the player sells one
         * </summary>
         */
         void SellHouse()
@@ -86,7 +86,7 @@ namespace Monopoly.Classes
         }
         /**
         * <summary>
-        *   increment the number of hotels by one as the player sells one
+        * increment the number of hotels by one as the player sells one
         * </summary>
         */        
         void SellHotel()
@@ -95,12 +95,12 @@ namespace Monopoly.Classes
         }
         /**
         * <summary>
-        *   player p buys the property on the square s
-        *   the square s owner is set to p
-        *   the player p's money is decreased by the value of square s
+        * player p buys the property on the square s
+        * the square s owner is set to p
+        * the player p's money is decreased by the value of square s
         * <parameters>
-        *   player p the one who buys the square and 
-        *   Ownablesquare s the square which is bought  
+        * player p the one who buys the square and 
+        * Ownablesquare s the square which is bought  
         * </summary>
         */          
         void BuyProperty(Player p, OwnableSquare s)
@@ -113,12 +113,12 @@ namespace Monopoly.Classes
         }
         /**
         * <summary>
-        *   player p sells the property on the square s
-        *   the square s owner is set to null
-        *   the player p's money is increased by half the value of square s
+        * player p sells the property on the square s
+        * the square s owner is set to null
+        * the player p's money is increased by half the value of square s
         * <parameters>
-        *   player p the one who sells the square and 
-        *   Ownablesquare s the square which is sold  
+        * player p the one who sells the square and 
+        * Ownablesquare s the square which is sold  
         * </summary>
         */         
         void SellProperty(Player p, OwnableSquare s)
