@@ -68,6 +68,18 @@ namespace Monopoly.Classes
             }
             return tempList;
         }
+    /*
+    *<summary>
+        *return the set of properties of color c
+        *<parameter>
+           *Color c the color of the set 
+        *</parameter>
+        *<return>
+            *propertySet the set of properties of color c
+        *</return>
+    *</summary>
+    */
+
         public static List<PropertySquare> GetPropertySet(Color c)
         {
             List<PropertySquare> propertySet = new List<PropertySquare>();
