@@ -108,7 +108,7 @@ namespace Monopoly.Classes
             p.Money += BoardMoney;
             BoardMoney = 0;
         }
-        /*
+        /**
         * <summary>
         * method to add i amount of money to player p money
         * <parameter>
