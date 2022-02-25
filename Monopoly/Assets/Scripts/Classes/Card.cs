@@ -18,7 +18,7 @@ using UnityEngine;
     *a different id for each cards of a deck
     *desc is a string telling what the card does
   *</summary>
- */
+*/
 
 namespace Monopoly.Classes
 {
