@@ -15,7 +15,6 @@ using UnityEngine;
 * <summary>
 *   Class defining the role of the bank, has limited houses and hotels
 *   for the player to buy, maximum 32 houses and 12 hotels
-*   Stores money for the player to get at the free parking square
 * </summary>
 */
 namespace Monopoly.Classes
