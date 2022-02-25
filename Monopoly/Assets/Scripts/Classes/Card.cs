@@ -11,7 +11,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/*
+/**
 * <summary>
 * Class Card defining the cards of a monopoly
 * type telling if the card is CHANCE or COMMUNITY
