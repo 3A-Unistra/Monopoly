@@ -12,10 +12,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
- *<summary>
- *Class Character defining the caracteristics of a player on the board
- *</summary>
+/**
+* <summary>
+* Class Character defining the caracteristics of a player on the board
+* </summary>
 */
 namespace Monopoly.Classes
 {
