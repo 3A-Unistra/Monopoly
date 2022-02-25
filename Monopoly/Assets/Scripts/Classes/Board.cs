@@ -70,7 +70,7 @@ namespace Monopoly.Classes
         }
     /*
     *<summary>
-        *return the set of properties of color c
+        *returns the set of properties of color c
         *<parameter>
            *Color c the color of the set 
         *</parameter>
@@ -94,11 +94,29 @@ namespace Monopoly.Classes
             }
             return propertySet;
         }
+    /*
+    *<summary>
+        *player p gets the money from free parking
+        *resets free parking money
+        *<parameter>
+           *player p the player who landed on free parking
+        *</parameter>
+    *</summary>
+    */
         public void FreeParking(Player p)
         {
             p.Money += BoardMoney;
             BoardMoney = 0;
         }
+    /*
+    *<summary>
+        *method to add i amount of money to player p money
+        *<parameter>
+           *player p the player who recieves money,
+           * int i the amount of money
+        *</parameter>
+    *</summary>
+    */        
         public void AddMoney(Player p, int i)
         {
             p.Money += i;
