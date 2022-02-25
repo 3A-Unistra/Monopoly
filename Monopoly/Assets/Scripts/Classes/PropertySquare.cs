@@ -78,7 +78,7 @@ namespace Monopoly.Classes
         
         /**
           * <summary>
-          * Constructor of the class <c>OwnableSquare</c>.
+          * Constructor of the class <c>PropertySquare</c>.
           * </summary>
           * <param name="type">
           * The new type of the property.
