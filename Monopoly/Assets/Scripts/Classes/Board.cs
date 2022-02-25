@@ -39,6 +39,17 @@ namespace Monopoly.Classes
             get;
             set;
         }
+    /*
+    *<summary>
+        *get the square at position pos from the list of elements of the board
+        *<parameter>
+           *int pos the position of the square we want to get
+        *</parameter>
+        *<return>
+            *the square at position pos
+        *</return>
+    *</summary>
+    */
         public Square GetSquare(int pos)
         {
             return Elements[pos];
