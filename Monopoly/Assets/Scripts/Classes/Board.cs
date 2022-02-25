@@ -17,7 +17,7 @@ using UnityEngine;
   *<summary>
     *Class Board listing the squares of the board
     *depending on their type and their set
-
+    *Also store money for the player to get at free parking
   *</summary>
 */
 namespace Monopoly.Classes
