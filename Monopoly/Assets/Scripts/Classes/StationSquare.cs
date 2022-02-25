@@ -24,7 +24,7 @@ namespace Monopoly.Classes
     {
         /**
           * <summary>
-          * Constructor of the class <c>OwnableSquare</c>.
+          * Constructor of the class <c>StationSquare</c>.
           * </summary>
           * <param name="type">
           * The new type of the station (should be Station).
@@ -60,9 +60,9 @@ namespace Monopoly.Classes
           * Throws an exception if the given price is different than 200.
           * </exception>
           */
-        public StationSquare(SquareType type, int id, string name, 
+        public StationSquare(SquareType type, int id, string name,
             Material image, int price, int rent)
             : base(type, id, name, image, price, rent)
-        {}
+        { }
     }
 }
