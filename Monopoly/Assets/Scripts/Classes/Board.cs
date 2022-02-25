@@ -1,4 +1,4 @@
-/**
+/*
  * Fichier.cs
  * Fichier définissant la classe plateau et ses 
  * interaction avec les différentes cases
