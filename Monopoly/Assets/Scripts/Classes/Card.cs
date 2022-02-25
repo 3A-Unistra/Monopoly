@@ -14,7 +14,7 @@ using UnityEngine;
 /*
   *<summary>
     *Class Card defining the cards of a monopoly
-    *type delling if the card is CHANCE or COMMUNITY
+    *type telling if the card is CHANCE or COMMUNITY
     *a different id for each cards of a deck
     *desc is a string telling what the card does
   *</summary>
