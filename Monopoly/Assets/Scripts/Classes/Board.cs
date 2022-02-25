@@ -13,6 +13,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+  *<summary>
+    *Class Board listing the squares of the board
+    *depending on their type and their set
+
+  *</summary>
+*/
 namespace Monopoly.Classes
 {
     public class Board
