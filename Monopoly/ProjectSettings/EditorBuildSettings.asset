@@ -4,21 +4,9 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  m_Scenes: []
-=======
->>>>>>> 3e4e842ffee9078e26b4181c13787d9e2a709913
   m_Scenes:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-<<<<<<< HEAD
-=======
   m_Scenes: []
->>>>>>> First Unity project upload test.
-=======
->>>>>>> d494e76251554b12d9ee6be698ea44d82a71a272
->>>>>>> 3e4e842ffee9078e26b4181c13787d9e2a709913
   m_configObjects: {}
