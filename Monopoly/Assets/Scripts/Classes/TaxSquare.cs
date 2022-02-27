@@ -40,10 +40,10 @@ namespace Monopoly.Classes
          * Returns an instance of the TaxSquare object with the given type, id, name and
          * image.
          * </returns>
-         * * <exception cref="Monopoly.Exceptions.WrongIdException">
+         * * <exception cref="WrongIdException">
          * Throws an exception if the given id is different from 4 and 38.
          * </exception>
-         * <exception cref="Monopoly.Exceptions.WrongTypeException">
+         * <exception cref="WrongTypeException">
          * Throws an exception if the given type is different than a
          * SquareType.Tax.
          * </exception>
@@ -52,12 +52,6 @@ namespace Monopoly.Classes
             Material image, int taxPrice) : base(type,id,name,image)
         {
             TaxPrice = taxPrice;
-            if (id!=4 && id!=38)
-                throw new Monopoly.Exceptions.WrongIdException
-                ("The id should be a valid tax square number (4 or 38).");
-            if (type != SquareType.Tax)
-                throw new Monopoly.Exceptions.WrongTypeException
-                ("The type should be SquareType.Tax.");
         }
     }
 }

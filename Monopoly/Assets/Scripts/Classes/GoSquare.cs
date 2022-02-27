@@ -35,22 +35,16 @@ namespace Monopoly.Classes
          * Returns an instance of the Go Square object with the given type, id,
          * name and image.
          * </returns>
-         * <exception cref="Monopoly.Exceptions.WrongIdException">
+         * <exception cref="WrongIdException">
          * Throws an exception if the given id is not 0.
          * </exception>
-         * <exception cref="Monopoly.Exceptions.WrongTypeException">
+         * <exception cref="WrongTypeException">
          * Throws an exception if the given type is different from SquareType.Go.
          * </exception>
          */
         public GoSquare(SquareType type, int id, string name, Material image)
             : base(type,id,name,image)
         {
-            if (id!=0)
-                throw new Monopoly.Exceptions.WrongIdException
-                    ("The id should be 0.");
-            if (type != SquareType.Go)
-                throw new Monopoly.Exceptions.WrongTypeException
-                    ("The type should be SquareType.Go.");
         }
     }
 }

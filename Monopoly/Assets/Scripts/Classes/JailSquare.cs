@@ -35,22 +35,16 @@ namespace Monopoly.Classes
          * Returns an instance of the JailSquare object with the given type, id,
          * name and image.
          * </returns>
-         * <exception cref="Monopoly.Exceptions.WrongIdException">
+         * <exception cref="WrongIdException">
          * Throws an exception if the given id is not 10.
          * </exception>
-         * <exception cref="Monopoly.Exceptions.WrongTypeException">
+         * <exception cref="WrongTypeException">
          * Throws an exception if the given type is different from SquareType.Prison.
          * </exception>
          */
         public JailSquare(SquareType type, int id, string name, Material image)
             : base(type,id,name,image)
         {
-            if (id!=10)
-                throw new Monopoly.Exceptions.WrongIdException
-                    ("The id should be 10.");
-            if (type != SquareType.Prison)
-                throw new Monopoly.Exceptions.WrongTypeException
-                    ("The type should be SquareType.Prison.");
         }
     }
 }
