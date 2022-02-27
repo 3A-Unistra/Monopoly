@@ -136,6 +136,7 @@ test-editmode:
   artifacts:
     paths:
       - $UNITY_DIR/Builds/
+    expire_in: 1 week
   # https://gitlab.com/gableroux/unity3d-gitlab-ci-example/-/issues/83
   # you may need to remove or replace these to fit your need if you are using your own runners
   tags:
