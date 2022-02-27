@@ -55,6 +55,12 @@ namespace Monopoly.Camera
          * </summary>
          */
         public GameObject pivotPoint;
+        /**
+         * <summary>
+         *     The current viewing mode of the camera.
+         * </summary>
+         */
+        [HideInInspector]
         public CameraLookMode LookMode
         {
             get;
