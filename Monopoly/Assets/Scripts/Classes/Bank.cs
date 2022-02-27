@@ -11,21 +11,34 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/**
-* <summary>
-* Class defining the role of the bank, has limited houses and hotels
-* for the player to buy, maximum 32 houses and 12 hotels
-* </summary>
-*/
+
 namespace Monopoly.Classes
 {
+    /**
+    * <summary>
+    * Class defining the role of the bank, has limited houses and hotels
+    * for the player to buy, maximum 32 houses and 12 hotels
+    * </summary>
+    */
     public class Bank 
     {
+        /**
+        * <summary>
+        * Nbhouse is the number of houses currently
+        * in the bank
+        * </summary>
+        */    
         public int NbHouse
         {
             get;
             set;
         }
+        /**
+        * <summary>
+        * Nbhotel is the number of hotels currently
+        * in the bank
+        * </summary>
+        */           
         public int NbHotel
         {
             get;
@@ -33,7 +46,8 @@ namespace Monopoly.Classes
         }
         /**
         * <summary>
-        *   sets the number of houses and hotel at the beginning of the game
+        * Constructor
+        * sets the number of houses and hotel at the beginning of the game
         * </summary>
         */        
         public Bank()
@@ -44,10 +58,10 @@ namespace Monopoly.Classes
          /**
         * <summary>
         * takes a house from the bank if there are any
+        * </summary>        
         * <return>
         * true if you took a house frm the bank, false if there are none
         * </return>
-        * </summary>
         */ 
         bool BuyHouse()
         {
@@ -61,10 +75,10 @@ namespace Monopoly.Classes
         /**
         * <summary>
         * take a hotel from the bank if there are any
+        * </summary>        
         * <return>
         * true if you took a hotel frm the bank, false if there are none
         * </return>
-        * </summary>
         */
         bool BuyHotel()
         {
@@ -98,10 +112,11 @@ namespace Monopoly.Classes
         * player p buys the property on the square s
         * the square s owner is set to p
         * the player p's money is decreased by the value of square s
+        * </summary>
         * <parameters>
         * player p the one who buys the square and 
-        * Ownablesquare s the square which is bought  
-        * </summary>
+        * Ownablesquare s the square which is bought
+        * </parameter>          
         */          
         void BuyProperty(Player p, OwnableSquare s)
         {
@@ -115,16 +130,20 @@ namespace Monopoly.Classes
         * <summary>
         * player p sells the property on the square s
         * the square s owner is set to null
-        * the player p's money is increased by half the value of square s
+        * the player p's money is increased by half the value of square s 
+        * </summary>
         * <parameters>
         * player p the one who sells the square and 
-        * Ownablesquare s the square which is sold  
-        * </summary>
+        * Ownablesquare s the square which is sold 
+        * </parameter>
         */         
         void SellProperty(Player p, OwnableSquare s)
         {
-            s.Owner = null;
-            p.Money += s.Price/2;
+            if(s.Owner == p)
+            {
+                s.Owner = null;
+                p.Money += s.Price/2;
+            }
         }
     }
 }
