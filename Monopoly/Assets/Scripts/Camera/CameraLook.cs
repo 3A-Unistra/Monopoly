@@ -55,7 +55,11 @@ namespace Monopoly.Camera
          * </summary>
          */
         public GameObject pivotPoint;
-        private CameraLookMode lookMode = CameraLookMode.ISOMETRIC;
+        public CameraLookMode LookMode
+        {
+            get;
+            private set;
+        } = CameraLookMode.ISOMETRIC;
 
         /**
          * <summary>
@@ -137,14 +141,14 @@ namespace Monopoly.Camera
                 Animating = true;
                 modeToggle = true;
                 pivotFrom = pivotPoint.transform.localRotation;
-                if (lookMode == CameraLookMode.TOP_DOWN)
+                if (LookMode == CameraLookMode.TOP_DOWN)
                 {
-                    lookMode = CameraLookMode.ISOMETRIC;
+                    LookMode = CameraLookMode.ISOMETRIC;
                     pivotTo = Quaternion.Euler(30, 45+(90*rotationSide), 0);
                 }
                 else
                 {
-                    lookMode = CameraLookMode.TOP_DOWN;
+                    LookMode = CameraLookMode.TOP_DOWN;
                     pivotTo = Quaternion.Euler(90, 90+(90*rotationSide), 0);
                 }
                 animateTime = 0.0f;
