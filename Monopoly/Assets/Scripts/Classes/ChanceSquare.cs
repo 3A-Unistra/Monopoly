@@ -35,11 +35,11 @@ namespace Monopoly.Classes
          * Returns an instance of the ChanceSquare object with the given 
          * type, id, name and image.
          * </returns>
-         * <exception cref="WrongIdException">
+         * <exception cref="Monopoly.Exceptions.WrongIdException">
          * Throws an exception if the given id does not belong to this list
          * {7,12,36}.
          * </exception>
-         * <exception cref="WrongTypeException">
+         * <exception cref="Monopoly.Exceptions.WrongTypeException">
          * Throws an exception if the given type is different from
          * SquareType.Chance.
          * </exception>
@@ -47,6 +47,12 @@ namespace Monopoly.Classes
         public ChanceSquare(SquareType type, int id, string name, 
             Material image) : base(type,id,name,image)
         {
+            if (id!=7 && id != 12 && id != 36)
+                throw new Monopoly.Exceptions.WrongIdException
+                    ("The id should be 7, 12 or 36.");
+            if (type != SquareType.Chance)
+                throw new Monopoly.Exceptions.WrongTypeException
+                    ("The type should be SquareType.Chance.");
         }
     }
 }
