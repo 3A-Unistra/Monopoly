@@ -57,6 +57,22 @@ namespace Monopoly.Camera
          */
         public Vector2 boundsMax;
 
+        /**
+         * <summary>
+         *     The number of pixels on the X or Y axis from the edge of the
+         *     screen that the mouse must be for the camera to begin moving in
+         *     that direction. If these numbers are not more than zero, it is
+         *     undefined behaviour.
+         * </summary>
+         */
+        public Vector2 boundsMouse = new Vector2(48, 48);
+        /**
+         * <summary>
+         *     Whether or not to allow the mouse to move the camera.
+         * </summary>
+         */
+        public bool moveCameraByMouse = true;
+
         private UnityEngine.Camera cam;
         private CameraLook look;
 
@@ -143,13 +159,45 @@ namespace Monopoly.Camera
             ClampPosition(pivotPoint.transform);
         }
 
+        /**
+         * <summary>
+         *     Attempts to move the camera based on the position of the mouse
+         *     on the screen.
+         * </summary>
+         * <returns>
+         *     <c>true</c> if the mouse was on an edge and moved the camera.
+         * </returns>
+         */
+        private bool MoveCameraMouse()
+        {
+            /* TODO: Disable mouse movement when mouse is over UI. */
+            if (!moveCameraByMouse)
+                return false;
+            Vector3 mp = Input.mousePosition;
+            int sx = Screen.width, sy = Screen.height;
+            int dx = 0, dy = 0;
+            if (mp.x <= boundsMouse.x)
+                dx = -1;
+            else if (mp.x >= sx - boundsMouse.x)
+                dx = 1;
+            if (mp.y <= boundsMouse.y)
+                dy = -1;
+            else if (mp.y >= sy - boundsMouse.y)
+                dy = 1;
+            MoveCamera(dx, dy);
+            return dx != 0 || dy != 0;
+        }
+
         void Update()
         {
             if (!look.Animating)
             {
                 // camera movement
-                MoveCamera(Input.GetAxis("Horizontal"),
-                           Input.GetAxis("Vertical"));
+                if (!MoveCameraMouse())
+                {
+                    MoveCamera(Input.GetAxis("Horizontal"),
+                               Input.GetAxis("Vertical"));
+                }
             }
         }
 
