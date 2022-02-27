@@ -113,6 +113,19 @@ namespace Monopoly.Camera
             float d = moveSpeed * Time.deltaTime;
             if (look.LookMode == CameraLook.CameraLookMode.ISOMETRIC)
             {
+                /*
+                 * When we are in the isometric view, the forward vector
+                 * of the camera is not parallel to the board, which causes
+                 * problems, because the camera will want to move away from
+                 * or into the plane of the board, which will cause clipping
+                 * and visual artifacts.
+                 * 
+                 * To counteract this, we take the forward vector, reduce the
+                 * pitch rotation (Y) to zero, normalize it again to get the
+                 * directional vector of the camera now parallel to the board,
+                 * and apply the translation to this vector rather than the
+                 * normal forwards or upwards vectors.
+                 */
                 Vector3 flatForward =
                     cam.transform.forward;
                 flatForward.y = 0;
