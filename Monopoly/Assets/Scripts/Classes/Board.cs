@@ -13,15 +13,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/**
-* <summary>
-* Class Board listing the squares of the board
-* depending on their type and their set
-* Also store money for the player to get at free parking
-* </summary>
-*/
 namespace Monopoly.Classes
 {
+    /**
+    * <summary>
+    * Class Board listing the squares of the board
+    * depending on their type and their set
+    * Also store money for the player to get at free parking
+    * </summary>
+    */
     public class Board
     {
         public static List<Square> Elements
@@ -42,13 +42,13 @@ namespace Monopoly.Classes
         /**
         * <summary>
         * get the square at position pos from the list of elements of the board
+        * </summary>
         * <parameter>
         * int pos the position of the square we want to get
-        * </parameter>
+        * </parameter>         
         * <return>
         * the square at position pos
-        * </return>
-        * </summary>
+        * </return>               
         */
         public Square GetSquare(int pos)
         {
@@ -70,14 +70,14 @@ namespace Monopoly.Classes
         }
         /**
         * <summary>
-        * returns the set of properties of color c
+        * returns the set of properties of color c>
+        * </summary>
         * <parameter>
         * Color c the color of the set 
-        * </parameter>
+        * </parameter        
         * <return>
         * propertySet the set of properties of color c
-        * </return>
-        * </summary>
+        * </return>        
         */
 
         public static List<PropertySquare> GetPropertySet(Color c)
@@ -98,10 +98,10 @@ namespace Monopoly.Classes
         * <summary>
         * player p gets the money from free parking
         * resets free parking money
+        * </summary>
         * <parameter>
         * player p the player who landed on free parking
-        * </parameter>
-        * </summary>
+        * </parameter>        
         */
         public void FreeParking(Player p)
         {
@@ -111,11 +111,11 @@ namespace Monopoly.Classes
         /**
         * <summary>
         * method to add i amount of money to player p money
+        * </summary>
         * <parameter>
         * player p the player who recieves money,
         * int i the amount of money
-        * </parameter>
-        * </summary>
+        * </parameter>        
         */        
         public void AddMoney(Player p, int i)
         {
