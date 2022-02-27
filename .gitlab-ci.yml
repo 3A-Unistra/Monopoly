@@ -243,6 +243,4 @@ workflow:
   rules:
     - if: $CI_MERGE_REQUEST_ID
       when: always
-    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"
-      when: always
     - when: never
