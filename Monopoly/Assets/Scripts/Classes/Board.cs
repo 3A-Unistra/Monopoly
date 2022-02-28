@@ -74,7 +74,7 @@ namespace Monopoly.Classes
         * </summary>
         * <parameter>
         * Color c the color of the set 
-        * </parameter        
+        * </parameter>  
         * <return>
         * propertySet the set of properties of color c
         * </return>        

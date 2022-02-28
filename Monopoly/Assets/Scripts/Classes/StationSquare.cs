@@ -63,6 +63,15 @@ namespace Monopoly.Classes
         public StationSquare(SquareType type, int id, string name,
             Material image, int price, int rent)
             : base(type, id, name, image, price, rent)
-        { }
+        {
+            int[] ids = {5,15,25,35};
+            List<int> validIdNumbers = new List<int>(ids);
+            if (!validIdNumbers.Contains(id))
+                throw new Monopoly.Exceptions.WrongIdException
+                    ("The id should be a valid station number.");
+            if (type != SquareType.Station)
+                throw new Monopoly.Exceptions.WrongTypeException
+                    ("The type should be SquareType.Station.");
+        }
     }
 }
