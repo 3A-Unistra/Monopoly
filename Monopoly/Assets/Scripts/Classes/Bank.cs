@@ -62,8 +62,8 @@ namespace Monopoly.Classes
         * <return>
         * true if you took a house frm the bank, false if there are none
         * </return>
-        */ 
-        bool BuyHouse()
+        */
+         public bool BuyHouse()
         {
             if( NbHouse > 0)
             {
