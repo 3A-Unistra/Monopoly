@@ -31,6 +31,8 @@ namespace Monopoly.Classes
         public static List<Square> Elements { get; set; }
         public int PrisonSquare { get; set; }
         public int BoardMoney { get; set; }
+        public static List<Card> ChanceDeck {get; set;}
+        public static List<Card> CommunityDeck {get; set;}        
 
         /**
         * <summary>
