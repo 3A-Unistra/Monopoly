@@ -202,10 +202,12 @@ namespace Monopoly.Classes
         * if he do not have as much money than the anoumt specified
         * he goes bankrupt
         * </summary>
-        * <parameter>
-        * Player to the player which the money is given
+        * <param name="to">
+        * Player to the player which the money is give
+        * </param>       
+        * <param name="amount">        
         * int amount the amount of given money 
-        * </parameter>        
+        * </param>        
         */  
         public void TransferMoney(Player to, int amount)
         {
@@ -222,10 +224,12 @@ namespace Monopoly.Classes
         * the player gives a property p to another player 
         * for an exchange
         * </summary>
-        * <parameter>
+        * <param name="to">
         * Player to is the player which the property is given
+        * </param>
+        * <param name="p">                
         * Ownable square p is the given property 
-        * </parameter>               
+        * </param>               
         */          
         void TransferProperty(Player to, OwnableSquare p)
         {
@@ -237,10 +241,12 @@ namespace Monopoly.Classes
         * for an exchange, if the player doesn't have the card
         * it throws an exeption error
         * </summary>
-        * <parameter>
+        * <param name="to">
         * Player to is the player which the card is given
+        * </param>
+        * <param name="card">        
         * Card card is the given card 
-        * </parameter>               
+        * </param>               
         */ 
         void TransferCard(Player to, Card card)
         {
