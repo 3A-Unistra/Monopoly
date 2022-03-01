@@ -163,40 +163,8 @@ namespace Monopoly.Classes
                     ("The type should be SquareType.Field.");
         }
         
-        /**
-         * <summary>
-         * This function is responsible about the house buying action in the
-         * game.
-         * </summary>
-         * <param name="p">
-         * The player who wants to buy the house.
-         * </param>
-         */
-        public void BuyHouse(Player p)
-        {
-            //TO DO
-            // CHECKING IF THE PLAYER CAN BUILD A HOUSE
-            p.Money -= HouseCost;
-            NbHouse++;
-        }
-
-        /**
-         * <summary>
-         * This function is responsible about the house selling action in the
-         * game.
-         * </summary>
-         * <param name="p">
-         * The player who wants to buy the house.
-         * </param>
-         */
-        public void SellHouse(Player p)
-        {
-            // TO DO
-            // CHECKING IF THE PLAYER CAN SELL A HOUSE
-            p.Money += HouseCost;
-            NbHouse--;
-        }   
         
+
         /**
          * <summary>
          * This function is used to deduct the given rent from the player's
