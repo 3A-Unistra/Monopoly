@@ -113,10 +113,12 @@ namespace Monopoly.Classes
         * the square s owner is set to p
         * the player p's money is decreased by the value of square s
         * </summary>
-        * <parameters>
-        * player p the one who buys the square and 
+        * <param name="p">
+        * player p the one who buys the square  
+        * </param>        
+        * <param name="s">
         * Ownablesquare s the square which is bought
-        * </parameter>          
+        * </param>          
         */          
         void BuyProperty(Player p, OwnableSquare s)
         {
@@ -132,10 +134,12 @@ namespace Monopoly.Classes
         * the square s owner is set to null
         * the player p's money is increased by half the value of square s 
         * </summary>
-        * <parameters>
-        * player p the one who sells the square and 
+        * <param name="p">
+        * player p the one who sells the square
+        * </param> 
+        * <param name="s">        
         * Ownablesquare s the square which is sold 
-        * </parameter>
+        * </param>
         */         
         void SellProperty(Player p, OwnableSquare s)
         {

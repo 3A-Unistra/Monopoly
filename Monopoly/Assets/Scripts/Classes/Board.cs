@@ -97,9 +97,9 @@ namespace Monopoly.Classes
         * player p gets the money from free parking
         * resets free parking money
         * </summary>
-        * <parameter>
+        * <param name="p">
         * player p the player who landed on free parking
-        * </parameter>        
+        * </param>
         */
         public void FreeParking(Player p)
         {
@@ -111,10 +111,12 @@ namespace Monopoly.Classes
         * <summary>
         * method to add i amount of money to player p money
         * </summary>
-        * <parameter>
-        * player p the player who recieves money,
+        * <param name="p">
+        * player p the player who recieves money
+        * </param>         
+        * <param name="i">        
         * int i the amount of money
-        * </parameter>        
+        * </param>        
         */
         public void AddMoney(Player p, int i)
         {
