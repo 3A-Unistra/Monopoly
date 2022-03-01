@@ -92,12 +92,25 @@ namespace Monopoly.Classes
             get;
             set;
         }
+
+        /**
+         * <summary>
+         * The integer Doubles is used to keep count of the number of
+         * consecutive doubles that the player got.
+         * </summary>
+         */
+        public int Doubles
+        {
+            get;
+            set;
+        }
+        
         /**
         * <summary>
         * getter setter
         * the boolean InJail states if the player serves en sentence in jail
         * </summary>
-        */         
+        */
         public bool InJail
         {
             get;
