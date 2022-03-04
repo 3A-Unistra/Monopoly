@@ -74,7 +74,7 @@ namespace Monopoly.Classes
          * greater than 39.
          * </exception>
          */
-        protected Square(SquareType type, int id, string name, Material image)
+        public Square(SquareType type, int id, string name, Material image)
         {
             Type = type;
             Name = name;

@@ -41,9 +41,9 @@ namespace Monopoly.Classes
         * <param name="pos">
         * int pos the position of the square we want to get
         * </param>         
-        * <return>
+        * <returns>
         * the square at position pos
-        * </return>               
+        * </returns>               
         */
         public Square GetSquare(int pos)
         {
@@ -72,10 +72,10 @@ namespace Monopoly.Classes
          * </summary>
          * <param name="c">
          * The color of the set.
-	 * </param>
-         * <return>
+	     * </param>
+         * <returns>
          * propertySet the set of properties of color c
-         * </return>        
+         * </returns>        
          */
 
         public static List<PropertySquare> GetPropertySet(Color c)
