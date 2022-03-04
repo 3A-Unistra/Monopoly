@@ -243,6 +243,34 @@ namespace Monopoly.Classes
                 ps.NbHouse--; // reduce the number of houses by 1
             }
         }
+        /**
+        * <summary>
+        * gets a random card from the list of community cards
+        * </summary>
+        * <returns>
+        * random community Card
+        * </returns>
+        */
+        public Card GetRandomCommunityCard()
+        {
+            System.Random rnd = new System.Random();
+            int randcard = rnd.Next(0, CommunityDeck.Count-1);
+            return CommunityDeck[randcard];
+        }
+        /**
+        * <summary>
+        * gets a random card from the list of chance cards
+        * </summary>
+        * <returns>
+        * random chance Card
+        * </returns>
+        */
+        public Card GetRandomChanceCard()
+        {
+            System.Random rnd = new System.Random();
+            int randcard = rnd.Next(0, ChanceDeck.Count-1);
+            return ChanceDeck[randcard];
+        }
     }
 }
 
