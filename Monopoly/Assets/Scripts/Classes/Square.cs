@@ -148,7 +148,7 @@ namespace Monopoly.Classes
           * not.
           * </returns>
           */
-        bool IsGoToJail()
+        public bool IsGoToJail()
         {
             return Type == SquareType.GoToJail;
         }

@@ -73,6 +73,32 @@ namespace Monopoly.TestTools
             }
         }
 
+        private void DrawChanceCard(Player p)
+        {
+            //GameBoard.GetRandomChanceCard();
+        }
+        
+        private void DrawCommunityCard(Player p)
+        {
+            //GameBoard.GetRandomCommunityCard();
+        }
+        
+        private void PayTax(Player p, Square s)
+        {
+            TaxSquare ts = (TaxSquare) s;
+            if (p.Money < ts.TaxPrice)
+                p.Bankrupt = true;
+            else
+                p.Money -= ts.TaxPrice;
+            GameBoard.BoardMoney += ts.TaxPrice;
+        }
+
+        private void PickUpBoardMoney(Player p)
+        {
+            p.Money += GameBoard.BoardMoney;
+            GameBoard.BoardMoney = 0;
+        }
+        
         private void BuyProperty(Player p, Square s)
         {
             OwnableSquare os = (OwnableSquare) s;
@@ -97,6 +123,20 @@ namespace Monopoly.TestTools
         {
             endGame = true;
         }
+        
+        private void ObligatoryActions(int position,Player p, Square s)
+        {
+            if(Board.Elements[position].IsChance())
+                DrawChanceCard(p);
+            else if(Board.Elements[position].IsCommunityChest())
+                DrawCommunityCard(p);
+            else if(Board.Elements[position].IsTax())
+                PayTax(p,s);
+            else if(Board.Elements[position].IsFreeParking())
+                PickUpBoardMoney(p);
+            else if (Board.Elements[position].IsGoToJail())
+                p.EnterPrison();
+        }   
         
         private void SendInput()
         {
