@@ -119,8 +119,8 @@ namespace Monopoly.Classes
         * <param name="s">
         * Ownablesquare s the square which is bought
         * </param>          
-        */          
-        void BuyProperty(Player p, OwnableSquare s)
+        */
+        public void BuyProperty(Player p, OwnableSquare s)
         {
             if(p.Money > s.Price)
             {
@@ -141,7 +141,7 @@ namespace Monopoly.Classes
         * Ownablesquare s the square which is sold 
         * </param>
         */         
-        void SellProperty(Player p, OwnableSquare s)
+        public void SellProperty(Player p, OwnableSquare s)
         {
             if(s.Owner == p)
             {
