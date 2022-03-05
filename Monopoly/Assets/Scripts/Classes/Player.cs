@@ -163,8 +163,19 @@ namespace Monopoly.Classes
         {
             get;
             set;
-        } 
+        }
 
+        /**
+         * <summary>
+         * Counter of the number of turns passed in jail.
+         * </summary>
+         */
+        public int JailTurns
+        {
+            get;
+            set;
+        }
+        
         /**
         * <summary>
         * Player constructor

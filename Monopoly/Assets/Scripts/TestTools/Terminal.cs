@@ -30,14 +30,46 @@ namespace Monopoly.TestTools
         private bool endGame = false;
         void Start()
         {
+            String msg;
             Debug.Log("The game started. Enter your next move");
             while (!endGame)
             {
                 for ( i = 0; i < sortedPlayersList.Count() ; i++)
                 {
                     Player p = sortedPlayersList[i];
-                        Debug.Log("It\'s " + p.Name + "\'s turn.");
+                    Debug.Log("It\'s " + p.Name + "\'s turn.");
+                    if (p.InJail)
+                    {
+                        if (p.JailTurns < 3)
+                            msg = "Possible actions : Roll Dice or Pay 50";
+                        else
+                            msg = "Possible actions : Pay 50";
+                        if (p.ChanceJailCard)
+                            msg += " or Use chance jail card";
+                        if (p.CommunityJailCard)
+                            msg += " or Use community jail card";
+                    }
+                    else
+                    {
+                        msg = "Possible actions : Roll dice";
+                    }
+                    Debug.Log(msg);
                     sendButton.onClick.AddListener(SendInput);
+                    Square currentSquare = Board.Elements[p.Position];
+                    ObligatoryActions(p,currentSquare);
+                    msg = "Possible actions : End turn";
+                    if (currentSquare.IsProperty())
+                    {
+                        OwnableSquare os = (OwnableSquare) currentSquare;
+                        if(os.Owner == null)
+                            msg+= " or Buy property";
+                        else if(os.Owner != p)
+                            os.PayRent(p);
+                        else if()
+                    }
+                    else if(currentSquare.IsCommunityChest())
+                        DrawCommunityCard(p);
+                        
                 }
             }
         }
@@ -124,8 +156,9 @@ namespace Monopoly.TestTools
             endGame = true;
         }
         
-        private void ObligatoryActions(int position,Player p, Square s)
+        private void ObligatoryActions(Player p, Square s)
         {
+            int position = p.Position;
             if(Board.Elements[position].IsChance())
                 DrawChanceCard(p);
             else if(Board.Elements[position].IsCommunityChest())
