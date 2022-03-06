@@ -14,14 +14,20 @@ using UnityEngine;
 namespace Monopoly.Classes
 {
     /**
-     *<summary>
+     * <summary>
      * class for initializing the game
 	 * Adds all square elements one by one as they are all different
      * </summary>
      */
     public class TerminalInit
     {
-
+		/**
+		* <summary>
+		* Method to create several instances of players
+		* </summary>
+		* <param name="nbPlayers">
+		* </param>
+		*/
 		public void players(int nbPlayers)
 		{
 			for(int i = 0; i < nbPlayers; i++)
