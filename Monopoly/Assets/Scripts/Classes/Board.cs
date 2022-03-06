@@ -31,6 +31,9 @@ namespace Monopoly.Classes
         public static List<Square> Elements { get; set; }
         public int PrisonSquare { get; set; }
         public int BoardMoney { get; set; }
+        public static List<Card> ChanceDeck {get; set;}
+        public static List<Card> CommunityDeck {get; set;}  
+
 
         /**
         * <summary>
@@ -122,7 +125,122 @@ namespace Monopoly.Classes
         {
             p.Money += i;
         }
+        
+        
+        /**
+         * <summary>
+         * This function verifies if a player owns a set of properties
+         * with the same color.
+         * </summary>
+         * <param name="p">
+         * The player that owns the property.
+         * </param>
+         * <param name="ps">
+         * The property at question.
+         * </param>
+         * <returns>
+         * true if the player owns the set and false if not.
+         * </returns>
+         */
+        public bool OwnSameColorSet(Player p, PropertySquare ps)
+        {
+            Color c = ps.Col; //getting the property's color to verify if
+            //the player own a full set of this color
+                              
+            //List of the properties that belong to this set of color
+            List<PropertySquare> sameColorFields = GetPropertySet(c);
+            foreach (var field in sameColorFields)
+            {
+                if (field.Owner != p)
+                    return false;
+            }
+            return true;
+        }
 
+        /**
+         * <summary>
+         * This function verifies if a player can buy a house on the property.
+         * </summary>
+         * <param name="p">
+         * The player that owns the property.
+         * </param>
+         * <param name="ps">
+         * The property at question.
+         * </param>
+         * <returns>
+         * true if the player can buy a house and false if not.
+         * </returns>
+         */
+        public bool CanBuyHouse(Player p, PropertySquare ps)
+        {
+            if (!OwnSameColorSet(p, ps))
+                return false;
+            
+            Color c = ps.Col; //getting the property's color to verify if
+            //the player own a full set of this color
+                              
+            //List of the properties that belong to this set of color
+            List<PropertySquare> sameColorFields = GetPropertySet(c);
+            int minimumHouse = 100; // A random big number 
+            //Searching the minimum number of houses owned on a property
+            //of this set and verifying if the player owns every one of
+            //these properties
+            foreach (var field in sameColorFields)
+            {
+                if (field != ps) // Searching for the other
+                    // properties of this set
+                    minimumHouse = Math.Min(minimumHouse, field.NbHouse);
+            }
+
+            if (ps.NbHouse - minimumHouse > 0 || p.Money < ps.HouseCost)
+                return false;
+
+            return true;
+        }
+        
+        /**
+         * <summary>
+         * This function verifies if a player can sell a house on the property.
+         * </summary>
+         * <param name="p">
+         * The player that owns the property.
+         * </param>
+         * <param name="ps">
+         * The property at question.
+         * </param>
+         * <returns>
+         * true if the player can sell a house and false if not.
+         * </returns>
+         */
+        public bool CanSellHouse(Player p, PropertySquare ps)
+        {
+            if (!OwnSameColorSet(p, ps))
+                return false;
+            if (ps.NbHouse < 1 || ps.NbHouse == 5 && BoardBank.NbHouse < 4)
+                return false;
+            
+            Color c = ps.Col;//getting the property's color to verify if
+            //the player own a full set of this color
+                            
+            //List of the properties that belong to this set of color
+            List<PropertySquare> sameColorFields = GetPropertySet(c);
+                                  
+            int maximumHouses = -1; // random negative number
+            
+            //searching for the maximum number of houses owned
+            //on this set properties
+            foreach (var field in sameColorFields)
+            {
+                if (field != ps)
+                    maximumHouses = Math.Max(maximumHouses, field.NbHouse);
+            }
+
+            if ( maximumHouses - ps.NbHouse > 0)
+                return false;
+            
+            return true;
+        }
+        
         /**
          * <summary>
          * This function is responsible about the house buying action in the
@@ -137,53 +255,12 @@ namespace Monopoly.Classes
          */
         public void BuyHouse(PropertySquare ps, Player p)
         {
-            Color c = ps.Col; //getting the property's color to verify if
-                              //the player own a full set of this color
-                              
-            //List of the properties that belong to this set of color
-            List<PropertySquare> sameColorFields = GetPropertySet(c);
-            
-            bool playerOwnSet = true; // if true => the player owns
-                                      // the full set
-                                      
-            bool enoughMoney = true; // if true => the player have enough
-                                     // money to buy the desired house
-                                     
-            bool balanced = true;   // if true => the number of houses on
-                                    // the set properties is balanced
-                                    
-            int minimumHouse = 100; // A random big number 
-            
-            //Searching the minimum number of houses owned on a property
-            //of this set and verifying if the player owns every one of
-            //these properties
-            foreach (var field in sameColorFields)
-            {
-                if (field != ps) // Searching for the other
-                                 // properties of this set
-                    minimumHouse = Math.Min(minimumHouse, field.NbHouse);
-                if (field.Owner != p)
-                {
-                    playerOwnSet = false;
-                    //SHOULD THROW AN EXCEPTION
-                }
-            }
-
-            if (p.Money < ps.HouseCost)
-                //SHOULD THROW AN EXCEPTION
-                enoughMoney = false;
-
-            if (ps.NbHouse - minimumHouse > 0)
-                //SHOULD THROW AN EXCEPTION
-                balanced = false;
-
-
-            if (balanced && playerOwnSet && enoughMoney
-                && BoardBank.BuyHouse())
+            if (CanBuyHouse(p,ps))
             {
                 p.Money -= ps.HouseCost; // Paying the cost of the house
                 ps.NbHouse++; // adding a house to the property
-            }
+            }else 
+                return;
         }
 
         /**
@@ -200,47 +277,43 @@ namespace Monopoly.Classes
          */
         public void SellHouse(PropertySquare ps, Player p)
         {
-            Color c = ps.Col;//getting the property's color to verify if
-                            //the player own a full set of this color
-                            
-            //List of the properties that belong to this set of color
-            List<PropertySquare> sameColorFields = GetPropertySet(c);
-            
-            bool minimumHousesOwned = true; // if true => the player already
-                                            // owns a house on this property
-                                            
-            bool enoughHouses = true; // if true => the bank has enough houses
-                                      // to do the exchange of 4 houses to a 
-                                      // hotel in case the player was selling
-                                      // a hotel
-                                      
-            bool balanced = true; // if true => the number of houses owned on
-                                  // the set properties is balanced
-                                  
-            int maximumHouses = -1; // random negative number
-            if (ps.NbHouse < 0)
-                minimumHousesOwned = false;
-            if (ps.NbHouse == 5 && BoardBank.NbHouse < 4)
-                enoughHouses = false;
-            
-            //searching for the maximum number of houses owned
-            //on this set properties
-            foreach (var field in sameColorFields)
-            {
-                if (field != ps)
-                    maximumHouses = Math.Max(maximumHouses, field.NbHouse);
-            }
-
-            if ( maximumHouses- ps.NbHouse > 0)
-                //SHOULD THROWN AN EXCEPTION
-                balanced = false;
-
-            if (balanced && minimumHousesOwned && enoughHouses)
+            if (CanSellHouse(p,ps))
             {
                 p.Money += ps.HouseCost; // refund the house cost
                 ps.NbHouse--; // reduce the number of houses by 1
-            }
+            }else
+                return;
         }
+        
+        /**
+        * <summary>
+        * gets a random card from the list of community cards
+        * </summary>
+        * <returns>
+        * random community Card
+        * </returns>
+        */
+        public Card GetRandomCommunityCard()
+        {
+            System.Random rnd = new System.Random();
+            int randcard = rnd.Next(0, CommunityDeck.Count-1);
+            return CommunityDeck[randcard];
+        }
+        /**
+        * <summary>
+        * gets a random card from the list of chance cards
+        * </summary>
+        * <returns>
+        * random chance Card
+        * </returns>
+        */
+        public Card GetRandomChanceCard()
+        {
+            System.Random rnd = new System.Random();
+            int randcard = rnd.Next(0, ChanceDeck.Count-1);
+            return ChanceDeck[randcard];
+        }
+
     }
 }
 
