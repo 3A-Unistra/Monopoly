@@ -24,12 +24,14 @@ namespace Monopoly.Net
         // TODO: Send
         // - AppletReady
         // - GameStartDiceThrow
+        // - RoundDiceChoice
         // - ActionAuctionProperty
         // - ActionBuyHouse
         // - ActionSellHouse
         // - ActionBuyProperty
         // - ActionMortgageProperty
         // - ActionUnmortgateProperty
+        // - ActionEnd
         // - AuctionBid                 (also received)
         // - AuctionConcede             (also received)
         // - ActionExchange             (also received)
@@ -152,30 +154,72 @@ namespace Monopoly.Net
                 return; /* TODO: Error? */
             switch (p)
             {
-            /*case PacketException packet:
+            case PacketException packet:
                 OnError(packet); break;
             case PacketAppletPrepare packet:
                 OnGameLoad(packet); break;
-            case PacketAppletReady packet:
-                OnGameReady(packet); break;
+            case PacketGameStart packet:
+                OnGameStart(packet); break;
+            case PacketGameStartDice packet:
+                OnGameStartDice(packet); break;
+            case PacketGameStartDiceResults packet:
+                OnGameStartDiceResult(packet); break;
+            case PacketGameEnd packet:
+                OnGameEnd(packet); break;
+            case PacketRoundStart packet:
+                OnRoundStart(packet); break;
+            case PacketRoundDiceResults packet:
+                OnRoundDiceResult(packet); break;
+            case PacketRoundRandomCard packet:
+                OnRoundRandomCard(packet); break;
+            case PacketPlayerMove packet:
+                OnMove(packet); break;
+            case PacketPlayerReconnect packet:
+                OnReconnect(packet); break;
+            case PacketPlayerDisconnect packet:
+                Onisconnect(packet); break;
             case PacketPlayerUpdateBalance packet:
                 OnBalanceUpdate(packet); break;
             case PacketPlayerUpdateProperty packet:
                 OnPropertyUpdate(packet); break;
-            case PacketPlayerMove packet:
-                OnPositionUpdate(packet); break;
-            case PacketPlayerDisconnect packet:
-                OnPlayerDisconnect(packet); break;
-            case PacketPlayerReconnect packet:
-                OnPlayerReconnect(packet); break;
             case PacketPlayerEnterPrison packet:
                 OnEnterPrison(packet); break;
             case PacketPlayerExitPrison packet:
                 OnExitPrison(packet); break;
-            case PacketRoundDiceThrow packet:
-                OnDiceThrow(packet); break;
-            case PacketRoundDiceResults packet:
-                OnDiceResult(packet); break;*/
+            case PacketPlayerDefeat packet:
+                OnDefeat(packet); break;
+            case PacketActionTimeout packet:
+                OnActionTimeout(packet); break;
+            case PacketAuctionEnd packet:
+                OnAuctionEnd(packet); break;
+            case PacketAuctionRound packet:
+                OnAuctionRound(packet); break;
+            case PacketActionStart packet:
+                OnActionStart(packet); break;
+            case PacketActionBuyHouseSucceed packet:
+                OnBuyHouse(packet); break;
+            case PacketActionSellHouseSucceed packet:
+                OnSellHouse(packet); break;
+            case PacketActionBuyPropertySucceed packet:
+                OnBuyProperty(packet); break;
+            case PacketActionMortgageSucceed packet:
+                OnMortgage(packet); break;
+            case PacketActionUnmortgageSucceed packet:
+                OnUnmortgage(packet); break;
+            case PacketActionExchange packet:
+                OnExchange(packet); break;
+            case PacketActionExchangeAccept packet:
+                OnExchangeAccept(packet); break;
+            case PacketActionExchangeCancel packet:
+                OnExchangeCancel(packet); break;
+            case PacketActionExchangeCounter packet:
+                OnExchangeCounter(packet); break;
+            case PacketActionExchangeDecline packet:
+                OnExchangeDecline(packet); break;
+            case PacketActionExchangePlayerSelect packet:
+                OnExchangePlayerSelect(packet); break;
+            case PacketActionExchangeTradeSelect packet:
+                OnExchangeTradeSelect(packet); break;
             }
         }
 
