@@ -21,6 +21,14 @@ namespace Monopoly.Classes
      */
     public class TerminalInit
     {
+
+		public void players(int nbPlayers)
+		{
+			for(int i = 0; i < nbPlayers; i++)
+			{
+				Board.players.Add(new Player(i.ToString(),i.ToString(), null));
+			}
+		}
 		/**
      	* <summary>
      	* Converts hexadecimal color string into RGBA color,
@@ -47,11 +55,38 @@ namespace Monopoly.Classes
     	*/		
 		public void DeckInit()
 		{
-    		for(int i = 0; i < 16; i++)
-    		{
-    			Board.ChanceDeck.Add(new Card("Chance",i,"..."));
-    			Board.CommunityDeck.Add(new Card("Community",i,"..."));
-    		}
+    		Board.ChanceDeck.Add(new Card("Chance",0,"..."));
+			Board.ChanceDeck.Add(new Card("Chance",1,"..."));
+    		Board.ChanceDeck.Add(new Card("Chance",2,"..."));
+			Board.ChanceDeck.Add(new Card("Chance",3,"..."));
+    		Board.ChanceDeck.Add(new Card("Chance",4,"..."));
+			Board.ChanceDeck.Add(new Card("Chance",5,"..."));
+    		Board.ChanceDeck.Add(new Card("Chance",6,"..."));
+			Board.ChanceDeck.Add(new Card("Chance",7,"..."));
+    		Board.ChanceDeck.Add(new Card("Chance",8,"..."));
+			Board.ChanceDeck.Add(new Card("Chance",9,"..."));
+    		Board.ChanceDeck.Add(new Card("Chance",10,"..."));
+			Board.ChanceDeck.Add(new Card("Chance",11,"..."));
+    		Board.ChanceDeck.Add(new Card("Chance",12,"..."));
+			Board.ChanceDeck.Add(new Card("Chance",13,"..."));
+    		Board.ChanceDeck.Add(new Card("Chance",14,"..."));
+			Board.ChanceDeck.Add(new Card("Chance",15,"..."));									
+    		Board.CommunityDeck.Add(new Card("Community",0,"..."));
+    		Board.CommunityDeck.Add(new Card("Community",1,"..."));
+    		Board.CommunityDeck.Add(new Card("Community",2,"..."));	
+    		Board.CommunityDeck.Add(new Card("Community",3,"..."));
+    		Board.CommunityDeck.Add(new Card("Community",4,"..."));
+    		Board.CommunityDeck.Add(new Card("Community",5,"..."));
+    		Board.CommunityDeck.Add(new Card("Community",6,"..."));	
+    		Board.CommunityDeck.Add(new Card("Community",7,"..."));	
+    		Board.CommunityDeck.Add(new Card("Community",8,"..."));
+    		Board.CommunityDeck.Add(new Card("Community",9,"..."));
+    		Board.CommunityDeck.Add(new Card("Community",10,"..."));	
+    		Board.CommunityDeck.Add(new Card("Community",11,"..."));
+    		Board.CommunityDeck.Add(new Card("Community",12,"..."));
+    		Board.CommunityDeck.Add(new Card("Community",13,"..."));
+    		Board.CommunityDeck.Add(new Card("Community",14,"..."));	
+    		Board.CommunityDeck.Add(new Card("Community",15,"..."));														
 		}
 		/**
      	* <summary>
@@ -61,10 +96,10 @@ namespace Monopoly.Classes
 		* the initialized board
     	* </param>
 		*/
-		public void BankInit(Board board)
+		public void BankInit()
 		{
-    		board.BoardBank=new Bank(); 
-    		board.BoardMoney = 0;
+    		Board.BoardBank=new Bank(); 
+    		Board.BoardMoney = 0;
 		}
 		/**
      	* <summary>
@@ -74,7 +109,7 @@ namespace Monopoly.Classes
 		* the initialized board
     	* </param>
     	*/
-		public void SquaresInit(Board board)
+		public void SquaresInit()
 		{			
 			Color brown = HexToUnityColor("955436");
 			Color lightBlue = HexToUnityColor("#aae0fa");
@@ -84,7 +119,7 @@ namespace Monopoly.Classes
 			Color yellow = HexToUnityColor("#fef200");
 			Color green = HexToUnityColor("#1fb25a");
 			Color blue = HexToUnityColor("#0072bb");
-			board.PrisonSquare = 10;
+			Board.PrisonSquare = 10;
 			Board.Elements.Add(new Square(SquareType.Go,0,"square0",null));
 			Board.Elements.Add(new Square(SquareType.Community,2,"square2",null));
 			Board.Elements.Add(new Square(SquareType.Community,17,"square17",null));
@@ -169,7 +204,8 @@ namespace Monopoly.Classes
 			Board.Elements.Add(new PropertySquare(SquareType.Field,39,"square39",null,
 			400,50,200,200,600,1400,1700,2000,blue)); 
 		} 	 
-   	   	    	
+
+   	   	    
     }
 } 		
     		 

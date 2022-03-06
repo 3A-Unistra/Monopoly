@@ -27,12 +27,13 @@ namespace Monopoly.Classes
     public class Board
     {
         
-        public Bank BoardBank { get; set; }
+        public static Bank BoardBank { get; set; }
         public static List<Square> Elements { get; set; }
-        public int PrisonSquare { get; set; }
-        public int BoardMoney { get; set; }
+        public static int PrisonSquare { get; set; }
+        public static int BoardMoney { get; set; }
         public static List<Card> ChanceDeck {get; set;}
-        public static List<Card> CommunityDeck {get; set;}        
+        public static List<Card> CommunityDeck {get; set;}  
+        public static List<Player> players {get; set;}      
 
         /**
         * <summary>
