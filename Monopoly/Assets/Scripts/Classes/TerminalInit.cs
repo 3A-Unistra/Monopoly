@@ -210,7 +210,20 @@ namespace Monopoly.Classes
 			Board.Elements.Add(new PropertySquare(SquareType.Field,39,"square39",null,
 			400,50,200,200,600,1400,1700,2000,blue)); 
 		} 	 
-
+		/**
+		* <summary>
+		* Initializes the board with the help of previous methods
+		* </summary>
+		* <param name="nbPlayers">
+		* </param>
+		*/
+		public GameBoard(int nbPlayers)
+		{
+			players(nbPlayers);
+			DeckInit();
+			BankInit();
+			SquaresInit();
+		}
    	   	    
     }
 } 		
