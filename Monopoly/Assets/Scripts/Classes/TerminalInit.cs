@@ -217,7 +217,7 @@ namespace Monopoly.Classes
 		* <param name="nbPlayers">
 		* </param>
 		*/
-		public GameBoard(int nbPlayers)
+		public void GameBoard(int nbPlayers)
 		{
 			players(nbPlayers);
 			DeckInit();
