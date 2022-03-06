@@ -9,7 +9,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using NativeWebSocket;
 
 using Monopoly.Net.Packets;
 
@@ -123,9 +122,9 @@ namespace Monopoly.Net
         public event PacketDelegate<PacketActionExchangeTradeSelect>
                                                          OnExchangeTradeSelect;
 
-        private WebSocket socket;
+        private PacketSocket socket;
 
-        public PacketCommunicator(WebSocket socket)
+        public PacketCommunicator(PacketSocket socket)
         {
             if (socket == null)
             {
@@ -133,12 +132,77 @@ namespace Monopoly.Net
                     "Packet communicator instantiated with null socket!");
             }
             this.socket = socket;
-            socket.OnMessage += (data) => ReceivePacket(data);
+            socket.Sock.OnMessage += (data) => ReceivePacket(data);
+        }
+
+        /* TODO: Params for all of the following DoX functions. */
+
+        public void DoAppletReady()
+        {
+            PacketAppletReady packet = new PacketAppletReady();
+            SendPacket(packet);
+        }
+
+        public void DoGameStartDiceThrow()
+        {
+            PacketGameStartDiceThrow packet = new PacketGameStartDiceThrow();
+            SendPacket(packet);
+        }
+
+        public void DoRoundDiceChoice()
+        {
+            PacketRoundDiceChoice packet = new PacketRoundDiceChoice();
+            SendPacket(packet);
+        }
+
+        public void DoAuctionProperty()
+        {
+            PacketActionAuctionProperty packet
+                = new PacketActionAuctionProperty();
+            SendPacket(packet);
+        }
+
+        public void DoBuyHouse()
+        {
+            PacketActionBuyHouse packet = new PacketActionBuyHouse();
+            SendPacket(packet);
+        }
+
+        public void DoSellHouse()
+        {
+            PacketActionSellHouse packet = new PacketActionSellHouse();
+            SendPacket(packet);
+        }
+
+        public void DoBuyProperty()
+        {
+            PacketActionBuyProperty packet = new PacketActionBuyProperty();
+            SendPacket(packet);
+        }
+
+        public void DoMortgageProperty()
+        {
+            PacketActionMortgageProperty packet
+                = new PacketActionMortgageProperty();
+            SendPacket(packet);
+        }
+
+        public void DoUnmortgageProperty()
+        {
+            PacketActionUnmortgageProperty packet
+                = new PacketActionUnmortgageProperty();
+            SendPacket(packet);
+        }
+
+        public void DoEndAction()
+        {
+            PacketActionEnd packet = new PacketActionEnd();
+            SendPacket(packet);
         }
 
         private async void SendPacket(Packet packet)
         {
-            await socket.SendText(packet.Serialize());
+            await socket.Sock.SendText(packet.Serialize());
         }
 
         private void ReceivePacket(byte[] data)
