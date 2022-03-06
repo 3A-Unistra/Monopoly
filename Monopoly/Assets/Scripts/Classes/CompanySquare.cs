@@ -41,31 +41,21 @@ namespace Monopoly.Classes
           * An instance of the company square object with the given type, id,
           * name, image, mortgaged status, price and rent.
           * </returns>
-          * <exception cref="Monopoly.Exceptions.WrongIdException">
+          * <exception cref="WrongIdException">
           * Throws an exception if the given id does not exist in this list
           * {12,28}.
           * </exception>
-          * <exception cref="Monopoly.Exceptions.WrongTypeException">
+          * <exception cref="WrongTypeException">
           * Throws an exception if the given type is different than a
           * SquareType.Company.
           * </exception>
-          * <exception cref="Monopoly.Exceptions.WrongPriceException">
+          * <exception cref="WrongPriceException">
           * Throws an exception if the given price is different than 150.
           * </exception>
           */
         public CompanySquare(SquareType type, int id, string name,
             Material image, int price, int rent)
             : base(type, id, name, image, price, rent)
-        {
-            if (id!=12 && id!=28)
-                throw new Monopoly.Exceptions.WrongIdException
-                    ("The id should be 12 or 28.");
-            if (type != SquareType.Company)
-                throw new Monopoly.Exceptions.WrongTypeException
-                    ("The type should be SquareType.Company.");
-            if (price != 150)
-                throw new Monopoly.Exceptions.WrongPriceException
-                    ("The company's price should be 150");
-        }
+        { }
     }
 }

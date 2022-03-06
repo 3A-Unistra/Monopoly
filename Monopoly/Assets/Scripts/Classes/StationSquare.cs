@@ -48,15 +48,15 @@ namespace Monopoly.Classes
           * An instance of the station square object with the given type, id,
           * name, image, mortgaged status, price and rent.
           * </returns>
-          * <exception cref="Monopoly.Exceptions.WrongIdException">
+          * <exception cref="WrongIdException">
           * Throws an exception if the given id does not exist in this list
           * {5,15,25,35}.
           * </exception>
-          * <exception cref="Monopoly.Exceptions.WrongTypeException">
+          * <exception cref="WrongTypeException">
           * Throws an exception if the given type is different than a
           * SquareType.Station.
           * </exception>
-          * <exception cref="Monopoly.Exceptions.WrongPriceException">
+          * <exception cref="WrongPriceException">
           * Throws an exception if the given price is different than 200.
           * </exception>
           */

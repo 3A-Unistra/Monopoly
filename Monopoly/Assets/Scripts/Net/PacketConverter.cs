@@ -32,7 +32,6 @@ namespace Monopoly.Net
         private static readonly Dictionary<string, Type> packetTypes =
             new Dictionary<string, Type>()
         {
-            { "Error", typeof(PacketError) },
             { "AppletPrepare", typeof(PacketAppletPrepare) },
             { "AppletReady", typeof(PacketAppletReady) },
             { "GameStart", typeof(PacketGameStart) },
