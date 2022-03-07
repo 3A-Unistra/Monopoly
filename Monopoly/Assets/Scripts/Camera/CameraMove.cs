@@ -10,6 +10,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Monopoly.Util;
+
 namespace Monopoly.Camera
 {
 
@@ -126,6 +128,8 @@ namespace Monopoly.Camera
         {
             if (horizontal == 0f && vertical == 0f)
                 return;
+            if (RaycastUtil.IsMouseRaycast("UI"))
+                return; // don't move the mouse if it's on a UI element
             float d = moveSpeed * Time.deltaTime;
             if (look.LookMode == CameraLook.CameraLookMode.ISOMETRIC)
             {
