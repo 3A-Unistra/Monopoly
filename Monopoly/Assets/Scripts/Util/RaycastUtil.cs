@@ -14,11 +14,25 @@ using UnityEngine.EventSystems;
 namespace Monopoly.Util
 {
 
+    /**
+     * <summary>
+     *     Utility methods for detecting or obtaining raycast results.
+     * </summary>
+     */
     public static class RaycastUtil
     {
 
         /*
          * See: http://answers.unity.com/answers/1653313/view.html
+         */
+        /**
+         * <summary>
+         *     Get a list of all raycasts related to the Unity Event System from
+         *     the mouse-pointer.
+         * </summary>
+         * <returns>
+         *     A list of all raycasts from the mouse to Event System elements.
+         * </returns>
          */
         public static List<RaycastResult> GetRaycastEventSystemMouse()
         {
@@ -29,6 +43,20 @@ namespace Monopoly.Util
             return res;
         }
 
+        /**
+         * <summary>
+         *     Check whether the mouse-pointer is currently hovering over
+         *     (checked via. a raycast) any element of the Event System of a
+         *     given layer.
+         * </summary>
+         * <param name="layer">
+         *     The layer to check for.
+         * </param>
+         * <returns>
+         *     <c>true</c> if the mouse is hovering over an element of a given
+         *     layer.
+         * </returns>
+         */
         public static bool IsMouseRaycast(string layer)
         {
             List<RaycastResult> rays = GetRaycastEventSystemMouse();
