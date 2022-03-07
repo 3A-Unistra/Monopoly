@@ -20,7 +20,7 @@ namespace Monopoly.Net
 
         public delegate void PacketDelegate<T>(T packet);
 
-        // TODO: Send
+        // Send list:
         // - AppletReady
         // - GameStartDiceThrow
         // - RoundDiceChoice
@@ -61,6 +61,8 @@ namespace Monopoly.Net
         // - ActionTimeout
         // - AuctionEnd
         // - AuctionRound
+        // - AuctionBid                 (also sent)
+        // - AuctionConcede             (also sent)
         // - ActionStart
         // - ActionBuyHouseSucceed
         // - ActionSellHouseSucceed
@@ -97,6 +99,8 @@ namespace Monopoly.Net
         public event PacketDelegate<PacketActionTimeout>     OnActionTimeout;
         public event PacketDelegate<PacketAuctionEnd>        OnAuctionEnd;
         public event PacketDelegate<PacketAuctionRound>      OnAuctionRound;
+        public event PacketDelegate<PacketAuctionBid>        OnAuctionBid;
+        public event PacketDelegate<PacketAuctionConcede>    OnAuctionConcede;
         public event PacketDelegate<PacketActionStart>       OnActionStart;
         public event PacketDelegate<PacketActionBuyHouseSucceed>
                                                          OnBuyHouse;
@@ -197,6 +201,54 @@ namespace Monopoly.Net
         public void DoEndAction()
         {
             PacketActionEnd packet = new PacketActionEnd();
+            SendPacket(packet);
+        }
+
+        public void DoBidAuction()
+        {
+            PacketAuctionBid packet = new PacketAuctionBid();
+            SendPacket(packet);
+        }
+
+        public void DoConcedeAuction()
+        {
+            PacketAuctionBid packet = new PacketAuctionBid();
+            SendPacket(packet);
+        }
+
+        public void DoExchange()
+        {
+            PacketActionExchange packet = new PacketActionExchange();
+            SendPacket(packet);
+        }
+
+        public void DoAcceptExchange()
+        {
+            PacketActionExchangeAccept packet = new PacketActionExchangeAccept();
+            SendPacket(packet);
+        }
+
+        public void DoCounterExchange()
+        {
+            PacketActionExchangeCounter packet = new PacketActionExchangeCounter();
+            SendPacket(packet);
+        }
+
+        public void DoDeclineExchange()
+        {
+            PacketActionExchangeDecline packet = new PacketActionExchangeDecline();
+            SendPacket(packet);
+        }
+
+        public void DoExchangePlayerSelect()
+        {
+            PacketActionExchangePlayerSelect packet = new PacketActionExchangePlayerSelect();
+            SendPacket(packet);
+        }
+
+        public void DoExchangeTradeSelect()
+        {
+            PacketActionExchangeTradeSelect packet = new PacketActionExchangeTradeSelect();
             SendPacket(packet);
         }
 
