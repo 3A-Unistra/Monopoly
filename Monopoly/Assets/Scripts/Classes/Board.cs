@@ -26,7 +26,6 @@ namespace Monopoly.Classes
     */
     public class Board
     {
-        
         public Bank BoardBank { get; set; }
         public static List<Square> Elements { get; set; }
         public int PrisonSquare { get; set; }
@@ -70,12 +69,11 @@ namespace Monopoly.Classes
          * </summary>
          * <param name="c">
          * The color of the set.
-	 * </param>
+	     * </param>
          * <return>
          * propertySet the set of properties of color c
          * </return>        
          */
-
         public static List<PropertySquare> GetPropertySet(Color c)
         {
             List<PropertySquare> propertySet = new List<PropertySquare>();
