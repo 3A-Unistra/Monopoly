@@ -76,7 +76,7 @@ namespace Monopoly.Classes
     		Board.ChanceDeck.Add(new Card("Chance",12,"..."));
 			Board.ChanceDeck.Add(new Card("Chance",13,"..."));
     		Board.ChanceDeck.Add(new Card("Chance",14,"..."));
-			Board.ChanceDeck.Add(new Card("Chance",15,"..."));									
+			Board.ChanceDeck.Add(new Card("Chance",15,"OutOfJail"));									
     		Board.CommunityDeck.Add(new Card("Community",0,"..."));
     		Board.CommunityDeck.Add(new Card("Community",1,"..."));
     		Board.CommunityDeck.Add(new Card("Community",2,"..."));	
@@ -92,7 +92,7 @@ namespace Monopoly.Classes
     		Board.CommunityDeck.Add(new Card("Community",12,"..."));
     		Board.CommunityDeck.Add(new Card("Community",13,"..."));
     		Board.CommunityDeck.Add(new Card("Community",14,"..."));	
-    		Board.CommunityDeck.Add(new Card("Community",15,"..."));														
+    		Board.CommunityDeck.Add(new Card("Community",15,"OutOfJail"));														
 		}
 		/**
      	* <summary>

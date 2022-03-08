@@ -20,7 +20,7 @@ namespace Monopoly.Classes
     * for the player to buy, maximum 32 houses and 12 hotels
     * </summary>
     */
-    public class Bank 
+    public class Bank  
     {
         /**
         * <summary>

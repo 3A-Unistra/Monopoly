@@ -272,6 +272,29 @@ namespace Monopoly.Classes
             int randcard = rnd.Next(0, ChanceDeck.Count-1);
             return ChanceDeck[randcard];
         }
+        /**
+        * <summary>
+        * returns a OutOfJail card to its deck after use
+        * </summary>
+        * <param name="type">
+        * </param>
+        */        
+        public void ReturnCard(string type)
+        {
+            if (type == "Chance")
+            {
+                ChanceDeck.Add(new card(new Card("Chance",15,"OutOfJail")));
+            }
+            else if (type == "Community")
+            {
+                CommunityDeck.Add(new card(new Card("Community",15,"OutOfJail")));
+            }
+            else
+            {
+                throw new InvalidOperationException("invalid parameter");
+            }
+
+        }
     }
 }
 
