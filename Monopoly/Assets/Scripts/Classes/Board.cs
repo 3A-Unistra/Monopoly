@@ -283,11 +283,11 @@ namespace Monopoly.Classes
         {
             if (type == "Chance")
             {
-                ChanceDeck.Add(new card(new Card("Chance",15,"OutOfJail")));
+                ChanceDeck.Add(new Card("Chance",15,"OutOfJail"));
             }
             else if (type == "Community")
             {
-                CommunityDeck.Add(new card(new Card("Community",15,"OutOfJail")));
+                CommunityDeck.Add(new Card("Community",15,"OutOfJail"));
             }
             else
             {
