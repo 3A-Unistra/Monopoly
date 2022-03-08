@@ -104,30 +104,13 @@ namespace Monopoly.Util
                     filename));
                 return;
             }
-            try
+            Dictionary<string, string> stringSet =
+                JsonLoader.LoadJsonAsset<Dictionary<string, string>>(filename);
+            if (stringSet != null)
             {
-                TextAsset contents = Resources.Load<TextAsset>(filename);
-                if (contents == null)
-                {
-                    Debug.LogError(string.Format(
-                        "Failed to load JSON asset '{0}'.",
-                        filename));
-                    return;
-                }
-                Dictionary<string, string> stringSet =
-                    JsonConvert.DeserializeObject<Dictionary<string, string>>
-                        (contents.text);
-
                 StringLanguage language =
-                    new StringLanguage(id, friendly, stringSet);
+                                    new StringLanguage(id, friendly, stringSet);
                 languages.Add(language);
-            }
-            catch (JsonException e)
-            {
-                Debug.LogError(string.Format(
-                    "Failed to deserialise JSON asset '{0}'",
-                    filename));
-                Debug.LogException(e);
             }
         }
 
