@@ -128,8 +128,6 @@ namespace Monopoly.Camera
         {
             if (horizontal == 0f && vertical == 0f)
                 return;
-            if (RaycastUtil.IsMouseRaycast("UI"))
-                return; // don't move the mouse if it's on a UI element
             float d = moveSpeed * Time.deltaTime;
             if (look.LookMode == CameraLook.CameraLookMode.ISOMETRIC)
             {
@@ -177,6 +175,8 @@ namespace Monopoly.Camera
             /* TODO: Disable mouse movement when mouse is over UI. */
             if (!moveCameraByMouse)
                 return false;
+            if (RaycastUtil.IsMouseRaycast("UI"))
+                return false; // don't move the mouse if it's on a UI element
             Vector3 mp = Input.mousePosition;
             int sx = Screen.width, sy = Screen.height;
             int dx = 0, dy = 0;
