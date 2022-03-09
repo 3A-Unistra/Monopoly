@@ -92,12 +92,25 @@ namespace Monopoly.Classes
             get;
             set;
         }
+
+        /**
+         * <summary>
+         * The integer Doubles is used to keep count of the number of
+         * consecutive doubles that the player got.
+         * </summary>
+         */
+        public int Doubles
+        {
+            get;
+            set;
+        }
+        
         /**
         * <summary>
         * getter setter
         * the boolean InJail states if the player serves en sentence in jail
         * </summary>
-        */         
+        */
         public bool InJail
         {
             get;
@@ -150,8 +163,19 @@ namespace Monopoly.Classes
         {
             get;
             set;
-        } 
+        }
 
+        /**
+         * <summary>
+         * Counter of the number of turns passed in jail.
+         * </summary>
+         */
+        public int JailTurns
+        {
+            get;
+            set;
+        }
+        
         /**
         * <summary>
         * Player constructor
@@ -231,7 +255,7 @@ namespace Monopoly.Classes
         * Ownable square p is the given property 
         * </param>               
         */          
-        void TransferProperty(Player to, OwnableSquare p)
+        public void TransferProperty(Player to, OwnableSquare p)
         {
             p.Owner = to;
         }
@@ -244,18 +268,18 @@ namespace Monopoly.Classes
         * <param name="to">
         * Player to is the player which the card is given
         * </param>
-        * <param name="card">        
-        * Card card is the given card 
+        * <param name="cardType">        
+        * string cardType is the given card type
         * </param>               
         */ 
-        void TransferCard(Player to, Card card)
+        public void TransferCard(Player to, string cardType)
         {
-            if ((card.type == "CHANCE") && (ChanceJailCard == true))
+            if ((cardType == "CHANCE") && (ChanceJailCard == true))
             {
                 ChanceJailCard = false;
                 to.ChanceJailCard = true;
             }
-            else if((card.type == "COMMUNITY") && (CommunityJailCard == true))
+            else if((cardType == "COMMUNITY") && (CommunityJailCard == true))
             {
                 CommunityJailCard = false;
                 to.CommunityJailCard = true;
