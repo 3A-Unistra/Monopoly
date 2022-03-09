@@ -104,7 +104,7 @@ namespace Monopoly.Classes
             if (validIdNumbers.Contains(id) || id>39 || id<0)
                 throw new Monopoly.Exceptions.WrongIdException
                     ("The id should be a valid ownable square number.");
-            if (type != SquareType.Field)
+            if (type != SquareType.Field && type != SquareType.Station && type != SquareType.Company)
                 throw new Monopoly.Exceptions.WrongTypeException
                     ("The type should be SquareType.Field, " +
                      "SquareType.Company or SquareType.Station.");
@@ -156,6 +156,68 @@ namespace Monopoly.Classes
             }
             else
                 return a.Type == b.Type;
+        }
+        
+        /**
+          * <summary>
+          * This function is used to verify if a given index is
+          * an ownable square index.
+          * </summary>
+          * <param name="idx">
+          * The index of the given square.
+          * </param>
+          * <returns>
+          * true if the given square is ownable and false if not.
+          * </returns>
+          */
+        public bool IsOwnableIndex(int idx)
+        {
+            SquareType type = Board.Elements[idx].Type;
+            return type == SquareType.Field || 
+                   type == SquareType.Station || 
+                   type == SquareType.Company;
+        }
+        
+        
+        /**
+        * <summary>
+        * player p mortgages the property on the square s
+        * the square s owner is set to null
+        * the player p's money is increased by half the value of square s 
+        * </summary>
+        * <param name="p">
+        * player p the one who wants to mortgage the square
+        * </param> 
+        */         
+        public void MortgageProperty(Player p)
+        {
+            if(Owner == p)
+            {
+                Mortgaged = true;
+                Owner = null;
+                p.Money += Price/2;
+            }
+        }
+        
+        
+        /**
+        * <summary>
+        * player p unmortgages the property on the square s
+        * the square s owner is set to null
+        * the player p's money is increased by half the value of square s 
+        * </summary>
+        * <param name="p">
+        * player p the one who wants to unmortgage the square
+        * </param> 
+        */         
+        public void UnmortgageProperty(Player p)
+        {
+            if(Owner == p)
+            {
+                Mortgaged = false;
+                Owner = p;
+                p.Money -= Price/2;
+            }
         }
     }
 }

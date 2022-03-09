@@ -48,5 +48,23 @@ namespace Monopoly.Classes
             Material image) : base(type,id,name,image)
         {
         }
+        
+        /**
+          * <summary>
+          * This function is used to verify if a given index is
+          * an chance square index.
+          * </summary>
+          * <param name="idx">
+          * The index of the given square.
+          * </param>
+          * <returns>
+          * true if the given square is chance and false if not.
+          * </returns>
+          */
+        public bool IsChanceIndex(int idx)
+        {
+            SquareType type = Board.Elements[idx].Type;
+            return type == SquareType.Chance;
+        }
     }
 }
