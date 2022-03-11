@@ -56,6 +56,34 @@ namespace Monopoly.Classes
         public CompanySquare(SquareType type, int id, string name,
             Material image, int price, int rent)
             : base(type, id, name, image, price, rent)
-        { }
+        {
+            if (id!=12 && id!=28)
+                throw new Monopoly.Exceptions.WrongIdException
+                    ("The id should be 12 or 28.");
+            if (type != SquareType.Company)
+                throw new Monopoly.Exceptions.WrongTypeException
+                    ("The type should be SquareType.Company.");
+            if (price != 150)
+                throw new Monopoly.Exceptions.WrongPriceException
+                    ("The company's price should be 150");
+        }
+        
+        /**
+          * <summary>
+          * This function is used to verify if a given index is
+          * an company square index.
+          * </summary>
+          * <param name="idx">
+          * The index of the given square.
+          * </param>
+          * <returns>
+          * true if the given square is company and false if not.
+          * </returns>
+          */
+        public bool IsCompanyIndex(int idx)
+        {
+            SquareType type = Board.Elements[idx].Type;
+            return type == SquareType.Company;
+        }
     }
 }

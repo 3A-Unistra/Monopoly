@@ -35,16 +35,40 @@ namespace Monopoly.Classes
          * Returns an instance of the Go Square object with the given type, id,
          * name and image.
          * </returns>
-         * <exception cref="WrongIdException">
+         * <exception cref="Monopoly.Exceptions.WrongIdException">
          * Throws an exception if the given id is not 0.
          * </exception>
-         * <exception cref="WrongTypeException">
+         * <exception cref="Monopoly.Exceptions.WrongTypeException">
          * Throws an exception if the given type is different from SquareType.Go.
          * </exception>
          */
         public GoSquare(SquareType type, int id, string name, Material image)
             : base(type,id,name,image)
         {
+            if (id!=0)
+                throw new Monopoly.Exceptions.WrongIdException
+                    ("The id should be 0.");
+            if (type != SquareType.Go)
+                throw new Monopoly.Exceptions.WrongTypeException
+                    ("The type should be SquareType.Go.");
+        }
+        
+        /**
+          * <summary>
+          * This function is used to verify if a given index is
+          * an Go square index.
+          * </summary>
+          * <param name="idx">
+          * The index of the given square.
+          * </param>
+          * <returns>
+          * true if the given square is Go and false if not.
+          * </returns>
+          */
+        public bool IsGoIndex(int idx)
+        {
+            SquareType type = Board.Elements[idx].Type;
+            return type == SquareType.Go;
         }
     }
 }

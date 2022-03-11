@@ -35,11 +35,11 @@ namespace Monopoly.Classes
          * Returns an instance of the CommunitySquare object with the given 
          * type, id, name and image.
          * </returns>
-         * <exception cref="WrongIdException">
+         * <exception cref="Monopoly.Exceptions.WrongIdException">
          * Throws an exception if the given id does not belong to this list
          * {2,17,33}.
          * </exception>
-         * <exception cref="WrongTypeException">
+         * <exception cref="Monopoly.Exceptions.WrongTypeException">
          * Throws an exception if the given type is different from
          * SquareType.Community.
          * </exception>
@@ -47,6 +47,30 @@ namespace Monopoly.Classes
         public CommunitySquare(SquareType type, int id, string name, 
             Material image) : base(type,id,name,image)
         {
+            if (id!=2 && id!=17 && id!=33)
+                throw new Monopoly.Exceptions.WrongIdException
+                    ("The id should be 2,17 or 33.");
+            if (type != SquareType.Community)
+                throw new Monopoly.Exceptions.WrongTypeException
+                    ("The type should be SquareType.Community.");
+        }
+        
+        /**
+          * <summary>
+          * This function is used to verify if a given index is
+          * an community square index.
+          * </summary>
+          * <param name="idx">
+          * The index of the given square.
+          * </param>
+          * <returns>
+          * true if the given square is community and false if not.
+          * </returns>
+          */
+        public bool IsCommunityIndex(int idx)
+        {
+            SquareType type = Board.Elements[idx].Type;
+            return type == SquareType.Community;
         }
     }
 }

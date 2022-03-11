@@ -154,40 +154,8 @@ namespace Monopoly.Classes
             Col = color;
         }
         
-        /**
-         * <summary>
-         * This function is responsible about the house buying action in the
-         * game.
-         * </summary>
-         * <param name="p">
-         * The player who wants to buy the house.
-         * </param>
-         */
-        public void BuyHouse(Player p)
-        {
-            //TO DO
-            // CHECKING IF THE PLAYER CAN BUILD A HOUSE
-            p.Money -= HouseCost;
-            NbHouse++;
-        }
-
-        /**
-         * <summary>
-         * This function is responsible about the house selling action in the
-         * game.
-         * </summary>
-         * <param name="p">
-         * The player who wants to buy the house.
-         * </param>
-         */
-        public void SellHouse(Player p)
-        {
-            // TO DO
-            // CHECKING IF THE PLAYER CAN SELL A HOUSE
-            p.Money += HouseCost;
-            NbHouse--;
-        }   
         
+
         /**
          * <summary>
          * This function is used to deduct the given rent from the player's
@@ -261,6 +229,24 @@ namespace Monopoly.Classes
                 //return -1 until implementing the exceptions
                 return -1;
             }
+        }
+        
+        /**
+          * <summary>
+          * This function is used to verify if a given index is
+          * an property square index.
+          * </summary>
+          * <param name="idx">
+          * The index of the given square.
+          * </param>
+          * <returns>
+          * true if the given square is property and false if not.
+          * </returns>
+          */
+        public bool IsPropertyIndex(int idx)
+        {
+            SquareType type = Board.Elements[idx].Type;
+            return type == SquareType.Field;
         }
     }
 }

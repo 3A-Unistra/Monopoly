@@ -35,16 +35,39 @@ namespace Monopoly.Classes
          * Returns an instance of the JailSquare object with the given type, id,
          * name and image.
          * </returns>
-         * <exception cref="WrongIdException">
+         * <exception cref="Monopoly.Exceptions.WrongIdException">
          * Throws an exception if the given id is not 10.
          * </exception>
-         * <exception cref="WrongTypeException">
+         * <exception cref="Monopoly.Exceptions.WrongTypeException">
          * Throws an exception if the given type is different from SquareType.Prison.
          * </exception>
          */
         public JailSquare(SquareType type, int id, string name, Material image)
             : base(type,id,name,image)
         {
+            if (id!=10)
+                throw new Monopoly.Exceptions.WrongIdException
+                    ("The id should be 10.");
+            if (type != SquareType.Prison)
+                throw new Monopoly.Exceptions.WrongTypeException
+                    ("The type should be SquareType.Prison.");
+        }
+        /**
+          * <summary>
+          * This function is used to verify if a given index is
+          * an jail square index.
+          * </summary>
+          * <param name="idx">
+          * The index of the given square.
+          * </param>
+          * <returns>
+          * true if the given square is jail and false if not.
+          * </returns>
+          */
+        public bool IsJailIndex(int idx)
+        {
+            SquareType type = Board.Elements[idx].Type;
+            return type == SquareType.Prison;
         }
     }
 }

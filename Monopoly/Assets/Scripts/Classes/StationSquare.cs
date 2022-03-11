@@ -63,6 +63,33 @@ namespace Monopoly.Classes
         public StationSquare(SquareType type, int id, string name,
             Material image, int price, int rent)
             : base(type, id, name, image, price, rent)
-        { }
+        {
+            int[] ids = {5,15,25,35};
+            List<int> validIdNumbers = new List<int>(ids);
+            if (!validIdNumbers.Contains(id))
+                throw new Monopoly.Exceptions.WrongIdException
+                    ("The id should be a valid station number.");
+            if (type != SquareType.Station)
+                throw new Monopoly.Exceptions.WrongTypeException
+                    ("The type should be SquareType.Station.");
+        }
+        
+        /**
+          * <summary>
+          * This function is used to verify if a given index is
+          * an station square index.
+          * </summary>
+          * <param name="idx">
+          * The index of the given square.
+          * </param>
+          * <returns>
+          * true if the given square is station and false if not.
+          * </returns>
+          */
+        public bool IsStationIndex(int idx)
+        {
+            SquareType type = Board.Elements[idx].Type;
+            return type == SquareType.Station;
+        }
     }
 }

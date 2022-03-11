@@ -46,6 +46,25 @@ namespace Monopoly.Classes
             get;
             set;
         }
+
+        /**
+         * <summary>
+         * The integer Doubles is used to keep count of the number of
+         * consecutive doubles that the player got.
+         * </summary>
+         */
+        public int Doubles
+        {
+            get;
+            set;
+        }
+        
+        /**
+        * <summary>
+        * getter setter
+        * the boolean InJail states if the player serves en sentence in jail
+        * </summary>
+        */
         public bool InJail
         {
             get;
@@ -70,7 +89,27 @@ namespace Monopoly.Classes
         {
             get;
             set;
-        } 
+        }
+
+        /**
+         * <summary>
+         * Counter of the number of turns passed in jail.
+         * </summary>
+         */
+        public int JailTurns
+        {
+            get;
+            set;
+        }
+        
+        /**
+        * <summary>
+        * Player constructor
+        * sets the new player attributes at the beginning of the game
+        * following the Monopoly rules
+        * the player is not a bot by default
+        * </summary>
+        */    
         public Player(string id, string name, Character character)
         {
             this.Id = id;
@@ -94,7 +133,19 @@ namespace Monopoly.Classes
         {
             InJail = false;
         }
-
+        /**
+        * <summary>
+        * the player gives money to player to
+        * if he do not have as much money than the anoumt specified
+        * he goes bankrupt
+        * </summary>
+        * <param name="to">
+        * Player to the player which the money is give
+        * </param>       
+        * <param name="amount">        
+        * int amount the amount of given money 
+        * </param>        
+        */  
         public void TransferMoney(Player to, int amount)
         {
             if( Money > amount)
@@ -109,19 +160,43 @@ namespace Monopoly.Classes
                 Bankrupt = true;
             }
         }
-        void TransferProperty(Player to, OwnableSquare p)
+        /**
+        * <summary>
+        * the player gives a property p to another player 
+        * for an exchange
+        * </summary>
+        * <param name="to">
+        * Player to is the player which the property is given
+        * </param>
+        * <param name="p">                
+        * Ownable square p is the given property 
+        * </param>               
+        */          
+        public void TransferProperty(Player to, OwnableSquare p)
         {
             p.Owner = to;
         }
-
-        void TransferCard(Player to, Card card)
+        /**
+        * <summary>
+        * the player gives an out of jail card to another player 
+        * for an exchange, if the player doesn't have the card
+        * it throws an exeption error
+        * </summary>
+        * <param name="to">
+        * Player to is the player which the card is given
+        * </param>
+        * <param name="cardType">        
+        * string cardType is the given card type
+        * </param>               
+        */ 
+        public void TransferCard(Player to, string cardType)
         {
-            if ((card.type == "CHANCE") && (ChanceJailCard == true))
+            if ((cardType == "CHANCE") && (ChanceJailCard == true))
             {
                 ChanceJailCard = false;
                 to.ChanceJailCard = true;
             }
-            else if((card.type == "COMMUNITY") && (CommunityJailCard == true))
+            else if((cardType == "COMMUNITY") && (CommunityJailCard == true))
             {
                 CommunityJailCard = false;
                 to.CommunityJailCard = true;
