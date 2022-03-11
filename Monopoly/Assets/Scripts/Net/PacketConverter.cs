@@ -32,11 +32,14 @@ namespace Monopoly.Net
         private static readonly Dictionary<string, Type> packetTypes =
             new Dictionary<string, Type>()
         {
+            { "Exception", typeof(PacketException) },
             { "AppletPrepare", typeof(PacketAppletPrepare) },
             { "AppletReady", typeof(PacketAppletReady) },
             { "GameStart", typeof(PacketGameStart) },
+            { "GameEnd", typeof(PacketGameEnd) },
             { "PlayerReconnect", typeof(PacketPlayerReconnect) },
             { "PlayerDisconnect", typeof(PacketPlayerDisconnect) },
+            { "PlayerDefeat", typeof(PacketPlayerDefeat) },
             { "GameStartDice", typeof(PacketGameStartDice) },
             { "GameStartDiceThrow", typeof(PacketGameStartDiceThrow) },
             { "GameStartDiceResults", typeof(PacketGameStartDiceResults) },
@@ -48,6 +51,8 @@ namespace Monopoly.Net
             { "PlayerMove", typeof(PacketPlayerMove) },
             { "PlayerEnterPrison", typeof(PacketPlayerEnterPrison) },
             { "PlayerExitPrion", typeof(PacketPlayerExitPrison) },
+            { "ActionStart", typeof(PacketActionStart) },
+            { "ActionTimeout", typeof(PacketActionTimeout) },
             { "ActionExchange", typeof(PacketActionExchange) },
             { "ActionExchangePlayerSelect",
                 typeof(PacketActionExchangePlayerSelect) },

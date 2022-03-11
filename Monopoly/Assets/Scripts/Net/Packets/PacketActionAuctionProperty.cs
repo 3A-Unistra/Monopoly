@@ -23,13 +23,12 @@ namespace Monopoly.Net.Packets
         public int MinPrice { get; private set; }
 
         [JsonProperty("property")]
-        public string Property{get; private set;}
+        public string Property {get; private set;}
 
 
-        public PacketActionAuctionProperty(string playerId, int minPrice) : base("ActionAuctionProperty")
+        public PacketActionAuctionProperty() : base("ActionAuctionProperty")
         {
-            this.PlayerId = playerId;
-            this.MinPrice = minPrice;
+
         }
 
     }

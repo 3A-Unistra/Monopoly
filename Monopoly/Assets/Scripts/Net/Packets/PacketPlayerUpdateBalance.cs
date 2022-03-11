@@ -1,4 +1,4 @@
-﻿/*
+/*
  * PacketPlayerUpdateBalance.cs
  * 
  * Date created : 03/03/2022
