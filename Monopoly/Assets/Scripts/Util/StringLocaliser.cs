@@ -88,21 +88,24 @@ namespace Monopoly.Util
          * <param name="friendly">
          *     Friendly name for the file language. Used for display.
          * </param>
+         * <returns>
+         *     <c>true</c> if the strings are successfully loaded.
+         * </returns>
          */
-        public static void LoadStrings(string filename, string id,
+        public static bool LoadStrings(string filename, string id,
                                        string friendly)
         {
             if (filename == null)
             {
                 Debug.LogError("Attempted to load null language asset.");
-                return;
+                return false;
             }
             if (id == null)
             {
                 Debug.LogError(string.Format(
                     "Attempted to load language asset '{0}' with null id.",
                     filename));
-                return;
+                return false;
             }
             Dictionary<string, string> stringSet =
                 JsonLoader.LoadJsonAsset<Dictionary<string, string>>(filename);
@@ -111,7 +114,9 @@ namespace Monopoly.Util
                 StringLanguage language =
                                     new StringLanguage(id, friendly, stringSet);
                 languages.Add(language);
+                return true;
             }
+            return false;
         }
 
         /**
