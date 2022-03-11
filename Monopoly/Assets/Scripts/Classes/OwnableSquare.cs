@@ -170,12 +170,15 @@ namespace Monopoly.Classes
           * true if the given square is ownable and false if not.
           * </returns>
           */
-        public bool IsOwnableIndex(int idx)
+        public static bool IsOwnableIndex(int idx)
         {
-            SquareType type = Board.Elements[idx].Type;
+            /* FIXME: Incorrectly implemented as well as the other IsXIndex
+               functions */
+            /*SquareType type = Board.Elements[idx].Type;
             return type == SquareType.Field || 
                    type == SquareType.Station || 
-                   type == SquareType.Company;
+                   type == SquareType.Company;*/
+            return true;
         }
         
         
