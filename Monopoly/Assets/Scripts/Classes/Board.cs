@@ -129,7 +129,7 @@ namespace Monopoly.Classes
 			ChanceDeck.Add(new Card("Chance",12,"..."));
 			ChanceDeck.Add(new Card("Chance",13,"..."));
 			ChanceDeck.Add(new Card("Chance",14,"..."));
-			ChanceDeck.Add(new Card("Chance",15,"..."));
+			ChanceDeck.Add(new Card("Chance",15,"OutOfJail"));
 			CommunityDeck = new List<Card>();
 			CommunityDeck.Add(new Card("Community",0,"..."));
 			CommunityDeck.Add(new Card("Community",1,"..."));
@@ -146,7 +146,7 @@ namespace Monopoly.Classes
 			CommunityDeck.Add(new Card("Community",12,"..."));
 			CommunityDeck.Add(new Card("Community",13,"..."));
 			CommunityDeck.Add(new Card("Community",14,"..."));	
-			CommunityDeck.Add(new Card("Community",15,"..."));
+			CommunityDeck.Add(new Card("Community",15,"OutOfJail"));
 
         }
         
@@ -439,13 +439,13 @@ namespace Monopoly.Classes
         */        
         public void ReturnCard(string type)
         {
-	        if (type == "CHANCE")
+	        if (type == "Chance")
 	        {
-		        ChanceDeck.Add(new Card("CHANCE",15,"OutOfJail"));
+		        ChanceDeck.Add(new Card("Chance",15,"OutOfJail"));
 	        }
-	        else if (type == "COMMUNITY")
+	        else if (type == "Chance")
 	        {
-		        CommunityDeck.Add(new Card("COMMUNITY",15,"OutOfJail"));
+		        CommunityDeck.Add(new Card("Community",15,"OutOfJail"));
 	        }
 	        else
 	        {

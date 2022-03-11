@@ -207,8 +207,9 @@ namespace Monopoly.Classes
         */ 
         public void EnterPrison()
         {
-            Position = 9;
+            Position = 10;
             InJail = true;
+            Doubles = 0;
         }
         /**
         * <summary>
@@ -219,6 +220,7 @@ namespace Monopoly.Classes
         public void ExitPrison()
         {
             InJail = false;
+            JailTurns = 0;
         }
         /**
         * <summary>
