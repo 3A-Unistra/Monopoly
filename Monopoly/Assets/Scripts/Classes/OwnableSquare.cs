@@ -26,7 +26,7 @@ namespace Monopoly.Classes
          * <summary>
          * The owner of the property.
          * </summary>
-         * <exception cref="InvalidPlayer">
+         * <exception cref="Monopoly.Exceptions.InvalidPlayer">
          * Throws an exception if the given player is not in the list of the
          * players playing the game.
          * </exception>
@@ -81,12 +81,12 @@ namespace Monopoly.Classes
           * An instance of the ownable square object with the given type, id,
           * name, image, mortgaged status, price and rent.
           * </returns>
-          * <exception cref="WrongIdException">
+          * <exception cref="Monopoly.Exceptions.WrongIdException">
           * Throws an exception if the given id is a negative number, or a
           * number greater than 39 or a number of this list
           * {0,2,4,7,10,17,20,22,30,33,36,38}.
           * </exception>
-          * <exception cref="WrongTypeException">
+          * <exception cref="Monopoly.Exceptions.WrongTypeException">
           * Throws an exception if the given type is different than a
           * SquareType.Field, SquareType.Station or SquareType.Company.
           * </exception>
@@ -119,7 +119,7 @@ namespace Monopoly.Classes
           * The player that lands on another player's owned property and has
           * to pay the rent for its owner.
           * </param>
-          * <exception cref="InvalidPlayer">
+          * <exception cref="Monopoly.Exceptions.InvalidPlayer">
           * Throws an exception if the given player is not in the list of the
           * players playing the game.
           * </exception>

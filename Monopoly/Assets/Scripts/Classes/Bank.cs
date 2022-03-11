@@ -14,18 +14,42 @@ using UnityEngine;
 
 namespace Monopoly.Classes
 {
+    /**
+    * <summary>
+    * Class defining the role of the bank, has limited houses and hotels
+    * for the player to buy, maximum 32 houses and 12 hotels
+    * </summary>
+    */
     public class Bank 
     {
+        /**
+        * <summary>
+        * Nbhouse is the number of houses currently
+        * in the bank
+        * </summary>
+        */    
         public int NbHouse
         {
             get;
             set;
         }
+        /**
+        * <summary>
+        * Nbhotel is the number of hotels currently
+        * in the bank
+        * </summary>
+        */           
         public int NbHotel
         {
             get;
             set;
-        }        
+        }
+        /**
+        * <summary>
+        * Constructor
+        * sets the number of houses and hotel at the beginning of the game
+        * </summary>
+        */        
         public Bank()
         {
             this.NbHouse = 32;
@@ -48,6 +72,14 @@ namespace Monopoly.Classes
             }
             return false;
         }
+        /**
+        * <summary>
+        * take a hotel from the bank if there are any
+        * </summary>        
+        * <return>
+        * true if you took a hotel frm the bank, false if there are none
+        * </return>
+        */
         bool BuyHotel()
         {
             if(NbHotel > 0)
@@ -57,10 +89,20 @@ namespace Monopoly.Classes
             }   
             return false;
         }
+        /**
+        * <summary>
+        * increment the number of houses by one as the player sells one
+        * </summary>
+        */
         void SellHouse()
         {
             NbHouse++;
         }
+        /**
+        * <summary>
+        * increment the number of hotels by one as the player sells one
+        * </summary>
+        */        
         void SellHotel()
         {
             NbHotel++;

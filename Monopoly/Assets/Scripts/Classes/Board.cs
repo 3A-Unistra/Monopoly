@@ -18,6 +18,13 @@ using UnityEngine;
 
 namespace Monopoly.Classes
 {
+    /**
+    * <summary>
+    * Class Board listing the squares of the board
+    * depending on their type and their set
+    * Also store money for the player to get at free parking
+    * </summary>
+    */
     public class Board
     {
         
@@ -186,6 +193,7 @@ namespace Monopoly.Classes
          * propertySet the set of properties of color c
          * </return>        
          */
+
         public static List<PropertySquare> GetPropertySet(Color c)
         {
             List<PropertySquare> propertySet = new List<PropertySquare>();

@@ -69,7 +69,7 @@ namespace Monopoly.Classes
          * Returns an instance of the Square object with the given type, id, name and
          * image.
          * </returns>
-         * * <exception cref="WrongIdException">
+         * * <exception cref="Monopoly.Exceptions.WrongIdException">
          * Throws an exception if the given id is a negative number, or a number
          * greater than 39.
          * </exception>
@@ -77,9 +77,11 @@ namespace Monopoly.Classes
         public Square(SquareType type, int id, string name, Material image)
         {
             Type = type;
-            Id = id;
             Name = name;
             Image = image;
+            if (id < 0 || id > 39)
+                throw new Monopoly.Exceptions.WrongIdException
+                ("The id should be a number between 0 and 39.");
         }
 
         /**

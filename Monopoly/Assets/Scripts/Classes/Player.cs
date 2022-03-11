@@ -14,33 +14,79 @@ using UnityEngine;
 
 namespace Monopoly.Classes
 {
+    /**
+    * <summary>
+    * Class defining the player characteristics, position, name
+    * score, in game money, Injail states if the player is in jail
+    * and two boolean to check if the player has an out of jail card
+    * a bot will replace the player if Bot is true
+    * </summary>
+    */
     public class Player
     {
+        /**
+        * <summary>
+        * getter setter
+        * player's id
+        * </summary>
+        */         
         public string Id
         {
             get;
             set;
         }
+        /**
+        * <summary>
+        * getter setter
+        * the player's name
+        * </summary>
+        */         
         public string Name
         {
             get;
             set;
         }
+        /**
+        * <summary>
+        * getter setter
+        * Player's pawn on the board
+        * </summary>
+        */         
         public Character Character
         {
             get;
             set;
         }
+        /**
+        * <summary>
+        * getter setter
+        * Player position on the board,
+        * position begin at 0 and ends at 39  as there are 40 squares
+        * on a monopoly board and the square list begins at 0
+        * </summary>
+        */            
         public int Position
         {
             get;
-            set;
+            set;             
         }
+        /**
+        * <summary>
+        * getter setter
+        * the score which will be shown at the end of the game
+        * </summary>
+        */        
         public int Score
         {
             get;
             set;
         }
+        /**
+        * <summary>
+        * getter setter
+        * the amount of money the player has
+        * </summary>
+        */         
         public int Money
         {
             get;
@@ -70,21 +116,49 @@ namespace Monopoly.Classes
             get;
             set;
         }
+        /**
+        * <summary>
+        * getter setter
+        * the boolean Bankrupt states if the player has lost all his money 
+        * and cannot pay his debt, if that's the case he loses the game.
+        * </summary>
+        */        
         public bool Bankrupt
         {
             get;
             set;
         }
+        /**
+        * <summary>
+        * getter setter
+        * boolean stating if the player possesses the out of jail
+        * chance card
+        * </summary>
+        */         
         public bool ChanceJailCard
         {
             get;
             set;
         }
+        /**
+        * <summary>
+        * getter setter
+        * boolean stating if the player possesses the out of jail
+        * community card
+        * </summary>
+        */         
         public bool CommunityJailCard
         {
             get;
             set;
         }
+        /**
+        * <summary>
+        * getter setter
+        * boolean stating if the player is controlled
+        * by an AI
+        * </summary>
+        */         
         public bool Bot
         {
             get;
@@ -124,11 +198,24 @@ namespace Monopoly.Classes
             this.CommunityJailCard = false;
             this.Bot = false;
         }
+        /**
+        * <summary>
+        * The player is sent to jail,
+        * his position is set to 9(Jail Square) 
+        * and InJail bool set to true
+        * </summary>
+        */ 
         public void EnterPrison()
         {
             Position = 9;
             InJail = true;
         }
+        /**
+        * <summary>
+        * the player is free, he can now roll his dices 
+        * and moves across the board 
+        * </summary>
+        */     
         public void ExitPrison()
         {
             InJail = false;
@@ -154,11 +241,7 @@ namespace Monopoly.Classes
                 to.Money += amount;
             }
             else
-            {
-                to.Money += Money;
-                Money = 0;
-                Bankrupt = true;
-            }
+                throw new InvalidOperationException("Unsufficient money");
         }
         /**
         * <summary>
@@ -203,7 +286,7 @@ namespace Monopoly.Classes
             }
             else
             {
-                throw new InvalidOperationException("Carte indisponible");
+                throw new InvalidOperationException("Unavailable card");
             }
         }
     }
