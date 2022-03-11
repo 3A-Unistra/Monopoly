@@ -178,7 +178,7 @@ namespace Monopoly.Camera
          *     Toggle the camera viewing mode between isometric and top-down.
          * </summary>
          */
-        private void ToggleCameraMode()
+        public void ToggleCameraMode()
         {
             if (!Animating)
             {
@@ -209,7 +209,7 @@ namespace Monopoly.Camera
          *     equal to 0, then no rotation shall take place.
          * </param>
          */
-        private void RotateCamera(int dir)
+        public void RotateCamera(int dir)
         {
             if (!Animating && dir != 0)
             {
@@ -236,7 +236,7 @@ namespace Monopoly.Camera
          *     mouse wheel.
          * </param>
          */
-        private void ZoomCamera(float delta)
+        public void ZoomCamera(float delta)
         {
             float zoomDisplacement = delta * Time.deltaTime * zoomSpeed;
             cam.orthographicSize =
@@ -256,7 +256,10 @@ namespace Monopoly.Camera
             if (modeToggle || rotateToggle)
             {
                 // animate camera mode toggle
-                animateTime += Time.deltaTime / modeSpeed;
+                if (modeToggle)
+                    animateTime += Time.deltaTime / modeSpeed;
+                else
+                    animateTime += Time.deltaTime / rotationSpeed;
                 if (animateTime >= 1.0f)
                 {
                     // end of animation, set to destination quaternion
