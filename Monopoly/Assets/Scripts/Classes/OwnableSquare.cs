@@ -127,6 +127,7 @@ namespace Monopoly.Classes
         public virtual void PayRent(Player renter)
         {
             renter.Money -= Rent;
+            Owner.Money += Rent;
         }
 
         /**

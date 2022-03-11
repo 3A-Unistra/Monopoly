@@ -190,17 +190,37 @@ namespace Monopoly.Classes
             // TO DO THROW AN EXCEPTION IF THE PLAYER IS NOT IN THE GAME
             // WAITING FOR THE GAME STATE CLASS
             if (NbHouse == 0)
+            {
                 tenant.Money -= Rent;
+                Owner.Money += Rent;
+            }
+                
             else if (NbHouse == 1)
+            {
                 tenant.Money -= House1Rent;
+                Owner.Money += Rent;
+            }
             else if (NbHouse == 2)
+            {
                 tenant.Money -= House2Rent;
+                Owner.Money += Rent;
+            }
+                
             else if (NbHouse == 3)
+            {
                 tenant.Money -= House3Rent;
+                Owner.Money += Rent;
+            }
             else if (NbHouse == 4)
+            {
                 tenant.Money -= House4Rent;
+                Owner.Money += Rent;
+            }
             else if (NbHouse == 5)
+            {
                 tenant.Money -= HotelRent;
+                Owner.Money += Rent;
+            }
             else
             {
                 throw new Monopoly.Exceptions.InvalidHouseNumberException
