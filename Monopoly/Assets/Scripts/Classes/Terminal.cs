@@ -149,7 +149,7 @@ namespace Monopoly.TestTools
             p.InJail = false;
             p.JailTurns = 0;
         }
-        
+
         private void PayTax(Player p, Square s)
         {
             TaxSquare ts = (TaxSquare) s;
@@ -159,7 +159,39 @@ namespace Monopoly.TestTools
                 p.Money -= ts.TaxPrice;
             GameBoard.BoardMoney += ts.TaxPrice;
         }
+        public void MoveToCompany(Player p)
+        {
+            
+            CompanySquare c1 = (CompanySquare) Board.Elements[12];
+            CompanySquare c2 = (CompanySquare) Board.Elements[28];
+            Random rnd = new Random();
+            int roll = rnd.Next(1, 7) + rnd.Next(1, 7);
+            if(p.Position < 12)
+            {
+                p.Position = 12;
+                if ((c1.Owner != null) && (c1.Owner.Id != p.Id))
+                    PayCompany2(p, c1, roll);
 
+            }
+            else
+                p.Position = 28;
+                if ((c2.Owner != null) && (c2.Owner.Id != p.Id))
+                    PayCompany2(p, c2, roll);
+        }
+        public void PayCompany1(Player p,CompanySquare s, int diceRoll)
+        {
+            p.Money -= 6 * diceRoll;
+            if(p.Money < 0 )
+                p.Bankrupt = true;
+            sortedPlayersList[int.Parse(s.Owner.Id)].Money += 6 * diceRoll; 
+        }        
+        public void PayCompany2(Player p, CompanySquare s, int diceRoll)
+        {
+            p.Money -= 10 * diceRoll;
+            if(p.Money <0 )
+                p.Bankrupt = true;            
+            sortedPlayersList[int.Parse(s.Owner.Id)].Money += 10 * diceRoll; 
+        }
         private void PickUpBoardMoney(Player p)
         {
             p.Money += GameBoard.BoardMoney;
@@ -393,5 +425,189 @@ namespace Monopoly.TestTools
            }
            Debug.Log(msg);
         }
+        public void NextStation(Player p)
+        {
+            if (p.Position < 5)
+                p.Position = 5;
+            else if (p.Position < 15)
+                p.Position = 15;
+            else if (p.Position < 25)
+                p.Position = 25;
+            else if (p.Position < 35)
+                p.Position = 35; 
+            else
+            {
+                p.Money += 200;
+                p.Position = 5;
+            }           
+        }
+        public void ElectedPresident(Player p)
+        {
+            for (int i = 0; i < sortedPlayersList.Count(); i++)
+            {
+                if((p.Money >= 50) && (sortedPlayersList[i].Id != p.Id))
+                {
+                    sortedPlayersList[i].Money += 50;
+                    p.Money -= 50;
+                }
+                else if ((p.Money < 50) && (sortedPlayersList[i].Id != p.Id))
+                {
+                    p.Bankrupt = true;
+                    sortedPlayersList[i].Money += p.Money;                    
+                    p.Money = 0;
+                }
+            }
+        }
+        public void MaintenanceCost(Player p)
+        {
+            PropertySquare prop;
+            for (int i = 0; i < 40; i++)
+            {
+                prop = (PropertySquare) Board.Elements[i];
+                if(prop.Owner.Id == p.Id)
+                {
+                    if(prop.NbHouse > 4)
+                        p.Money -= 100;
+                    else
+                        p.Money -= 25*prop.NbHouse;
+                }
+            }
+            if(p.Money < 0)
+                p.Bankrupt = true;
+        }
+        public void PayDebt(Player p)
+        {
+            while(p.Money < 0)
+            //TODO
+                ;
+
+        }
+        private void ChanceCardEffect(Player p, int i)
+        {
+            switch (i)
+            {
+                case 0:
+                    p.Position = 39;
+                    break;
+                case 1:
+                    p.Position = 0;
+                    p.Money += 200;
+                    break;
+                case 2:
+                    if( p.Position > 24)
+                        p.Money += 200;
+                    p.Position = 24;
+                    break;
+                case 3:
+                    if( p.Position > 11)
+                        p.Money += 200;
+                    p.Position = 11;
+                    break;
+                case 4:
+                    NextStation(p);             
+                    break;
+                case 5:
+                    NextStation(p);              
+                    break;
+                case 6:
+                    MoveToCompany( p);
+                    break;
+                case 7:
+                    p.Money += 50;
+                    break;
+                case 8:
+                    p.Money += 150;
+                    break;
+                case 9:
+                    Board.Move(p, -3);
+                    break;
+                case 10:
+                    p.InJail = true;
+                    p.Position = 10;
+                    break;
+                case 11:
+                    MaintenanceCost( p);
+                    break;
+                case 12:
+                    p.Money -= 15;
+                    if(p.Money < 0)
+                    p.Bankrupt = true;
+                    break;
+                case 13:
+                    if (p.Position > 5)
+                        p.Money += 200;
+                    p.Position = 5;
+                    break;
+                case 14:
+                    ElectedPresident(p);
+                    break;
+                case 15:
+                    p.ChanceJailCard = true;
+                    break;                                                
+            }
+        }
+        //TODO
+        private void CommunityCardEffect(Player p, int i)
+        {
+            switch (i)
+            {
+                case 0:
+                    p.Money -= 50;
+                    if(p.Money < 0)
+                        p.Bankrupt = true;
+                    break;
+                case 1:
+                    p.Money += 100;
+                    break;
+                case 2:
+                    p.Money +=100;
+                    break;
+                case 3:
+                    p.Money -= 50;
+                    if(p.Money < 0)
+                        p.Bankrupt = true;
+                    break;
+                case 4:
+                    p.Money +=20;
+                    break;
+                case 5:
+                    p.Money -= 100;
+                    if(p.Money < 0)
+                        p.Bankrupt = true;
+                    break;
+                case 6:
+                    p.InJail = true;
+                    p.Position = 10;
+                    break;
+                case 7:
+                    p.Money +=25;
+                    break;
+                case 8:
+                //TODO
+                    break;
+                case 9:
+                    p.Money += 100;
+                    break;
+                case 10:
+                    p.Money += 50;
+                    break;
+                case 11:
+                    p.Money += 10;
+                    break;
+                case 12:
+                    MaintenanceCost(p);
+                    break;
+                case 13:
+                    p.Position = 0;
+                    p.Money += 200;
+                    break;
+                case 14:
+                p.Money += 200;
+                    break;
+                case 15: 
+                    p.CommunityJailCard = true;
+                    break;                                                                   
+            }
+        }        
     }
 }

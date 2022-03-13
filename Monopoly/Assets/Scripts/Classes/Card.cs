@@ -53,5 +53,6 @@ namespace Monopoly.Classes
             this.type = type;
             this.desc = desc;
         }
+
     }
 }
