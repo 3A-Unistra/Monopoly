@@ -87,9 +87,8 @@ namespace Monopoly.Classes
           * </returns>
           */
         public bool IsStationIndex(int idx)
-        {
-            SquareType type = Board.Elements[idx].Type;
-            return type == SquareType.Station;
+        { 
+            return idx == 5 || idx == 15 || idx == 25 || idx == 35;
         }
     }
 }

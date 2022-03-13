@@ -68,8 +68,6 @@ namespace Monopoly.Classes
           */
         public bool IsFreeParkingIndex(int idx)
         {
-            SquareType type = Board.Elements[idx].Type;
-            return type == SquareType.Parking;
-        }
+            return idx == 20;        }
     }
 }

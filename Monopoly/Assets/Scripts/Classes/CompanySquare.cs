@@ -82,8 +82,7 @@ namespace Monopoly.Classes
           */
         public bool IsCompanyIndex(int idx)
         {
-            SquareType type = Board.Elements[idx].Type;
-            return type == SquareType.Company;
+            return idx == 12 || idx == 28;
         }
     }
 }

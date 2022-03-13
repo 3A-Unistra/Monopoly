@@ -63,8 +63,7 @@ namespace Monopoly.Classes
           */
         public bool IsChanceIndex(int idx)
         {
-            SquareType type = Board.Elements[idx].Type;
-            return type == SquareType.Chance;
+            return idx == 7 || idx == 22 || idx == 36;
         }
     }
 }

@@ -66,8 +66,7 @@ namespace Monopoly.Classes
           */
         public bool IsGoToJailIndex(int idx)
         {
-            SquareType type = Board.Elements[idx].Type;
-            return type == SquareType.GoToJail;
+            return idx == 30;
         }
     }
 }

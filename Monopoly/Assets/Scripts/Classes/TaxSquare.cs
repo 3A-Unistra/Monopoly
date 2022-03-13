@@ -74,8 +74,7 @@ namespace Monopoly.Classes
           */
         public bool IsTaxIndex(int idx)
         {
-            SquareType type = Board.Elements[idx].Type;
-            return type == SquareType.Tax;
+            return idx == 4 || idx == 38;
         }
     }
 }
