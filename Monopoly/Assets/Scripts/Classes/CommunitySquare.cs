@@ -69,8 +69,7 @@ namespace Monopoly.Classes
           */
         public bool IsCommunityIndex(int idx)
         {
-            SquareType type = Board.Elements[idx].Type;
-            return type == SquareType.Community;
+            return idx == 2 || idx == 17 || idx == 33;
         }
     }
 }

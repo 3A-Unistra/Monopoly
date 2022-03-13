@@ -67,8 +67,7 @@ namespace Monopoly.Classes
           */
         public bool IsGoIndex(int idx)
         {
-            SquareType type = Board.Elements[idx].Type;
-            return type == SquareType.Go;
+            return idx == 0;
         }
     }
 }

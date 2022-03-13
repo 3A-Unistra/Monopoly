@@ -279,8 +279,10 @@ namespace Monopoly.Classes
           */
         public bool IsPropertyIndex(int idx)
         {
-            SquareType type = Board.Elements[idx].Type;
-            return type == SquareType.Field;
+            int[] ids = {1,3,6,8,9,11,13,14,16,18,19,21,23,
+                24,26,27,29,31,32,34,37,39};
+            List<int> validIdx = new List<int>(ids);
+            return validIdx.Contains(idx);
         }
     }
 }

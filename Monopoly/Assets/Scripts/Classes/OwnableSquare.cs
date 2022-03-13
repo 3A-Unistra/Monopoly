@@ -173,13 +173,10 @@ namespace Monopoly.Classes
           */
         public static bool IsOwnableIndex(int idx)
         {
-            /* FIXME: Incorrectly implemented as well as the other IsXIndex
-               functions */
-            /*SquareType type = Board.Elements[idx].Type;
-            return type == SquareType.Field || 
-                   type == SquareType.Station || 
-                   type == SquareType.Company;*/
-            return true;
+            int[] ids = {1,3,5,6,8,9,11,12,13,14,15,16,18,19,21,23,
+                24,25,26,27,28,29,31,32,34,35,37,39};
+            List<int> validIdx = new List<int>(ids);
+            return validIdx.Contains(idx);
         }
         
         
