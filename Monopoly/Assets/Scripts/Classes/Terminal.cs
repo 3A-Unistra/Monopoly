@@ -5,6 +5,7 @@
  * 
  * Date created : 04/03/2022
  * Author       : Rayan Marmar <rayan.marmar@etu.unistra.fr>
+                : Christophe Pierson <christophe.pierson@etu.unistra.fr>
  *              
  */
 
@@ -159,6 +160,16 @@ namespace Monopoly.TestTools
                 p.Money -= ts.TaxPrice;
             GameBoard.BoardMoney += ts.TaxPrice;
         }
+        /**
+        * <summary>
+        * the player moves to the next company and
+        * if it is owned, must roll the dices and
+        * pay ten time the result
+        * </summary>
+        * <parameter name="p">
+        * the player who moves to the next company
+        * </parameter>           
+        */ 
         public void MoveToCompany(Player p)
         {
             
@@ -178,13 +189,44 @@ namespace Monopoly.TestTools
                 if ((c2.Owner != null) && (c2.Owner.Id != p.Id))
                     PayCompany2(p, c2, roll);
         }
+        /**
+        * <summary>
+        * the player is on an owned company
+        * he must pay the owner six times the result on his dices
+        * </summary>
+        * <parameter name="p">
+        * the player who pays
+        * </parameter>
+        * <parameter name="diceRoll">
+        * the amount rolled
+        * </parameter> 
+        * <parameter name="s">
+        * the company where the player moved
+        * </parameter>                           
+        */ 
         public void PayCompany1(Player p,CompanySquare s, int diceRoll)
         {
             p.Money -= 6 * diceRoll;
             if(p.Money < 0 )
                 p.Bankrupt = true;
             sortedPlayersList[int.Parse(s.Owner.Id)].Money += 6 * diceRoll; 
-        }        
+        }  
+        /**
+        * <summary>
+        * the player is on an owned company
+        * and the owner owns the two companies
+        * he must pay the owner ten times the result on his dices
+        * </summary>
+        * <parameter name="p">
+        * the player who pays
+        * </parameter>
+        * <parameter name="diceRoll">
+        * the amount rolled
+        * </parameter> 
+        * <parameter name="s">
+        * the company where the player moved
+        * </parameter>                           
+        */               
         public void PayCompany2(Player p, CompanySquare s, int diceRoll)
         {
             p.Money -= 10 * diceRoll;
@@ -425,6 +467,15 @@ namespace Monopoly.TestTools
            }
            Debug.Log(msg);
         }
+        /**
+        * <summary>
+        * the player must go to the next station
+        * this is a card effect    
+        * </summary>
+        * <parameter name="p">
+        * the player who goes to the next station
+        * </parameter>           
+        */          
         public void NextStation(Player p)
         {
             if (p.Position < 5)
@@ -441,6 +492,15 @@ namespace Monopoly.TestTools
                 p.Position = 5;
             }           
         }
+        /**
+        * <summary>
+        * the player must give 50 euros for each other players
+        * this is a card effect    
+        * </summary>
+        * <parameter name="p">
+        * the player who pays
+        * </parameter>           
+        */         
         public void ElectedPresident(Player p)
         {
             for (int i = 0; i < sortedPlayersList.Count(); i++)
@@ -458,6 +518,17 @@ namespace Monopoly.TestTools
                 }
             }
         }
+        /**
+        * <summary>
+        * the player must pay 25 euros for each of 
+        * his houses and 100 euros for each of
+        * his hotels
+        * this is a card effect    
+        * </summary>
+        * <parameter name="p">
+        * the player who pays
+        * </parameter>           
+        */          
         public void MaintenanceCost(Player p)
         {
             PropertySquare prop;
@@ -475,13 +546,56 @@ namespace Monopoly.TestTools
             if(p.Money < 0)
                 p.Bankrupt = true;
         }
+        /**
+        * <summary>
+        * The player must sell his properties utile his money is positive
+        * or he runs bankrupt and loses the game   
+        * </summary>
+        * <parameter name="p">
+        * the player who's amount of money is negative
+        * </parameter>           
+        */         
         public void PayDebt(Player p)
         {
-            while(p.Money < 0)
-            //TODO
+            bool giveUp = false;
+            while((p.Money < 0) && (!giveUp))
+            //TODO    
                 ;
-
+            if(p.Money >= 0)
+                p.Bankrupt = false;           
         }
+        /**
+        * <summary>
+        * gets 10 euro tip from every other placer
+        * this is a card effect    
+        * </summary>
+        * <parameter name="p">
+        * the player who gets tipped
+        * </parameter>           
+        */        
+        public void Tip(Player p)
+        {
+            p.Money += 10 * (sortedPlayersList.Count() - 1);
+            for (int i = 1; i < sortedPlayersList.Count(); i++)
+            {
+                if(sortedPlayersList[i] != p)
+                    sortedPlayersList[i].Money -= 10;
+                    if(sortedPlayersList[i].Money < 0)
+                        sortedPlayersList[i].Bankrupt = true;
+            }
+        }
+        /**
+        * <summary>
+        * The player draws a chance card i 
+        * and gets its effect      
+        * </summary>
+        * <parameter name="p">
+        * the player who draws the card
+        * </parameter>
+        * <parameter name="i">
+        * The card at place i in the list
+        * </parameter>           
+        */
         private void ChanceCardEffect(Player p, int i)
         {
             switch (i)
@@ -546,7 +660,18 @@ namespace Monopoly.TestTools
                     break;                                                
             }
         }
-        //TODO
+        /**
+        * <summary>
+        * The player draws a community card i 
+        * and gets its effect
+        * <parameter name="p">
+        * the player who draws the card
+        * </parameter>
+        * <parameter name="i">
+        * The card at place i in the list
+        * </parameter>         
+        * </summary>
+        */
         private void CommunityCardEffect(Player p, int i)
         {
             switch (i)
@@ -583,7 +708,7 @@ namespace Monopoly.TestTools
                     p.Money +=25;
                     break;
                 case 8:
-                //TODO
+                    Tip(p);
                     break;
                 case 9:
                     p.Money += 100;
