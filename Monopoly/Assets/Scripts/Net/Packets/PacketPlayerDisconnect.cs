@@ -20,11 +20,13 @@ namespace Monopoly.Net.Packets
         public string PlayerId { get; private set; }
 
         [JsonProperty("reason")]
-        public string ReasonDeconnection { get; private set; }
+        public string ReasonDisconnection { get; private set; }
 
-        public PacketPlayerDisconnect() : base("PlayerDisconnect")
+        public PacketPlayerDisconnect(string playerId, 
+            string reasonDisconnection) : base("PlayerDisconnect")
         {
-
+            this.PlayerId = playerId;
+            this.ReasonDisconnection = reasonDisconnection;
         }
 
     }

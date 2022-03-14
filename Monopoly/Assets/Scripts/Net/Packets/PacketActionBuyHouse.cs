@@ -18,13 +18,15 @@ namespace Monopoly.Net.Packets
     {
         [JsonProperty("id_player")]
         public string PlayerId { get; private set; }
-        
+
         [JsonProperty("id_house")]
-        public int IdHouse { get; private set; }
+        public int HouseId { get; private set; }
 
-        public PacketActionBuyHouse() : base("ActionActionBuyHouse")
+        public PacketActionBuyHouse(string playerId, int houseId) :
+            base("ActionActionBuyHouse")
         {
-
+            this.PlayerId = playerId;
+            this.HouseId = houseId;
         }
 
     }

@@ -19,9 +19,10 @@ namespace Monopoly.Net.Packets
         [JsonProperty("reason")]
         public string ReasonCancel { get; private set; }
 
-        public PacketActionExchangeCancel() : base("ActionExchangeCancel")
+        public PacketActionExchangeCancel(string reasonCancel) : 
+            base("ActionExchangeCancel")
         {
-
+            this.ReasonCancel = reasonCancel;
         }
 
     }

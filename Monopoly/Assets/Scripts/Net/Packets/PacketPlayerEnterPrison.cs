@@ -19,9 +19,10 @@ namespace Monopoly.Net.Packets
         [JsonProperty("id_player")]
         public string PlayerId { get; private set; }
 
-        public PacketPlayerEnterPrison() : base("PlayerEnterPrison")
+        public PacketPlayerEnterPrison(string playerId) : 
+            base("PlayerEnterPrison")
         {
-
+            this.PlayerId = playerId;
         }
 
     }

@@ -19,9 +19,9 @@ namespace Monopoly.Net.Packets
         [JsonProperty("id_bidder")]
         public string BidderId { get; private set; }
 
-        public PacketAuctionConcede() : base("AuctionConcede")
+        public PacketAuctionConcede(string bidderId) : base("AuctionConcede")
         {
-
+            this.BidderId = bidderId;
         }
 
     }

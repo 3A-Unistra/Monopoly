@@ -23,9 +23,11 @@ namespace Monopoly.Net.Packets
         public string Property { get; private set; }
 
 
-        public PacketActionBuyProperty() : base("ActionBuyProperty")
+        public PacketActionBuyProperty(string playerId, string property) : 
+            base("ActionBuyProperty")
         {
-
+            this.PlayerId = playerId;
+            this.Property = property;
         }
 
     }

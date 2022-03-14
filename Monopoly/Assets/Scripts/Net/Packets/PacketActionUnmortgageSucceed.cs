@@ -23,10 +23,11 @@ namespace Monopoly.Net.Packets
         public string Property { get; private set; }
 
 
-        public PacketActionUnmortgageSucceed() :
-            base("ActionUnmortgageSucceed")
+        public PacketActionUnmortgageSucceed(string playerId, 
+            string property) : base("ActionUnmortgageSucceed")
         {
-
+            this.PlayerId = playerId;
+            this.Property = property;
         }
 
     }

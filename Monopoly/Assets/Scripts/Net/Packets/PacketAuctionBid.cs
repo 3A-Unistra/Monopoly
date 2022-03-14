@@ -22,9 +22,11 @@ namespace Monopoly.Net.Packets
         [JsonProperty("new_price")]
         public int NewPrice { get; private set; }
 
-        public PacketAuctionBid() : base("AuctionBid")
+        public PacketAuctionBid(string bidderId, int newPrice) : 
+            base("AuctionBid")
         {
-
+            this.BidderId = bidderId;
+            this.NewPrice = newPrice;
         }
 
     }
