@@ -22,9 +22,11 @@ namespace Monopoly.Net.Packets
         [JsonProperty("destination_case")]
         public int DestinaionSquare { get; private set; }
 
-        public PacketPlayerMove() : base("PlayerMove")
+        public PacketPlayerMove(string movingPlayerId, 
+            int destinationSquare) : base("PlayerMove")
         {
-
+            this.MovingPlayerId = movingPlayerId;
+            this.DestinaionSquare = destinationSquare;
         }
 
     }

@@ -22,9 +22,11 @@ namespace Monopoly.Net.Packets
         [JsonProperty("reason")]
         public string ReasonReconnection { get; private set; }
 
-        public PacketPlayerReconnect() : base("PlayerReconnect")
+        public PacketPlayerReconnect(string playerId,
+            string reasonReconnection) : base("PlayerReconnect")
         {
-
+            this.PlayerId = playerId;
+            this.ReasonReconnection = reasonReconnection;
         }
 
     }

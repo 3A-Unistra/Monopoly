@@ -22,9 +22,11 @@ namespace Monopoly.Net.Packets
         [JsonProperty("id_house")]
         public string HouseId { get; private set; }
 
-        public PacketActionSellHouse() : base("ActionActionSellHouse")
+        public PacketActionSellHouse(string playerId, string houseId) : 
+            base("ActionActionSellHouse")
         {
-
+            this.PlayerId = playerId;
+            this.HouseId = houseId;
         }
 
     }

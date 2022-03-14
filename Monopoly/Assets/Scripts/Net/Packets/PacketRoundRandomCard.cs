@@ -25,9 +25,12 @@ namespace Monopoly.Net.Packets
         [JsonProperty("card_content")]
         public string CardContent { get; private set; }
 
-        public PacketRoundRandomCard() : base("RoundRandomCard")
+        public PacketRoundRandomCard(string playerId, bool isCommunautaire, 
+            string cardContent) : base("RoundRandomCard")
         {
-
+            this.PlayerId = playerId;
+            this.IsCommunautaire = isCommunautaire;
+            this.CardContent = cardContent;
         }
 
     }

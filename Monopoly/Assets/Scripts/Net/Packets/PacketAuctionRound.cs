@@ -25,9 +25,12 @@ namespace Monopoly.Net.Packets
         [JsonProperty("current_price")]
         public int CurrentPrice { get; private set; }
 
-        public PacketAuctionRound() : base("AuctionRound")
+        public PacketAuctionRound(string property, string sellerId, 
+            int currentPrice) : base("AuctionRound")
         {
-
+            this.Property = property;
+            this.SellerId = sellerId;
+            this.CurrentPrice = currentPrice;
         }
 
     }

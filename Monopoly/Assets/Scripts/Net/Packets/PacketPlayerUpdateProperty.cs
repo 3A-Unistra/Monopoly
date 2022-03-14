@@ -25,9 +25,12 @@ namespace Monopoly.Net.Packets
         [JsonProperty("property")]
         public string Property { get; private set; }
 
-        public PacketPlayerUpdateProperty() : base("PlayerUpdateProperty")
+        public PacketPlayerUpdateProperty(string playerId, bool isAdded, 
+            string property) : base("PlayerUpdateProperty")
         {
-
+            this.PlayerId = playerId;
+            this.IsAdded = isAdded;
+            this.Property = property;
         }
 
     }

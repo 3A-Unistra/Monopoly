@@ -1,4 +1,4 @@
-/*
+﻿/*
  * PacketPlayerUpdateBalance.cs
  * 
  * Date created : 03/03/2022
@@ -28,9 +28,13 @@ namespace Monopoly.Net.Packets
         [JsonProperty("reason")]
         public string Reason { get; private set; }
 
-        public PacketPlayerUpdateBalance() : base("PlayerUpdateBalance")
+        public PacketPlayerUpdateBalance(string playerId, int oldBalance, 
+            int newBalance, string reason) : base("PlayerUpdateBalance")
         {
-
+            this.PlayerId = playerId;
+            this.OldBalance = oldBalance;
+            this.NewBalance = newBalance;
+            this.Reason = reason;
         }
 
     }

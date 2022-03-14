@@ -25,9 +25,13 @@ namespace Monopoly.Net.Packets
         [JsonProperty("content_trade")]
         public string ContentTrade { get; private set; }
 
-        public PacketActionExchangeTradeSelect() : base("ActionExchangeTradeSelect")
+        public PacketActionExchangeTradeSelect(string playerIdInitRequest, 
+            string playerIdRequested, string contentTrade) : 
+            base("ActionExchangeTradeSelect")
         {
-
+            this.PlayerIdInitRequest = playerIdInitRequest;
+            this.PlayerIdRequested = playerIdRequested;
+            this.ContentTrade = contentTrade;
         }
 
     }

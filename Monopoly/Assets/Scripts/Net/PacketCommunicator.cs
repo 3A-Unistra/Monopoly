@@ -149,53 +149,53 @@ namespace Monopoly.Net
 
         public void DoGameStartDiceThrow()
         {
-            PacketGameStartDiceThrow packet = new PacketGameStartDiceThrow();
-            SendPacket(packet);
+            //PacketGameStartDiceThrow packet = new PacketGameStartDiceThrow();
+            //SendPacket(packet);
         }
 
         public void DoRoundDiceChoice()
         {
-            PacketRoundDiceChoice packet = new PacketRoundDiceChoice();
-            SendPacket(packet);
+            //PacketRoundDiceChoice packet = new PacketRoundDiceChoice();
+            //SendPacket(packet);
         }
 
         public void DoAuctionProperty()
         {
-            PacketActionAuctionProperty packet
-                = new PacketActionAuctionProperty();
-            SendPacket(packet);
+            //PacketActionAuctionProperty packet
+            //    = new PacketActionAuctionProperty();
+            //SendPacket(packet);
         }
 
         public void DoBuyHouse()
         {
-            PacketActionBuyHouse packet = new PacketActionBuyHouse();
-            SendPacket(packet);
+            //PacketActionBuyHouse packet = new PacketActionBuyHouse();
+            //SendPacket(packet);
         }
 
         public void DoSellHouse()
         {
-            PacketActionSellHouse packet = new PacketActionSellHouse();
-            SendPacket(packet);
+            //PacketActionSellHouse packet = new PacketActionSellHouse();
+            //SendPacket(packet);
         }
 
         public void DoBuyProperty()
         {
-            PacketActionBuyProperty packet = new PacketActionBuyProperty();
-            SendPacket(packet);
+            //PacketActionBuyProperty packet = new PacketActionBuyProperty();
+            //SendPacket(packet);
         }
 
         public void DoMortgageProperty()
         {
-            PacketActionMortgageProperty packet
-                = new PacketActionMortgageProperty();
-            SendPacket(packet);
+            //PacketActionMortgageProperty packet
+            //    = new PacketActionMortgageProperty();
+            //SendPacket(packet);
         }
 
         public void DoUnmortgageProperty()
         {
-            PacketActionUnmortgageProperty packet
-                = new PacketActionUnmortgageProperty();
-            SendPacket(packet);
+            //PacketActionUnmortgageProperty packet
+            //    = new PacketActionUnmortgageProperty();
+            //SendPacket(packet);
         }
 
         public void DoEndAction()
@@ -206,20 +206,20 @@ namespace Monopoly.Net
 
         public void DoBidAuction()
         {
-            PacketAuctionBid packet = new PacketAuctionBid();
-            SendPacket(packet);
+            //PacketAuctionBid packet = new PacketAuctionBid();
+            //SendPacket(packet);
         }
 
         public void DoConcedeAuction()
         {
-            PacketAuctionBid packet = new PacketAuctionBid();
-            SendPacket(packet);
+            //PacketAuctionBid packet = new PacketAuctionBid();
+            //SendPacket(packet);
         }
 
         public void DoExchange()
         {
-            PacketActionExchange packet = new PacketActionExchange();
-            SendPacket(packet);
+            //PacketActionExchange packet = new PacketActionExchange();
+            //SendPacket(packet);
         }
 
         public void DoAcceptExchange()
@@ -242,14 +242,14 @@ namespace Monopoly.Net
 
         public void DoExchangePlayerSelect()
         {
-            PacketActionExchangePlayerSelect packet = new PacketActionExchangePlayerSelect();
-            SendPacket(packet);
+            //PacketActionExchangePlayerSelect packet = new PacketActionExchangePlayerSelect();
+            //SendPacket(packet);
         }
 
         public void DoExchangeTradeSelect()
         {
-            PacketActionExchangeTradeSelect packet = new PacketActionExchangeTradeSelect();
-            SendPacket(packet);
+            //PacketActionExchangeTradeSelect packet = new PacketActionExchangeTradeSelect();
+            //SendPacket(packet);
         }
 
         private async void SendPacket(Packet packet)

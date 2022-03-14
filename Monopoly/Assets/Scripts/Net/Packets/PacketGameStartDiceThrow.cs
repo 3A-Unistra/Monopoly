@@ -22,9 +22,11 @@ namespace Monopoly.Net.Packets
         [JsonProperty("dice_result")]
         public int DiceResult { get; private set; }
 
-        public PacketGameStartDiceThrow() : base("GameStartDiceThrow")
+        public PacketGameStartDiceThrow(string playerId, int diceResult) : 
+            base("GameStartDiceThrow")
         {
-
+            this.PlayerId = playerId;
+            this.DiceResult = diceResult;
         }
 
     }
