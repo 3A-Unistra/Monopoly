@@ -1,5 +1,5 @@
 /*
- * Fichier.cs
+ * Board.cs
  * Fichier définissant la classe plateau et ses 
  * interaction avec les différentes cases
  * 
@@ -8,13 +8,11 @@
  *              : Rayan Marmar <rayan.marmar@etu.unistra.fr>
  */
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
 
 namespace Monopoly.Classes
 {

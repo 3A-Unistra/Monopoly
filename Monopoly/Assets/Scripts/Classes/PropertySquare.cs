@@ -277,7 +277,7 @@ namespace Monopoly.Classes
           * true if the given square is property and false if not.
           * </returns>
           */
-        public bool IsPropertyIndex(int idx)
+        public static bool IsPropertyIndex(int idx)
         {
             int[] ids = {1,3,6,8,9,11,13,14,16,18,19,21,23,
                 24,26,27,29,31,32,34,37,39};

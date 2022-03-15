@@ -80,7 +80,7 @@ namespace Monopoly.Classes
           * true if the given square is company and false if not.
           * </returns>
           */
-        public bool IsCompanyIndex(int idx)
+        public static bool IsCompanyIndex(int idx)
         {
             return idx == 12 || idx == 28;
         }

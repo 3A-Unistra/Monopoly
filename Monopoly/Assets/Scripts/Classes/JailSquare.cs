@@ -64,7 +64,7 @@ namespace Monopoly.Classes
           * true if the given square is jail and false if not.
           * </returns>
           */
-        public bool IsJailIndex(int idx)
+        public static bool IsJailIndex(int idx)
         {
             return idx == 10;
         }
