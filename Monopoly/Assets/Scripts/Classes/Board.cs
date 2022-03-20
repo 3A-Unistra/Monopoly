@@ -14,8 +14,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Monopoly.Classes;
-
 namespace Monopoly.Classes
 {
     /**
@@ -30,11 +28,10 @@ namespace Monopoly.Classes
         
         public Bank BoardBank { get; set; }
         public static List<Square> Elements { get; private set; }
-        public static int PrisonSquare { get; set; }
+        public int PrisonSquare { get; set; }
         public int BoardMoney { get; set; }
         public static List<Card> ChanceDeck {get; private set;}
         public static List<Card> CommunityDeck {get; private set;}
-        public static List<Player> players {get; set;}
 
 
         /**
@@ -162,7 +159,7 @@ namespace Monopoly.Classes
 			CommunityDeck.Add(new Card("Community",12,"..."));
 			CommunityDeck.Add(new Card("Community",13,"..."));
 			CommunityDeck.Add(new Card("Community",14,"..."));	
-			CommunityDeck.Add(new Card("Community",15,"OutofJail"));
+			CommunityDeck.Add(new Card("Community",15,"OutOfJail"));
 
         }
         

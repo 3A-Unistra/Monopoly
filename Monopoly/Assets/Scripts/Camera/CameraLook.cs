@@ -9,6 +9,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Monopoly.Camera
 {
@@ -119,6 +120,25 @@ namespace Monopoly.Camera
         private float animateTime = 0.0f;
         private int rotationSide = 0;
 
+        /**
+         * <summary>
+         *     The button that rotates the camera left.
+         * </summary>
+         */
+        public Button rotateLeftButton;
+        /**
+         * <summary>
+         *     The button that rotates the camera right.
+         * </summary>
+         */
+        public Button rotateRightButton;
+        /**
+         * <summary>
+         *     The button that changes the camera perspective.
+         * </summary>
+         */
+        public Button perspectiveButton;
+
         void Start()
         {
             float axisDistance = Mathf.Sqrt(2f) / 2f;
@@ -133,6 +153,24 @@ namespace Monopoly.Camera
                 Debug.LogError("Camera has no active pivot point.");
                 Destroy(this);
             }
+            if (rotateLeftButton != null)
+            {
+                rotateLeftButton.onClick.AddListener(
+                    delegate {
+                        RotateCamera(1);
+                    }
+                );
+            }
+            if (rotateRightButton != null)
+            {
+                rotateRightButton.onClick.AddListener(
+                    delegate {
+                        RotateCamera(-1);
+                    }
+                );
+            }
+            if (perspectiveButton != null)
+                perspectiveButton.onClick.AddListener(ToggleCameraMode);
         }
 
         /**

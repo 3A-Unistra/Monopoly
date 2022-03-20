@@ -190,17 +190,37 @@ namespace Monopoly.Classes
             // TO DO THROW AN EXCEPTION IF THE PLAYER IS NOT IN THE GAME
             // WAITING FOR THE GAME STATE CLASS
             if (NbHouse == 0)
+            {
                 tenant.Money -= Rent;
+                Owner.Money += Rent;
+            }
+                
             else if (NbHouse == 1)
+            {
                 tenant.Money -= House1Rent;
+                Owner.Money += Rent;
+            }
             else if (NbHouse == 2)
+            {
                 tenant.Money -= House2Rent;
+                Owner.Money += Rent;
+            }
+                
             else if (NbHouse == 3)
+            {
                 tenant.Money -= House3Rent;
+                Owner.Money += Rent;
+            }
             else if (NbHouse == 4)
+            {
                 tenant.Money -= House4Rent;
+                Owner.Money += Rent;
+            }
             else if (NbHouse == 5)
+            {
                 tenant.Money -= HotelRent;
+                Owner.Money += Rent;
+            }
             else
             {
                 throw new Monopoly.Exceptions.InvalidHouseNumberException
@@ -243,6 +263,26 @@ namespace Monopoly.Classes
                 throw new Monopoly.Exceptions.InvalidHouseNumberException
                 ("The number of houses should be between 0 and 5.");
             }
+        }
+        
+        /**
+          * <summary>
+          * This function is used to verify if a given index is
+          * an property square index.
+          * </summary>
+          * <param name="idx">
+          * The index of the given square.
+          * </param>
+          * <returns>
+          * true if the given square is property and false if not.
+          * </returns>
+          */
+        public bool IsPropertyIndex(int idx)
+        {
+            int[] ids = {1,3,6,8,9,11,13,14,16,18,19,21,23,
+                24,26,27,29,31,32,34,37,39};
+            List<int> validIdx = new List<int>(ids);
+            return validIdx.Contains(idx);
         }
     }
 }

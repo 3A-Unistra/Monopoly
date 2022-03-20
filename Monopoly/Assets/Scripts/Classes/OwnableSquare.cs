@@ -127,6 +127,7 @@ namespace Monopoly.Classes
         public virtual void PayRent(Player renter)
         {
             renter.Money -= Rent;
+            Owner.Money += Rent;
         }
 
         /**
@@ -170,12 +171,54 @@ namespace Monopoly.Classes
           * true if the given square is ownable and false if not.
           * </returns>
           */
-        public bool IsOwnableIndex(int idx)
+        public static bool IsOwnableIndex(int idx)
         {
-            SquareType type = Board.Elements[idx].Type;
-            return type == SquareType.Field || 
-                   type == SquareType.Station || 
-                   type == SquareType.Company;
+            int[] ids = {1,3,5,6,8,9,11,12,13,14,15,16,18,19,21,23,
+                24,25,26,27,28,29,31,32,34,35,37,39};
+            List<int> validIdx = new List<int>(ids);
+            return validIdx.Contains(idx);
+        }
+        
+        
+        /**
+        * <summary>
+        * player p mortgages the property on the square s
+        * the square s owner is set to null
+        * the player p's money is increased by half the value of square s 
+        * </summary>
+        * <param name="p">
+        * player p the one who wants to mortgage the square
+        * </param> 
+        */         
+        public void MortgageProperty(Player p)
+        {
+            if(Owner == p)
+            {
+                Mortgaged = true;
+                Owner = null;
+                p.Money += Price/2;
+            }
+        }
+        
+        
+        /**
+        * <summary>
+        * player p unmortgages the property on the square s
+        * the square s owner is set to null
+        * the player p's money is increased by half the value of square s 
+        * </summary>
+        * <param name="p">
+        * player p the one who wants to unmortgage the square
+        * </param> 
+        */         
+        public void UnmortgageProperty(Player p)
+        {
+            if(Owner == p)
+            {
+                Mortgaged = false;
+                Owner = p;
+                p.Money -= Price/2;
+            }
         }
     }
 }

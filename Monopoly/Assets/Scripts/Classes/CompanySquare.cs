@@ -67,5 +67,22 @@ namespace Monopoly.Classes
                 throw new Monopoly.Exceptions.WrongPriceException
                     ("The company's price should be 150");
         }
+        
+        /**
+          * <summary>
+          * This function is used to verify if a given index is
+          * an company square index.
+          * </summary>
+          * <param name="idx">
+          * The index of the given square.
+          * </param>
+          * <returns>
+          * true if the given square is company and false if not.
+          * </returns>
+          */
+        public bool IsCompanyIndex(int idx)
+        {
+            return idx == 12 || idx == 28;
+        }
     }
 }

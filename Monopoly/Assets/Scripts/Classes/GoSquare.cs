@@ -51,6 +51,26 @@ namespace Monopoly.Classes
             if (type != SquareType.Go)
                 throw new Monopoly.Exceptions.WrongTypeException
                     ("The type should be SquareType.Go.");
+<<<<<<< HEAD
+=======
+        }
+        
+        /**
+          * <summary>
+          * This function is used to verify if a given index is
+          * an Go square index.
+          * </summary>
+          * <param name="idx">
+          * The index of the given square.
+          * </param>
+          * <returns>
+          * true if the given square is Go and false if not.
+          * </returns>
+          */
+        public bool IsGoIndex(int idx)
+        {
+            return idx == 0;
+>>>>>>> 6409f5299c62ce0514c4d312e824592a6878c443
         }
     }
 }

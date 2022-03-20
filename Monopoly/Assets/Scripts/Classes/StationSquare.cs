@@ -73,5 +73,25 @@ namespace Monopoly.Classes
                 throw new Monopoly.Exceptions.WrongTypeException
                     ("The type should be SquareType.Station.");
         }
+<<<<<<< HEAD
+=======
+        
+        /**
+          * <summary>
+          * This function is used to verify if a given index is
+          * an station square index.
+          * </summary>
+          * <param name="idx">
+          * The index of the given square.
+          * </param>
+          * <returns>
+          * true if the given square is station and false if not.
+          * </returns>
+          */
+        public bool IsStationIndex(int idx)
+        { 
+            return idx == 5 || idx == 15 || idx == 25 || idx == 35;
+        }
+>>>>>>> 6409f5299c62ce0514c4d312e824592a6878c443
     }
 }

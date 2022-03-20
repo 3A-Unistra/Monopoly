@@ -53,5 +53,21 @@ namespace Monopoly.Classes
                 throw new Monopoly.Exceptions.WrongTypeException
                     ("The type should be SquareType.Parking.");
         }
+        
+        /**
+          * <summary>
+          * This function is used to verify if a given index is
+          * an free parking square index.
+          * </summary>
+          * <param name="idx">
+          * The index of the given square.
+          * </param>
+          * <returns>
+          * true if the given square is free parking and false if not.
+          * </returns>
+          */
+        public bool IsFreeParkingIndex(int idx)
+        {
+            return idx == 20;        }
     }
 }

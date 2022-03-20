@@ -10,6 +10,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Monopoly.Util;
+
 namespace Monopoly.Camera
 {
 
@@ -173,6 +175,8 @@ namespace Monopoly.Camera
             /* TODO: Disable mouse movement when mouse is over UI. */
             if (!moveCameraByMouse)
                 return false;
+            if (RaycastUtil.IsMouseRaycast("UI"))
+                return false; // don't move the mouse if it's on a UI element
             Vector3 mp = Input.mousePosition;
             int sx = Screen.width, sy = Screen.height;
             int dx = 0, dy = 0;

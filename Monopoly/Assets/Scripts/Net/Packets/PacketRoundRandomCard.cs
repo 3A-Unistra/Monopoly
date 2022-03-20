@@ -1,6 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿/*
+ * PacketRoundRandomCard.cs
+ * 
+ * Date created : 03/03/2022
+ * Author       : Maxime MAIRE <maxime.maire2@etu.unistra.fr>
+ *              : Finn RAYMENT <rayment@etu.unistra.fr>
+ */
 
+using System.Collections;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using Monopoly.Net;
 
 namespace Monopoly.Net.Packets
@@ -8,10 +16,21 @@ namespace Monopoly.Net.Packets
 
     public class PacketRoundRandomCard : Packet
     {
+        [JsonProperty("id_player")]
+        public string PlayerId { get; private set; }
 
-        public PacketRoundRandomCard() : base("RoundRandomCard")
+        [JsonProperty("is_communautaire")]
+        public bool IsCommunautaire { get; private set; }
+
+        [JsonProperty("card_content")]
+        public string CardContent { get; private set; }
+
+        public PacketRoundRandomCard(string playerId, bool isCommunautaire, 
+            string cardContent) : base("RoundRandomCard")
         {
-
+            this.PlayerId = playerId;
+            this.IsCommunautaire = isCommunautaire;
+            this.CardContent = cardContent;
         }
 
     }
