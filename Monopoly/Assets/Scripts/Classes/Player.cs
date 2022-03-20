@@ -193,6 +193,7 @@ namespace Monopoly.Classes
             this.Score = 0;
             this.Position = 0;
             this.InJail = false;
+            this.JailTurns = 0;
             this.Bankrupt = false;
             this.ChanceJailCard = false;
             this.CommunityJailCard = false;
@@ -237,13 +238,11 @@ namespace Monopoly.Classes
         */  
         public void TransferMoney(Player to, int amount)
         {
-            if( Money > amount)
+            if((Money >= amount) && (amount > 0))
             {
                 Money -= amount;
                 to.Money += amount;
             }
-            else
-                throw new InvalidOperationException("Unsufficient money");
         }
         /**
         * <summary>

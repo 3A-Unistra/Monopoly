@@ -20,7 +20,7 @@ using UnityEngine.UI;
 using TMPro;
 using Random = System.Random;
 
-namespace Monopoly.TestTools
+namespace Monopoly.Classes
 {
     public class Terminal : MonoBehaviour
     {
@@ -38,7 +38,6 @@ namespace Monopoly.TestTools
             new Player("5", "Helene", null),
             new Player("6", "Anthony", null),
         };
-        
 
         void Start()
         {
