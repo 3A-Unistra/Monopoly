@@ -51,8 +51,6 @@ namespace Monopoly.Classes
             if (type != SquareType.Go)
                 throw new Monopoly.Exceptions.WrongTypeException
                     ("The type should be SquareType.Go.");
-<<<<<<< HEAD
-=======
         }
         
         /**
@@ -70,7 +68,6 @@ namespace Monopoly.Classes
         public bool IsGoIndex(int idx)
         {
             return idx == 0;
->>>>>>> 6409f5299c62ce0514c4d312e824592a6878c443
         }
     }
 }

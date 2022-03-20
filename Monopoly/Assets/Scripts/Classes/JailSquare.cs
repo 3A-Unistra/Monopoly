@@ -51,8 +51,6 @@ namespace Monopoly.Classes
             if (type != SquareType.Prison)
                 throw new Monopoly.Exceptions.WrongTypeException
                     ("The type should be SquareType.Prison.");
-<<<<<<< HEAD
-=======
         }
         /**
           * <summary>
@@ -69,7 +67,6 @@ namespace Monopoly.Classes
         public bool IsJailIndex(int idx)
         {
             return idx == 10;
->>>>>>> 6409f5299c62ce0514c4d312e824592a6878c443
         }
     }
 }

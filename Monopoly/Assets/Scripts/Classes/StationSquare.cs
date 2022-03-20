@@ -73,8 +73,6 @@ namespace Monopoly.Classes
                 throw new Monopoly.Exceptions.WrongTypeException
                     ("The type should be SquareType.Station.");
         }
-<<<<<<< HEAD
-=======
         
         /**
           * <summary>
@@ -92,6 +90,5 @@ namespace Monopoly.Classes
         { 
             return idx == 5 || idx == 15 || idx == 25 || idx == 35;
         }
->>>>>>> 6409f5299c62ce0514c4d312e824592a6878c443
     }
 }
