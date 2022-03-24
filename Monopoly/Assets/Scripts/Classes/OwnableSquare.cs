@@ -152,7 +152,8 @@ namespace Monopoly.Classes
             {
                 PropertySquare pa = (PropertySquare) a;
                 PropertySquare pb = (PropertySquare) b;
-                return pa.Col == pb.Col;
+                return PropertySquare.GetColorIndex(pa.Id).Equals(
+                       PropertySquare.GetColorIndex(pb.Id));
                 
             }
             else

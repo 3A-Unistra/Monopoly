@@ -65,7 +65,7 @@ namespace Monopoly.Classes
           * true if the given square is Go and false if not.
           * </returns>
           */
-        public bool IsGoIndex(int idx)
+        public static bool IsGoIndex(int idx)
         {
             return idx == 0;
         }
