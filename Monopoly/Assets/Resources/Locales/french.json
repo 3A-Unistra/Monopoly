@@ -67,12 +67,12 @@
     "property_longtext": "Si un joueur possède TOUS les terrains d'un Groupe de Couleur quelconque, le loyer des terrains nus de ce groupe est doublé.",
     "museum_longtext1": "    Si l'on possède UNE passe musée, le loyer est 4 fois le montant indiqué par les dés.",
     "museum_longtext2": "    Si l'on possède les DEUX passes musées, le loyer est 10 fois le montant indiqué par les dés.",
-    "mortgage_value": "Valeur hypothèqué $",
+    "mortgage_value": "Valeur hypothèqué €",
     "tram_condition": "Si l'on possède {0} arrêts de tram",
     "site_only": "Terrain nu",
     "with_1_house": "Avec 1 maison",
     "with_n_house": "Avec {0} maisons",
     "with_hotel": "Avec HÔTEL",
-    "cost_per_house": "PRIX par maison $",
+    "cost_per_house": "PRIX par maison €",
     "cost_per_hotel": "PRIX par hôtel: 4 maisons +"
 }
