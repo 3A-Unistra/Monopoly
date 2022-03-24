@@ -5,12 +5,21 @@
  * 
  * Date created : 22/02/2022
  * Author       : Rayan MARMAR <rayan.marmar@etu.unistra.fr>
+ *              : Finn RAYMENT <rayment@etu.unistra.fr>
  */
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+using Monopoly.Exceptions;
+using Monopoly.Runtime;
+
+/*
+ * TODO: This file needs a rework because indices are not checked for a 0-39
+ *       bound and there is a severe lack of error checking...
+ */
 
 namespace Monopoly.Classes
 {
@@ -275,7 +284,27 @@ namespace Monopoly.Classes
 
         public static Color GetColorIndex(int idx)
         {
-            switch (idx)
+            if (idx < 0 || idx > 39)
+            {
+                throw new WrongIdException(
+                    string.Format("Expected 0 <= id <= 39, got {0}.", idx));
+            }
+            else if (!IsPropertyIndex(idx))
+            {
+                throw new WrongTypeException(
+                    string.Format("Index {0} is not a property.", idx));
+            }
+            if (ClientGameState.current == null)
+            {
+                throw new InvalidStateException("Client state not active.");
+            }
+            Dictionary<string, int> dic =
+                ClientGameState.current.squareData[idx];
+            return new Color(dic["r"] / 255f,
+                             dic["g"] / 255f,
+                             dic["b"] / 255f,
+                             1f);
+            /*switch (idx)
             {
             case 1:
             case 3:
@@ -309,7 +338,7 @@ namespace Monopoly.Classes
                 return new Color(40 / 255f, 78 / 255f, 161 / 255f, 1f);
             default:
                 return Color.white;
-            }
+            }*/
         }
 
     }
