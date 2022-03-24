@@ -248,3 +248,4 @@ workflow:
     - if: $CI_MERGE_REQUEST_ID
       when: always
     - when: never
+
