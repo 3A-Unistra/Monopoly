@@ -1,18 +1,18 @@
 /*
- * InvalidPlayerException.cs
+ * InvalidStateException.cs
  * This file contains the Invalid player Exception.
  * 
- * Date created : 27/02/2022
- * Author       : Rayan MARMAR <rayan.marmar@etu.unistra.fr>
+ * Date created : 24/03/2022
+ * Author       : Finn RAYMENT <rayment@etu.unistra.fr>
  */
 
 using System;
 
 namespace Monopoly.Exceptions
 {
-    public class InvalidPlayerException : Exception
+    public class InvalidStateException : Exception
     {
-        public InvalidPlayerException(string msg) : base(msg)
+        public InvalidStateException(string msg) : base(msg)
         {}
     }
 }

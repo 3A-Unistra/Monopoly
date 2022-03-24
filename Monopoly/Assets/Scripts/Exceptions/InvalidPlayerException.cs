@@ -1,5 +1,5 @@
 /*
- * InvalidPLayer.cs
+ * InvalidPlayerException.cs
  * This file contains the Invalid player Exception.
  * 
  * Date created : 27/02/2022
@@ -10,9 +10,9 @@ using System;
 
 namespace Monopoly.Exceptions
 {
-    public class InvalidPlayer : Exception
+    public class InvalidPlayerException : Exception
     {
-        public InvalidPlayer(string msg) : base(msg)
+        public InvalidPlayerException(string msg) : base(msg)
         {}
     }
 }
