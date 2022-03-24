@@ -45,84 +45,69 @@ namespace Monopoly.Classes
             BoardBank = new Bank(); 
             BoardMoney = 0;
             PrisonSquare = 10;
-		    Color brown;
-            ColorUtility.TryParseHtmlString("#955436", out brown);
-            Color lightBlue;
-            ColorUtility.TryParseHtmlString("#aae0fa", out lightBlue);
-            Color pink;
-            ColorUtility.TryParseHtmlString("#d93a96", out pink);
-		    Color orange;
-            ColorUtility.TryParseHtmlString("#f7941d", out orange);
-            Color red;
-            ColorUtility.TryParseHtmlString("#ed1b24", out red);
-            Color yellow;
-            ColorUtility.TryParseHtmlString("#fef20", out yellow);
-		    Color green;
-            ColorUtility.TryParseHtmlString("#1fb25a", out green);
-		    Color blue;
-            ColorUtility.TryParseHtmlString("#0072bb", out blue);                                    
+                                   
 			Elements.Add(new Square(SquareType.Go,0,"Go",null));
 			Elements.Add(new PropertySquare(SquareType.Field,1,"Hautepierre",null,
-				60,2,50,10,30,90,160,250,brown));
+				60,2,50,10,30,90,160,250));
 	        Elements.Add(new Square(SquareType.Community,2,"Communauté",null));
 	        Elements.Add(new PropertySquare(SquareType.Field,3,"place des Halles",null,
-				60,4,50,20,60,180,320,450,brown));
+				60,4,50,20,60,180,320,450));
 	        Elements.Add(new Square(SquareType.Tax,4,"Taxe",null));
 	        Elements.Add(new OwnableSquare(SquareType.Station,5,"Homme de fer",null,200,50));
 	        Elements.Add(new PropertySquare(SquareType.Field,6,"Route de la Wantzenau",null,
-		        100,6,50,30,90,270,400,550,lightBlue));
+		        100,6,50,30,90,270,400,550));
 	        Elements.Add(new Square(SquareType.Chance,7,"Chance",null));
 	        Elements.Add(new PropertySquare(SquareType.Field,8,"Avenue Général de Gaulle",null,
-		        100,6,50,30,90,270,400,550,lightBlue));
+		        100,6,50,30,90,270,400,550));
 	        Elements.Add(new PropertySquare(SquareType.Field,9,"Parc de la Citadelle",null,
-		        120,8,50,40,100,300,450,600,lightBlue));
+		        120,8,50,40,100,300,450,600));
 	        Elements.Add(new Square(SquareType.Prison,10,"Prison",null));
 	        Elements.Add(new PropertySquare(SquareType.Field,11,"Cronenbourg",null,
-		        140,10,100,50,150,450,625,750,pink));
+		        140,10,100,50,150,450,625,750));
 	        Elements.Add(new OwnableSquare(SquareType.Company,12,"Companie",null,150,6));
 	        Elements.Add(new PropertySquare(SquareType.Field,13,"Parc de l'Orangerie",null,
-		        140,10,100,50,150,450,625,750, pink));
+		        140,10,100,50,150,450,625,750));
 	        Elements.Add(new PropertySquare(SquareType.Field,14,"Palais de l'europe",null,
-		        160,12,100,60,180,500,700,900,pink));
+		        160,12,100,60,180,500,700,900));
 	        Elements.Add(new OwnableSquare(SquareType.Station,15,"Gare centrale",null,200,50));
 	        Elements.Add(new PropertySquare(SquareType.Field,16,"Ancienne Synagogue",null,
-		        180,14,100,70,200,550,700,900,orange));
+		        180,14,100,70,200,550,700,900));
 	        Elements.Add(new Square(SquareType.Community,17,"Communauté",null));
 	        Elements.Add(new PropertySquare(SquareType.Field,18,"Église Saint-Pierre-le-Vieux",null,
-		        180,14,100,70,200,550,700,950,orange));
+		        180,14,100,70,200,550,700,950));
 	        Elements.Add(new PropertySquare(SquareType.Field,19,"Église Saint-Paul",null,
-		        200,16,100,90,220,600,800,1000,orange));
+		        200,16,100,90,220,600,800,1000));
 	        Elements.Add(new Square(SquareType.Parking,20,"Parc gratuit",null));
 	        Elements.Add(new PropertySquare(SquareType.Field,21,"Rue Bain-aux-Plantes",null,
-		        220,18,150,90,250,700,875,1050,red));
+		        220,18,150,90,250,700,875,1050));
 	        Elements.Add(new Square(SquareType.Chance,22,"Chance",null));
 	        Elements.Add(new PropertySquare(SquareType.Field,23,"Place Benjamin-Zix",null,
-		        220,18,150,90,250,700,875,1050,red));
+		        220,18,150,90,250,700,875,1050));
 	        Elements.Add(new PropertySquare(SquareType.Field,24,"Les Ponts Couverts",null,
-		        240,20,150,100,300,750,925,1100,red));
+		        240,20,150,100,300,750,925,1100));
 	        Elements.Add(new OwnableSquare(SquareType.Station,25,"Université", null,200,50));
 	        Elements.Add(new PropertySquare(SquareType.Field,26,"Gallia",null,
-		        260,22,150,110,330,800,975,1150,yellow));
+		        260,22,150,110,330,800,975,1150));
 	        Elements.Add(new PropertySquare(SquareType.Field,27,"Observatoire",null,
-		        260,22,150,110,330,800,975,1150,yellow));
+		        260,22,150,110,330,800,975,1150));
 	        Elements.Add(new OwnableSquare(SquareType.Company,28,"Companie",null,150,6));
 	        Elements.Add(new PropertySquare(SquareType.Field,29,"Campus Central",null,
-		        280,24,150,120,360,850,1025,1200,yellow));
+		        280,24,150,120,360,850,1025,1200));
 	        Elements.Add(new GoToJailSquare(SquareType.GoToJail,30,"Allez en prison",null));
 	        Elements.Add(new PropertySquare(SquareType.Field,31,"Place Kleber",null,
-		        300,26,200,130,390,900,1100,1275,green));
+		        300,26,200,130,390,900,1100,1275));
 	        Elements.Add(new PropertySquare(SquareType.Field,32,"Place Broglie",null,
-		        300,26,200,130,390,900,1100,1275,green));
+		        300,26,200,130,390,900,1100,1275));
 			Elements.Add(new Square(SquareType.Community,33,"Communauté",null));
 			Elements.Add(new PropertySquare(SquareType.Field,34,"Place de la République",null,
-				320,28,200,150,450,1000,1200,1400,green));
+				320,28,200,150,450,1000,1200,1400));
 			Elements.Add(new OwnableSquare(SquareType.Station,35,"République",null,200,50));  
 			Elements.Add(new Square(SquareType.Chance,36,"Chance",null)); 			
 			Elements.Add(new PropertySquare(SquareType.Field,37,"Parlement Européen",null,
-				350,35,200,175,500,1100,1300,1500,blue));
+				350,35,200,175,500,1100,1300,1500));
 			Elements.Add(new Square(SquareType.Tax,38,"Taxe",null));    	
 			Elements.Add(new PropertySquare(SquareType.Field,39,"La Cathédrale de Strasbourg",null,
-			400,50,200,200,600,1400,1700,2000,blue)); 
+			400,50,200,200,600,1400,1700,2000)); 
 			
 			
 			ChanceDeck = new List<Card>();

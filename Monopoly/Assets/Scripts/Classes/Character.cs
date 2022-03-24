@@ -27,6 +27,10 @@ namespace Monopoly.Classes
         {
             get;
             set;
-        }     
+        }    
+        public Character (int Id) 
+        {
+            this.Id = Id;
+        }
     }
 }

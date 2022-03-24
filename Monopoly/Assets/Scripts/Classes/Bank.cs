@@ -80,7 +80,7 @@ namespace Monopoly.Classes
         * true if you took a hotel frm the bank, false if there are none
         * </return>
         */
-        bool BuyHotel()
+        public bool BuyHotel()
         {
             if(NbHotel > 0)
             {
@@ -94,7 +94,7 @@ namespace Monopoly.Classes
         * increment the number of houses by one as the player sells one
         * </summary>
         */
-        void SellHouse()
+        public void SellHouse()
         {
             NbHouse++;
         }
@@ -103,7 +103,7 @@ namespace Monopoly.Classes
         * increment the number of hotels by one as the player sells one
         * </summary>
         */        
-        void SellHotel()
+        public void SellHotel()
         {
             NbHotel++;
         }

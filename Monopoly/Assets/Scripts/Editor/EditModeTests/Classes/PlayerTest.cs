@@ -69,15 +69,40 @@ namespace Monopoly.Classes
             CompanySquare cs = new CompanySquare(SquareType.Company, 12, "Company",
             null, 150, 10);
             PropertySquare ps = new PropertySquare(SquareType.Field, 1, "Property",
-            null, 500, 50,100, 50, 50, 50, 50, 50, Color.grey);
+            null, 500, 50,100, 50, 50, 50, 50, 50);
             StationSquare ss = new StationSquare(SquareType.Station, 5, "Station",
             null, 50, 50);  
             p1.TransferProperty(p2, cs);
-            Assert.True(cs.Owner != p2);
+            Assert.False(cs.Owner == p2);
             cs.Owner = p1;
             p1.TransferProperty(p2, cs);
             Assert.True(cs.Owner == p2);
+            ps.Owner = p1;
+            p1.TransferProperty(p2, ps);
+            Assert.True(ps.Owner == p2);
+            ss.Owner = p1;
+            p1.TransferProperty(p2, ss);
+            Assert.True(ss.Owner == p2);
         }
-        
+        [Test]
+        public void TestTransferCard()
+        {
+            Player p1 = new Player("1","Bob",null);
+            Player p2 = new Player("2","Jules",null);
+            Assert.False(p2.CommunityJailCard == true);
+            Assert.False(p2.ChanceJailCard == true);
+            p1.TransferCard(p2,"Chance");
+            p1.TransferCard(p2,"Community");
+            Assert.False(p2.CommunityJailCard == true);
+            Assert.False(p2.ChanceJailCard == true);
+            p1.ChanceJailCard = true;
+            p1.CommunityJailCard = true;
+            p1.TransferCard(p2,"Chance");
+            p1.TransferCard(p2,"Community");            
+            Assert.True(p2.CommunityJailCard == true);
+            Assert.True(p2.ChanceJailCard == true);
+            Assert.False(p1.CommunityJailCard == true);
+            Assert.False(p1.ChanceJailCard == true);            
+        }
     }
 }

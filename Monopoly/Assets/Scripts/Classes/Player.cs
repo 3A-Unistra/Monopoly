@@ -276,19 +276,15 @@ namespace Monopoly.Classes
         */ 
         public void TransferCard(Player to, string cardType)
         {
-            if ((cardType == "CHANCE") && (ChanceJailCard == true))
+            if ((cardType == "Chance") && (ChanceJailCard == true))
             {
                 ChanceJailCard = false;
                 to.ChanceJailCard = true;
             }
-            else if((cardType == "COMMUNITY") && (CommunityJailCard == true))
+            else if((cardType == "Community") && (CommunityJailCard == true))
             {
                 CommunityJailCard = false;
                 to.CommunityJailCard = true;
-            }
-            else
-            {
-                throw new InvalidOperationException("Unavailable card");
             }
         }
     }
