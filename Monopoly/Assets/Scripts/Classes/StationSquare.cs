@@ -86,7 +86,7 @@ namespace Monopoly.Classes
           * true if the given square is station and false if not.
           * </returns>
           */
-        public bool IsStationIndex(int idx)
+        public static bool IsStationIndex(int idx)
         { 
             return idx == 5 || idx == 15 || idx == 25 || idx == 35;
         }

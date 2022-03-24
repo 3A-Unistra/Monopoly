@@ -258,7 +258,8 @@ namespace Monopoly.Classes
         */          
         public void TransferProperty(Player to, OwnableSquare p)
         {
-            p.Owner = to;
+            if(p.Owner == this)
+                p.Owner = to;
         }
         /**
         * <summary>

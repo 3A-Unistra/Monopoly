@@ -1,5 +1,5 @@
 /*
- * Fichier.cs
+ * Board.cs
  * Fichier définissant la classe plateau et ses 
  * interaction avec les différentes cases
  * 
@@ -7,7 +7,6 @@
  * Author       : Christophe Pierson <christophe.pierson@etu.unistra.fr>
  *              : Rayan Marmar <rayan.marmar@etu.unistra.fr>
  */
-
 
 using System;
 using System.Collections;
@@ -215,7 +214,7 @@ namespace Monopoly.Classes
                 if (s.GetType() == typeof(PropertySquare))
                 {
                     PropertySquare sps = (PropertySquare) s;
-                    if (sps.Col.Equals(c))
+                    if (PropertySquare.GetColorIndex(s.Id).Equals(c))
                         propertySet.Add(sps);
                 }
             }
@@ -272,8 +271,9 @@ namespace Monopoly.Classes
          */
         public bool OwnSameColorSet(Player p, PropertySquare ps)
         {
-            Color c = ps.Col; //getting the property's color to verify if
+            //getting the property's color to verify if
             //the player own a full set of this color
+            Color c = PropertySquare.GetColorIndex(ps.Id);
                               
             //List of the properties that belong to this set of color
             List<PropertySquare> sameColorFields = GetPropertySet(c);
@@ -303,10 +303,11 @@ namespace Monopoly.Classes
         {
             if (!OwnSameColorSet(p, ps))
                 return false;
-            
-            Color c = ps.Col; //getting the property's color to verify if
+
+            //getting the property's color to verify if
             //the player own a full set of this color
-                              
+            Color c = PropertySquare.GetColorIndex(ps.Id);
+
             //List of the properties that belong to this set of color
             List<PropertySquare> sameColorFields = GetPropertySet(c);
             int minimumHouse = 100; // A random big number 
@@ -346,10 +347,11 @@ namespace Monopoly.Classes
                 return false;
             if (ps.NbHouse < 1 || ps.NbHouse == 5 && BoardBank.NbHouse < 4)
                 return false;
-            
-            Color c = ps.Col;//getting the property's color to verify if
+
+            //getting the property's color to verify if
             //the player own a full set of this color
-                            
+            Color c = PropertySquare.GetColorIndex(ps.Id);
+
             //List of the properties that belong to this set of color
             List<PropertySquare> sameColorFields = GetPropertySet(c);
                                   
@@ -383,12 +385,15 @@ namespace Monopoly.Classes
          */
         public void BuyHouse(PropertySquare ps, Player p)
         {
-            if (CanBuyHouse(p,ps))
+            if (CanBuyHouse(p, ps))
             {
                 p.Money -= ps.HouseCost; // Paying the cost of the house
                 ps.NbHouse++; // adding a house to the property
-            }else 
+            }
+            else
+            {
                 return;
+            }
         }
 
         /**
@@ -405,12 +410,15 @@ namespace Monopoly.Classes
          */
         public void SellHouse(PropertySquare ps, Player p)
         {
-            if (CanSellHouse(p,ps))
+            if (CanSellHouse(p, ps))
             {
                 p.Money += ps.HouseCost; // refund the house cost
                 ps.NbHouse--; // reduce the number of houses by 1
-            }else
+            }
+            else
+            {
                 return;
+            }
         }
         
         /**

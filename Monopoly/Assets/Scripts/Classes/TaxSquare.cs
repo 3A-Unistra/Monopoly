@@ -72,7 +72,7 @@ namespace Monopoly.Classes
           * true if the given square is tax and false if not.
           * </returns>
           */
-        public bool IsTaxIndex(int idx)
+        public static bool IsTaxIndex(int idx)
         {
             return idx == 4 || idx == 38;
         }

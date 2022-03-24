@@ -72,11 +72,6 @@ namespace Monopoly.Classes
         public int HotelRent { get; set; }
         
         /**
-         * The color of the group of properties that this square belongs to.
-         */
-        public Color Col { get; set; }
-        
-        /**
           * <summary>
           * Constructor of the class <c>PropertySquare</c>.
           * </summary>
@@ -121,13 +116,10 @@ namespace Monopoly.Classes
           * The new rent of the property after building five houses on this
           * property.
           * </param>
-          * <param name="color">
-          * The new color of the property.
-          * </param>
           * <returns>
           * An instance of the property square object with the given type, id,
           * name, image, mortgaged status, price, rent, different house rents,
-          * house cost and color.
+          * house and cost.
           * </returns>
           * <exception cref="Monopoly.Exceptions.WrongIdException">
           * Throws an exception if the given id does not belong to this list
@@ -140,8 +132,7 @@ namespace Monopoly.Classes
           */
         public PropertySquare(SquareType type, int id, string name,
             Material image, int price, int rent,int houseCost, int house1Rent,
-            int house2Rent, int house3Rent, int house4Rent, int hotelRent,
-            Color color)
+            int house2Rent, int house3Rent, int house4Rent, int hotelRent)
             : base(type, id, name, image, price, rent)
         {
             NbHouse = 0;
@@ -151,7 +142,6 @@ namespace Monopoly.Classes
             House3Rent = house3Rent;
             House4Rent = house4Rent;
             HotelRent = hotelRent;
-            Col = color;
             int[] ids = {1,3,6,8,9,11,13,14,16,18,19,21,23,24,26,27,29,
                 31,32,34,37,39};
             List<int> validIdNumbers = new List<int>(ids);
@@ -162,8 +152,6 @@ namespace Monopoly.Classes
                 throw new Monopoly.Exceptions.WrongTypeException
                     ("The type should be SquareType.Field.");
         }
-        
-        
 
         /**
          * <summary>
@@ -277,13 +265,53 @@ namespace Monopoly.Classes
           * true if the given square is property and false if not.
           * </returns>
           */
-        public bool IsPropertyIndex(int idx)
+        public static bool IsPropertyIndex(int idx)
         {
             int[] ids = {1,3,6,8,9,11,13,14,16,18,19,21,23,
                 24,26,27,29,31,32,34,37,39};
             List<int> validIdx = new List<int>(ids);
             return validIdx.Contains(idx);
         }
+
+        public static Color GetColorIndex(int idx)
+        {
+            switch (idx)
+            {
+            case 1:
+            case 3:
+                return new Color(88 / 255f, 12 / 255f, 57 / 255f, 1f);
+            case 6:
+            case 8:
+            case 9:
+                return new Color(135 / 255f, 165 / 255f, 215 / 255f, 1f);
+            case 11:
+            case 13:
+            case 14:
+                return new Color(239 / 255f, 56 / 255f, 120 / 255f, 1f);
+            case 16:
+            case 18:
+            case 19:
+                return new Color(245 / 255f, 128 / 255f, 35 / 255f, 1f);
+            case 21:
+            case 23:
+            case 24:
+                return new Color(212 / 255f, 0 / 255f, 0 / 255f, 1f);
+            case 26:
+            case 27:
+            case 29:
+                return new Color(255 / 255f, 204 / 255f, 0 / 255f, 1f);
+            case 31:
+            case 32:
+            case 34:
+                return new Color(9 / 255f, 135 / 255f, 51 / 255f, 1f);
+            case 37:
+            case 39:
+                return new Color(40 / 255f, 78 / 255f, 161 / 255f, 1f);
+            default:
+                return Color.white;
+            }
+        }
+
     }
 }
 

@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace Monopoly.Classes
 {
-    public class TerminalTest
+    public class PlayerTest
     {   
         [Test]
         public void TestPlayerCreation()
@@ -60,6 +60,23 @@ namespace Monopoly.Classes
             p1.TransferMoney(p2, -1500);
             Assert.True(p1.Money == 0);
             Assert.True(p2.Money == 3000);
+        }
+        [Test]
+        public void TestTransferProperty()
+        {
+            Player p1 = new Player("1","Bob",null);
+            Player p2 = new Player("2","Jules",null);  
+            CompanySquare cs = new CompanySquare(SquareType.Company, 12, "Company",
+            null, 150, 10);
+            PropertySquare ps = new PropertySquare(SquareType.Field, 1, "Property",
+            null, 500, 50,100, 50, 50, 50, 50, 50, Color.grey);
+            StationSquare ss = new StationSquare(SquareType.Station, 5, "Station",
+            null, 50, 50);  
+            p1.TransferProperty(p2, cs);
+            Assert.True(cs.Owner != p2);
+            cs.Owner = p1;
+            p1.TransferProperty(p2, cs);
+            Assert.True(cs.Owner == p2);
         }
         
     }

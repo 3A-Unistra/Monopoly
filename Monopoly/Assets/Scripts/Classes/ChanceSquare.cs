@@ -61,7 +61,7 @@ namespace Monopoly.Classes
           * true if the given square is chance and false if not.
           * </returns>
           */
-        public bool IsChanceIndex(int idx)
+        public static bool IsChanceIndex(int idx)
         {
             return idx == 7 || idx == 22 || idx == 36;
         }

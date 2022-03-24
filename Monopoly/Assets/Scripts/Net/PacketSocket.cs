@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 using NativeWebSocket;
@@ -14,7 +15,14 @@ namespace Monopoly.Net
         public WebSocket Sock { get; private set; }
         private bool open, error;
 
-        public static PacketSocket CreateSocket(string address, int port)
+        public static PacketSocket CreateSocket(string address, int port,
+                                                bool secure)
+        {
+            return CreateSocket(address, port, null, secure);
+        }
+
+        public static PacketSocket CreateSocket(string address, int port,
+            Dictionary<string, string> paramsdic, bool secure)
         {
             if (address == null || address.Equals(""))
             {
@@ -27,8 +35,24 @@ namespace Monopoly.Net
                     "Cannot create socket with invalid port number.");
                 return null;
             }
-            string loc = string.Format("ws://{0}:{1}", address, port);
-            return new PacketSocket(loc);
+            StringBuilder sb = new StringBuilder();
+            if (paramsdic != null)
+            {
+                int i = 0;
+                foreach (string key in paramsdic.Keys)
+                {
+                    if (i == 0)
+                        sb.Append("?");
+                    else
+                        sb.Append("&");
+                    string val = paramsdic[key];
+                    sb.Append(string.Format("{0}={1}", key, val));
+                }
+            }
+            string protocol = secure ? "wss" : "ws";
+            string loc = string.Format("{0}://{1}:{2}/{3}",
+                                       protocol, address, port, sb.ToString());
+            return CreateSocket(loc);
         }
 
         public static PacketSocket CreateSocket(string loc)
