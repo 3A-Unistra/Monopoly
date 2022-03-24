@@ -67,7 +67,7 @@ namespace Monopoly.Classes
           * true if the given square is community and false if not.
           * </returns>
           */
-        public bool IsCommunityIndex(int idx)
+        public static bool IsCommunityIndex(int idx)
         {
             return idx == 2 || idx == 17 || idx == 33;
         }

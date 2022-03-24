@@ -132,13 +132,16 @@ namespace Monopoly.Util
          *     This value should correspond to the one given in
          *     <see cref="LoadStrings(string, string)"/>.
          * </param>
+         * <returns>
+         *     <c>true</c> if the language was successfuly set.
+         * </returns>
          */
-        public static void SetLanguage(string id)
+        public static bool SetLanguage(string id)
         {
             if (id == null)
             {
                 Debug.LogError("Attempted to set language to null.");
-                return;
+                return false;
             }
             StringLanguage language = languages.Find(x => x.Name.Equals(id));
             if (language == null)
@@ -146,11 +149,13 @@ namespace Monopoly.Util
                 Debug.LogError(
                     string.Format("Attempted to set non-existing language {0}.",
                                   id));
+                return false;
             }
             else
             {
                 languageSelector = language;
                 Debug.Log(string.Format("Language was set to {0}.", id));
+                return true;
             }
         }
 
@@ -224,6 +229,18 @@ namespace Monopoly.Util
                 !languageSelector.StringSet.ContainsKey(key))
                 return "null";
             return languageSelector.StringSet[key];
+        }
+
+        /**
+         * <summary>
+         *     Clears all languages and resets the localiser to the default
+         *     state.
+         * </summary>
+         */
+        public static void Reset()
+        {
+            languages.Clear();
+            languageSelector = null;
         }
     }
 

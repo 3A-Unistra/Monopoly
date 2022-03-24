@@ -1,3 +1,11 @@
+/*
+ * JsonLoader.cs
+ * Generic Json loading utility.
+ * 
+ * Date created : 8/03/2022
+ * Author       : Finn RAYMENT <rayment@etu.unistra.fr>
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

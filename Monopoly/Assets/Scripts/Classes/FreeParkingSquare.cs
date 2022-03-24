@@ -66,8 +66,9 @@ namespace Monopoly.Classes
           * true if the given square is free parking and false if not.
           * </returns>
           */
-        public bool IsFreeParkingIndex(int idx)
+        public static bool IsFreeParkingIndex(int idx)
         {
-            return idx == 20;        }
+            return idx == 20;
+        }
     }
 }

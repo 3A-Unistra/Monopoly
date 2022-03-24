@@ -124,7 +124,7 @@ namespace Monopoly.Camera
          *     The vertical delta by which to move the camera.
          * </param>
          */
-        private void MoveCamera(float horizontal, float vertical)
+        public void MoveCamera(float horizontal, float vertical)
         {
             if (horizontal == 0f && vertical == 0f)
                 return;

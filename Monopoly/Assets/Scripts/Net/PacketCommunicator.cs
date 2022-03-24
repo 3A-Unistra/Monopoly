@@ -139,7 +139,18 @@ namespace Monopoly.Net
             socket.Sock.OnMessage += (data) => ReceivePacket(data);
         }
 
+        private void OnPing(Packet packet)
+        {
+            DoPing(); /* send back again */
+        }
+
         /* TODO: Params for all of the following DoX functions. */
+
+        public void DoPing()
+        {
+            PacketPing packet = new PacketPing();
+            SendPacket(packet);
+        }
 
         public void DoAppletReady()
         {
@@ -272,6 +283,8 @@ namespace Monopoly.Net
             {
             case PacketException packet:
                 OnError(packet); break;
+            case PacketPing packet:
+                OnPing(packet); break;
             case PacketAppletPrepare packet:
                 OnGameLoad(packet); break;
             case PacketGameStart packet:
