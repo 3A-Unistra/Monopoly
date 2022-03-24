@@ -26,6 +26,8 @@ get-unity-version:
   artifacts:
     reports:
       dotenv: prepare.env
+  tags:
+    - gitlab-org
 
 .unity_before_script: &unity_before_script
   before_script:
@@ -65,6 +67,8 @@ get-activation-file:
     paths:
       - $UNITY_ACTIVATION_FILE
     expire_in: 10 min # Expiring this as artifacts may contain sensitive data and should not be kept public
+  tags:
+    - gitlab-org
 
 .test: &test
   stage: build_and_test
