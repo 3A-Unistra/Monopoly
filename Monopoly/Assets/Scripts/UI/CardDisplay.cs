@@ -50,9 +50,17 @@ namespace Monopoly.UI
 
         // tram UI pieces
         public TMP_Text titleTram;
+        public TMP_Text[] tramRents;
+        public TMP_Text[] tramRentTexts;
+        public TMP_Text tramMortgageValue;
+        public TMP_Text tramMortgageValueText;
 
         // museum UI pieces
         public TMP_Text titleMuseum;
+        public TMP_Text museumText1;
+        public TMP_Text museumText2;
+        public TMP_Text museumMortgageValue;
+        public TMP_Text museumMortgageValueText;
 
         void Start()
         {
@@ -177,6 +185,29 @@ namespace Monopoly.UI
             string title = StringLocaliser.GetString(
                 string.Format("station{0}", idx));
             titleTram.text = title.ToUpper();
+            Dictionary<string, int> data =
+                ClientGameState.current.GetSquareDataIndex(idx);
+            int j = data["rent_base"];
+            for (int i = 0; i < tramRents.Length; ++i)
+            {
+                string rentText;
+                if (i == 0)
+                {
+                    tramRents[i].text = string.Format("€{0}", j.ToString());
+                    rentText = StringLocaliser.GetString("rent");
+                }
+                else
+                {
+                    tramRents[i].text = j.ToString();
+                    rentText = string.Format(
+                        StringLocaliser.GetString("tram_condition"), i + 1);
+                }
+                tramRentTexts[i].text = rentText;
+                j *= 2;
+            }
+            tramMortgageValueText.text =
+                StringLocaliser.GetString("mortgage_value");
+            tramMortgageValue.text = (data["buy_price"] / 2).ToString();
             UpdatePosition();
         }
 
@@ -189,6 +220,13 @@ namespace Monopoly.UI
             string title = StringLocaliser.GetString(
                 string.Format("museum{0}", idx));
             titleMuseum.text = title.ToUpper();
+            museumText1.text = StringLocaliser.GetString("museum_longtext1");
+            museumText2.text = StringLocaliser.GetString("museum_longtext2");
+            museumMortgageValueText.text =
+                StringLocaliser.GetString("mortgage_value");
+            Dictionary<string, int> data =
+                ClientGameState.current.GetSquareDataIndex(idx);
+            museumMortgageValue.text = (data["buy_price"] / 2).ToString();
             UpdatePosition();
         }
 
