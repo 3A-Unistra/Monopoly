@@ -8,6 +8,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 using Monopoly.UI;
@@ -21,6 +22,7 @@ namespace Monopoly.Runtime
 
         public static ClientGameState current;
         public CardDisplay cardDisplay;
+        public List<Dictionary<string, int>> squareData;
 
         private bool loadedLanguage = false;
 
@@ -31,6 +33,8 @@ namespace Monopoly.Runtime
                 // init the language module
                 // NOTE: PUT LANGUAGE MODULES HERE TO LOAD PLEASE
                 // TODO: Error handle the init
+                StringLocaliser.LoadStrings("Locales/english", "english",
+                                            "English");
                 StringLocaliser.LoadStrings("Locales/french", "french",
                                             "Français");
                 loadedLanguage = true;
@@ -38,7 +42,14 @@ namespace Monopoly.Runtime
             StringLocaliser.SetLanguage(language);
         }
 
-        void Start()
+        private void LoadGameData()
+        {
+            squareData =
+                JsonLoader.LoadJsonAsset<List<Dictionary<string, int>>>
+                ("Data/squares");
+        }
+
+        void Awake()
         {
             if (current != null)
             {
@@ -48,6 +59,7 @@ namespace Monopoly.Runtime
             current = this;
             // TODO: Use a persistent file to load the user preference from.
             LoadLanguage("french");
+            LoadGameData();
             Debug.Log("Initialised gamestate.");
         }
 
@@ -85,6 +97,13 @@ namespace Monopoly.Runtime
         {
             if (Input.GetMouseButtonDown(0))
                 DisplayCardPreview();
+        }
+
+        public Dictionary<string, int> GetSquareDataIndex(int idx)
+        {
+            return squareData.First<Dictionary<string, int>>(
+                (x) => x.ContainsKey("id") && x["id"] == idx
+            );
         }
 
     }

@@ -8,10 +8,13 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 using Monopoly.Classes;
+using Monopoly.Runtime;
 using Monopoly.Util;
 
 namespace Monopoly.UI
@@ -21,14 +24,34 @@ namespace Monopoly.UI
     public class CardDisplay : MonoBehaviour
     {
 
+        // TODO: NULL checks!
+
         private RectTransform rect;
 
         public Transform hierarchyProperty;
         public Transform hierarchyTram;
         public Transform hierarchyMuseum;
 
+        // property UI pieces
         public TMP_Text titleProperty;
+        public TMP_Text subtitleProperty;
+        public RawImage propertyColor;
+        public TMP_Text propertyRentBase;
+        public TMP_Text[] propertyRents;
+        public TMP_Text[] propertyRentTexts;
+        public TMP_Text[] propertyRentSubtexts;
+        public TMP_Text propertyMidText;
+        public TMP_Text propertyHouseCost;
+        public TMP_Text propertyHotelCost;
+        public TMP_Text propertyMortgageValue;
+        public TMP_Text propertyHouseCostText;
+        public TMP_Text propertyHotelCostText;
+        public TMP_Text propertyMortgageValueText;
+
+        // tram UI pieces
         public TMP_Text titleTram;
+
+        // museum UI pieces
         public TMP_Text titleMuseum;
 
         void Start()
@@ -45,12 +68,13 @@ namespace Monopoly.UI
             gameObject.SetActive(false);
         }
 
+        bool b = false;
         private void UpdatePosition()
         {
             int w = Screen.width;
             int h = Screen.height;
             Vector3 mp = Input.mousePosition;
-            Vector2 size = rect.sizeDelta;
+            Vector2 size = rect.sizeDelta * rect.localScale;
             Vector2 origin = new Vector2(mp.x, mp.y);
             // top bottom selector
             if (mp.y - size.y < 0)
@@ -63,17 +87,84 @@ namespace Monopoly.UI
             else
                 origin.x += 10;
             rect.position = new Vector2(origin.x, origin.y);
+            StringLocaliser.SetLanguage(!b ? "english" : "french");
+            b = !b;
         }
 
         private void ShowProperty(int idx)
         {
+            float h, s, v;
             hierarchyProperty.gameObject.SetActive(true);
             hierarchyTram.gameObject.SetActive(false);
             hierarchyMuseum.gameObject.SetActive(false);
             gameObject.SetActive(true);
             string title = StringLocaliser.GetString(
                 string.Format("property{0}", idx));
-            titleProperty.text = title;
+            titleProperty.text = title.ToUpper();
+            // calculate the background colour as well as use a threshold of
+            // HSV brightness to determine whether or not to show
+            // black or white text
+            propertyColor.color = PropertySquare.GetColorIndex(idx);
+            Color.RGBToHSV(propertyColor.color, out h, out s, out v);
+            if (v < 0.65f)
+            {
+                titleProperty.color = Color.white;
+                subtitleProperty.color = Color.white;
+            }
+            else
+            {
+                titleProperty.color = Color.black;
+                subtitleProperty.color = Color.black;
+            }
+            subtitleProperty.text =
+                StringLocaliser.GetString("title_deed").ToUpper();
+            // now update all of the rent data
+            Dictionary<string, int> data =
+                ClientGameState.current.GetSquareDataIndex(idx);
+            propertyRentBase.text = data["rent_base"].ToString();
+            for (int i = 0; i < propertyRents.Length; ++i)
+            {
+                propertyRents[i].text =
+                    data[string.Format("rent_{0}", i+1)].ToString();
+            }
+            for (int i = 0; i < propertyRentTexts.Length; ++i)
+            {
+                propertyRentTexts[i].text =
+                    StringLocaliser.GetString("rent").ToUpper();
+            }
+            for (int i = 0; i < propertyRentSubtexts.Length; ++i)
+            {
+                string str;
+                if (i == 0)
+                {
+                    str = StringLocaliser.GetString("site_only");
+                }
+                else if (i == 1)
+                {
+                    str = StringLocaliser.GetString("with_1_house");
+                }
+                else if (i == propertyRentSubtexts.Length - 1)
+                {
+                    str = StringLocaliser.GetString("with_hotel");
+                }
+                else
+                {
+                    str = string.Format(
+                        StringLocaliser.GetString("with_n_house"), i);
+                }
+                propertyRentSubtexts[i].text = str;
+            }
+            propertyMidText.text =
+                StringLocaliser.GetString("property_longtext");
+            propertyHouseCostText.text =
+                StringLocaliser.GetString("cost_per_house");
+            propertyHotelCostText.text =
+                StringLocaliser.GetString("cost_per_hotel");
+            propertyMortgageValueText.text =
+                StringLocaliser.GetString("mortgage_value");
+            propertyHouseCost.text = data["house_price"].ToString();
+            propertyHotelCost.text = data["house_price"].ToString();
+            propertyMortgageValue.text = (data["buy_price"] / 2).ToString();
             UpdatePosition();
         }
 
@@ -85,7 +176,7 @@ namespace Monopoly.UI
             gameObject.SetActive(true);
             string title = StringLocaliser.GetString(
                 string.Format("station{0}", idx));
-            titleTram.text = title;
+            titleTram.text = title.ToUpper();
             UpdatePosition();
         }
 
@@ -97,7 +188,7 @@ namespace Monopoly.UI
             gameObject.SetActive(true);
             string title = StringLocaliser.GetString(
                 string.Format("museum{0}", idx));
-            titleMuseum.text = title;
+            titleMuseum.text = title.ToUpper();
             UpdatePosition();
         }
 

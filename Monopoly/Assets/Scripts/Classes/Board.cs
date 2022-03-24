@@ -49,66 +49,66 @@ namespace Monopoly.Classes
             
 			Elements.Add(new GoSquare(SquareType.Go,0,"square0",null));
 			Elements.Add(new PropertySquare(SquareType.Field,1,"square1",null,
-				60,2,50,10,30,90,160,250,new Color(0.8f,0.5f,0.2f,0.7f)));
+				60,2,50,10,30,90,160,250));
 	        Elements.Add(new CommunitySquare(SquareType.Community,2,"square2",null));
 	        Elements.Add(new PropertySquare(SquareType.Field,3,"square3",null,
-				60,4,50,20,60,180,320,450,new Color(0.8f,0.5f,0.2f,0.7f)));
+				60,4,50,20,60,180,320,450));
 	        Elements.Add(new TaxSquare(SquareType.Tax,4,"square4",null,200));
 	        Elements.Add(new StationSquare(SquareType.Station,5,"square5",null,200,50));
 	        Elements.Add(new PropertySquare(SquareType.Field,6,"square6",null,
-		        100,6,50,30,90,270,400,550,new Color(0.53f,0.77f,0.95f,0.7f)));
+		        100,6,50,30,90,270,400,550));
 	        Elements.Add(new ChanceSquare(SquareType.Chance,7,"square7",null));
 	        Elements.Add(new PropertySquare(SquareType.Field,8,"square8",null,
-		        100,6,50,30,90,270,400,550,new Color(0.53f,0.77f,0.95f,0.7f)));
+		        100,6,50,30,90,270,400,550));
 	        Elements.Add(new PropertySquare(SquareType.Field,9,"square9",null,
-		        120,8,50,40,100,300,450,600,new Color(0.53f,0.77f,0.95f,0.7f)));
+		        120,8,50,40,100,300,450,600));
 	        Elements.Add(new JailSquare(SquareType.Prison,10,"square10",null));
 	        Elements.Add(new PropertySquare(SquareType.Field,11,"square11",null,
-		        140,10,100,50,150,450,625,750,new Color(0.64f,0.09f,1,068f)));
+		        140,10,100,50,150,450,625,750));
 	        Elements.Add(new CompanySquare(SquareType.Company,12,"square12",null,150,6));
 	        Elements.Add(new PropertySquare(SquareType.Field,13,"square13",null,
-		        140,10,100,50,150,450,625,750, new Color(0.64f,0.09f,1,068f)));
+		        140,10,100,50,150,450,625,750));
 	        Elements.Add(new PropertySquare(SquareType.Field,14,"square14",null,
-		        160,12,100,60,180,500,700,900,new Color(0.64f,0.09f,1,068f)));
+		        160,12,100,60,180,500,700,900));
 	        Elements.Add(new StationSquare(SquareType.Station,15,"square15",null,200,50));
 	        Elements.Add(new PropertySquare(SquareType.Field,16,"square16",null,
-		        180,14,100,70,200,550,700,900,new Color(1,0.54f,0f,0.7f)));
+		        180,14,100,70,200,550,700,900));
 	        Elements.Add(new CommunitySquare(SquareType.Community,17,"square17",null));
 	        Elements.Add(new PropertySquare(SquareType.Field,18,"square18",null,
-		        180,14,100,70,200,550,700,950,new Color(1,0.54f,0f,0.7f)));
+		        180,14,100,70,200,550,700,950));
 	        Elements.Add(new PropertySquare(SquareType.Field,19,"square19",null,
-		        200,16,100,90,220,600,800,1000,new Color(1,0.54f,0f,0.7f)));
+		        200,16,100,90,220,600,800,1000));
 	        Elements.Add(new FreeParkingSquare(SquareType.Parking,20,"square20",null));
 	        Elements.Add(new PropertySquare(SquareType.Field,21,"square21",null,
-		        220,18,150,90,250,700,875,1050,Color.red));
+		        220,18,150,90,250,700,875,1050));
 	        Elements.Add(new ChanceSquare(SquareType.Chance,22,"square22",null));
 	        Elements.Add(new PropertySquare(SquareType.Field,23,"square23",null,
-		        220,18,150,90,250,700,875,1050,Color.red));
+		        220,18,150,90,250,700,875,1050));
 	        Elements.Add(new PropertySquare(SquareType.Field,24,"square24",null,
-		        240,20,150,100,300,750,925,1100,Color.red));
+		        240,20,150,100,300,750,925,1100));
 	        Elements.Add(new StationSquare(SquareType.Station,25,"square25",null,200,50));
 	        Elements.Add(new PropertySquare(SquareType.Field,26,"square26",null,
-		        260,22,150,110,330,800,975,1150,Color.yellow));
+		        260,22,150,110,330,800,975,1150));
 	        Elements.Add(new PropertySquare(SquareType.Field,27,"square27",null,
-		        260,22,150,110,330,800,975,1150,Color.yellow));
+		        260,22,150,110,330,800,975,1150));
 	        Elements.Add(new CompanySquare(SquareType.Company,28,"square28",null,150,6));
 	        Elements.Add(new PropertySquare(SquareType.Field,29,"square29",null,
-		        280,24,150,120,360,850,1025,1200,Color.yellow));
+		        280,24,150,120,360,850,1025,1200));
 	        Elements.Add(new GoToJailSquare(SquareType.GoToJail,30,"square30",null));
 	        Elements.Add(new PropertySquare(SquareType.Field,31,"square31",null,
-		        300,26,200,130,390,900,1100,1275,Color.green));
+		        300,26,200,130,390,900,1100,1275));
 	        Elements.Add(new PropertySquare(SquareType.Field,32,"square32",null,
-		        300,26,200,130,390,900,1100,1275,Color.green));
+		        300,26,200,130,390,900,1100,1275));
 			Elements.Add(new CommunitySquare(SquareType.Community,33,"square33",null));
 			Elements.Add(new PropertySquare(SquareType.Field,34,"square34",null,
-				320,28,200,150,450,1000,1200,1400,Color.green));
+				320,28,200,150,450,1000,1200,1400));
 			Elements.Add(new StationSquare(SquareType.Station,35,"square35",null,200,50));  
 			Elements.Add(new ChanceSquare(SquareType.Chance,36,"square36",null)); 			
 			Elements.Add(new PropertySquare(SquareType.Field,37,"square37",null,
-				350,35,200,175,500,1100,1300,1500,Color.blue));
+				350,35,200,175,500,1100,1300,1500));
 			Elements.Add(new TaxSquare(SquareType.Tax,38,"square38",null,100));    	
 			Elements.Add(new PropertySquare(SquareType.Field,39,"square39",null,
-			400,50,200,200,600,1400,1700,2000,Color.blue)); 
+			400,50,200,200,600,1400,1700,2000)); 
 			
 			
 			ChanceDeck = new List<Card>();
@@ -200,7 +200,7 @@ namespace Monopoly.Classes
                 if (s.GetType() == typeof(PropertySquare))
                 {
                     PropertySquare sps = (PropertySquare) s;
-                    if (sps.Col.Equals(c))
+                    if (PropertySquare.GetColorIndex(s.Id).Equals(c))
                         propertySet.Add(sps);
                 }
             }
@@ -257,8 +257,9 @@ namespace Monopoly.Classes
          */
         public bool OwnSameColorSet(Player p, PropertySquare ps)
         {
-            Color c = ps.Col; //getting the property's color to verify if
+            //getting the property's color to verify if
             //the player own a full set of this color
+            Color c = PropertySquare.GetColorIndex(ps.Id);
                               
             //List of the properties that belong to this set of color
             List<PropertySquare> sameColorFields = GetPropertySet(c);
@@ -288,10 +289,11 @@ namespace Monopoly.Classes
         {
             if (!OwnSameColorSet(p, ps))
                 return false;
-            
-            Color c = ps.Col; //getting the property's color to verify if
+
+            //getting the property's color to verify if
             //the player own a full set of this color
-                              
+            Color c = PropertySquare.GetColorIndex(ps.Id);
+
             //List of the properties that belong to this set of color
             List<PropertySquare> sameColorFields = GetPropertySet(c);
             int minimumHouse = 100; // A random big number 
@@ -331,10 +333,11 @@ namespace Monopoly.Classes
                 return false;
             if (ps.NbHouse < 1 || ps.NbHouse == 5 && BoardBank.NbHouse < 4)
                 return false;
-            
-            Color c = ps.Col;//getting the property's color to verify if
+
+            //getting the property's color to verify if
             //the player own a full set of this color
-                            
+            Color c = PropertySquare.GetColorIndex(ps.Id);
+
             //List of the properties that belong to this set of color
             List<PropertySquare> sameColorFields = GetPropertySet(c);
                                   
@@ -368,12 +371,15 @@ namespace Monopoly.Classes
          */
         public void BuyHouse(PropertySquare ps, Player p)
         {
-            if (CanBuyHouse(p,ps))
+            if (CanBuyHouse(p, ps))
             {
                 p.Money -= ps.HouseCost; // Paying the cost of the house
                 ps.NbHouse++; // adding a house to the property
-            }else 
+            }
+            else
+            {
                 return;
+            }
         }
 
         /**
@@ -390,12 +396,15 @@ namespace Monopoly.Classes
          */
         public void SellHouse(PropertySquare ps, Player p)
         {
-            if (CanSellHouse(p,ps))
+            if (CanSellHouse(p, ps))
             {
                 p.Money += ps.HouseCost; // refund the house cost
                 ps.NbHouse--; // reduce the number of houses by 1
-            }else
+            }
+            else
+            {
                 return;
+            }
         }
         
         /**
