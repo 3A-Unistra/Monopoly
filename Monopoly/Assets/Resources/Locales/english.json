@@ -73,6 +73,8 @@
     "gotojail2": "Jail",
     "freeparking1": "Free",
     "freeparking2": "Parking",
+    "go1": "Collect<br>200 € salary<br>as you pass",
+    "go2": "Go",
     "rent": "Rent",
     "property_longtext": "If a player owns ALL the Sites of any Colour-Group, the rent is Doubled on Unimproved Sites in that group.",
     "museum_longtext1": "    If one \"Museum\" is owned rent is 4 times amount shown on dice.",

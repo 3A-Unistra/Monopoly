@@ -93,6 +93,22 @@ namespace Monopoly.UI
                 priceTrans.localScale = new Vector3(1f, 1f, 1f);
                 priceText.margin = new Vector4(0.26f, 0.02f, 19.2f, 4.8f);
             }
+            else if (GoSquare.IsGoIndex(squareIndex))
+            {
+                titleText.characterSpacing = 1.5f;
+                titleText.fontSize = 0.7f;
+                titleTrans.localPosition = new Vector3(0.408f, 0.2f, -0.058f);
+                titleTrans.localRotation = Quaternion.Euler(90f, 0f, 225f);
+                titleTrans.localScale = new Vector3(1f, 1f, 1f);
+                titleText.margin = new Vector4(-0.12f, 0f, 19.4f, 4.8f);
+                priceText.fontSize = 2.08f;
+                priceText.characterSpacing = -5.23f;
+                priceTrans.localPosition = new Vector3(0.2f, 0.2f, 0.506f);
+                priceTrans.localRotation = Quaternion.Euler(90f, 0f, 225f);
+                priceTrans.localScale = new Vector3(1f, 0.75f, 1f);
+                priceText.margin = new Vector4(0f, -0.52f, 19f, 4.98f);
+                priceText.fontWeight = FontWeight.Bold;
+            }
         }
 
         public void UpdateText()
@@ -164,6 +180,13 @@ namespace Monopoly.UI
                     StringLocaliser.GetString("freeparking1").ToUpper();
                 priceText.text =
                     StringLocaliser.GetString("freeparking2").ToUpper();
+            }
+            else if (GoSquare.IsGoIndex(squareIndex))
+            {
+                titleText.text =
+                    StringLocaliser.GetString("go1").ToUpper();
+                priceText.text =
+                    StringLocaliser.GetString("go2").ToUpper();
             }
         }
 
