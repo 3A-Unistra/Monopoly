@@ -21,7 +21,6 @@ namespace Monopoly.Runtime
     {
 
         public static ClientGameState current;
-        public CardDisplay cardDisplay;
         public List<Dictionary<string, int>> squareData;
 
         private bool loadedLanguage = false;
@@ -59,6 +58,7 @@ namespace Monopoly.Runtime
             current = this;
             // TODO: Use a persistent file to load the user preference from.
             LoadLanguage("french");
+            //LoadLanguage("english");
             LoadGameData();
             Debug.Log("Initialised gamestate.");
         }
@@ -70,33 +70,6 @@ namespace Monopoly.Runtime
                 current = null;
                 Debug.Log("Successfully destroyed gamestate.");
             }
-        }
-
-        private void DisplayCardPreview()
-        {
-            Ray cubeRay = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit[] cubeHits = Physics.RaycastAll(cubeRay);
-            bool rendered = false;
-            foreach (RaycastHit ray in cubeHits)
-            {
-                GameObject obj = ray.collider.gameObject;
-                SquareCollider collider = obj.GetComponent<SquareCollider>();
-                if (collider != null)
-                {
-                    Debug.Log("found " + collider.name);
-                    cardDisplay.Render(collider.squareIndex);
-                    rendered = true;
-                    break;
-                }
-            }
-            if (!rendered)
-                cardDisplay.Render(-1); // hide card renderer
-        }
-
-        void Update()
-        {
-            if (Input.GetMouseButtonDown(0))
-                DisplayCardPreview();
         }
 
         public Dictionary<string, int> GetSquareDataIndex(int idx)
