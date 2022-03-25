@@ -26,8 +26,8 @@ namespace Monopoly.UI
         [Range(0, 39)]
         public int squareIndex;
 
-        private TMP_Text titleText, priceText;
-        private RectTransform titleTrans, priceTrans;
+        private TMP_Text titleText, priceText, altText1, altText2;
+        private RectTransform titleTrans, priceTrans, altTrans1, altTrans2;
 
         private void CreateTextObjects()
         {
@@ -109,6 +109,47 @@ namespace Monopoly.UI
                 priceText.margin = new Vector4(0f, -0.52f, 19f, 4.98f);
                 priceText.fontWeight = FontWeight.Bold;
             }
+            else if (JailSquare.IsJailIndex(squareIndex))
+            {
+                titleTrans.localPosition = new Vector3(0.21f, 0.2f, -0.493f);
+                titleTrans.localRotation = Quaternion.Euler(90f, 0f, 90f);
+                titleTrans.localScale = new Vector3(1f, 0.75f, 1f);
+                titleText.margin = new Vector4(0f, 0f, 19.3f, 4.8f);
+                priceTrans.localPosition = new Vector3(0.194f, 0.2f, 0.211f);
+                priceTrans.localRotation = Quaternion.Euler(90f, 0f, 180f);
+                priceTrans.localScale = new Vector3(1f, 0.75f, 1f);
+                priceText.margin = new Vector4(0f, 0f, 19.3f, 4.8f);
+
+                // setup two more text fields for the interior of the jail
+                GameObject altObj1 = new GameObject("Title");
+                GameObject altObj2 = new GameObject("Price");
+                altObj1.transform.SetParent(this.transform);
+                altObj2.transform.SetParent(this.transform);
+                altTrans1 = altObj1.AddComponent<RectTransform>();
+                altTrans2 = altObj2.AddComponent<RectTransform>();
+                altText1 = altObj1.AddComponent<TextMeshPro>();
+                altText2 = altObj2.AddComponent<TextMeshPro>();
+
+                altTrans1.localScale = new Vector3(1f, 0.75f, 1f);
+                altTrans1.localRotation = Quaternion.Euler(90f, 0f, 135f);
+                altTrans2.localScale = new Vector3(1f, 0.75f, 1f);
+                altTrans2.localRotation = Quaternion.Euler(90f, 0f, 135f);
+                altTrans1.localPosition = new Vector3(-0.258f, 0.2f, -0.5f);
+                altTrans2.localPosition = new Vector3(0.007f, 0.2f, -0.063f);
+                altTrans1.pivot = new Vector2(0f, 1f);
+                altTrans2.pivot = new Vector2(0f, 1f);
+
+                altText1.margin = new Vector4(0f, 0f, 19.66f, 4.86f);
+                altText2.margin = new Vector4(-0.17f, 0f, 19.7f, 4.84f);
+                altText1.color = Color.black;
+                altText2.color = Color.black;
+                altText1.fontSize = 1.0f;
+                altText2.fontSize = 1.0f;
+                altText1.horizontalAlignment = HorizontalAlignmentOptions.Center;
+                altText2.horizontalAlignment = HorizontalAlignmentOptions.Center;
+                altText1.verticalAlignment = VerticalAlignmentOptions.Middle;
+                altText2.verticalAlignment = VerticalAlignmentOptions.Middle;
+            }
         }
 
         public void UpdateText()
@@ -187,6 +228,17 @@ namespace Monopoly.UI
                     StringLocaliser.GetString("go1").ToUpper();
                 priceText.text =
                     StringLocaliser.GetString("go2").ToUpper();
+            }
+            else if (JailSquare.IsJailIndex(squareIndex))
+            {
+                titleText.text =
+                    StringLocaliser.GetString("jail_out1").ToUpper();
+                priceText.text =
+                    StringLocaliser.GetString("jail_out2").ToUpper();
+                altText1.text =
+                    StringLocaliser.GetString("jail_in1").ToUpper();
+                altText2.text =
+                    StringLocaliser.GetString("jail_in2").ToUpper();
             }
         }
 
