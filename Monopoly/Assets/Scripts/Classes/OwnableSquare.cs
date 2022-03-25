@@ -126,8 +126,11 @@ namespace Monopoly.Classes
           */
         public virtual void PayRent(Player renter)
         {
-            renter.Money -= Rent;
-            Owner.Money += Rent;
+            if (Owner != null)
+            {
+                renter.Money -= Rent;
+                Owner.Money += Rent;
+            }
         }
 
         /**
@@ -196,7 +199,6 @@ namespace Monopoly.Classes
             if(Owner == p)
             {
                 Mortgaged = true;
-                Owner = null;
                 p.Money += Price/2;
             }
         }
@@ -214,10 +216,9 @@ namespace Monopoly.Classes
         */         
         public void UnmortgageProperty(Player p)
         {
-            if(Owner == p)
+            if(Owner == p && Mortgaged)
             {
                 Mortgaged = false;
-                Owner = p;
                 p.Money -= Price/2;
             }
         }

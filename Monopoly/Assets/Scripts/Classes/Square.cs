@@ -79,6 +79,7 @@ namespace Monopoly.Classes
             Type = type;
             Name = name;
             Image = image;
+            Id = id;
             if (id < 0 || id > 39)
                 throw new Monopoly.Exceptions.WrongIdException
                 ("The id should be a number between 0 and 39.");
