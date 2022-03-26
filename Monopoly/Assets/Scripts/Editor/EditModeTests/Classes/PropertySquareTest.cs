@@ -1,3 +1,11 @@
+/*
+ * PropertySquareTest.cs
+ * Unitary test of the class PropertySquare
+ * 
+ * Date created : 24/02/2022
+ * Author       : Rayan MARMAR <rayan.marmar@etu.unistra.fr>
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
@@ -66,6 +74,16 @@ namespace Monopoly.Classes
             Assert.AreEqual(140, st.GetRent(3));
             Assert.AreEqual(200, st.GetRent(4));
             Assert.AreEqual(250, st.GetRent(5));
+            int[] ids = {1,3,6,8,9,11,13,14,16,18,19,21,23,
+                24,26,27,29,31,32,34,37,39};
+            List<int> validIdx = new List<int>(ids);
+            for (int i = 0; i < 40; i++)
+            {
+                if(validIdx.Contains(i))
+                    Assert.True(PropertySquare.IsPropertyIndex(i));
+                else
+                    Assert.False(PropertySquare.IsPropertyIndex(i));
+            }
         }
     }
 }
