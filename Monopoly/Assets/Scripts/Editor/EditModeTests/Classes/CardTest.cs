@@ -1,3 +1,11 @@
+/*
+ * Board.cs
+ * Fichier définissant la classe plateau et ses 
+ * interaction avec les différentes cases
+ * 
+ * Date created : 21/03/2022
+ * Author       : Christophe Pierson <christophe.pierson@etu.unistra.fr>
+ */
 using System;
 using System.Collections.Generic;
 using Monopoly.Classes;

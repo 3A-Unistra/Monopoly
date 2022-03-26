@@ -88,13 +88,13 @@ namespace Monopoly.Classes
                 p.Position = (p.Position + dices) % 40;
                 p.Doubles = 0;
                 Debug.Log("Your moved forward " + dices + " steps.");
-                Square currentSquare = Board.Elements[p.Position];
+                Square currentSquare = GameBoard.Elements[p.Position];
                 Debug.Log("You are now at " + currentSquare.Name);
             }
             else if (dice1 == dice2 && ++p.Doubles < 3)
             {
                 Debug.Log("Your moved forward " + dices + " steps.");
-                Square currentSquare = Board.Elements[p.Position];
+                Square currentSquare = GameBoard.Elements[p.Position];
                 Debug.Log("You are now at " + currentSquare.Name);
                 p.Position = (p.Position + dices) % 40;
                 Debug.Log("Your double counter is at " + p.Doubles);
@@ -172,8 +172,8 @@ namespace Monopoly.Classes
         public void MoveToCompany(Player p)
         {
             
-            CompanySquare c1 = (CompanySquare) Board.Elements[12];
-            CompanySquare c2 = (CompanySquare) Board.Elements[28];
+            CompanySquare c1 = (CompanySquare) GameBoard.Elements[12];
+            CompanySquare c2 = (CompanySquare) GameBoard.Elements[28];
             Random rnd = new Random();
             int roll = rnd.Next(1, 7) + rnd.Next(1, 7);
             if(p.Position < 12)
@@ -400,19 +400,19 @@ namespace Monopoly.Classes
                     break;
                 case "Buy property":
                     BuyProperty(sortedPlayersList[i], 
-                        Board.Elements[sortedPlayersList[i].Position]);
+                        GameBoard.Elements[sortedPlayersList[i].Position]);
                     break;
                 case "Sell property":
                     SellProperty(sortedPlayersList[i], 
-                        Board.Elements[sortedPlayersList[i].Position]);
+                        GameBoard.Elements[sortedPlayersList[i].Position]);
                     break;
                 case "Buy house":
                     BuyHouse(sortedPlayersList[i], 
-                        Board.Elements[sortedPlayersList[i].Position]);
+                        GameBoard.Elements[sortedPlayersList[i].Position]);
                     break;
                 case "Sell house":
                     SellHouse(sortedPlayersList[i], 
-                        Board.Elements[sortedPlayersList[i].Position]);
+                        GameBoard.Elements[sortedPlayersList[i].Position]);
                     break;
                 case "Pay 50" :
                     Pay50(sortedPlayersList[i]);
@@ -440,7 +440,7 @@ namespace Monopoly.Classes
             //AFTER THE MOVEMENT
            Player p = sortedPlayersList[i];
            StringBuilder msg = new StringBuilder();
-           Square currentSquare = Board.Elements[p.Position];
+           Square currentSquare = GameBoard.Elements[p.Position];
            ObligatoryActions(sortedPlayersList[i],currentSquare);
            msg.Append("Possible actions : End turn");
            if (currentSquare.IsProperty())
@@ -533,7 +533,7 @@ namespace Monopoly.Classes
             PropertySquare prop;
             for (int i = 0; i < 40; i++)
             {
-                prop = (PropertySquare) Board.Elements[i];
+                prop = (PropertySquare) GameBoard.Elements[i];
                 if(prop.Owner.Id == p.Id)
                 {
                     if(prop.NbHouse > 4)

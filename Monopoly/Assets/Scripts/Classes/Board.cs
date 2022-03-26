@@ -26,7 +26,7 @@ namespace Monopoly.Classes
     {
         
         public Bank BoardBank { get; set; }
-        public static List<Square> Elements { get; private set; }
+        public List<Square> Elements { get; private set; }
         public int PrisonSquare { get; set; }
         public int BoardMoney { get; set; }
         public static List<Card> ChanceDeck {get; private set;}
@@ -168,7 +168,7 @@ namespace Monopoly.Classes
             List<OwnableSquare> tempList = new List<OwnableSquare>();
             foreach (Square s in Elements)
             {
-                if (s.GetType() == typeof(OwnableSquare))
+                if (s is OwnableSquare)
                 {
                     OwnableSquare sos = (OwnableSquare) s;
                     if (sos.Owner == p)
@@ -191,12 +191,12 @@ namespace Monopoly.Classes
          * </return>        
          */
 
-        public static List<PropertySquare> GetPropertySet(Color c)
+        public List<PropertySquare> GetPropertySet(Color c)
         {
             List<PropertySquare> propertySet = new List<PropertySquare>();
             foreach (Square s in Elements)
             {
-                if (s.GetType() == typeof(PropertySquare))
+                if (s is PropertySquare)
                 {
                     PropertySquare sps = (PropertySquare) s;
                     if (PropertySquare.GetColorIndex(s.Id).Equals(c))
@@ -445,17 +445,13 @@ namespace Monopoly.Classes
         */        
         public void ReturnCard(string type)
         {
-	        if (type == "CHANCE")
+	        if (type == "Chance")
 	        {
-		        ChanceDeck.Add(new Card("CHANCE",15,"OutOfJail"));
+		        ChanceDeck.Add(new Card("Chance",15,"OutOfJail"));
 	        }
-	        else if (type == "COMMUNITY")
+	        else if (type == "Community")
 	        {
-		        CommunityDeck.Add(new Card("COMMUNITY",15,"OutOfJail"));
-	        }
-	        else
-	        {
-		        throw new InvalidOperationException("invalid parameter");
+		        CommunityDeck.Add(new Card("Community",15,"OutOfJail"));
 	        }
         }
         public static void Move(Player p, int r)
