@@ -1,3 +1,11 @@
+/*
+ * OwnableSquareTest.cs
+ * Unitary test of the class OwnableSquare
+ * 
+ * Date created : 24/02/2022
+ * Author       : Rayan MARMAR <rayan.marmar@etu.unistra.fr>
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
