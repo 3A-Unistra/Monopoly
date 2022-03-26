@@ -20,7 +20,7 @@ namespace Monopoly.Classes
     * for the player to buy, maximum 32 houses and 12 hotels
     * </summary>
     */
-    public class Bank 
+    public class Bank  
     {
         /**
         * <summary>
@@ -80,7 +80,7 @@ namespace Monopoly.Classes
         * true if you took a hotel frm the bank, false if there are none
         * </return>
         */
-        bool BuyHotel()
+        public bool BuyHotel()
         {
             if(NbHotel > 0)
             {
@@ -94,7 +94,7 @@ namespace Monopoly.Classes
         * increment the number of houses by one as the player sells one
         * </summary>
         */
-        void SellHouse()
+        public void SellHouse()
         {
             NbHouse++;
         }
@@ -103,7 +103,7 @@ namespace Monopoly.Classes
         * increment the number of hotels by one as the player sells one
         * </summary>
         */        
-        void SellHotel()
+        public void SellHotel()
         {
             NbHotel++;
         }
@@ -126,6 +126,27 @@ namespace Monopoly.Classes
             {
                 s.Owner = p;
                 p.Money -= s.Price;
+            }
+        }
+        /**
+        * <summary>
+        * player p sells the property on the square s
+        * the square s owner is set to null
+        * the player p's money is increased by half the value of square s 
+        * </summary>
+        * <param name="p">
+        * player p the one who sells the square
+        * </param> 
+        * <param name="s">        
+        * Ownablesquare s the square which is sold 
+        * </param>
+        */         
+        public void SellProperty(Player p, OwnableSquare s)
+        {
+            if(s.Owner == p)
+            {
+                s.Owner = null;
+                p.Money += s.Price/2;
             }
         }
     }

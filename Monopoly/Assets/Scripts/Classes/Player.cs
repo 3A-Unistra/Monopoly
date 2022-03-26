@@ -193,6 +193,7 @@ namespace Monopoly.Classes
             this.Score = 0;
             this.Position = 0;
             this.InJail = false;
+            this.JailTurns = 0;
             this.Bankrupt = false;
             this.ChanceJailCard = false;
             this.CommunityJailCard = false;
@@ -237,13 +238,11 @@ namespace Monopoly.Classes
         */  
         public void TransferMoney(Player to, int amount)
         {
-            if( Money > amount)
+            if((Money >= amount) && (amount > 0))
             {
                 Money -= amount;
                 to.Money += amount;
             }
-            else
-                throw new InvalidOperationException("Unsufficient money");
         }
         /**
         * <summary>
@@ -259,7 +258,8 @@ namespace Monopoly.Classes
         */          
         public void TransferProperty(Player to, OwnableSquare p)
         {
-            p.Owner = to;
+            if(p.Owner == this)
+                p.Owner = to;
         }
         /**
         * <summary>
@@ -276,19 +276,15 @@ namespace Monopoly.Classes
         */ 
         public void TransferCard(Player to, string cardType)
         {
-            if ((cardType == "CHANCE") && (ChanceJailCard == true))
+            if ((cardType == "Chance") && (ChanceJailCard == true))
             {
                 ChanceJailCard = false;
                 to.ChanceJailCard = true;
             }
-            else if((cardType == "COMMUNITY") && (CommunityJailCard == true))
+            else if((cardType == "Community") && (CommunityJailCard == true))
             {
                 CommunityJailCard = false;
                 to.CommunityJailCard = true;
-            }
-            else
-            {
-                throw new InvalidOperationException("Unavailable card");
             }
         }
     }

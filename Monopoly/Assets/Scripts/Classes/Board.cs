@@ -13,7 +13,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
 namespace Monopoly.Classes
 {
     /**
@@ -27,7 +26,7 @@ namespace Monopoly.Classes
     {
         
         public Bank BoardBank { get; set; }
-        public static List<Square> Elements { get; private set; }
+        public List<Square> Elements { get; private set; }
         public int PrisonSquare { get; set; }
         public int BoardMoney { get; set; }
         public static List<Card> ChanceDeck {get; private set;}
@@ -46,68 +45,68 @@ namespace Monopoly.Classes
             BoardBank = new Bank(); 
             BoardMoney = 0;
             PrisonSquare = 10;
-            
-			Elements.Add(new GoSquare(SquareType.Go,0,"square0",null));
-			Elements.Add(new PropertySquare(SquareType.Field,1,"square1",null,
+                                   
+			Elements.Add(new Square(SquareType.Go,0,"Go",null));
+			Elements.Add(new PropertySquare(SquareType.Field,1,"Hautepierre",null,
 				60,2,50,10,30,90,160,250));
-	        Elements.Add(new CommunitySquare(SquareType.Community,2,"square2",null));
-	        Elements.Add(new PropertySquare(SquareType.Field,3,"square3",null,
+	        Elements.Add(new Square(SquareType.Community,2,"Communauté",null));
+	        Elements.Add(new PropertySquare(SquareType.Field,3,"place des Halles",null,
 				60,4,50,20,60,180,320,450));
-	        Elements.Add(new TaxSquare(SquareType.Tax,4,"square4",null,200));
-	        Elements.Add(new StationSquare(SquareType.Station,5,"square5",null,200,50));
-	        Elements.Add(new PropertySquare(SquareType.Field,6,"square6",null,
+	        Elements.Add(new Square(SquareType.Tax,4,"Taxe",null));
+	        Elements.Add(new OwnableSquare(SquareType.Station,5,"Homme de fer",null,200,50));
+	        Elements.Add(new PropertySquare(SquareType.Field,6,"Route de la Wantzenau",null,
 		        100,6,50,30,90,270,400,550));
-	        Elements.Add(new ChanceSquare(SquareType.Chance,7,"square7",null));
-	        Elements.Add(new PropertySquare(SquareType.Field,8,"square8",null,
+	        Elements.Add(new Square(SquareType.Chance,7,"Chance",null));
+	        Elements.Add(new PropertySquare(SquareType.Field,8,"Avenue Général de Gaulle",null,
 		        100,6,50,30,90,270,400,550));
-	        Elements.Add(new PropertySquare(SquareType.Field,9,"square9",null,
+	        Elements.Add(new PropertySquare(SquareType.Field,9,"Parc de la Citadelle",null,
 		        120,8,50,40,100,300,450,600));
-	        Elements.Add(new JailSquare(SquareType.Prison,10,"square10",null));
-	        Elements.Add(new PropertySquare(SquareType.Field,11,"square11",null,
+	        Elements.Add(new Square(SquareType.Prison,10,"Prison",null));
+	        Elements.Add(new PropertySquare(SquareType.Field,11,"Cronenbourg",null,
 		        140,10,100,50,150,450,625,750));
-	        Elements.Add(new CompanySquare(SquareType.Company,12,"square12",null,150,6));
-	        Elements.Add(new PropertySquare(SquareType.Field,13,"square13",null,
+	        Elements.Add(new OwnableSquare(SquareType.Company,12,"Companie",null,150,6));
+	        Elements.Add(new PropertySquare(SquareType.Field,13,"Parc de l'Orangerie",null,
 		        140,10,100,50,150,450,625,750));
-	        Elements.Add(new PropertySquare(SquareType.Field,14,"square14",null,
+	        Elements.Add(new PropertySquare(SquareType.Field,14,"Palais de l'europe",null,
 		        160,12,100,60,180,500,700,900));
-	        Elements.Add(new StationSquare(SquareType.Station,15,"square15",null,200,50));
-	        Elements.Add(new PropertySquare(SquareType.Field,16,"square16",null,
+	        Elements.Add(new OwnableSquare(SquareType.Station,15,"Gare centrale",null,200,50));
+	        Elements.Add(new PropertySquare(SquareType.Field,16,"Ancienne Synagogue",null,
 		        180,14,100,70,200,550,700,900));
-	        Elements.Add(new CommunitySquare(SquareType.Community,17,"square17",null));
-	        Elements.Add(new PropertySquare(SquareType.Field,18,"square18",null,
+	        Elements.Add(new Square(SquareType.Community,17,"Communauté",null));
+	        Elements.Add(new PropertySquare(SquareType.Field,18,"Église Saint-Pierre-le-Vieux",null,
 		        180,14,100,70,200,550,700,950));
-	        Elements.Add(new PropertySquare(SquareType.Field,19,"square19",null,
+	        Elements.Add(new PropertySquare(SquareType.Field,19,"Église Saint-Paul",null,
 		        200,16,100,90,220,600,800,1000));
-	        Elements.Add(new FreeParkingSquare(SquareType.Parking,20,"square20",null));
-	        Elements.Add(new PropertySquare(SquareType.Field,21,"square21",null,
+	        Elements.Add(new Square(SquareType.Parking,20,"Parc gratuit",null));
+	        Elements.Add(new PropertySquare(SquareType.Field,21,"Rue Bain-aux-Plantes",null,
 		        220,18,150,90,250,700,875,1050));
-	        Elements.Add(new ChanceSquare(SquareType.Chance,22,"square22",null));
-	        Elements.Add(new PropertySquare(SquareType.Field,23,"square23",null,
+	        Elements.Add(new Square(SquareType.Chance,22,"Chance",null));
+	        Elements.Add(new PropertySquare(SquareType.Field,23,"Place Benjamin-Zix",null,
 		        220,18,150,90,250,700,875,1050));
-	        Elements.Add(new PropertySquare(SquareType.Field,24,"square24",null,
+	        Elements.Add(new PropertySquare(SquareType.Field,24,"Les Ponts Couverts",null,
 		        240,20,150,100,300,750,925,1100));
-	        Elements.Add(new StationSquare(SquareType.Station,25,"square25",null,200,50));
-	        Elements.Add(new PropertySquare(SquareType.Field,26,"square26",null,
+	        Elements.Add(new OwnableSquare(SquareType.Station,25,"Université", null,200,50));
+	        Elements.Add(new PropertySquare(SquareType.Field,26,"Gallia",null,
 		        260,22,150,110,330,800,975,1150));
-	        Elements.Add(new PropertySquare(SquareType.Field,27,"square27",null,
+	        Elements.Add(new PropertySquare(SquareType.Field,27,"Observatoire",null,
 		        260,22,150,110,330,800,975,1150));
-	        Elements.Add(new CompanySquare(SquareType.Company,28,"square28",null,150,6));
-	        Elements.Add(new PropertySquare(SquareType.Field,29,"square29",null,
+	        Elements.Add(new OwnableSquare(SquareType.Company,28,"Companie",null,150,6));
+	        Elements.Add(new PropertySquare(SquareType.Field,29,"Campus Central",null,
 		        280,24,150,120,360,850,1025,1200));
-	        Elements.Add(new GoToJailSquare(SquareType.GoToJail,30,"square30",null));
-	        Elements.Add(new PropertySquare(SquareType.Field,31,"square31",null,
+	        Elements.Add(new GoToJailSquare(SquareType.GoToJail,30,"Allez en prison",null));
+	        Elements.Add(new PropertySquare(SquareType.Field,31,"Place Kleber",null,
 		        300,26,200,130,390,900,1100,1275));
-	        Elements.Add(new PropertySquare(SquareType.Field,32,"square32",null,
+	        Elements.Add(new PropertySquare(SquareType.Field,32,"Place Broglie",null,
 		        300,26,200,130,390,900,1100,1275));
-			Elements.Add(new CommunitySquare(SquareType.Community,33,"square33",null));
-			Elements.Add(new PropertySquare(SquareType.Field,34,"square34",null,
+			Elements.Add(new Square(SquareType.Community,33,"Communauté",null));
+			Elements.Add(new PropertySquare(SquareType.Field,34,"Place de la République",null,
 				320,28,200,150,450,1000,1200,1400));
-			Elements.Add(new StationSquare(SquareType.Station,35,"square35",null,200,50));  
-			Elements.Add(new ChanceSquare(SquareType.Chance,36,"square36",null)); 			
-			Elements.Add(new PropertySquare(SquareType.Field,37,"square37",null,
+			Elements.Add(new OwnableSquare(SquareType.Station,35,"République",null,200,50));  
+			Elements.Add(new Square(SquareType.Chance,36,"Chance",null)); 			
+			Elements.Add(new PropertySquare(SquareType.Field,37,"Parlement Européen",null,
 				350,35,200,175,500,1100,1300,1500));
-			Elements.Add(new TaxSquare(SquareType.Tax,38,"square38",null,100));    	
-			Elements.Add(new PropertySquare(SquareType.Field,39,"square39",null,
+			Elements.Add(new Square(SquareType.Tax,38,"Taxe",null));    	
+			Elements.Add(new PropertySquare(SquareType.Field,39,"La Cathédrale de Strasbourg",null,
 			400,50,200,200,600,1400,1700,2000)); 
 			
 			
@@ -155,9 +154,9 @@ namespace Monopoly.Classes
         * <param name="pos">
         * int pos the position of the square we want to get
         * </param>         
-        * <return>
+        * <returns>
         * the square at position pos
-        * </return>               
+        * </returns>               
         */
         public Square GetSquare(int pos)
         {
@@ -169,7 +168,7 @@ namespace Monopoly.Classes
             List<OwnableSquare> tempList = new List<OwnableSquare>();
             foreach (Square s in Elements)
             {
-                if (s.GetType() == typeof(OwnableSquare))
+                if (s is OwnableSquare)
                 {
                     OwnableSquare sos = (OwnableSquare) s;
                     if (sos.Owner == p)
@@ -192,12 +191,12 @@ namespace Monopoly.Classes
          * </return>        
          */
 
-        public static List<PropertySquare> GetPropertySet(Color c)
+        public List<PropertySquare> GetPropertySet(Color c)
         {
             List<PropertySquare> propertySet = new List<PropertySquare>();
             foreach (Square s in Elements)
             {
-                if (s.GetType() == typeof(PropertySquare))
+                if (s is PropertySquare)
                 {
                     PropertySquare sps = (PropertySquare) s;
                     if (PropertySquare.GetColorIndex(s.Id).Equals(c))
@@ -450,16 +449,17 @@ namespace Monopoly.Classes
 	        {
 		        ChanceDeck.Add(new Card("Chance",15,"OutOfJail"));
 	        }
-	        else if (type == "Chance")
+	        else if (type == "Community")
 	        {
 		        CommunityDeck.Add(new Card("Community",15,"OutOfJail"));
 	        }
-	        else
-	        {
-		        throw new InvalidOperationException("invalid parameter");
-	        }
         }
-
+        public static void Move(Player p, int r)
+        {
+            if (p.Position + r >= 40)
+                p.Money += 200;
+            p.Position = (p.Position + r)%40;
+        }
 
     }
 }

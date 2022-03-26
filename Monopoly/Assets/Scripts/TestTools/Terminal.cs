@@ -5,6 +5,7 @@
  * 
  * Date created : 04/03/2022
  * Author       : Rayan Marmar <rayan.marmar@etu.unistra.fr>
+                : Christophe Pierson <christophe.pierson@etu.unistra.fr>
  *              
  */
 
@@ -19,12 +20,8 @@ using UnityEngine.UI;
 using TMPro;
 using Random = System.Random;
 
-namespace Monopoly.TestTools
+namespace Monopoly.Classes
 {
-    //TO DO ADD EXCHANGING INTERACTION
-    //TO DO MODIFY MORTGAGE INTERACTION
-    //TO DO ADD THE LOGIC OF PLAYER NOT BEING BANKRUPT IF HE HAS
-    //SOME PROPERTIES OR CARDS OR HOUSES
     public class Terminal : MonoBehaviour
     {
         private int i = 0;
@@ -41,7 +38,6 @@ namespace Monopoly.TestTools
             new Player("5", "Helene", null),
             new Player("6", "Anthony", null),
         };
-        
 
         void Start()
         {
@@ -58,7 +54,6 @@ namespace Monopoly.TestTools
             Debug.Log("It\'s " + p.Name + "\'s turn.");
             if (p.InJail)
             {
-                p.JailTurns++;
                 if (p.JailTurns < 3)
                     msg.Append("Possible actions : Roll Dice or Pay 50");
                 else
@@ -76,20 +71,8 @@ namespace Monopoly.TestTools
                 msg.Append(" or Exchange chance jail card");
             if (p.CommunityJailCard)
                 msg.Append(" or Exchange community jail card");
-            if (GameBoard.SquareOwned(p).Count() > 0)
-            {
-                msg.Append(" or Exchange property or Mortgage property");
-                for(int j=0 ; j<GameBoard.SquareOwned(p).Count(); j++)
-                {
-                    OwnableSquare s = GameBoard.SquareOwned(p)[j];
-                    if (s.Mortgaged==true)
-                    {
-                        msg.Append(" or Unmortgage property");
-                        j = GameBoard.SquareOwned(p).Count();
-                    }
-                }
-            }
-                
+            if (GameBoard.SquareOwned(p).Any())
+                msg.Append(" or Exchange property");
             Debug.Log(msg);
         }
         
@@ -99,49 +82,32 @@ namespace Monopoly.TestTools
             int dice1 = rnd.Next(1, 7);
             int dice2 = rnd.Next(1, 7);
             int dices = dice1 + dice2;
-            if (p.InJail)
+
+            if (dice1 != dice2)
             {
-                if (dice1 == dice2)
-                {
-                    p.ExitPrison();
-                    Debug.Log(p.Name + " just exited prison.");
-                }
+                p.Position = (p.Position + dices) % 40;
+                p.Doubles = 0;
+                Debug.Log("Your moved forward " + dices + " steps.");
+                Square currentSquare = GameBoard.Elements[p.Position];
+                Debug.Log("You are now at " + currentSquare.Name);
             }
-            else
+            else if (dice1 == dice2 && ++p.Doubles < 3)
             {
-                int position = p.Position + dices;
-                if ((dice1 != dice2 || p.Doubles != 3))
-                {
-                    if (position > 39)
-                    {
-                        p.Money += 200;
-                        Debug.Log(p.Name + " just received 200 by passing go");
-                    }
-                    p.Position = (p.Position + dices) % 40;
-                    Debug.Log("Your moved forward " + dices + " steps.");
-                    Square currentSquare = Board.Elements[p.Position];
-                    Debug.Log("You are now at " + currentSquare.Name);
-                }
-                if (dice1 != dice2)
-                {
-                    p.Doubles = 0;
-                }
-                else if (dice1 == dice2 && ++p.Doubles < 3)
-                {
-                    Debug.Log("Your double counter is at " + p.Doubles);
-                }
-                else if (dice1 == dice2 && p.Doubles == 3)
-                {
-                    
-                    p.EnterPrison();
-                    if(p.InJail)
-                        Debug.Log("You went to jail in position " + p.Position);
-                    else
-                        Debug.LogError("AN ERROR OCCURED THE PLAYER SHOULD " +
-                                       "BE IN PRISON");
-                }
+                Debug.Log("Your moved forward " + dices + " steps.");
+                Square currentSquare = GameBoard.Elements[p.Position];
+                Debug.Log("You are now at " + currentSquare.Name);
+                p.Position = (p.Position + dices) % 40;
+                Debug.Log("Your double counter is at " + p.Doubles);
             }
-            
+            else if (dice1 == dice2 && p.Doubles == 3)
+            {
+                p.EnterPrison();
+                if(p.InJail)
+                    Debug.Log("You went to jail in position " + p.Position);
+                else
+                    Debug.LogError("AN ERROR OCCURED THE PLAYER SHOULD " +
+                                   "BE IN PRISON");
+            }
         }
 
         private void DrawChanceCard(Player p)
@@ -150,9 +116,8 @@ namespace Monopoly.TestTools
             if (c.id == 15)
             {
                 Board.ChanceDeck.Remove(Board.ChanceDeck
-                    [15]);
+                    [Board.ChanceDeck.Count() - 1]);
                 p.ChanceJailCard = true;
-                Debug.Log(p.Name + " now has an out of jail chance card.");
             }
                 
         }
@@ -163,56 +128,127 @@ namespace Monopoly.TestTools
             if (c.id == 15)
             {                
                 Board.CommunityDeck.Remove(Board.CommunityDeck
-                    [15]);
+                    [Board.CommunityDeck.Count() - 1]);
                 p.CommunityJailCard = true;
-                Debug.Log(p.Name + " now has an out of jail community card.");
             }
 
         }
 
         private void ReturnChanceJailCard(Player p)
         {
-            GameBoard.ReturnCard("Chance");
+            GameBoard.ReturnCard("CHANCE");
             p.ChanceJailCard = false;
-            p.ExitPrison();
-            Debug.Log(p.Name + " just used a chance " +
-                      "out of jail card and exited prison.");
+            p.InJail = false;
+            p.JailTurns = 0;
         }
         
         private void ReturnCommunityJailCard(Player p)
         {
-            GameBoard.ReturnCard("Community");
+            GameBoard.ReturnCard("COMMUNITY");
             p.CommunityJailCard = false;
-            p.ExitPrison();
-            Debug.Log(p.Name + " just used a community " +
-                      "out of jail card and exited prison.");
+            p.InJail = false;
+            p.JailTurns = 0;
         }
-        
+
         private void PayTax(Player p, Square s)
         {
             TaxSquare ts = (TaxSquare) s;
             if (p.Money < ts.TaxPrice)
-                PlayerLost(p);
+                p.Bankrupt = true;
             else
                 p.Money -= ts.TaxPrice;
             GameBoard.BoardMoney += ts.TaxPrice;
         }
-        
+        /**
+        * <summary>
+        * the player moves to the next company and
+        * if it is owned, must roll the dices and
+        * pay ten time the result
+        * </summary>
+        * <parameter name="p">
+        * the player who moves to the next company
+        * </parameter>           
+        */ 
+        public void MoveToCompany(Player p)
+        {
+            
+            CompanySquare c1 = (CompanySquare) GameBoard.Elements[12];
+            CompanySquare c2 = (CompanySquare) GameBoard.Elements[28];
+            Random rnd = new Random();
+            int roll = rnd.Next(1, 7) + rnd.Next(1, 7);
+            if(p.Position < 12)
+            {
+                p.Position = 12;
+                if ((c1.Owner != null) && (c1.Owner.Id != p.Id))
+                    PayCompany2(p, c1, roll);
+
+            }
+            else
+                p.Position = 28;
+                if ((c2.Owner != null) && (c2.Owner.Id != p.Id))
+                    PayCompany2(p, c2, roll);
+        }
+        /**
+        * <summary>
+        * the player is on an owned company
+        * he must pay the owner six times the result on his dices
+        * </summary>
+        * <parameter name="p">
+        * the player who pays
+        * </parameter>
+        * <parameter name="diceRoll">
+        * the amount rolled
+        * </parameter> 
+        * <parameter name="s">
+        * the company where the player moved
+        * </parameter>                           
+        */ 
+        public void PayCompany1(Player p,CompanySquare s, int diceRoll)
+        {
+            p.Money -= 6 * diceRoll;
+            if(p.Money < 0 )
+                p.Bankrupt = true;
+            sortedPlayersList[int.Parse(s.Owner.Id)].Money += 6 * diceRoll; 
+        }  
+        /**
+        * <summary>
+        * the player is on an owned company
+        * and the owner owns the two companies
+        * he must pay the owner ten times the result on his dices
+        * </summary>
+        * <parameter name="p">
+        * the player who pays
+        * </parameter>
+        * <parameter name="diceRoll">
+        * the amount rolled
+        * </parameter> 
+        * <parameter name="s">
+        * the company where the player moved
+        * </parameter>                           
+        */               
+        public void PayCompany2(Player p, CompanySquare s, int diceRoll)
+        {
+            p.Money -= 10 * diceRoll;
+            if(p.Money <0 )
+                p.Bankrupt = true;            
+            sortedPlayersList[int.Parse(s.Owner.Id)].Money += 10 * diceRoll; 
+        }
+        private void PickUpBoardMoney(Player p)
+        {
+            p.Money += GameBoard.BoardMoney;
+            GameBoard.BoardMoney = 0;
+        }
 
         public void BuyHouse(Player p, Square s)
         {
             PropertySquare ps = (PropertySquare) s;
             GameBoard.BuyHouse(ps,p);
-            Debug.Log(p.Name + " just bought a house on " + ps.Name + 
-                      " and now has " + ps.NbHouse + " houses on it");
         }
         
         public void SellHouse(Player p, Square s)
         {
             PropertySquare ps = (PropertySquare) s;
             GameBoard.SellHouse(ps,p);
-            Debug.Log(p.Name + " just sold a house from " + ps.Name + 
-                      " and now has " + ps.NbHouse + " houses on it");
         }
         
         private void BuyProperty(Player p, Square s)
@@ -225,12 +261,12 @@ namespace Monopoly.TestTools
                 Debug.LogError("AN ERROR OCCURED");
         }
         
-        private void MortgageProperty(Player p, Square s)
+        private void SellProperty(Player p, Square s)
         {
             OwnableSquare os = (OwnableSquare) s;
-            os.MortgageProperty(p);
+            GameBoard.BoardBank.SellProperty(p,os);
             if(os.Owner == null)
-                Debug.Log(os.Name + " is now mortgaged ");
+                Debug.Log(os.Name + " is now sold ");
             else
                 Debug.LogError("AN ERROR OCCURED");
         }
@@ -238,12 +274,12 @@ namespace Monopoly.TestTools
         public void Pay50(Player p)
         {
             if (p.Money < 50)
-                PlayerLost(p);
-
+                p.Bankrupt = true;
             else
             {
                 p.Money -= 50;
-                p.ExitPrison();
+                p.InJail = false;
+                p.JailTurns = 0;
             }
             
         }
@@ -284,7 +320,7 @@ namespace Monopoly.TestTools
             {
                 Debug.Log(p.Name + " gained " + GameBoard.BoardMoney +
                           " from the free parking");
-                GameBoard.FreeParking(p);
+                PickUpBoardMoney(p);
             }
             else if (s.IsGoToJail())
             {
@@ -293,51 +329,62 @@ namespace Monopoly.TestTools
             }
 
         }
-        
-        private void PerformExchange(List<OwnableSquare> fromSquares,
-            List<OwnableSquare> toSquares, int fromMoney, int toMoney,
-            List<Card> fromCards, List<Card> toCards, Player from, Player to)
+
+        private enum Exchangeable
         {
-            if (fromSquares.Count() > 0)
-            {
-                foreach (var s in fromSquares)
-                    from.TransferProperty(to,s);
-            }
-            if (toSquares.Count() > 0)
-            {
-                foreach (var s in toSquares)
-                    to.TransferProperty(from,s);
-            }
-            
-            if (fromCards.Count() > 0)
-            {
-                foreach (var c in fromCards)
-                    from.TransferCard(to,c.type);
-            }
-            if (toCards.Count() > 0)
-            {
-                foreach (var c in toCards)
-                    to.TransferCard(from,c.type);
-            }
-
-            if (toMoney > 0)
-                to.TransferMoney(from,toMoney);
-
-            if(fromMoney > 0)
-                from.TransferMoney(to,fromMoney);
-            
+            Card,
+            Property
+        }
+        private void ExchangePropertyToMoney(Player from, Player to, Square s,
+            int price)
+        {
+            OwnableSquare os = (OwnableSquare) s;
+            from.TransferProperty(to,os);
+            to.TransferMoney(from,price);
+        }
+        
+        private void ExchangePropertyToProperty(Player from, Player to, 
+            Square sFrom,Square sTo)
+        {
+            OwnableSquare osFrom = (OwnableSquare) sFrom;
+            OwnableSquare osTo = (OwnableSquare) sTo;
+            from.TransferProperty(to,osFrom);
+            to.TransferProperty(from,osTo);
+        }
+        
+        private void ExchangePropertyToCard(Player from, Player to, Square s, 
+            string c)
+        {
+            OwnableSquare os = (OwnableSquare) s;
+            from.TransferProperty(to,os);
+            to.TransferCard(from,c);
+        }
+        private void ExchangeCardToMoney(Player from, Player to, string c,
+            int price)
+        {
+            from.TransferCard(to,c);
+            to.TransferMoney(from,price);
+        }
+        
+        private void ExchangeCardToProperty(Player from, Player to, string c,
+            Square s)
+        {
+            OwnableSquare os = (OwnableSquare) s;
+            from.TransferCard(to,c);
+            to.TransferProperty(from,os);
+        }
+        
+        private void ExchangeCardToCard(Player from, Player to, string cFrom,
+            string cTo)
+        {
+            from.TransferCard(to,cFrom);
+            to.TransferCard(from,cTo);
         }
 
-        private void PlayerLost(Player p)
+        private void RequestExchange(Exchangeable fromType, 
+            Exchangeable toType)
         {
-            p.Bankrupt = true;
-            sortedPlayersList.Remove(p);
-            Debug.Log(sortedPlayersList[i].Name + " just lost!");
-            if (sortedPlayersList.Count() == 1)
-            {
-                Debug.Log(sortedPlayersList[0].Name + "WON THE GAME!!");
-                EndGame();
-            }
+            
         }
         
         private void SendInput()
@@ -345,7 +392,7 @@ namespace Monopoly.TestTools
             string txt = input.text;
             input.text = "";
             Debug.Log(txt);
-            input.Select();
+            
             switch (txt)
             {
                 case "Roll dice" : 
@@ -353,19 +400,19 @@ namespace Monopoly.TestTools
                     break;
                 case "Buy property":
                     BuyProperty(sortedPlayersList[i], 
-                        Board.Elements[sortedPlayersList[i].Position]);
+                        GameBoard.Elements[sortedPlayersList[i].Position]);
                     break;
-                case "Mortgage property":
-                    MortgageProperty(sortedPlayersList[i], 
-                        Board.Elements[sortedPlayersList[i].Position]);
+                case "Sell property":
+                    SellProperty(sortedPlayersList[i], 
+                        GameBoard.Elements[sortedPlayersList[i].Position]);
                     break;
                 case "Buy house":
                     BuyHouse(sortedPlayersList[i], 
-                        Board.Elements[sortedPlayersList[i].Position]);
+                        GameBoard.Elements[sortedPlayersList[i].Position]);
                     break;
                 case "Sell house":
                     SellHouse(sortedPlayersList[i], 
-                        Board.Elements[sortedPlayersList[i].Position]);
+                        GameBoard.Elements[sortedPlayersList[i].Position]);
                     break;
                 case "Pay 50" :
                     Pay50(sortedPlayersList[i]);
@@ -375,6 +422,12 @@ namespace Monopoly.TestTools
                     break;
                 case "Use community jail card" :
                     ReturnCommunityJailCard(sortedPlayersList[i]);
+                    break;
+                case "Exchange chance jail card":
+                    break;
+                case "Exchange community jail card":
+                    break;
+                case "Exchange property" :
                     break;
                 case "End turn":
                     EndTurn();
@@ -387,32 +440,20 @@ namespace Monopoly.TestTools
             //AFTER THE MOVEMENT
            Player p = sortedPlayersList[i];
            StringBuilder msg = new StringBuilder();
-           Square currentSquare = Board.Elements[p.Position];
+           Square currentSquare = GameBoard.Elements[p.Position];
            ObligatoryActions(sortedPlayersList[i],currentSquare);
-           msg.Append("Possible actions : ");
-           if(p.Doubles > 0)
-               msg.Append("Roll dice");
-           else
-               msg.Append("End turn");
+           msg.Append("Possible actions : End turn");
            if (currentSquare.IsProperty())
            {
                OwnableSquare os = (OwnableSquare) currentSquare;
-               if(os.Owner == null && os.Mortgaged == false)
+               if(os.Owner == null)
                    msg.Append(" or Buy property");
-               else if (os.Owner != sortedPlayersList[i])
-               {
-                   if (p.Money >= os.Rent)
-                   {
-                       os.PayRent(p);
-                       Debug.Log(p.Name + " payed " + os.Rent + " to " + os.Owner.Name);
-                   }
-                   else
-                       PlayerLost(p);
-               }
-
-               else if(os.Type == SquareType.Field)
+               else if(os.Owner != sortedPlayersList[i])
+                   os.PayRent(p);
+               else
                {
                    PropertySquare ps = (PropertySquare) os;
+                   msg.Append(" or Sell property");
                    if 
                        (GameBoard.OwnSameColorSet(sortedPlayersList[i], ps) 
                            || GameBoard.CanBuyHouse(sortedPlayersList[i], ps))
@@ -425,5 +466,272 @@ namespace Monopoly.TestTools
            }
            Debug.Log(msg);
         }
+        /**
+        * <summary>
+        * the player must go to the next station
+        * this is a card effect    
+        * </summary>
+        * <parameter name="p">
+        * the player who goes to the next station
+        * </parameter>           
+        */          
+        public void NextStation(Player p)
+        {
+            if (p.Position < 5)
+                p.Position = 5;
+            else if (p.Position < 15)
+                p.Position = 15;
+            else if (p.Position < 25)
+                p.Position = 25;
+            else if (p.Position < 35)
+                p.Position = 35; 
+            else
+            {
+                p.Money += 200;
+                p.Position = 5;
+            }           
+        }
+        /**
+        * <summary>
+        * the player must give 50 euros for each other players
+        * this is a card effect    
+        * </summary>
+        * <parameter name="p">
+        * the player who pays
+        * </parameter>           
+        */         
+        public void ElectedPresident(Player p)
+        {
+            for (int i = 0; i < sortedPlayersList.Count(); i++)
+            {
+                if((p.Money >= 50) && (sortedPlayersList[i].Id != p.Id))
+                {
+                    sortedPlayersList[i].Money += 50;
+                    p.Money -= 50;
+                }
+                else if ((p.Money < 50) && (sortedPlayersList[i].Id != p.Id))
+                {
+                    p.Bankrupt = true;
+                    sortedPlayersList[i].Money += p.Money;                    
+                    p.Money = 0;
+                }
+            }
+        }
+        /**
+        * <summary>
+        * the player must pay 25 euros for each of 
+        * his houses and 100 euros for each of
+        * his hotels
+        * this is a card effect    
+        * </summary>
+        * <parameter name="p">
+        * the player who pays
+        * </parameter>           
+        */          
+        public void MaintenanceCost(Player p)
+        {
+            PropertySquare prop;
+            for (int i = 0; i < 40; i++)
+            {
+                prop = (PropertySquare) GameBoard.Elements[i];
+                if(prop.Owner.Id == p.Id)
+                {
+                    if(prop.NbHouse > 4)
+                        p.Money -= 100;
+                    else
+                        p.Money -= 25*prop.NbHouse;
+                }
+            }
+            if(p.Money < 0)
+                p.Bankrupt = true;
+        }
+        /**
+        * <summary>
+        * The player must sell his properties utile his money is positive
+        * or he runs bankrupt and loses the game   
+        * </summary>
+        * <parameter name="p">
+        * the player who's amount of money is negative
+        * </parameter>           
+        */         
+        public void PayDebt(Player p)
+        {
+            bool giveUp = false;
+            while((p.Money < 0) && (!giveUp))
+            //TODO    
+                ;
+            if(p.Money >= 0)
+                p.Bankrupt = false;           
+        }
+        /**
+        * <summary>
+        * gets 10 euro tip from every other placer
+        * this is a card effect    
+        * </summary>
+        * <parameter name="p">
+        * the player who gets tipped
+        * </parameter>           
+        */        
+        public void Tip(Player p)
+        {
+            p.Money += 10 * (sortedPlayersList.Count() - 1);
+            for (int i = 1; i < sortedPlayersList.Count(); i++)
+            {
+                if(sortedPlayersList[i] != p)
+                    sortedPlayersList[i].Money -= 10;
+                    if(sortedPlayersList[i].Money < 0)
+                        sortedPlayersList[i].Bankrupt = true;
+            }
+        }
+        /**
+        * <summary>
+        * The player draws a chance card i 
+        * and gets its effect      
+        * </summary>
+        * <parameter name="p">
+        * the player who draws the card
+        * </parameter>
+        * <parameter name="i">
+        * The card at place i in the list
+        * </parameter>           
+        */
+        private void ChanceCardEffect(Player p, int i)
+        {
+            switch (i)
+            {
+                case 0:
+                    p.Position = 39;
+                    break;
+                case 1:
+                    p.Position = 0;
+                    p.Money += 200;
+                    break;
+                case 2:
+                    if( p.Position > 24)
+                        p.Money += 200;
+                    p.Position = 24;
+                    break;
+                case 3:
+                    if( p.Position > 11)
+                        p.Money += 200;
+                    p.Position = 11;
+                    break;
+                case 4:
+                    NextStation(p);             
+                    break;
+                case 5:
+                    NextStation(p);              
+                    break;
+                case 6:
+                    MoveToCompany( p);
+                    break;
+                case 7:
+                    p.Money += 50;
+                    break;
+                case 8:
+                    p.Money += 150;
+                    break;
+                case 9:
+                    Board.Move(p, -3);
+                    break;
+                case 10:
+                    p.InJail = true;
+                    p.Position = 10;
+                    break;
+                case 11:
+                    MaintenanceCost( p);
+                    break;
+                case 12:
+                    p.Money -= 15;
+                    if(p.Money < 0)
+                    p.Bankrupt = true;
+                    break;
+                case 13:
+                    if (p.Position > 5)
+                        p.Money += 200;
+                    p.Position = 5;
+                    break;
+                case 14:
+                    ElectedPresident(p);
+                    break;
+                case 15:
+                    p.ChanceJailCard = true;
+                    break;                                                
+            }
+        }
+        /**
+        * <summary>
+        * The player draws a community card i 
+        * and gets its effect
+        * <parameter name="p">
+        * the player who draws the card
+        * </parameter>
+        * <parameter name="i">
+        * The card at place i in the list
+        * </parameter>         
+        * </summary>
+        */
+        private void CommunityCardEffect(Player p, int i)
+        {
+            switch (i)
+            {
+                case 0:
+                    p.Money -= 50;
+                    if(p.Money < 0)
+                        p.Bankrupt = true;
+                    break;
+                case 1:
+                    p.Money += 100;
+                    break;
+                case 2:
+                    p.Money +=100;
+                    break;
+                case 3:
+                    p.Money -= 50;
+                    if(p.Money < 0)
+                        p.Bankrupt = true;
+                    break;
+                case 4:
+                    p.Money +=20;
+                    break;
+                case 5:
+                    p.Money -= 100;
+                    if(p.Money < 0)
+                        p.Bankrupt = true;
+                    break;
+                case 6:
+                    p.InJail = true;
+                    p.Position = 10;
+                    break;
+                case 7:
+                    p.Money +=25;
+                    break;
+                case 8:
+                    Tip(p);
+                    break;
+                case 9:
+                    p.Money += 100;
+                    break;
+                case 10:
+                    p.Money += 50;
+                    break;
+                case 11:
+                    p.Money += 10;
+                    break;
+                case 12:
+                    MaintenanceCost(p);
+                    break;
+                case 13:
+                    p.Position = 0;
+                    p.Money += 200;
+                    break;
+                case 14:
+                p.Money += 200;
+                    break;
+                case 15: 
+                    p.CommunityJailCard = true;
+                    break;                                                                   
+            }
+        }        
     }
 }
