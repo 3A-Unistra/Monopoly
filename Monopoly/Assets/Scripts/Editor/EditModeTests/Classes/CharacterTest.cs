@@ -1,7 +1,6 @@
 /*
- * Board.cs
- * Fichier définissant la classe plateau et ses 
- * interaction avec les différentes cases
+ * CharacterTest.cs
+ * Fichier de test unitaire pour Character.cs
  * 
  * Date created : 21/03/2022
  * Author       : Christophe Pierson <christophe.pierson@etu.unistra.fr>

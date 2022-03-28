@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 namespace Monopoly.Classes
+
 {
     /**
     * <summary>
@@ -32,7 +33,6 @@ namespace Monopoly.Classes
         public static List<Card> ChanceDeck {get; private set;}
         public static List<Card> CommunityDeck {get; private set;}
 
-
         /**
          * <summary>
          * The constructor of the board class. It initializes all
@@ -45,8 +45,9 @@ namespace Monopoly.Classes
             BoardBank = new Bank(); 
             BoardMoney = 0;
             PrisonSquare = 10;
-                                   
-			Elements.Add(new Square(SquareType.Go,0,"Go",null));
+            
+
+            Elements.Add(new Square(SquareType.Go,0,"Go",null));
 			Elements.Add(new PropertySquare(SquareType.Field,1,"Hautepierre",null,
 				60,2,50,10,30,90,160,250));
 	        Elements.Add(new Square(SquareType.Community,2,"Communauté",null));
@@ -306,7 +307,7 @@ namespace Monopoly.Classes
                     minimumHouse = Math.Min(minimumHouse, field.NbHouse);
             }
 
-            if (ps.NbHouse - minimumHouse > 0 || p.Money < ps.HouseCost)
+            if (ps.NbHouse - minimumHouse > 0 || p.Money < ps.HouseCost || ps.NbHouse > 4)
                 return false;
 
             return true;
