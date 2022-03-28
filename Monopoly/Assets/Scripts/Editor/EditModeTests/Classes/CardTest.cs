@@ -1,7 +1,6 @@
-/*
- * Board.cs
- * Fichier définissant la classe plateau et ses 
- * interaction avec les différentes cases
+/* 
+ * CardTest
+ * Fichier de test unitaire pour Card.cs
  * 
  * Date created : 21/03/2022
  * Author       : Christophe Pierson <christophe.pierson@etu.unistra.fr>
@@ -13,7 +12,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using NUnit.Framework;
 
-namespace Monopoly.Classes
+namespace Monopoly.Classes                                                                                                                                                                                                                                                                                
 {
     public class CardTest
     {  
