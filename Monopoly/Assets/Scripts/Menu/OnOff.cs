@@ -1,3 +1,12 @@
+/*
+ * OnOff.cs
+ * This file contain the animation of the on/off switch 
+ * 
+ * Date created : 25/02/2022
+ * Author       : Rayan MARMAR <rayan.marmar@etu.unistra.fr>
+ *                Finn RAYMENT <rayment@etu.unistra.fr>
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,59 +15,76 @@ using UnityEngine.UI;
 
 namespace Monopoly.Menu
 {
+    [RequireComponent(typeof(RectTransform))]
+    [RequireComponent(typeof(Button))]
     public class OnOff : MonoBehaviour
     {
-        public Button Back;
         public Button Front;
-        private bool switchOn;
+        public bool switchOn;
         private bool animating;
-
-        Vector3 leftPos, rightPos;
+        private Vector3 leftPos, rightPos;
 
         public void Start()
         {
-            Transform backTransform = Back.transform;
-            RectTransform rectBack = (RectTransform) backTransform;
+            RectTransform rectBack = GetComponent<RectTransform>();
             float backWidth = rectBack.rect.width;
-            leftPos = new Vector3(backTransform.position.x - backWidth/2, backTransform.position.y, backTransform.position.z);
-            rightPos = new Vector3(backTransform.position.x, backTransform.position.y, backTransform.position.z);
-            Front.transform.position = leftPos;
-            Front.onClick.AddListener(OnFrontClick);
-            if (Front.transform.position == rightPos)
-                switchOn = true;
+            leftPos = new Vector3(transform.localPosition.x - backWidth / 2, transform.localPosition.y,
+                transform.localPosition.z);
+            rightPos = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z);
+            Front.onClick.AddListener(OnClick);
+            GetComponent<Button>().onClick.AddListener(OnClick);
+            if (switchOn)
+            {
+                Front.transform.localPosition = rightPos;
+                GetComponent<Image>().color = Color.green;
+            }
             else
-                switchOn = false;
+            {
+                Front.transform.localPosition = leftPos;
+                GetComponent<Image>().color = Color.white;
+            }
             animating = false;
-
         }
-        public void MonFonctionAnimation()
+        private void SwitchAnimation()
         {
+            /*Debug.Log(backWidth);
+            Debug.Log(backTransform.localPosition);
+            Debug.Log(backTransform.localPosition.x);
+            Debug.Log(backTransform.localPosition.y);
+            Debug.Log(backTransform.localPosition.z);*/
             Vector3 toPos;
             if (!switchOn)
                 toPos = rightPos;
             else
                 toPos = leftPos;
-            Front.transform.position = Vector3.Lerp(Front.transform.position, toPos, Time.deltaTime * 8f);
-            if (MathUtil.CompareVector3(Front.transform.position, toPos) == 0)
+            Front.transform.localPosition = Vector3.Lerp(Front.transform.localPosition, toPos, Time.deltaTime * 8f);
+            if (MathUtil.CompareVector3(Front.transform.localPosition, toPos) == 0)
             {
                 animating = false;
                 switchOn = !switchOn;
             }
         }
 
-        void OnFrontClick()
+        private void OnClick()
         {
-            animating = true;
-            if (!switchOn)
-                Back.GetComponent<Image>().color = Color.green;
-            else
-                Back.GetComponent<Image>().color = Color.white;
+           /* Debug.Log(transform.localPosition);
+            Debug.Log(Front.transform.localPosition);
+            Debug.Log(leftPos);
+            Debug.Log(rightPos);*/
+           if (!animating)
+           {
+               animating = true;
+               if (!switchOn)
+                   GetComponent<Image>().color = Color.green;
+               else
+                   GetComponent<Image>().color = Color.white;
+           }
         }
         
         void Update()
         {
             if (animating)
-                MonFonctionAnimation();
+                SwitchAnimation();
         }
         
     }
