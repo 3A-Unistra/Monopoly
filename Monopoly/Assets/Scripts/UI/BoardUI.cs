@@ -1,6 +1,16 @@
+/*
+ * BoardUI.cs
+ * Board interaction handler.
+ * 
+ * Date created : 25/03/2022
+ * Author       : Finn RAYMENT <rayment@etu.unistra.fr>
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+using Monopoly.Graphics;
 
 namespace Monopoly.UI
 {

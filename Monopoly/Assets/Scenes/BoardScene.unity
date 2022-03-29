@@ -168,6 +168,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 0
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &55018810
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -596,6 +599,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 27
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &255899629
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -654,6 +660,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 12
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &288676205
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -805,6 +814,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 1
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &322535413
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -863,6 +875,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 21
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &488836752
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -921,6 +936,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 5
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &543257179
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -979,6 +997,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 35
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &559050558
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1103,6 +1124,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 11
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &627818010
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1240,6 +1264,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 38
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &713192959
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1379,6 +1406,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 8
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &724889788
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1518,6 +1548,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 31
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &768927303
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1568,8 +1601,8 @@ Camera:
   m_GameObject: {fileID: 776732281}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1743,6 +1776,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 7
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &793982593
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2056,6 +2092,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 26
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &959967107
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2153,6 +2192,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 22
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1029137457
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2211,6 +2253,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 34
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1030536895
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2269,6 +2314,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 4
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1076436617
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2448,6 +2496,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 37
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1106144824
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2506,6 +2557,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 15
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1107936718
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2564,6 +2618,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 29
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1133083094
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2697,6 +2754,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 14
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1157771827
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2755,6 +2815,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 18
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1171923349
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2813,6 +2876,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 3
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1197189804
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2887,6 +2953,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 9
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1214706444
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3051,6 +3120,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 25
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1278977941
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3109,6 +3181,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 36
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1283959765
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3167,6 +3242,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 39
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1333242063
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3268,6 +3346,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 32
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1392571426
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3326,6 +3407,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 28
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1414001871
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3384,6 +3468,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 6
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1441307015
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3537,6 +3624,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 23
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1453326409
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3795,6 +3885,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 13
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1575531774
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4099,6 +4192,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 16
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1667160593
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4157,6 +4253,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 20
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1681458020
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4215,6 +4314,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 30
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1690997291
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4273,6 +4375,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 17
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1704727902
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4331,6 +4436,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 33
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1707436368
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4389,6 +4497,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 19
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1754431053
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4486,6 +4597,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 10
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1894985832
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4678,6 +4792,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 24
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &1953613133
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4815,6 +4932,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squareIndex: 2
+  houseLevel: 0
+  housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
 --- !u!65 &2053854959
 BoxCollider:
   m_ObjectHideFlags: 0

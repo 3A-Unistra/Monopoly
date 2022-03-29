@@ -16,7 +16,7 @@ using Monopoly.Classes;
 using Monopoly.Runtime;
 using Monopoly.Util;
 
-namespace Monopoly.UI
+namespace Monopoly.Graphics
 {
 
     [RequireComponent(typeof(BoxCollider))]
@@ -26,8 +26,15 @@ namespace Monopoly.UI
         [Range(0, 39)]
         public int squareIndex;
 
+        [Range(0, 5)]
+        public int houseLevel;
+
+        public GameObject housePrefab, hotelPrefab;
+
         private TMP_Text titleText, priceText, altText1, altText2;
         private RectTransform titleTrans, priceTrans, altTrans1, altTrans2;
+
+        private List<GameObject> houseObjects;
 
         private void CreateTextObjects()
         {
@@ -242,10 +249,61 @@ namespace Monopoly.UI
             }
         }
 
+        public void UpdateHouses()
+        {
+            houseObjects.ForEach((x) => { Destroy(x); });
+            houseObjects.Clear();
+            if (houseLevel == 0)
+                return;
+            if (houseLevel == 5)
+            {
+                Vector3 hotelScale = hotelPrefab.transform.localScale;
+                Quaternion hotelRot = hotelPrefab.transform.localRotation;
+                GameObject hotelObj =
+                    Instantiate(hotelPrefab, transform);
+                hotelObj.transform.localRotation = hotelRot;
+                hotelObj.transform.localScale = Vector3.one;
+                Vector3 lossyScale = hotelObj.transform.lossyScale;
+                hotelScale.x /= lossyScale.x;
+                hotelScale.y /= lossyScale.y;
+                hotelScale.z /= lossyScale.z;
+                hotelObj.transform.localScale = hotelScale;
+                hotelObj.transform.localPosition =
+                    new Vector3(-0.4f, 0.5f, -0.41f);
+                houseObjects.Add(hotelObj);
+                return;
+            }
+            Vector3 houseScale = housePrefab.transform.localScale;
+            Quaternion houseRot = housePrefab.transform.localRotation;
+            Vector3 pos = new Vector3(0.38f, 0.5f, -0.43f);
+            float offset = 0.255f; // x offset for each house
+            for (int i = 0; i < houseLevel; ++i)
+            {
+                GameObject houseObj =
+                    Instantiate(housePrefab, transform);
+                houseObj.transform.localRotation = houseRot;
+                houseObj.transform.localScale = Vector3.one;
+                if (i == 0)
+                {
+
+                    Vector3 lossyScale = houseObj.transform.lossyScale;
+                    houseScale.x /= lossyScale.x;
+                    houseScale.y /= lossyScale.y;
+                    houseScale.z /= lossyScale.z;
+                }
+                houseObj.transform.localScale = houseScale;
+                houseObj.transform.localPosition = pos;
+                houseObjects.Add(houseObj);
+                pos.x -= offset;
+            }
+        }
+
         void Start()
         {
+            houseObjects = new List<GameObject>();
             CreateTextObjects();
             UpdateText();
+            UpdateHouses();
         }
 
     }

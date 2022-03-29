@@ -3,7 +3,9 @@ guid: 52bacdfac10a5488c83ab3fc02dc1ff4
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
+  - hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
