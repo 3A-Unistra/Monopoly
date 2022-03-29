@@ -13,6 +13,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Monopoly.Runtime;
+
 namespace Monopoly.Classes
 
 {
@@ -30,8 +32,8 @@ namespace Monopoly.Classes
         public List<Square> Elements { get; private set; }
         public int PrisonSquare { get; set; }
         public int BoardMoney { get; set; }
-        public static List<Card> ChanceDeck {get; private set;}
-        public static List<Card> CommunityDeck {get; private set;}
+        public List<Card> ChanceDeck {get; private set;}
+        public List<Card> CommunityDeck {get; private set;}
 
         /**
          * <summary>
@@ -45,107 +47,61 @@ namespace Monopoly.Classes
             BoardBank = new Bank(); 
             BoardMoney = 0;
             PrisonSquare = 10;
-            
+            List<Dictionary<string, int>> squares =
+                ClientGameState.current.squareData;
+            foreach (Dictionary<string, int> dic in squares)
+            {
+                int pos = dic["id"];
+                switch (dic["type"])
+                {
+                    case 0: // go
+                        Elements.Add(new GoSquare(pos));
+                        break;
+                    case 1: // tax
+                        Elements.Add(new TaxSquare(pos, dic["value"]));
+                        break;
+                    case 2:  // regular property
+                        Elements.Add(
+                            new PropertySquare(pos,
+                                                dic["buy_price"], dic["rent_base"],
+                                                dic["house_price"],
+                                                dic["rent_1"], dic["rent_2"],
+                                                dic["rent_3"], dic["rent_4"],
+                                                dic["rent_5"]));
+                        break;
+                    case 3: // station
+                        Elements.Add(
+                            new StationSquare(pos,
+                                                dic["buy_price"], dic["rent_base"]));
+                        break;
+                    case 4: // company
+                        Elements.Add(
+                            new CompanySquare(pos, dic["buy_price"]));
+                        break;
+                    case 5: // prison
+                        Elements.Add(new JailSquare(pos));
+                        break;
+                    case 6: // go to jail
+                        Elements.Add(new GoToJailSquare(pos));
+                        break;
+                    case 7: //Free parking
+                        Elements.Add(new FreeParkingSquare(pos));
+                        break;
+                    case 8: //community chest
+                        Elements.Add(new CommunitySquare(pos));
+                        break;
+                    case 9: // chance 
+                        Elements.Add(new ChanceSquare(pos));
+                        break;
+                }
+            }
 
-            Elements.Add(new Square(SquareType.Go,0,"Go",null));
-			Elements.Add(new PropertySquare(SquareType.Field,1,"Hautepierre",null,
-				60,2,50,10,30,90,160,250));
-	        Elements.Add(new Square(SquareType.Community,2,"Communauté",null));
-	        Elements.Add(new PropertySquare(SquareType.Field,3,"place des Halles",null,
-				60,4,50,20,60,180,320,450));
-	        Elements.Add(new Square(SquareType.Tax,4,"Taxe",null));
-	        Elements.Add(new OwnableSquare(SquareType.Station,5,"Homme de fer",null,200,50));
-	        Elements.Add(new PropertySquare(SquareType.Field,6,"Route de la Wantzenau",null,
-		        100,6,50,30,90,270,400,550));
-	        Elements.Add(new Square(SquareType.Chance,7,"Chance",null));
-	        Elements.Add(new PropertySquare(SquareType.Field,8,"Avenue Général de Gaulle",null,
-		        100,6,50,30,90,270,400,550));
-	        Elements.Add(new PropertySquare(SquareType.Field,9,"Parc de la Citadelle",null,
-		        120,8,50,40,100,300,450,600));
-	        Elements.Add(new Square(SquareType.Prison,10,"Prison",null));
-	        Elements.Add(new PropertySquare(SquareType.Field,11,"Cronenbourg",null,
-		        140,10,100,50,150,450,625,750));
-	        Elements.Add(new OwnableSquare(SquareType.Company,12,"Companie",null,150,6));
-	        Elements.Add(new PropertySquare(SquareType.Field,13,"Parc de l'Orangerie",null,
-		        140,10,100,50,150,450,625,750));
-	        Elements.Add(new PropertySquare(SquareType.Field,14,"Palais de l'europe",null,
-		        160,12,100,60,180,500,700,900));
-	        Elements.Add(new OwnableSquare(SquareType.Station,15,"Gare centrale",null,200,50));
-	        Elements.Add(new PropertySquare(SquareType.Field,16,"Ancienne Synagogue",null,
-		        180,14,100,70,200,550,700,900));
-	        Elements.Add(new Square(SquareType.Community,17,"Communauté",null));
-	        Elements.Add(new PropertySquare(SquareType.Field,18,"Église Saint-Pierre-le-Vieux",null,
-		        180,14,100,70,200,550,700,950));
-	        Elements.Add(new PropertySquare(SquareType.Field,19,"Église Saint-Paul",null,
-		        200,16,100,90,220,600,800,1000));
-	        Elements.Add(new Square(SquareType.Parking,20,"Parc gratuit",null));
-	        Elements.Add(new PropertySquare(SquareType.Field,21,"Rue Bain-aux-Plantes",null,
-		        220,18,150,90,250,700,875,1050));
-	        Elements.Add(new Square(SquareType.Chance,22,"Chance",null));
-	        Elements.Add(new PropertySquare(SquareType.Field,23,"Place Benjamin-Zix",null,
-		        220,18,150,90,250,700,875,1050));
-	        Elements.Add(new PropertySquare(SquareType.Field,24,"Les Ponts Couverts",null,
-		        240,20,150,100,300,750,925,1100));
-	        Elements.Add(new OwnableSquare(SquareType.Station,25,"Université", null,200,50));
-	        Elements.Add(new PropertySquare(SquareType.Field,26,"Gallia",null,
-		        260,22,150,110,330,800,975,1150));
-	        Elements.Add(new PropertySquare(SquareType.Field,27,"Observatoire",null,
-		        260,22,150,110,330,800,975,1150));
-	        Elements.Add(new OwnableSquare(SquareType.Company,28,"Companie",null,150,6));
-	        Elements.Add(new PropertySquare(SquareType.Field,29,"Campus Central",null,
-		        280,24,150,120,360,850,1025,1200));
-	        Elements.Add(new GoToJailSquare(SquareType.GoToJail,30,"Allez en prison",null));
-	        Elements.Add(new PropertySquare(SquareType.Field,31,"Place Kleber",null,
-		        300,26,200,130,390,900,1100,1275));
-	        Elements.Add(new PropertySquare(SquareType.Field,32,"Place Broglie",null,
-		        300,26,200,130,390,900,1100,1275));
-			Elements.Add(new Square(SquareType.Community,33,"Communauté",null));
-			Elements.Add(new PropertySquare(SquareType.Field,34,"Place de la République",null,
-				320,28,200,150,450,1000,1200,1400));
-			Elements.Add(new OwnableSquare(SquareType.Station,35,"République",null,200,50));  
-			Elements.Add(new Square(SquareType.Chance,36,"Chance",null)); 			
-			Elements.Add(new PropertySquare(SquareType.Field,37,"Parlement Européen",null,
-				350,35,200,175,500,1100,1300,1500));
-			Elements.Add(new Square(SquareType.Tax,38,"Taxe",null));    	
-			Elements.Add(new PropertySquare(SquareType.Field,39,"La Cathédrale de Strasbourg",null,
-			400,50,200,200,600,1400,1700,2000)); 
-			
-			
-			ChanceDeck = new List<Card>();
-			ChanceDeck.Add(new Card("Chance",0,"..."));
-			ChanceDeck.Add(new Card("Chance",1,"..."));
-			ChanceDeck.Add(new Card("Chance",2,"..."));
-			ChanceDeck.Add(new Card("Chance",3,"..."));
-			ChanceDeck.Add(new Card("Chance",4,"..."));
-			ChanceDeck.Add(new Card("Chance",5,"..."));
-			ChanceDeck.Add(new Card("Chance",6,"..."));
-			ChanceDeck.Add(new Card("Chance",7,"..."));
-			ChanceDeck.Add(new Card("Chance",8,"..."));
-			ChanceDeck.Add(new Card("Chance",9,"..."));
-			ChanceDeck.Add(new Card("Chance",10,"..."));
-			ChanceDeck.Add(new Card("Chance",11,"..."));
-			ChanceDeck.Add(new Card("Chance",12,"..."));
-			ChanceDeck.Add(new Card("Chance",13,"..."));
-			ChanceDeck.Add(new Card("Chance",14,"..."));
-			ChanceDeck.Add(new Card("Chance",15,"OutOfJail"));
-			CommunityDeck = new List<Card>();
-			CommunityDeck.Add(new Card("Community",0,"..."));
-			CommunityDeck.Add(new Card("Community",1,"..."));
-			CommunityDeck.Add(new Card("Community",2,"..."));	
-			CommunityDeck.Add(new Card("Community",3,"..."));
-			CommunityDeck.Add(new Card("Community",4,"..."));
-			CommunityDeck.Add(new Card("Community",5,"..."));
-			CommunityDeck.Add(new Card("Community",6,"..."));	
-			CommunityDeck.Add(new Card("Community",7,"..."));	
-			CommunityDeck.Add(new Card("Community",8,"..."));
-			CommunityDeck.Add(new Card("Community",9,"..."));
-			CommunityDeck.Add(new Card("Community",10,"..."));	
-			CommunityDeck.Add(new Card("Community",11,"..."));
-			CommunityDeck.Add(new Card("Community",12,"..."));
-			CommunityDeck.Add(new Card("Community",13,"..."));
-			CommunityDeck.Add(new Card("Community",14,"..."));	
-			CommunityDeck.Add(new Card("Community",15,"OutOfJail"));
-
+            ChanceDeck = new List<Card>();
+            CommunityDeck = new List<Card>();
+            for(int i = 0; i < 16; i++)
+                ChanceDeck.Add(new Card(i, false));
+            for (int i = 0; i < 16; i++)
+                CommunityDeck.Add(new Card(i, true));
         }
         
         /**
@@ -438,23 +394,18 @@ namespace Monopoly.Classes
         
         /**
         * <summary>
-        * returns a OutOfJail card to its deck after use
         * </summary>
-        * <param name="type">
-        * The given card type.
-        * </param>
-        */        
-        public void ReturnCard(string type)
+        */      
+        
+        public void ReturnCard(bool community, Card c)
         {
-	        if (type == "Chance")
-	        {
-		        ChanceDeck.Add(new Card("Chance",15,"OutOfJail"));
-	        }
-	        else if (type == "Community")
-	        {
-		        CommunityDeck.Add(new Card("Community",15,"OutOfJail"));
-	        }
+            if (community)
+                CommunityDeck.Add(c);
+            else
+                ChanceDeck.Add(c);
+
         }
+
         public static void Move(Player p, int r)
         {
             if (p.Position + r >= 40)

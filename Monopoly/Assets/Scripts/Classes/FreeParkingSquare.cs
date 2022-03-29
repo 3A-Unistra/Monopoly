@@ -19,17 +19,8 @@ namespace Monopoly.Classes
          * <summary>
          * Constructor of the class <c>FreeParkingSquare</c>.
          * </summary>
-         * <param name="type">
-         * The new type of the free parking square.
-         * </param>
          * <param name="id">
          * The new id of the free parking square.
-         * </param>
-         * <param name="name">
-         * The new name of the free parking square on the board.
-         * </param>
-         * <param name="image">
-         * The new image of the free parking square on the board.
          * </param>
          * <returns>
          * Returns an instance of the FreeParkingSquare object with the given
@@ -38,20 +29,12 @@ namespace Monopoly.Classes
          * <exception cref="Monopoly.Exceptions.WrongIdException">
          * Throws an exception if the given id is not 20.
          * </exception>
-         * <exception cref="Monopoly.Exceptions.WrongTypeException">
-         * Throws an exception if the given type is different from
-         * SquareType.Parking.
-         * </exception>
          */
-        public FreeParkingSquare(SquareType type, int id, string name, 
-            Material image) : base(type,id,name,image)
+        public FreeParkingSquare(int id) : base(SquareType.Parking, id)
         {
             if (id!=20)
                 throw new Monopoly.Exceptions.WrongIdException
                     ("The id should be 20.");
-            if (type != SquareType.Parking)
-                throw new Monopoly.Exceptions.WrongTypeException
-                    ("The type should be SquareType.Parking.");
         }
         
         /**

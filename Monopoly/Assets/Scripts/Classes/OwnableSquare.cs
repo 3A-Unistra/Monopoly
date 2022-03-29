@@ -65,12 +65,6 @@ namespace Monopoly.Classes
           * <param name="id">
           * The new id of the property.
           * </param>
-          * <param name="name">
-          * The new name of the property.
-          * </param>
-          * <param name="image">
-          * The new image of the property.
-          * </param>
           * <param name="price">
           * The new price of the property.
           * </param>
@@ -91,9 +85,8 @@ namespace Monopoly.Classes
           * SquareType.Field, SquareType.Station or SquareType.Company.
           * </exception>
           */
-        public OwnableSquare(SquareType type, int id, string name, 
-            Material image, int price, int rent)
-            : base(type, id, name, image)
+        public OwnableSquare(SquareType type, int id, int price, int rent)
+            : base(type, id)
         {
             Owner = null;
             Mortgaged = false;

@@ -84,17 +84,8 @@ namespace Monopoly.Classes
           * <summary>
           * Constructor of the class <c>PropertySquare</c>.
           * </summary>
-          * <param name="type">
-          * The new type of the property.
-          * </param>
           * <param name="id">
           * The new id of the property.
-          * </param>
-          * <param name="name">
-          * The new name of the property.
-          * </param>
-          * <param name="image">
-          * The new image of the property.
           * </param>
           * <param name="price">
           * The new price of the property.
@@ -134,15 +125,10 @@ namespace Monopoly.Classes
           * Throws an exception if the given id does not belong to this list
           * {1,3,6,8,9,11,13,14,16,18,19,21,23,24,26,27,29,31,32,34,37,39}.
           * </exception>
-          * <exception cref="Monopoly.Exceptions.WrongTypeException">
-          * Throws an exception if the given type is different than a
-          * SquareType.Field.
-          * </exception>
           */
-        public PropertySquare(SquareType type, int id, string name,
-            Material image, int price, int rent,int houseCost, int house1Rent,
+        public PropertySquare( int id, int price, int rent,int houseCost, int house1Rent,
             int house2Rent, int house3Rent, int house4Rent, int hotelRent)
-            : base(type, id, name, image, price, rent)
+            : base(SquareType.Field, id, price, rent)
         {
             NbHouse = 0;
             HouseCost = houseCost;
@@ -157,9 +143,6 @@ namespace Monopoly.Classes
             if (!validIdNumbers.Contains(id))
                 throw new Monopoly.Exceptions.WrongIdException
                     ("The id should be a valid property number.");
-            if (type != SquareType.Field)
-                throw new Monopoly.Exceptions.WrongTypeException
-                    ("The type should be SquareType.Field.");
         }
 
         /**

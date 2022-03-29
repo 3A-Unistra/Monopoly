@@ -26,32 +26,28 @@ namespace Monopoly.Classes
     {
         /**
         * <summary>
-        * type tells if the card is chance or community
-        * </summary>
-        */
-        public string type;
-        /**
-        * <summary>
         * a unique id for each cards in the card list deck
         * </summary>
-        */        
+        */       
         public int id;
+
         /**
-        * <summary>
-        * desc shows the player what the card does
-        * </summary>
-        */        
-        public string desc;
+         * <summary>
+         * if true the card is community card
+         * else it is a chance card
+         * </summary>
+         */
+        public bool community;
+
         /**
         * <summary>
         * Card constructor 
         * </summary>
-        */         
-        public Card(string type, int id, string desc)
+        */
+        public Card(int id, bool community)
         {
             this.id = id;
-            this.type = type;
-            this.desc = desc;
+            this.community = community;
         }
 
     }

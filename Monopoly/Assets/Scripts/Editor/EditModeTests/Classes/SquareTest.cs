@@ -20,24 +20,22 @@ namespace Monopoly.Classes
         [Test]
         public void TestInitialisation()
         {
-            Square s = new Square(SquareType.Go,0,"test",null);
+            Square s = new Square(SquareType.Go,0);
             Assert.True(s != null);
             Assert.AreEqual(SquareType.Go, s.Type);
             Assert.AreEqual(0, s.Id);
-            Assert.AreEqual("test", s.Name);
-            Assert.AreEqual(null, s.Image);
         }
 
         [Test]
         public void TestTypeFunctions()
         {
-            Square go = new Square(SquareType.Go, 0, "go", null);
-            Square prop = new Square(SquareType.Station, 15, "station", null);
-            Square tax = new Square(SquareType.Tax, 38, "tax", null);
-            Square park = new Square(SquareType.Parking, 20, "parking", null);
-            Square goJail = new Square(SquareType.GoToJail, 30, "goJail", null);
-            Square community = new Square(SquareType.Community, 17, "community", null);
-            Square chance = new Square(SquareType.Chance, 7, "chance",null);
+            Square go = new Square(SquareType.Go, 0);
+            Square prop = new Square(SquareType.Station, 15);
+            Square tax = new Square(SquareType.Tax, 38);
+            Square park = new Square(SquareType.Parking, 20);
+            Square goJail = new Square(SquareType.GoToJail, 30);
+            Square community = new Square(SquareType.Community, 17);
+            Square chance = new Square(SquareType.Chance, 7);
             
             Assert.True(go.IsGo());
             Assert.False(go.IsChance());

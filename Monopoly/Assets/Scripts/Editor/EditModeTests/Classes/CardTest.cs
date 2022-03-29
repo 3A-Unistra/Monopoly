@@ -19,14 +19,10 @@ namespace Monopoly.Classes
         [Test]
         public void TestCardCreation()
         {
-            Card ch = new Card("Chance", 1, "123");
-            Card co = new Card("Community", 2, "456");
-            Assert.True(ch.type == "Chance");
+            Card ch = new Card(1, false);
+            Card co = new Card(2, true);
             Assert.True(ch.id == 1);
-            Assert.True(ch.desc == "123");
-            Assert.True(co.type == "Community");
             Assert.True(co.id == 2);
-            Assert.True(co.desc == "456");
         }
     }
 }

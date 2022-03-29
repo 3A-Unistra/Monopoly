@@ -32,14 +32,7 @@ namespace Monopoly.Classes
          * The name of the square that will be written on the board.
          * </summary>
          */
-        public string Name { get; set; }
- 
-        /**
-         * <summary>
-         * The id of the square is the unique number that represents its placement
-         * on the board from 0 being the first square to 39 being the last.
-         * </summary>
-         */
+
         public int Id { get; set; }
  
         /**
@@ -47,38 +40,10 @@ namespace Monopoly.Classes
          * The image that represents the square that will be shown on the board.
          * </summary>
          */
-        public Material Image { get; set; }
- 
-        /**
-         * <summary>
-         * Constructor of the class <c>Square</c>.
-         * </summary>
-         * <param name="type">
-         * The new type of the square.
-         * </param>
-         * <param name="id">
-         * The new id of the square.
-         * </param>
-         * <param name="name">
-         * The new name of the square on the board.
-         * </param>
-         * <param name="image">
-         * The new image of the square on the board.
-         * </param>
-         * <returns>
-         * Returns an instance of the Square object with the given type, id, name and
-         * image.
-         * </returns>
-         * * <exception cref="Monopoly.Exceptions.WrongIdException">
-         * Throws an exception if the given id is a negative number, or a number
-         * greater than 39.
-         * </exception>
-         */
-        public Square(SquareType type, int id, string name, Material image)
+
+        public Square(SquareType type, int id)
         {
             Type = type;
-            Name = name;
-            Image = image;
             Id = id;
             if (id < 0 || id > 39)
                 throw new Monopoly.Exceptions.WrongIdException

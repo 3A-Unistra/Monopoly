@@ -19,17 +19,8 @@ namespace Monopoly.Classes
          * <summary>
          * Constructor of the class <c>JailSquare</c>.
          * </summary>
-         * <param name="type">
-         * The new type of the jail square.
-         * </param>
          * <param name="id">
          * The new id of the jail square.
-         * </param>
-         * <param name="name">
-         * The new name of the jail square on the board.
-         * </param>
-         * <param name="image">
-         * The new image of the jail square on the board.
          * </param>
          * <returns>
          * Returns an instance of the JailSquare object with the given type, id,
@@ -38,19 +29,12 @@ namespace Monopoly.Classes
          * <exception cref="Monopoly.Exceptions.WrongIdException">
          * Throws an exception if the given id is not 10.
          * </exception>
-         * <exception cref="Monopoly.Exceptions.WrongTypeException">
-         * Throws an exception if the given type is different from SquareType.Prison.
-         * </exception>
          */
-        public JailSquare(SquareType type, int id, string name, Material image)
-            : base(type,id,name,image)
+        public JailSquare(int id) : base(SquareType.Prison, id)
         {
             if (id!=10)
                 throw new Monopoly.Exceptions.WrongIdException
                     ("The id should be 10.");
-            if (type != SquareType.Prison)
-                throw new Monopoly.Exceptions.WrongTypeException
-                    ("The type should be SquareType.Prison.");
         }
         /**
           * <summary>

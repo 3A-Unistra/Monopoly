@@ -73,12 +73,9 @@ namespace Monopoly.Classes
         {
             Player p1 = new Player("1","Bob",null);
             Player p2 = new Player("2","Jules",null);  
-            CompanySquare cs = new CompanySquare(SquareType.Company, 12, "Company",
-            null, 150, 10);
-            PropertySquare ps = new PropertySquare(SquareType.Field, 1, "Property",
-            null, 500, 50,100, 50, 50, 50, 50, 50);
-            StationSquare ss = new StationSquare(SquareType.Station, 5, "Station",
-            null, 50, 50);  
+            CompanySquare cs = new CompanySquare(12,150);
+            PropertySquare ps = new PropertySquare(1, 500, 50,100, 50, 50, 50, 50, 50);
+            StationSquare ss = new StationSquare(5, 50, 50);  
             p1.TransferProperty(p2, cs);
             Assert.False(cs.Owner == p2);
             cs.Owner = p1;
