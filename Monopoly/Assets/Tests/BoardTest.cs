@@ -20,14 +20,18 @@ namespace Monopoly.Classes
 {
 
     public class BoardTest
-    {   
+    {
 
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            GameObject clientStateObj = new GameObject("ClientGameState");
+            clientStateObj.AddComponent<ClientGameState>();
+        }
 
         [Test]
         public void TestBoardCreation()
         {
-            GameObject clientStateObj = new GameObject("ClientGameState");
-            clientStateObj.AddComponent<ClientGameState>();
             Board b = new Board();
             Assert.True(b.BoardBank.NbHouse == 32);
             Assert.True(b.BoardBank.NbHotel == 12);
@@ -43,11 +47,8 @@ namespace Monopoly.Classes
             Assert.True(b.Elements[2].Type == SquareType.Community);
             Assert.True(b.BoardMoney == 0);
             Assert.True(b.Elements.Count == 40);
-            Assert.True(Board.ChanceDeck.Count == 16);
-            Assert.True(Board.CommunityDeck.Count == 16);
-            Assert.True(Board.ChanceDeck[15].desc == "OutOfJail");
-            Assert.True(Board.CommunityDeck[15].desc == "OutOfJail");
-            
+            Assert.True(b.ChanceDeck.Count == 16);
+            Assert.True(b.CommunityDeck.Count == 16);
         }
 
         [Test]
@@ -61,13 +62,13 @@ namespace Monopoly.Classes
             Assert.True(p.Money == 1700);
             Assert.True(p.Position == 10);
         }
+
         [Test]
         public void TestGetSquare()
         {
             Board b = new Board();
-            Assert.True(b.GetSquare(10).Name == "Prison");
-            Assert.True(b.GetSquare(20).Name == "Parc gratuit");
         }
+
         [Test]
         public void TestSquareOwned()
         {
@@ -79,7 +80,6 @@ namespace Monopoly.Classes
             ((OwnableSquare)b.Elements[39]).Owner = p;
             List<OwnableSquare> os = b.SquareOwned(p);
             Assert.True(os.Count == 4);
-
         }
                
         [Test]
@@ -90,6 +90,7 @@ namespace Monopoly.Classes
             List<PropertySquare> ps = b.GetPropertySet(c);
             Assert.True(ps.Count == 2);
         }
+
         [Test]
         public void TestFreeParking()
         {
@@ -100,6 +101,7 @@ namespace Monopoly.Classes
             Assert.True(p.Money == 2000);
             Assert.True(b.BoardMoney == 0);
         }
+
         [Test]
         public void TestAddMoney()
         {
@@ -108,6 +110,7 @@ namespace Monopoly.Classes
             b.AddMoney(p, 100);
             Assert.True(p.Money == 1600);
         }
+
         [Test]
         public void TestOwnSameColorSet()
         {
@@ -118,6 +121,7 @@ namespace Monopoly.Classes
             ((PropertySquare)b.Elements[3]).Owner = p;
             Assert.True(b.OwnSameColorSet(p, (PropertySquare)b.Elements[1]));
         }
+
         [Test]
         public void TestCanBuyHouse()
         {
@@ -137,7 +141,7 @@ namespace Monopoly.Classes
             ((PropertySquare)b.Elements[9]).NbHouse = 5;
             Assert.False(b.CanBuyHouse(p, (PropertySquare)b.Elements[6]));
         }
-        //TODO
+        
         [Test]
         public void TestCanSellHouse()
         {
@@ -157,6 +161,7 @@ namespace Monopoly.Classes
             ((PropertySquare)b.Elements[6]).NbHouse = 4;
             Assert.True(b.CanSellHouse(p, (PropertySquare)b.Elements[6]));
         }
+
         [Test]
         public void TestBuyHouse()
         {
@@ -167,8 +172,8 @@ namespace Monopoly.Classes
             b.BuyHouse((PropertySquare)b.Elements[1], p);
             Assert.True(p.Money == 1450);
             Assert.True(((PropertySquare)b.Elements[1]).NbHouse == 1);
-
         }
+
        [Test]
         public void TestSellHouse()
         {
@@ -181,26 +186,25 @@ namespace Monopoly.Classes
             b.BuyHouse((PropertySquare)b.Elements[3], p);
             b.BuyHouse((PropertySquare)b.Elements[1], p);
             b.SellHouse((PropertySquare)b.Elements[1], p);
-            Debug.Log(p.Money);
             Assert.True(p.Money == 1400);
             Assert.True(((PropertySquare)b.Elements[1]).NbHouse == 1);
-
-
         }
+
         [Test]
         public void TestGetRandomCommunityCard()
         {
             Board b = new Board();
             Card c = b.GetRandomCommunityCard();
-            Assert.True(c.type == "Community");
+            Assert.True(c.community);
             Assert.True(c.id < 16);
         }
+
         [Test]
         public void TestGetRandomChanceCard()
         {
             Board b = new Board();
             Card c = b.GetRandomChanceCard();
-            Assert.True(c.type == "Chance");
+            Assert.False(c.community);
             Assert.True(c.id < 16);
         }
 
@@ -208,12 +212,10 @@ namespace Monopoly.Classes
         public void TestReturnCard()
         {
             Board b = new Board();
-            b.ReturnCard("Chance");
-            Assert.True(Board.ChanceDeck.Count == 17);
-            Assert.True(Board.ChanceDeck[16].desc == "OutOfJail");
-            b.ReturnCard("Community");
-            Assert.True(Board.CommunityDeck.Count == 17);
-            Assert.True(Board.CommunityDeck[16].desc == "OutOfJail");
+            b.ReturnCard(false, new Card(16,false));
+            Assert.True(b.ChanceDeck.Count == 17);
+            b.ReturnCard(true, new Card(16,true));
+            Assert.True(b.CommunityDeck.Count == 17);
         }
     }
 }

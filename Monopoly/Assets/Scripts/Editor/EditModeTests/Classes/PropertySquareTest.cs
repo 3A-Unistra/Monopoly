@@ -19,12 +19,9 @@ namespace Monopoly.Classes
         [Test]
         public void TestInitialisation()
         {
-            PropertySquare st = new PropertySquare(SquareType.Field,3,"test",null, 200, 40, 20, 80, 120, 140 , 200 , 250 );
+            PropertySquare st = new PropertySquare(3, 200, 40, 20, 80, 120, 140 , 200 , 250 );
             Assert.True(st != null);
-            Assert.AreEqual(SquareType.Field, st.Type);
             Assert.AreEqual(3, st.Id);
-            Assert.AreEqual("test", st.Name);
-            Assert.AreEqual(null, st.Image);
             Assert.AreEqual(200, st.Price);
             Assert.AreEqual(40, st.Rent);
             Assert.AreEqual(20, st.HouseCost);
@@ -38,8 +35,8 @@ namespace Monopoly.Classes
         [Test]
         public void TestFunctions()
         {
-            PropertySquare st = new PropertySquare(SquareType.Field,3,"test",null, 200, 40, 20, 80, 120, 140 , 200 , 250 );
-            PropertySquare st2 = new PropertySquare(SquareType.Field,1,"test1",null, 200, 40, 20, 80, 120, 140 , 200 , 250 );
+            PropertySquare st = new PropertySquare(3, 200, 40, 20, 80, 120, 140 , 200 , 250 );
+            PropertySquare st2 = new PropertySquare(1, 200, 40, 20, 80, 120, 140 , 200 , 250 );
             Player p = new Player("0", "test", null);
             Player p2 = new Player("1", "test1", null);
             st.Owner = p2;

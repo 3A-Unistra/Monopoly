@@ -19,17 +19,8 @@ namespace Monopoly.Classes
          * <summary>
          * Constructor of the class <c>ChanceSquare</c>.
          * </summary>
-         * <param name="type">
-         * The new type of the chance square.
-         * </param>
          * <param name="id">
          * The new id of the chance square.
-         * </param>
-         * <param name="name">
-         * The new name of the chance square on the board.
-         * </param>
-         * <param name="image">
-         * The new image of the chance square on the board.
          * </param>
          * <returns>
          * Returns an instance of the ChanceSquare object with the given 
@@ -39,13 +30,8 @@ namespace Monopoly.Classes
          * Throws an exception if the given id does not belong to this list
          * {7,12,36}.
          * </exception>
-         * <exception cref="WrongTypeException">
-         * Throws an exception if the given type is different from
-         * SquareType.Chance.
-         * </exception>
          */
-        public ChanceSquare(SquareType type, int id, string name, 
-            Material image) : base(type,id,name,image)
+        public ChanceSquare(int id) : base(SquareType.Chance, id)
         {
         }
         

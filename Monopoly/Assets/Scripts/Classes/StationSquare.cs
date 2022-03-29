@@ -26,17 +26,8 @@ namespace Monopoly.Classes
           * <summary>
           * Constructor of the class <c>StationSquare</c>.
           * </summary>
-          * <param name="type">
-          * The new type of the station (should be Station).
-          * </param>
           * <param name="id">
           * The new id of the station (should be 5,15,25 or 35).
-          * </param>
-          * <param name="name">
-          * The new name of the station.
-          * </param>
-          * <param name="image">
-          * The new image of the station.
           * </param>
           * <param name="price">
           * The new price of the station (should be 200).
@@ -52,26 +43,17 @@ namespace Monopoly.Classes
           * Throws an exception if the given id does not exist in this list
           * {5,15,25,35}.
           * </exception>
-          * <exception cref="Monopoly.Exceptions.WrongTypeException">
-          * Throws an exception if the given type is different than a
-          * SquareType.Station.
-          * </exception>
           * <exception cref="Monopoly.Exceptions.WrongPriceException">
           * Throws an exception if the given price is different than 200.
           * </exception>
           */
-        public StationSquare(SquareType type, int id, string name,
-            Material image, int price, int rent)
-            : base(type, id, name, image, price, rent)
+        public StationSquare(int id, int price, int rent) : base(SquareType.Station, id, price, rent)
         {
             int[] ids = {5,15,25,35};
             List<int> validIdNumbers = new List<int>(ids);
             if (!validIdNumbers.Contains(id))
                 throw new Monopoly.Exceptions.WrongIdException
                     ("The id should be a valid station number.");
-            if (type != SquareType.Station)
-                throw new Monopoly.Exceptions.WrongTypeException
-                    ("The type should be SquareType.Station.");
         }
         
         /**

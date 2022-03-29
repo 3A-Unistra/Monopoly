@@ -19,12 +19,10 @@ namespace Monopoly.Classes
         [Test]
         public void TestInitialisation()
         {
-            OwnableSquare st = new OwnableSquare(SquareType.Field,3,"test",null, 200, 40);
+            OwnableSquare st = new OwnableSquare(SquareType.Field,3, 200, 40);
             Assert.True(st != null);
             Assert.AreEqual(SquareType.Field, st.Type);
             Assert.AreEqual(3, st.Id);
-            Assert.AreEqual("test", st.Name);
-            Assert.AreEqual(null, st.Image);
             Assert.AreEqual(200, st.Price);
             Assert.AreEqual(40, st.Rent);
         }
@@ -32,9 +30,9 @@ namespace Monopoly.Classes
         [Test]
         public void TestFuncions()
         {
-            OwnableSquare s = new OwnableSquare(SquareType.Company,12,"test",null, 200, 40);
-            OwnableSquare s2 = new OwnableSquare(SquareType.Company,28,"test2",null, 200, 40);
-            OwnableSquare s3 = new OwnableSquare(SquareType.Station,5,"test",null, 200, 40);
+            OwnableSquare s = new OwnableSquare(SquareType.Company,12, 200, 40);
+            OwnableSquare s2 = new OwnableSquare(SquareType.Company,28, 200, 40);
+            OwnableSquare s3 = new OwnableSquare(SquareType.Station,5, 200, 40);
             Player p = new Player("0", "test", null);
             Player p2 = new Player("1", "test1", null);
             s.Owner = p2;

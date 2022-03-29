@@ -89,13 +89,11 @@ namespace Monopoly.Classes
                 p.Doubles = 0;
                 Debug.Log("Your moved forward " + dices + " steps.");
                 Square currentSquare = GameBoard.Elements[p.Position];
-                Debug.Log("You are now at " + currentSquare.Name);
             }
             else if (dice1 == dice2 && ++p.Doubles < 3)
             {
                 Debug.Log("Your moved forward " + dices + " steps.");
                 Square currentSquare = GameBoard.Elements[p.Position];
-                Debug.Log("You are now at " + currentSquare.Name);
                 p.Position = (p.Position + dices) % 40;
                 Debug.Log("Your double counter is at " + p.Doubles);
             }
@@ -113,30 +111,30 @@ namespace Monopoly.Classes
         private void DrawChanceCard(Player p)
         {
             Card c = GameBoard.GetRandomChanceCard();
-            if (c.id == 15)
+            /*if (c.id == 15)
             {
                 Board.ChanceDeck.Remove(Board.ChanceDeck
                     [Board.ChanceDeck.Count() - 1]);
                 p.ChanceJailCard = true;
-            }
+            }*/
                 
         }
         
         private void DrawCommunityCard(Player p)
         {
             Card c = GameBoard.GetRandomCommunityCard();
-            if (c.id == 15)
+            /*if (c.id == 15)
             {                
                 Board.CommunityDeck.Remove(Board.CommunityDeck
                     [Board.CommunityDeck.Count() - 1]);
                 p.CommunityJailCard = true;
-            }
+            }*/
 
         }
 
-        private void ReturnChanceJailCard(Player p)
+       private void ReturnChanceJailCard(Player p)
         {
-            GameBoard.ReturnCard("CHANCE");
+            GameBoard.ReturnCard(false, new Card(15, false));
             p.ChanceJailCard = false;
             p.InJail = false;
             p.JailTurns = 0;
@@ -144,7 +142,7 @@ namespace Monopoly.Classes
         
         private void ReturnCommunityJailCard(Player p)
         {
-            GameBoard.ReturnCard("COMMUNITY");
+            GameBoard.ReturnCard(true, new Card(15, true));
             p.CommunityJailCard = false;
             p.InJail = false;
             p.JailTurns = 0;
@@ -255,20 +253,12 @@ namespace Monopoly.Classes
         {
             OwnableSquare os = (OwnableSquare) s;
             GameBoard.BoardBank.BuyProperty(p, os);
-            if(os.Owner == p)
-                Debug.Log(p.Name + " now owns " + os.Name);
-            else
-                Debug.LogError("AN ERROR OCCURED");
         }
         
         private void SellProperty(Player p, Square s)
         {
             OwnableSquare os = (OwnableSquare) s;
             GameBoard.BoardBank.SellProperty(p,os);
-            if(os.Owner == null)
-                Debug.Log(os.Name + " is now sold ");
-            else
-                Debug.LogError("AN ERROR OCCURED");
         }
 
         public void Pay50(Player p)

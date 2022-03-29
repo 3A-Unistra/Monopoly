@@ -20,12 +20,10 @@ namespace Monopoly.Classes
         [Test]
         public void TestInitialisation()
         {
-            TaxSquare s = new TaxSquare(SquareType.Tax,38,"test",null,100);
+            TaxSquare s = new TaxSquare(38, 100);
             Assert.True(s != null);
             Assert.AreEqual(SquareType.Tax, s.Type);
             Assert.AreEqual(38, s.Id);
-            Assert.AreEqual("test", s.Name);
-            Assert.AreEqual(null, s.Image);
             Assert.AreEqual(100, s.TaxPrice);
         }
 

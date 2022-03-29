@@ -60,8 +60,7 @@ namespace Monopoly.Classes
         {
             Bank b = new Bank();
             Player p = new Player("1","Bob",null);
-            CompanySquare s = new CompanySquare(SquareType.Company, 12, "Company",
-            null, 150, 10);
+            CompanySquare s = new CompanySquare(12, 150);
             p.Money = 0;
             b.BuyProperty(p,s);
             Assert.False(s.Owner == p);
@@ -75,8 +74,7 @@ namespace Monopoly.Classes
         {
             Bank b = new Bank();
             Player p = new Player("1","Bob",null);
-            CompanySquare s = new CompanySquare(SquareType.Company, 12, "Company",
-            null, 150, 10); 
+            CompanySquare s = new CompanySquare(12, 150); 
             b.BuyProperty(p,s);
             Assert.True(s.Owner == p);
             Assert.True(p.Money == 1350);
