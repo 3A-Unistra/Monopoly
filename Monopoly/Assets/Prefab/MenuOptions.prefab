@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 87531886}
   - component: {fileID: 87531885}
   m_Layer: 5
-  m_Name: OnOff (2)
+  m_Name: Antialiasing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -350,7 +350,7 @@ GameObject:
   - component: {fileID: 250168148}
   - component: {fileID: 250168147}
   m_Layer: 5
-  m_Name: MenuButton
+  m_Name: Close
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -618,7 +618,7 @@ GameObject:
   - component: {fileID: 362091064}
   - component: {fileID: 362091063}
   m_Layer: 5
-  m_Name: MenuButton (1)
+  m_Name: Reset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1534,8 +1534,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Low
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e8c4c734d8ab8a848be59aca563c4f43, type: 2}
-  m_sharedMaterial: {fileID: 8152348383824470599, guid: e8c4c734d8ab8a848be59aca563c4f43, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5ad3b033d8e8c4950bfa830284e85bdf, type: 2}
+  m_sharedMaterial: {fileID: 4894363012015532952, guid: 5ad3b033d8e8c4950bfa830284e85bdf, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1615,7 +1615,7 @@ GameObject:
   - component: {fileID: 708979787}
   - component: {fileID: 708979786}
   m_Layer: 5
-  m_Name: OnOff (4)
+  m_Name: Fullscreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1804,8 +1804,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Close
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e8c4c734d8ab8a848be59aca563c4f43, type: 2}
-  m_sharedMaterial: {fileID: 8152348383824470599, guid: e8c4c734d8ab8a848be59aca563c4f43, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5ad3b033d8e8c4950bfa830284e85bdf, type: 2}
+  m_sharedMaterial: {fileID: 4894363012015532952, guid: 5ad3b033d8e8c4950bfa830284e85bdf, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3717,7 +3717,7 @@ GameObject:
   - component: {fileID: 1701591700}
   - component: {fileID: 1701591699}
   m_Layer: 5
-  m_Name: OnOff (3)
+  m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3906,8 +3906,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Reset
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e8c4c734d8ab8a848be59aca563c4f43, type: 2}
-  m_sharedMaterial: {fileID: 8152348383824470599, guid: e8c4c734d8ab8a848be59aca563c4f43, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5ad3b033d8e8c4950bfa830284e85bdf, type: 2}
+  m_sharedMaterial: {fileID: 4894363012015532952, guid: 5ad3b033d8e8c4950bfa830284e85bdf, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4087,7 +4087,7 @@ GameObject:
   - component: {fileID: 1893069959}
   - component: {fileID: 1893069958}
   m_Layer: 5
-  m_Name: MenuButton (2)
+  m_Name: Apply
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4978,7 +4978,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1505517185894806846, guid: 39ae30156c2aef917b1bc7062fad7766, type: 3}
       propertyPath: m_Name
-      value: Menu
+      value: MenuOptions
       objectReference: {fileID: 0}
     - target: {fileID: 8453934663218045687, guid: 39ae30156c2aef917b1bc7062fad7766, type: 3}
       propertyPath: m_SizeDelta.x
@@ -5003,3 +5003,37 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8453934663218045687, guid: 39ae30156c2aef917b1bc7062fad7766, type: 3}
   m_PrefabInstance: {fileID: 2475433762390867113}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &3944636517419420055 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1505517185894806846, guid: 39ae30156c2aef917b1bc7062fad7766, type: 3}
+  m_PrefabInstance: {fileID: 2475433762390867113}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6039585174846297182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3944636517419420055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 152246a8d4ea15361bf2795aae4cbb71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PrefabPause: {fileID: 7408423699793841850, guid: 911135436da4bbe8cae8598b04869c0b, type: 3}
+  OptionsMenu: {fileID: 3944636517419420055}
+  OptionsButton: {fileID: 0}
+  PauseButton: {fileID: 0}
+  ResolutionDropdown: {fileID: 739467316}
+  QualityDropdown: {fileID: 526030532}
+  AntialiasingButton: {fileID: 87531886}
+  ShadowButton: {fileID: 1701591700}
+  FullscreenButton: {fileID: 708979787}
+  AntialiasingFrontButton: {fileID: 1693617723}
+  ShadowFrontButton: {fileID: 2116107646}
+  FullscreenFrontButton: {fileID: 1157222493}
+  MusicSlider: {fileID: 1066902123}
+  SoundSlider: {fileID: 871030277}
+  Apply: {fileID: 1893069958}
+  Reset: {fileID: 362091063}
+  Close: {fileID: 250168147}
