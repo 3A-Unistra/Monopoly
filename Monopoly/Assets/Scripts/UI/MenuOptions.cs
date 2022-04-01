@@ -73,6 +73,7 @@ namespace Monopoly.UI
             Reset.onClick.AddListener(delegate { ResetDefault(); });
             Close.onClick.AddListener(CloseMenu);
 
+
             Dirty = false;
             //OptionsMenu.GetComponent<RectTransform>().ForceUpdateRectTransforms();
             ResetDefault();

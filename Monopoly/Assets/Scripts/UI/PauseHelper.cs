@@ -17,8 +17,6 @@ namespace Monopoly.UI
 
         void Start()
         {
-            OptionsMenu = GameObject.Find("MenuOptions");
-            PauseMenu = GameObject.Find("MenuPause"); 
             PauseMenu.SetActive(false);
             OptionsMenu.SetActive(false);
             MenuOpened = false;
