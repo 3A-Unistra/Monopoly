@@ -38,7 +38,7 @@ namespace Monopoly.Classes
          * The status of a property(mortgaged or not).
          * </summary>
          */
-        public bool Mortgaged{ get; set; }
+        public bool Mortgaged{ get; private set; }
   
         /**
          * <summary>
@@ -179,40 +179,29 @@ namespace Monopoly.Classes
         
         /**
         * <summary>
-        * player p mortgages the property on the square s
-        * the square s owner is set to null
-        * the player p's money is increased by half the value of square s 
+        * Mortgage a property for half purchase price.
         * </summary>
-        * <param name="p">
-        * player p the one who wants to mortgage the square
-        * </param> 
         */         
-        public void MortgageProperty(Player p)
+        public void MortgageProperty()
         {
-            if(Owner == p)
+            if (!Mortgaged)
             {
                 Mortgaged = true;
-                p.Money += Price/2;
+                Owner.Money += Price / 2;
             }
         }
         
-        
         /**
         * <summary>
-        * player p unmortgages the property on the square s
-        * the square s owner is set to null
-        * the player p's money is increased by half the value of square s 
+        * Unmortgage a property by paying half purchase price + 10% interest.
         * </summary>
-        * <param name="p">
-        * player p the one who wants to unmortgage the square
-        * </param> 
         */         
-        public void UnmortgageProperty(Player p)
+        public void UnmortgageProperty()
         {
-            if(Owner == p && Mortgaged)
+            if (Mortgaged)
             {
                 Mortgaged = false;
-                p.Money -= Price/2;
+                Owner.Money -= (Price / 2) + (Price/10);
             }
         }
     }

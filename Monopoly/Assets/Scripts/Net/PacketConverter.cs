@@ -32,6 +32,7 @@ namespace Monopoly.Net
         private static readonly Dictionary<string, Type> packetTypes =
             new Dictionary<string, Type>()
         {
+                // TODO: ADD THE OTHERS HERE
             { "Exception", typeof(PacketException) },
             { "AppletPrepare", typeof(PacketAppletPrepare) },
             { "AppletReady", typeof(PacketAppletReady) },
@@ -63,7 +64,6 @@ namespace Monopoly.Net
             { "ActionExchangeCounter", typeof(PacketActionExchangeCounter) },
             { "ActionExchangeAccept", typeof(PacketActionExchangeAccept) },
             { "ActionExchangeCancel", typeof(PacketActionExchangeCancel) },
-            { "PlayerUpdateProperty", typeof(PacketPlayerUpdateProperty) },
             { "PlayerUpdateBalance", typeof(PacketPlayerUpdateBalance) },
             { "ActionAuctionProperty", typeof(PacketActionAuctionProperty) },
             { "AuctionRound", typeof(PacketAuctionRound) },

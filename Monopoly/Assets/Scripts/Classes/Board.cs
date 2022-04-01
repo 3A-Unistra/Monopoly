@@ -324,17 +324,21 @@ namespace Monopoly.Classes
          * <param name="p">
          * The player who wants to buy the house.
          * </param>
+         * <returns>
+         * <c>true</c> if the house/hotel can be bought.
+         * </returns>
          */
-        public void BuyHouse(PropertySquare ps, Player p)
+        public bool BuyHouse(PropertySquare ps, Player p)
         {
             if (CanBuyHouse(p, ps))
             {
                 p.Money -= ps.HouseCost; // Paying the cost of the house
                 ps.NbHouse++; // adding a house to the property
+                return true;
             }
             else
             {
-                return;
+                return false;
             }
         }
 
@@ -349,17 +353,21 @@ namespace Monopoly.Classes
          * <param name="p">
          * The player who wants to buy the house.
          * </param>
+         * <returns>
+         * <c>true</c> if the house/hotel can be sold.
+         * </returns>
          */
-        public void SellHouse(PropertySquare ps, Player p)
+        public bool SellHouse(PropertySquare ps, Player p)
         {
             if (CanSellHouse(p, ps))
             {
                 p.Money += ps.HouseCost; // refund the house cost
                 ps.NbHouse--; // reduce the number of houses by 1
+                return true;
             }
             else
             {
-                return;
+                return false;
             }
         }
         

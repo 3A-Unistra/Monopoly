@@ -89,19 +89,17 @@ namespace Monopoly.Net
         public event PacketDelegate<PacketRoundRandomCard>   OnRoundRandomCard;
         public event PacketDelegate<PacketPlayerMove>        OnMove;
         public event PacketDelegate<PacketPlayerReconnect>   OnReconnect;
-        public event PacketDelegate<PacketPlayerDisconnect>  Onisconnect;
+        public event PacketDelegate<PacketPlayerDisconnect>  OnDisconnect;
         public event PacketDelegate<PacketPlayerUpdateBalance> OnBalanceUpdate;
-        public event PacketDelegate<PacketPlayerUpdateProperty>
-                                                         OnPropertyUpdate;
         public event PacketDelegate<PacketPlayerEnterPrison> OnEnterPrison;
         public event PacketDelegate<PacketPlayerExitPrison>  OnExitPrison;
         public event PacketDelegate<PacketPlayerDefeat>      OnDefeat;
+        public event PacketDelegate<PacketActionStart>       OnActionStart;
         public event PacketDelegate<PacketActionTimeout>     OnActionTimeout;
         public event PacketDelegate<PacketAuctionEnd>        OnAuctionEnd;
         public event PacketDelegate<PacketAuctionRound>      OnAuctionRound;
         public event PacketDelegate<PacketAuctionBid>        OnAuctionBid;
         public event PacketDelegate<PacketAuctionConcede>    OnAuctionConcede;
-        public event PacketDelegate<PacketActionStart>       OnActionStart;
         public event PacketDelegate<PacketActionBuyHouseSucceed>
                                                          OnBuyHouse;
         public event PacketDelegate<PacketActionSellHouseSucceed>
@@ -306,11 +304,9 @@ namespace Monopoly.Net
             case PacketPlayerReconnect packet:
                 OnReconnect(packet); break;
             case PacketPlayerDisconnect packet:
-                Onisconnect(packet); break;
+                OnDisconnect(packet); break;
             case PacketPlayerUpdateBalance packet:
                 OnBalanceUpdate(packet); break;
-            case PacketPlayerUpdateProperty packet:
-                OnPropertyUpdate(packet); break;
             case PacketPlayerEnterPrison packet:
                 OnEnterPrison(packet); break;
             case PacketPlayerExitPrison packet:
