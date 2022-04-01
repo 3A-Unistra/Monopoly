@@ -28,7 +28,9 @@ namespace Monopoly.UI
         public Canvas canvas;
         void Start()
         {
-            OptionsMenu = GameObject.Find("MenuOptions");
+            //OptionsMenu = GameObject.Find("MenuOptions");
+            //if(OptionsMenu == null)
+              //  Debug.Log("laaaa");
             ResumeButton.onClick.AddListener(ResumeGame);
             OptionsButton.onClick.AddListener(OpenOptions);
             

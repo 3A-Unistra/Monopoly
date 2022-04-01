@@ -52,7 +52,7 @@ namespace Monopoly.UI
 
         void Start()
         {
-            PauseMenu = GameObject.Find("MenuPause");
+            //PauseMenu = GameObject.Find("MenuPause");
             BuildResolutions();
             BuildQuality();
             ResolutionDropdown.onValueChanged.AddListener
@@ -72,16 +72,18 @@ namespace Monopoly.UI
             Apply.onClick.AddListener(ApplyChanges);
             Reset.onClick.AddListener(delegate { ResetDefault(); });
             Close.onClick.AddListener(CloseMenu);
-            
+
+            Dirty = false;
             //OptionsMenu.GetComponent<RectTransform>().ForceUpdateRectTransforms();
             ResetDefault();
+            ChangesApplied = true;
             Dirty = true;
-            
+            /*
             RectTransform rt = GetComponent<RectTransform>();
             rt.anchorMin = new Vector2(0.5f, 0.5f);
             rt.anchorMax = new Vector2(0.5f, 0.5f);
             rt.pivot = new Vector2(0.5f, 0.5f);
-            rt.localPosition = Vector3.zero;
+            rt.localPosition = Vector3.zero;*/
         }
 
         private void BuildQuality()
@@ -129,11 +131,11 @@ namespace Monopoly.UI
             ChangesApplied = false;
             ResolutionDropdown.value = ResolutionDropdown.options.Count - 1;
             QualityDropdown.value = 1;
-            if (!AntialiasingButton.GetComponent<OnOff>().switchOn && Dirty)
+            if (!AntialiasingButton.GetComponent<OnOff>().switchOn)
                 AntialiasingButton.GetComponent<OnOff>().Front.onClick.Invoke();
-            if (!ShadowButton.GetComponent<OnOff>().switchOn && Dirty)
+            if (!ShadowButton.GetComponent<OnOff>().switchOn)
                 ShadowButton.GetComponent<OnOff>().Front.onClick.Invoke();
-            if (!FullscreenButton.GetComponent<OnOff>().switchOn && Dirty)
+            if (!FullscreenButton.GetComponent<OnOff>().switchOn)
                 FullscreenButton.GetComponent<OnOff>().Front.onClick.Invoke();
             MusicSlider.value = 0.5f;
             SoundSlider.value = 0.8f;
