@@ -76,7 +76,15 @@ namespace Monopoly.UI
 
             Dirty = false;
             //OptionsMenu.GetComponent<RectTransform>().ForceUpdateRectTransforms();
+            //TEMPORARY
             ResetDefault();
+            FullScreen = FullscreenButton.GetComponent<OnOff>().switchOn;
+            Res = ResolutionDropdown.value;
+            Quality = QualityDropdown.value;
+            Antialiasing = AntialiasingButton.GetComponent<OnOff>().switchOn;
+            Shadow = ShadowButton.GetComponent<OnOff>().switchOn;
+            Music = MusicSlider.value;
+            Sound = SoundSlider.value;
             ChangesApplied = true;
             Dirty = true;
             /*
