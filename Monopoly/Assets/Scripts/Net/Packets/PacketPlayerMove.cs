@@ -20,13 +20,13 @@ namespace Monopoly.Net.Packets
         public string MovingPlayerId { get; private set; }
 
         [JsonProperty("destination_case")]
-        public int DestinaionSquare { get; private set; }
+        public int DestinationSquare { get; private set; }
 
         public PacketPlayerMove(string movingPlayerId, 
             int destinationSquare) : base("PlayerMove")
         {
             this.MovingPlayerId = movingPlayerId;
-            this.DestinaionSquare = destinationSquare;
+            this.DestinationSquare = destinationSquare;
         }
 
     }

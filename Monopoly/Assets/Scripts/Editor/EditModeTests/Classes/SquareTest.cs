@@ -36,7 +36,10 @@ namespace Monopoly.Classes
             Square goJail = new Square(SquareType.GoToJail, 30);
             Square community = new Square(SquareType.Community, 17);
             Square chance = new Square(SquareType.Chance, 7);
-            
+
+            Assert.False(go.IsOwnable());
+            Assert.False(go.IsStation());
+            Assert.False(go.IsCompany());
             Assert.True(go.IsGo());
             Assert.False(go.IsChance());
             Assert.False(go.IsCommunityChest());
@@ -44,15 +47,21 @@ namespace Monopoly.Classes
             Assert.False(go.IsFreeParking());
             Assert.False(go.IsTax());
             Assert.False(go.IsGoToJail());
-            
-            Assert.True(prop.IsProperty());
+
+            Assert.False(prop.IsCompany());
+            Assert.True(prop.IsOwnable());
+            Assert.True(prop.IsStation());
+            Assert.False(prop.IsProperty());
             Assert.False(prop.IsChance());
             Assert.False(prop.IsCommunityChest());
             Assert.False(prop.IsGo());
             Assert.False(prop.IsFreeParking());
             Assert.False(prop.IsTax());
             Assert.False(prop.IsGoToJail());
-            
+
+            Assert.False(park.IsCompany());
+            Assert.False(park.IsOwnable());
+            Assert.False(park.IsStation());
             Assert.True(park.IsFreeParking());
             Assert.False(park.IsChance());
             Assert.False(park.IsCommunityChest());
@@ -60,7 +69,10 @@ namespace Monopoly.Classes
             Assert.False(park.IsGo());
             Assert.False(park.IsTax());
             Assert.False(park.IsGoToJail());
-            
+
+            Assert.False(tax.IsCompany());
+            Assert.False(tax.IsOwnable());
+            Assert.False(tax.IsStation());
             Assert.True(tax.IsTax());
             Assert.False(tax.IsChance());
             Assert.False(tax.IsCommunityChest());
@@ -68,7 +80,10 @@ namespace Monopoly.Classes
             Assert.False(tax.IsFreeParking());
             Assert.False(tax.IsGo());
             Assert.False(tax.IsGoToJail());
-            
+
+            Assert.False(goJail.IsCompany());
+            Assert.False(goJail.IsOwnable());
+            Assert.False(goJail.IsStation());
             Assert.True(goJail.IsGoToJail());
             Assert.False(goJail.IsChance());
             Assert.False(goJail.IsCommunityChest());
@@ -76,7 +91,10 @@ namespace Monopoly.Classes
             Assert.False(goJail.IsFreeParking());
             Assert.False(goJail.IsTax());
             Assert.False(goJail.IsGo());
-            
+
+            Assert.False(community.IsCompany());
+            Assert.False(community.IsOwnable());
+            Assert.False(community.IsStation());
             Assert.True(community.IsCommunityChest());
             Assert.False(community.IsChance());
             Assert.False(community.IsGo());
@@ -84,7 +102,10 @@ namespace Monopoly.Classes
             Assert.False(community.IsFreeParking());
             Assert.False(community.IsTax());
             Assert.False(community.IsGoToJail());
-            
+
+            Assert.False(chance.IsCompany());
+            Assert.False(chance.IsOwnable());
+            Assert.False(chance.IsStation());
             Assert.True(chance.IsChance());
             Assert.False(chance.IsGo());
             Assert.False(chance.IsCommunityChest());

@@ -35,6 +35,17 @@ namespace Monopoly.Graphics
         private RectTransform titleTrans, priceTrans, altTrans1, altTrans2;
 
         private List<GameObject> houseObjects;
+        public static Dictionary<int, SquareCollider> Colliders;
+
+        static SquareCollider()
+        {
+            Colliders = new Dictionary<int, SquareCollider>();
+        }
+
+        public static void ResetColliders()
+        {
+            Colliders.Clear();
+        }
 
         private void CreateTextObjects()
         {
@@ -300,6 +311,15 @@ namespace Monopoly.Graphics
 
         void Start()
         {
+            if (Colliders.ContainsKey(squareIndex))
+            {
+                Debug.LogError(
+                    string.Format("Tried to instantiate another square at idx {0}!",
+                                  squareIndex));
+                Destroy(gameObject);
+                return;
+            }
+            Colliders.Add(squareIndex, this);
             houseObjects = new List<GameObject>();
             CreateTextObjects();
             UpdateText();

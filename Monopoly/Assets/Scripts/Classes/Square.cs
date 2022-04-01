@@ -4,6 +4,7 @@
  * 
  * Date created : 21/02/2022
  * Author       : Rayan MARMAR <rayan.marmar@etu.unistra.fr>
+ *              : Finn RAYMENT <rayment@etu.unistra.fr>
  */
 
 
@@ -60,9 +61,47 @@ namespace Monopoly.Classes
           */
         public bool IsProperty()
         {
-            return Type == SquareType.Field || 
-                   Type == SquareType.Station || 
-                   Type == SquareType.Company;
+            return Type == SquareType.Field;
+        }
+
+        /**
+          * <summary>
+          * This function is used to verify if a given square is a station.
+          * </summary>
+          * <returns>
+          * true if the given square is a station and false if not.
+          * </returns>
+          */
+        public bool IsStation()
+        {
+            return Type == SquareType.Station;
+        }
+
+        /**
+          * <summary>
+          * This function is used to verify if a given square is a company.
+          * </summary>
+          * <returns>
+          * true if the given square is a company and false if not.
+          * </returns>
+          */
+        public bool IsCompany()
+        {
+            return Type == SquareType.Company;
+        }
+
+        /**
+          * <summary>
+          * This function is used to verify if a given square is any kind of
+          * ownable square.
+          * </summary>
+          * <returns>
+          * true if the given square is ownable and false if not.
+          * </returns>
+          */
+        public bool IsOwnable()
+        {
+            return IsProperty() || IsStation() || IsCompany();
         }
 
         /**

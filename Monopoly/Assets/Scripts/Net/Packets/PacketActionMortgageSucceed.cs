@@ -20,9 +20,9 @@ namespace Monopoly.Net.Packets
         public string PlayerId { get; private set; }
 
         [JsonProperty("property")]
-        public string Property { get; private set; }
+        public int Property { get; private set; }
 
-        public PacketActionMortgageSucceed(string playerId, string property) : 
+        public PacketActionMortgageSucceed(string playerId, int property) : 
             base("ActionMortgageSucceed")
         {
             this.PlayerId = playerId;

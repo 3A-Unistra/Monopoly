@@ -263,7 +263,7 @@ namespace Monopoly.Classes
         }
         /**
         * <summary>
-        * the player gives an out of jail card to another player 
+        * The player gives an out of jail card to another player 
         * for an exchange, if the player doesn't have the card
         * it throws an exeption error
         * </summary>
@@ -286,6 +286,27 @@ namespace Monopoly.Classes
                 CommunityJailCard = false;
                 to.CommunityJailCard = true;
             }
+        }
+
+        /**
+         * <summary>
+         * Find and return a player in a list of players given the UUID.
+         * </summary>
+         * <param name="players">
+         * The haystack.
+         * </param>
+         * <param name="uuid">
+         * The needle.
+         * </param>
+         */
+        public static Player PlayerFromUUID(List<Player> players, string uuid)
+        {
+            foreach (Player p in players)
+            {
+                if (p.Id.Equals(uuid))
+                    return p;
+            }
+            return null;
         }
     }
 }
