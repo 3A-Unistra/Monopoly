@@ -45,13 +45,30 @@ namespace Monopoly.Runtime
             }
         }
 
-        [UnityTest]
+        [UnityTest, Order(0)]
+        public IEnumerator TestPropertyPurchase()
+        {
+            Square s1 = cgs.Board.GetSquare(1);
+            PropertySquare ps1 = (PropertySquare)s1;
+
+            Assert.AreEqual(null, ps1.Owner);
+
+            PacketActionBuyPropertySucceed p1 =
+                new PacketActionBuyPropertySucceed(uuid, 1);
+            // try to buy the property
+            cgs.OnBuyProperty(p1);
+            yield return null;
+
+            Assert.AreEqual(player, ps1.Owner);
+        }
+
+        [UnityTest, Order(1)]
         public IEnumerator TestHousePackets()
         {
             Square s1 = cgs.Board.GetSquare(1);
             OwnableSquare os1 = (OwnableSquare) s1;
             PropertySquare ps1 = (PropertySquare) s1;
-            os1.Owner = player;
+            //os1.Owner = player;
 
             PacketActionBuyHouseSucceed p1 =
                 new PacketActionBuyHouseSucceed(uuid, 1);

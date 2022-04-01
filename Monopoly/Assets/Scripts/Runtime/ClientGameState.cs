@@ -166,7 +166,7 @@ namespace Monopoly.Runtime
             if (s.IsOwnable())
             {
                 OwnableSquare os = (OwnableSquare)s;
-                if (os.Owner != null && os.Owner.Id.Equals(packet.PlayerId))
+                if (os.Owner == null)
                     Board.BoardBank.BuyProperty(p, os);
             }
         }
