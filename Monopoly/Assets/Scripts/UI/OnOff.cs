@@ -13,7 +13,7 @@ using UnityEngine;
 using Monopoly.Util;
 using UnityEngine.UI;
 
-namespace Monopoly.Menu
+namespace Monopoly.UI
 {
     [RequireComponent(typeof(RectTransform))]
     [RequireComponent(typeof(Button))]
@@ -33,6 +33,7 @@ namespace Monopoly.Menu
             rightPos = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z);
             Front.onClick.AddListener(OnClick);
             GetComponent<Button>().onClick.AddListener(OnClick);
+            switchOn = true;
             if (switchOn)
             {
                 Front.transform.localPosition = rightPos;
@@ -47,11 +48,6 @@ namespace Monopoly.Menu
         }
         private void SwitchAnimation()
         {
-            /*Debug.Log(backWidth);
-            Debug.Log(backTransform.localPosition);
-            Debug.Log(backTransform.localPosition.x);
-            Debug.Log(backTransform.localPosition.y);
-            Debug.Log(backTransform.localPosition.z);*/
             Vector3 toPos;
             if (!switchOn)
                 toPos = rightPos;
