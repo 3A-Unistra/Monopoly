@@ -12,6 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace Monopoly.UI
 {
@@ -61,7 +62,7 @@ namespace Monopoly.UI
 
         private void DisconnectFromTheGame()
         {
-            
+            SceneManager.LoadScene("Scenes/MainMenu");
         }
         
         public void QuitGame()

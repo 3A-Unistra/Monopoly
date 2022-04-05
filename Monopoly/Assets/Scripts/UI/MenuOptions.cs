@@ -110,12 +110,12 @@ namespace Monopoly.UI
             ChangesApplied = true;
             Dirty = true;
         
-            /*
+            
             RectTransform rt = GetComponent<RectTransform>();
             rt.anchorMin = new Vector2(0.5f, 0.5f);
             rt.anchorMax = new Vector2(0.5f, 0.5f);
             rt.pivot = new Vector2(0.5f, 0.5f);
-            rt.localPosition = Vector3.zero;*/
+            rt.localPosition = Vector3.zero;
         }
 
         private void BuildQuality()
