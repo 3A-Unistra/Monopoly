@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5946974996588503975}
   - component: {fileID: 3256255821983913741}
   - component: {fileID: 6225094917683282727}
+  - component: {fileID: 4614646737165604440}
   m_Layer: 5
   m_Name: Lobby
   m_TagString: Untagged
@@ -125,6 +126,19 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: 0
   m_LayoutPriority: 1
+--- !u!114 &4614646737165604440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5225311587242708924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1262f7ef35e60c8b1ad536ae33f0af27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  JoinButton: {fileID: 6342005856218691026}
 --- !u!1 &5700282192804653532
 GameObject:
   m_ObjectHideFlags: 0
@@ -704,6 +718,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4852369086178567842, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
   m_PrefabInstance: {fileID: 460709321694270375}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6342005856218691026 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6802564188059264629, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
+  m_PrefabInstance: {fileID: 460709321694270375}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1769546213976564210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4760550281713530588
 MonoBehaviour:
   m_ObjectHideFlags: 0
