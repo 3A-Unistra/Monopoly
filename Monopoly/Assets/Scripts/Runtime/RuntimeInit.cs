@@ -47,6 +47,8 @@ namespace Monopoly.Runtime
             init = true;
             string language = PlayerPrefs.GetString("language", "french");
             LoadLanguage(language);
+            PreferenceApply.LoadSettings();
+            PreferenceApply.ApplySettings();
             // this script is to be placed on a single object that will be
             // persistent throughout the entire runtime of the applet, that is,
             // it is never destroyed. this allows for global runtime handlers or

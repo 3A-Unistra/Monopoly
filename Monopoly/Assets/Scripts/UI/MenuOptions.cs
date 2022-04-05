@@ -18,6 +18,16 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+using Monopoly.Util;
+
+
+//TODO PLAYERPREFS
+//TODO PREFERENCEAPPLY
+//TODO TEXT FOR BUTTONS
+//TODO LANGUAGES
+//TODO DICE ANIMATION
+//TODO WEBGL VERSION
+
 namespace Monopoly.UI
 {
     public class MenuOptions : MonoBehaviour
@@ -78,6 +88,17 @@ namespace Monopoly.UI
             //OptionsMenu.GetComponent<RectTransform>().ForceUpdateRectTransforms();
             //TEMPORARY
             ResetDefault();
+            /*
+            ResolutionDropdown.value = PreferenceApply.Resolution;
+            QualityDropdown.value = PreferenceApply.Quality;
+            AntialiasingButton.GetComponent<OnOff>().switchOn = PreferenceApply.Antialiasing;
+            ShadowButton.GetComponent<OnOff>().switchOn = PreferenceApply.Shadow;
+            FullscreenButton.GetComponent<OnOff>().switchOn = PreferenceApply.Fullscreen;
+            MusicSlider.value = PreferenceApply.Music;
+            SoundSlider.value = PreferenceApply.Sound;
+            */
+            
+            
             FullScreen = FullscreenButton.GetComponent<OnOff>().switchOn;
             Res = ResolutionDropdown.value;
             Quality = QualityDropdown.value;
@@ -85,8 +106,10 @@ namespace Monopoly.UI
             Shadow = ShadowButton.GetComponent<OnOff>().switchOn;
             Music = MusicSlider.value;
             Sound = SoundSlider.value;
+            
             ChangesApplied = true;
             Dirty = true;
+        
             /*
             RectTransform rt = GetComponent<RectTransform>();
             rt.anchorMin = new Vector2(0.5f, 0.5f);
@@ -136,7 +159,6 @@ namespace Monopoly.UI
         
         public void ResetDefault()
         {
-            // TODO: scrap this and replace with a persistent config file loader
             ChangesApplied = false;
             ResolutionDropdown.value = ResolutionDropdown.options.Count - 1;
             QualityDropdown.value = 1;
@@ -207,6 +229,18 @@ namespace Monopoly.UI
         public void ApplyChanges()
         {
             // TODO: add a file write to the config file
+        
+            /*
+            PreferenceApply.Resolution = ResolutionDropdown.value;
+            PreferenceApply.Quality = QualityDropdown.value;
+            PreferenceApply.Antialiasing = AntialiasingButton.GetComponent<OnOff>().switchOn;
+            PreferenceApply.Shadow = ShadowButton.GetComponent<OnOff>().switchOn;
+            PreferenceApply.Fullscreen = FullscreenButton.GetComponent<OnOff>().switchOn;
+            PreferenceApply.Music = MusicSlider.value;
+            PreferenceApply.Sound = SoundSlider.value;
+            PreferenceApply.SaveSettings();
+            
+            */
             FullScreen = FullscreenButton.GetComponent<OnOff>().switchOn;
             Res = ResolutionDropdown.value;
             Quality = QualityDropdown.value;
@@ -214,6 +248,7 @@ namespace Monopoly.UI
             Shadow = ShadowButton.GetComponent<OnOff>().switchOn;
             Music = MusicSlider.value;
             Sound = SoundSlider.value;
+            
             ChangesApplied = true;
             //Dirty = false;
         }
@@ -222,6 +257,7 @@ namespace Monopoly.UI
         {
             if (!ChangesApplied)
             {
+                
                 ResolutionDropdown.value = Res;
                 QualityDropdown.value = Quality;
                 if (AntialiasingButton.GetComponent<OnOff>().switchOn != Antialiasing)
@@ -237,15 +273,13 @@ namespace Monopoly.UI
                 Screen.SetResolution(AvailableResolutions[Res].width, 
                     AvailableResolutions[Res].height, FullScreen);
                 QualitySettings.SetQualityLevel(Quality, FullScreen);
-                if (Antialiasing)
-                    QualitySettings.antiAliasing = 4;
-                else
-                    QualitySettings.antiAliasing = 0;
-                if (Shadow)
-                    QualitySettings.shadows = ShadowQuality.All;
-                else
-                    QualitySettings.shadows = ShadowQuality.Disable;
-
+                /*
+                ResolutionDropdown.value = PreferenceApply.Resolution;
+                QualityDropdown.value = PreferenceApply.Quality;
+                MusicSlider.value = PreferenceApply.Music;
+                SoundSlider.value = PreferenceApply.Sound;
+                PreferenceApply.ApplySettings();
+                */
             }
 
             PauseMenu.SetActive(true);
