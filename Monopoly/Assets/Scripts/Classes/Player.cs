@@ -49,10 +49,10 @@ namespace Monopoly.Classes
         /**
         * <summary>
         * getter setter
-        * Player's pawn on the board
+        * Index of the player's pawn on the board
         * </summary>
         */         
-        public Character Character
+        public int CharacterIdx
         {
             get;
             set;
@@ -184,10 +184,10 @@ namespace Monopoly.Classes
         * the player is not a bot by default
         * </summary>
         */    
-        public Player(string id, string name, Character character)
+        public Player(string id, string name, int characterIndex)
         {
             this.Id = id;
-            this.Character = character;
+            this.CharacterIdx = characterIndex;
             this.Name = name;
             this.Money = 1500;
             this.Score = 0;

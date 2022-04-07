@@ -76,6 +76,7 @@
     "go1": "Collect<br>200 € salary<br>as you pass",
     "go2": "Go",
     "rent": "Rent",
+    "doubles": "Doubles!",
     "property_longtext": "If a player owns ALL the Sites of any Colour-Group, the rent is Doubled on Unimproved Sites in that group.",
     "museum_longtext1": "    If one \"Museum\" is owned rent is 4 times amount shown on dice.",
     "museum_longtext2": "    If both \"Museums\" are owned rent is 10 times amount shown on dice.",
@@ -86,5 +87,14 @@
     "with_n_house": "With {0} houses",
     "with_hotel": "With HOTEL",
     "cost_per_house": "COST of each house €",
-    "cost_per_hotel": "COST of hotel: 4 houses +"
+    "cost_per_hotel": "COST of hotel: 4 houses +",
+    "on_buy_house": "{0} bought a house for {1}.",
+    "on_sell_house": "{0} sold a house from {1}.",
+    "on_buy_property": "{0} bought {1}.",
+    "on_mortgage_property": "{0} mortgaged {1}.",
+    "on_unmortgage_property": "{0} unmortgaged {1}.",
+    "on_round_start": "{0}'s turn to throw the dice.",
+    "on_dice_throw": "{0} threw {1}.",
+    "on_disconnect": "{0} disconnected.",
+    "on_reconnect": "{0} reconnected."
 }

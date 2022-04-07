@@ -59,7 +59,7 @@ namespace Monopoly.Classes
         public void TestBuyProperty()
         {
             Bank b = new Bank();
-            Player p = new Player("1","Bob",null);
+            Player p = new Player("1","Bob",0);
             CompanySquare s = new CompanySquare(12, 150);
             p.Money = 0;
             b.BuyProperty(p,s);
@@ -73,7 +73,7 @@ namespace Monopoly.Classes
         public void TestSellProperty()
         {
             Bank b = new Bank();
-            Player p = new Player("1","Bob",null);
+            Player p = new Player("1","Bob",0);
             CompanySquare s = new CompanySquare(12, 150); 
             b.BuyProperty(p,s);
             Assert.True(s.Owner == p);

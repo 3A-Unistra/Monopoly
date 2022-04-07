@@ -55,7 +55,7 @@ namespace Monopoly.Classes
         public void TestMove()
         {
 
-            Player p = new Player("1", "Bob", null);
+            Player p = new Player("1", "Bob", 0);
             Board.Move(p, 12);
             Assert.True(p.Position == 12);
             Board.Move(p, 38);
@@ -72,7 +72,7 @@ namespace Monopoly.Classes
         [Test]
         public void TestSquareOwned()
         {
-            Player p = new Player("1", "Bob", null);
+            Player p = new Player("1", "Bob", 0);
             Board b = new Board();
             ((OwnableSquare)b.Elements[1]).Owner = p;
             ((OwnableSquare)b.Elements[5]).Owner = p;
@@ -94,7 +94,7 @@ namespace Monopoly.Classes
         [Test]
         public void TestFreeParking()
         {
-            Player p = new Player("1", "Bob", null);
+            Player p = new Player("1", "Bob", 0);
             Board b = new Board();
             b.BoardMoney = 500;
             b.FreeParking(p);
@@ -105,7 +105,7 @@ namespace Monopoly.Classes
         [Test]
         public void TestAddMoney()
         {
-            Player p = new Player("1", "Bob", null);
+            Player p = new Player("1", "Bob", 0);
             Board b = new Board();
             b.AddMoney(p, 100);
             Assert.True(p.Money == 1600);
@@ -114,7 +114,7 @@ namespace Monopoly.Classes
         [Test]
         public void TestOwnSameColorSet()
         {
-            Player p = new Player("1", "Bob", null);
+            Player p = new Player("1", "Bob", 0);
             Board b = new Board();
             ((PropertySquare)b.Elements[1]).Owner = p;
             Assert.False(b.OwnSameColorSet(p, (PropertySquare)b.Elements[1]));
@@ -125,7 +125,7 @@ namespace Monopoly.Classes
         [Test]
         public void TestCanBuyHouse()
         {
-            Player p = new Player("1", "Bob", null);
+            Player p = new Player("1", "Bob", 0);
             Board b = new Board();
             Assert.False(b.CanBuyHouse(p, (PropertySquare)b.Elements[6]));
             ((PropertySquare)b.Elements[6]).Owner = p;
@@ -145,7 +145,7 @@ namespace Monopoly.Classes
         [Test]
         public void TestCanSellHouse()
         {
-            Player p = new Player("1", "Bob", null);
+            Player p = new Player("1", "Bob", 0);
             Board b = new Board();
             Assert.False(b.CanSellHouse(p, (PropertySquare)b.Elements[6]));
             ((PropertySquare)b.Elements[6]).Owner = p;
@@ -165,7 +165,7 @@ namespace Monopoly.Classes
         [Test]
         public void TestBuyHouse()
         {
-            Player p = new Player("1", "Bob", null);
+            Player p = new Player("1", "Bob", 0);
             Board b = new Board();
             ((PropertySquare)b.Elements[1]).Owner = p;
             ((PropertySquare)b.Elements[3]).Owner = p;
@@ -178,7 +178,7 @@ namespace Monopoly.Classes
         public void TestSellHouse()
         {
 
-            Player p = new Player("1", "Bob", null);
+            Player p = new Player("1", "Bob", 0);
             Board b = new Board();
             ((PropertySquare)b.Elements[1]).Owner = p;
             ((PropertySquare)b.Elements[3]).Owner = p;

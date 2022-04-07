@@ -7,6 +7,7 @@ using UnityEngine.TestTools;
 
 using Monopoly.Classes;
 using Monopoly.Net.Packets;
+using Monopoly.Net;
 
 namespace Monopoly.Runtime
 {
@@ -36,16 +37,30 @@ namespace Monopoly.Runtime
                 Assert.False(cgs == null);
 
                 uuid = "abc";
-                player = new Player(uuid, "Test Player", null);
+                player = new Player(uuid, "Test Player 1", 0);
                 cgs.ManuallyRegisterPlayer(player);
-
-                Assert.AreEqual(1500, player.Money);
 
                 init = true;
             }
         }
 
         [UnityTest, Order(0)]
+        public IEnumerator TestManualCreatePlayer()
+        {
+            yield return new WaitForSeconds(1); // more wait for everything
+
+            string uuid2 = "def";
+            Player player2 = new Player(uuid2, "Test Player 2", 1);
+            cgs.ManuallyRegisterPlayer(player2);
+
+            uuid2 = "ghi";
+            Player player3 = new Player(uuid2, "Test Player 3", 2);
+            cgs.ManuallyRegisterPlayer(player3);
+
+            Assert.AreEqual(1500, player.Money);
+        }
+
+        [UnityTest, Order(1)]
         public IEnumerator TestPropertyPurchase()
         {
             Square s1 = cgs.Board.GetSquare(1);
@@ -62,7 +77,7 @@ namespace Monopoly.Runtime
             Assert.AreEqual(player, ps1.Owner);
         }
 
-        [UnityTest, Order(1)]
+        [UnityTest, Order(2)]
         public IEnumerator TestHousePackets()
         {
             Square s1 = cgs.Board.GetSquare(1);
@@ -74,7 +89,7 @@ namespace Monopoly.Runtime
                 new PacketActionBuyHouseSucceed(uuid, 1);
             // try to buy the house only owning one of a property set
             cgs.OnBuyHouse(p1);
-            yield return null;
+            yield return new WaitForSeconds(3);
             Assert.AreEqual(0, ps1.NbHouse);
 
             Square s2 = cgs.Board.GetSquare(3);
@@ -83,14 +98,14 @@ namespace Monopoly.Runtime
 
             // try to buy the house now owning both properties
             cgs.OnBuyHouse(p1);
-            yield return null;
+            yield return new WaitForSeconds(3);
             Assert.AreEqual(1, ps1.NbHouse);
 
             PacketActionSellHouseSucceed p2 =
                 new PacketActionSellHouseSucceed(uuid, 1);
             // try to sell the house now
             cgs.OnSellHouse(p2);
-            yield return null;
+            yield return new WaitForSeconds(8);
             Assert.AreEqual(0, ps1.NbHouse);
         }
 

@@ -34,8 +34,8 @@ namespace Monopoly.Classes
             OwnableSquare s = new OwnableSquare(SquareType.Company,12, 200, 40);
             OwnableSquare s2 = new OwnableSquare(SquareType.Company,28,200, 40);
             OwnableSquare s3 = new OwnableSquare(SquareType.Station,5, 200, 40);
-            Player p = new Player("0", "test", null);
-            Player p2 = new Player("1", "test1", null);
+            Player p = new Player("0", "test", 0);
+            Player p2 = new Player("1", "test1", 1);
             s.Owner = p;
             s.PayRent(p2);
             Assert.AreEqual(1460, p2.Money);
