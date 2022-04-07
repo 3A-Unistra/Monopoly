@@ -19,7 +19,7 @@ namespace Monopoly.Classes
         [Test]
         public void TestPlayerCreation()
         {
-            Player p = new Player("1","Bob",null);
+            Player p = new Player("1","Bob",0);
             Assert.True(p.Id == "1");
             Assert.True(p.Money == 1500);
             Assert.True(p.Score == 0);
@@ -34,7 +34,7 @@ namespace Monopoly.Classes
         [Test]
         public void TestPlayerGoToJail()
         {
-            Player p = new Player("1","Bob",null);
+            Player p = new Player("1","Bob",0);
             p.EnterPrison();
             Assert.True(p.Position == 10);
             Assert.True(p.InJail == true);
@@ -43,7 +43,7 @@ namespace Monopoly.Classes
         [Test]
         public void TestExitPrison()
         {
-            Player p = new Player("1","Bob",null);
+            Player p = new Player("1","Bob",0);
             p.EnterPrison();
             p.JailTurns ++;            
             p.ExitPrison();
@@ -53,8 +53,8 @@ namespace Monopoly.Classes
         [Test]
         public void TestTransferMoney()
         {
-            Player p1 = new Player("1","Bob",null);
-            Player p2 = new Player("2","Jules",null);
+            Player p1 = new Player("1","Bob",0);
+            Player p2 = new Player("2","Jules",1);
             p1.TransferMoney(p2,0);
             Assert.True(p1.Money == 1500);
             Assert.True(p2.Money == 1500);            
@@ -71,8 +71,8 @@ namespace Monopoly.Classes
         [Test]
         public void TestTransferProperty()
         {
-            Player p1 = new Player("1","Bob",null);
-            Player p2 = new Player("2","Jules",null);  
+            Player p1 = new Player("1","Bob",0);
+            Player p2 = new Player("2","Jules",1);  
             CompanySquare cs = new CompanySquare(12,150);
             PropertySquare ps = new PropertySquare(1, 500, 50,100, 50, 50, 50, 50, 50);
             StationSquare ss = new StationSquare(5, 50, 50);  
@@ -91,8 +91,8 @@ namespace Monopoly.Classes
         [Test]
         public void TestTransferCard()
         {
-            Player p1 = new Player("1","Bob",null);
-            Player p2 = new Player("2","Jules",null);
+            Player p1 = new Player("1","Bob",0);
+            Player p2 = new Player("2","Jules",1);
             Assert.False(p2.CommunityJailCard == true);
             Assert.False(p2.ChanceJailCard == true);
             p1.TransferCard(p2,"Chance");

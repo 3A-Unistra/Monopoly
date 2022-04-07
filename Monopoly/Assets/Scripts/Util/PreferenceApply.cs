@@ -31,6 +31,8 @@ namespace Monopoly.Util
         public static void LoadSettings()
         {
             Resolution = PlayerPrefs.GetInt("resolution", ResolutionsArray.Length - 1);
+            if (Resolution >= ResolutionsArray.Length)
+                Resolution = 0;
             Quality = PlayerPrefs.GetInt("quality", 1);
             Antialiasing = PlayerPrefs.GetInt("antialiasing", 1) == 1;
             Shadow = PlayerPrefs.GetInt("shadow", 1) == 1;
@@ -41,20 +43,28 @@ namespace Monopoly.Util
     
         public static void ApplySettings()
         {
-            Screen.SetResolution(ResolutionsArray[Resolution].width, 
-                ResolutionsArray[Resolution].height, Fullscreen);
-            QualitySettings.SetQualityLevel(Quality, true);
-            Screen.fullScreen = Fullscreen;
-            if (Shadow)
-                QualitySettings.shadows = ShadowQuality.All;
+            if (ResolutionsArray.Length > 0)
+            {
+                Screen.SetResolution(ResolutionsArray[Resolution].width,
+                        ResolutionsArray[Resolution].height, Fullscreen);
+                QualitySettings.SetQualityLevel(Quality, true);
+                Screen.fullScreen = Fullscreen;
+                if (Shadow)
+                    QualitySettings.shadows = ShadowQuality.All;
+                else
+                    QualitySettings.shadows = ShadowQuality.Disable;
+                if (Antialiasing)
+                    QualitySettings.antiAliasing = 4;
+                else
+                    QualitySettings.antiAliasing = 0;
+                //TODO APPLY MUSIC PREFERENCES 
+                //TODO APPLY SOUND PREFERENCES
+            }
             else
-                QualitySettings.shadows = ShadowQuality.Disable;
-            if (Antialiasing)
-                QualitySettings.antiAliasing = 4;
-            else
-                QualitySettings.antiAliasing = 0;
-            //TODO APPLY MUSIC PREFERENCES 
-            //TODO APPLY SOUND PREFERENCES 
+            {
+                // we're probably running in headless mode so we shouldn't apply
+                // any of the settings just in case something acts up
+            }
         }
         
         public static void SaveSettings()

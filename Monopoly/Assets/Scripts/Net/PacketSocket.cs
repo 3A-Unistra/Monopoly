@@ -50,7 +50,8 @@ namespace Monopoly.Net
                 }
             }
             string protocol = secure ? "wss" : "ws";
-            string loc = string.Format("{0}://{1}:{2}/{3}",
+            // TODO: add a boolean for lobby sockets and party sockets
+            string loc = string.Format("{0}://{1}:{2}/ws/lobby{3}",
                                        protocol, address, port, sb.ToString());
             return CreateSocket(loc);
         }
@@ -69,12 +70,22 @@ namespace Monopoly.Net
         {
             this.loc = loc;
             open = error = false;
-            Sock = new WebSocket(loc);
+            Dictionary<string, string> headers =
+                new Dictionary<string, string>();
+            // FIXME: FETCH CORRECT ORIGIN
+            headers.Add("Origin", "http://localhost");
+            Sock = new WebSocket(loc, headers);
             Sock.OnOpen += () =>
             {
                 Debug.Log(string.Format("WebSocket opened at '{0}'", loc));
                 open = true;
             };
+#if UNITY_EDITOR
+            Sock.OnMessage += (e) =>
+            {
+                Debug.Log(string.Format("WebSocket message: {0}", e));
+            };
+#endif
             Sock.OnError += (e) =>
             {
                 /* TODO: Implement timeout or error limit? */
@@ -85,14 +96,23 @@ namespace Monopoly.Net
             };
             Sock.OnClose += (e) =>
             {
-                Debug.Log(string.Format("WebSocket closed at '{0}'", loc));
+                Debug.Log(
+                    string.Format("WebSocket closed at '{0}' with code {1}",
+                    loc, e));
                 open = false;
             };
         }
 
         public async void Connect()
         {
+            Debug.Log("Websocket connecting...");
             await Sock.Connect();
+        }
+
+        public async void Close()
+        {
+            Debug.Log("Websocket closing...");
+            await Sock.Close();
         }
 
         public override string ToString()

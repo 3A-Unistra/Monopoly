@@ -75,6 +75,7 @@
     "go1": "Recevez<br>200 € chaque fois<br>que vous passez ici",
     "go2": "Départ",
     "rent": "Loyer",
+    "doubles": "Doubles !",
     "property_longtext": "Si un joueur possède TOUS les terrains d'un Groupe de Couleur quelconque, le loyer des terrains nus de ce groupe est doublé.",
     "museum_longtext1": "    Si l'on possède UNE passe musée, le loyer est 4 fois le montant indiqué par les dés.",
     "museum_longtext2": "    Si l'on possède les DEUX passes musées, le loyer est 10 fois le montant indiqué par les dés.",
@@ -85,5 +86,14 @@
     "with_n_house": "Avec {0} maisons",
     "with_hotel": "Avec HÔTEL",
     "cost_per_house": "PRIX par maison €",
-    "cost_per_hotel": "PRIX par hôtel: 4 maisons +"
+    "cost_per_hotel": "PRIX par hôtel: 4 maisons +",
+    "on_buy_house": "{0} a achété une maison pour {1}.",
+    "on_sell_house": "{0} a vendu une maison de {1}.",
+    "on_buy_property": "{0} a achété {1}.",
+    "on_mortgage_property": "{0} a hypothéqué {1}.",
+    "on_unmortgage_property": "{0} a déshypothéqué {1}.",
+    "on_round_start": "C'est à {0} de lancer les dés.",
+    "on_dice_throw": "{0} a lancé {1}.",
+    "on_disconnect": "{0} a déconnecté.",
+    "on_reconnect": "{0} a reconnecté."
 }
