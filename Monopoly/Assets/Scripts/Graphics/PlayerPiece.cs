@@ -83,14 +83,8 @@ namespace Monopoly.Graphics
             return pos;
         }
 
-        public void SetPosition(int idx)
+        private Vector3 CalculateDesiredPosition(int idx)
         {
-            if (idx < 0 || idx >= 40)
-            {
-                Debug.LogWarning(string.Format(
-                    "Can't set piece position to invalid location {0}!", idx));
-                return;
-            }
             // find the center position of the relevant SquareCollider
             SquareCollider square = SquareCollider.Colliders[idx];
             Vector3 squarePos = square.transform.position;
@@ -99,8 +93,25 @@ namespace Monopoly.Graphics
             // character pieces from colliding and intersecting on the same
             // space in the scene which is ugly and wrong
             squarePos = CalculateOffset(squarePos, idx);
-            transform.position = squarePos;
-            transform.rotation = square.transform.rotation;
+            return squarePos;
+        }
+
+        private Quaternion CalculateDesiredRotation(int idx)
+        {
+            SquareCollider square = SquareCollider.Colliders[idx];
+            return square.transform.rotation;
+        }
+
+        public void SetPosition(int idx)
+        {
+            if (idx < 0 || idx >= 40)
+            {
+                Debug.LogWarning(string.Format(
+                    "Can't set piece position to invalid location {0}!", idx));
+                return;
+            }
+            transform.position = CalculateDesiredPosition(idx);
+            transform.rotation = CalculateDesiredRotation(idx);
         }
 
         void Update()
