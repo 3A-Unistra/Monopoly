@@ -78,6 +78,7 @@ namespace Monopoly.Net
         // - ActionExchangeTradeSelect  (also sent)
 
         public event PacketDelegate<PacketException>         OnError;
+        public event PacketDelegate<PacketChat>              OnMessage;
         public event PacketDelegate<PacketAppletPrepare>     OnGameLoad;
         public event PacketDelegate<PacketGameStart>         OnGameStart;
         public event PacketDelegate<PacketGameStartDice>     OnGameStartDice;
@@ -147,6 +148,12 @@ namespace Monopoly.Net
         public void DoPing()
         {
             PacketPing packet = new PacketPing();
+            SendPacket(packet);
+        }
+
+        public void DoMessage(string uuid, string message)
+        {
+            PacketChat packet = new PacketChat(uuid, message);
             SendPacket(packet);
         }
 
