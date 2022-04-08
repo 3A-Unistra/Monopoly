@@ -236,7 +236,7 @@ namespace Monopoly.Runtime
                     if (Board.BuyHouse(ps, p))
                     {
                         ++SquareCollider.Colliders[packet.HouseId].houseLevel;
-                        SquareCollider.Colliders[packet.HouseId].UpdateHouses();
+                        //SquareCollider.Colliders[packet.HouseId].UpdateHouses();
                         LogMessage(string.Format(
                             StringLocaliser.GetString("on_buy_house"),
                             PlayerNameLoggable(p),
@@ -264,7 +264,7 @@ namespace Monopoly.Runtime
                     if (Board.SellHouse(ps, p))
                     {
                         --SquareCollider.Colliders[packet.HouseId].houseLevel;
-                        SquareCollider.Colliders[packet.HouseId].UpdateHouses();
+                        //SquareCollider.Colliders[packet.HouseId].UpdateHouses();
                         LogMessage(string.Format(
                             StringLocaliser.GetString("on_sell_house"),
                             PlayerNameLoggable(p),

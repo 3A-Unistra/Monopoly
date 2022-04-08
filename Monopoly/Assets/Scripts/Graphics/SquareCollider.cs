@@ -4,6 +4,7 @@
  * 
  * Date created : 8/03/2022
  * Author       : Finn RAYMENT <rayment@etu.unistra.fr>
+ * Author       : Christophe PIERSON <chrsitophe.pierson@etu.unistra.fr>
  */
 
 using System.Collections;
@@ -28,6 +29,7 @@ namespace Monopoly.Graphics
 
         [Range(0, 5)]
         public int houseLevel;
+        private int tempLvlhouse = 0;
 
         public GameObject housePrefab, hotelPrefab;
 
@@ -36,6 +38,14 @@ namespace Monopoly.Graphics
 
         private List<GameObject> houseObjects;
         public static Dictionary<int, SquareCollider> Colliders;
+
+        private bool dirty = false;
+        public bool enableMove = false;
+
+        private float[] animateTime = new float[5];
+
+        [Range(0.01f, 2.0f)]
+        public float moveSpeed = 1.8f;
 
         static SquareCollider()
         {
@@ -262,12 +272,15 @@ namespace Monopoly.Graphics
 
         public void UpdateHouses()
         {
+            dirty = true;
             houseObjects.ForEach((x) => { Destroy(x); });
             houseObjects.Clear();
             if (houseLevel == 0)
                 return;
             if (houseLevel == 5)
             {
+                houseObjects.ForEach((x) => { Destroy(x); });
+                houseObjects.Clear();
                 Vector3 hotelScale = hotelPrefab.transform.localScale;
                 Quaternion hotelRot = hotelPrefab.transform.localRotation;
                 GameObject hotelObj =
@@ -306,11 +319,163 @@ namespace Monopoly.Graphics
                 houseObj.transform.localPosition = pos;
                 houseObjects.Add(houseObj);
                 pos.x -= offset;
-            }
+            }           
         }
+
+        public void PlaceHouse()
+        {
+            float offset = 0.255f;
+            int nbHObj = houseObjects.Count;
+            int diffHouses = houseLevel - tempLvlhouse;
+            bool UpdatedHotel = !((houseLevel == 5) && (nbHObj == 1));
+            Vector3 posCeiling = 
+                new Vector3(0.38f, 90.5f, -0.43f);
+            Vector3 posFloor = 
+                new Vector3(0.38f, 0.5f, -0.43f);
+            if((nbHObj == 4) && (houseLevel == 5))
+            {
+                for(int i = 0; i < 4; i++)
+                {
+                    posCeiling.x -= offset;
+                    posFloor.x -= offset;
+                    houseObjects[i].transform.localPosition
+                        = Vector3.Lerp(posFloor, posCeiling, animateTime[i]);
+                    animateTime[i] += Time.deltaTime * moveSpeed;
+                }
+                if (houseObjects[0].transform.localPosition.y >= 90.5f)
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        Destroy(houseObjects[i]);
+                    }
+                    UpdateHouses();
+                    houseObjects[0].transform.localPosition 
+                        = posCeiling;
+
+                }
+                return;
+            }
+            if ((nbHObj != houseLevel) && UpdatedHotel)
+            {
+                UpdateHouses();
+                enableMove = true;
+                if (houseLevel == 5)
+                {
+                    posCeiling.x = -0.4f;
+                    posFloor.x = -0.4f;
+                    houseObjects[0].transform.localPosition
+                        = Vector3.Lerp(posCeiling, posFloor, animateTime[4]);
+                    return;
+                }
+                    for (int i = tempLvlhouse; i < houseLevel; i++)
+                {
+                    posCeiling.x -= offset;
+                    posFloor.x -= offset;
+                    houseObjects[i].transform.localPosition
+                        = Vector3.Lerp(posCeiling, posFloor, animateTime[i]);
+                }
+                return;
+            }
+            if (nbHObj == 0)
+            {
+                dirty = false;
+                return;
+            }
+            if(houseLevel == 5)
+            {
+                posCeiling.x = -0.4f;
+                posFloor.x = -0.4f;
+                houseObjects[0].transform.localPosition
+                    = Vector3.Lerp(posCeiling, posFloor, animateTime[4]);
+                animateTime[4] += Time.deltaTime * moveSpeed;
+                if (houseObjects[nbHObj - 1].transform.localPosition.y
+                    <= posFloor.y)
+                {
+                    tempLvlhouse = houseLevel;
+                    animateTime[4] = 0.0f;
+                    dirty = false;
+                }
+                    return;
+            }
+            posCeiling.x -= 0.255f * (tempLvlhouse - 1);
+            posFloor.x -= 0.255f * (tempLvlhouse - 1);
+            for (int i = tempLvlhouse; i < houseLevel; i++)
+            {
+                posCeiling.x -= offset;
+                posFloor.x -= offset;
+                houseObjects[i].transform.localPosition
+                    = Vector3.Lerp(posCeiling, posFloor, animateTime[i]);
+                animateTime[i] += Time.deltaTime * moveSpeed;
+            }
+            if (houseObjects[nbHObj - 1].transform.localPosition.y 
+                <= posFloor.y)
+            {
+                tempLvlhouse = houseLevel;
+                for (int i = 0; i < 5; i++)
+                    animateTime[i] = 0.0f;
+                dirty = false;
+            }
+            return;
+           
+        }
+        public void RemoveHouse()
+        {
+            float offset = 0.255f;
+            int nbHObj = houseObjects.Count;
+            int diffHouses = tempLvlhouse - houseLevel;
+            Vector3 posCeiling =
+                new Vector3(0.38f - 0.255f * 
+                (tempLvlhouse - 1), 90.5f, -0.43f);
+            Vector3 posFloor =
+            new Vector3(0.38f - 0.255f * (tempLvlhouse - 1), 0.5f, -0.43f);
+            if (tempLvlhouse == 5)
+            {
+                animateTime[4] += Time.deltaTime * moveSpeed;
+                houseObjects[0].transform.localPosition =
+                    Vector3.Lerp(posFloor, posCeiling, animateTime[4]);
+                if (houseObjects[0].transform.localPosition.y
+                    >= posCeiling.y)
+                {
+                    UpdateHouses();
+                    tempLvlhouse = 0;
+                    for (int i = 0; i < houseLevel; i++)
+                    {
+                        posCeiling.x -= offset;
+                        posFloor.x -= offset;
+                        houseObjects[i].transform.localPosition
+                            = Vector3.Lerp(posCeiling, posFloor, animateTime[i]);
+                    }
+                    for (int i = 0; i < 5; i++)
+                        animateTime[i] = 0.0f;
+                }
+                return;
+            }
+            for (int i = 0; i < diffHouses; i++)
+            {
+                animateTime[nbHObj - 1 - i] += Time.deltaTime * moveSpeed;
+                houseObjects[nbHObj - 1 - i].transform.localPosition =
+                    Vector3.Lerp(posFloor, posCeiling, 
+                    animateTime[nbHObj - 1 - i]);
+                animateTime[nbHObj - 1 - i] += Time.deltaTime * moveSpeed;
+                posCeiling.x += offset;
+                posFloor.x += offset;
+            }
+            if (houseObjects[nbHObj - diffHouses].transform.localPosition.y 
+                >= posCeiling.y)
+            {
+                UpdateHouses();
+                tempLvlhouse = houseLevel;
+                for(int i = 0; i < 5; i++)
+                    animateTime[i] = 0.0f;
+                dirty = false;                 
+            }
+            return;                 
+        } 
 
         void Start()
         {
+            for (int i = 0; i < 5; i++)
+                animateTime[i] = 0.0f;
             if (Colliders.ContainsKey(squareIndex))
             {
                 Debug.LogError(
@@ -324,6 +489,19 @@ namespace Monopoly.Graphics
             CreateTextObjects();
             UpdateText();
             UpdateHouses();
+        }
+        void Update()
+        {
+            if (dirty && (tempLvlhouse < houseLevel))
+                PlaceHouse();
+            if (dirty && (tempLvlhouse > houseLevel))
+                RemoveHouse();
+            if (tempLvlhouse != houseLevel)
+            {
+                dirty = true;
+            }
+            if(!dirty)
+                tempLvlhouse = houseLevel;            
         }
 
     }

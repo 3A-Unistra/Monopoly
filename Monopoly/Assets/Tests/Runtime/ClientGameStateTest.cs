@@ -20,7 +20,7 @@ namespace Monopoly.Runtime
         private string uuid; 
         private bool init = false;
 
-        [UnitySetUp]
+        /*[UnitySetUp]
         public IEnumerator OneTimeSetUp()
         {
             if (!init)
@@ -107,7 +107,7 @@ namespace Monopoly.Runtime
             cgs.OnSellHouse(p2);
             yield return new WaitForSeconds(8);
             Assert.AreEqual(0, ps1.NbHouse);
-        }
+        }*/
 
     }
 
