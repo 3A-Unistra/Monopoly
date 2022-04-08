@@ -170,6 +170,7 @@ namespace Monopoly.Runtime
             this.clientUUID = uuid;
             this.sock = sock;
             comm = new PacketCommunicator(sock);
+            comm.OnMessage += OnMessage;
             comm.OnBuyHouse += OnBuyHouse;
             comm.OnSellHouse += OnSellHouse;
             comm.OnBuyProperty += OnBuyProperty;
@@ -216,6 +217,25 @@ namespace Monopoly.Runtime
             pp.playerIndex = players.Count - 1;
             pp.SetPosition(0);
             playerPieces.Add(pp);
+        }
+
+        public void DoMessage(string message)
+        {
+            if (comm != null)
+                comm.DoMessage(clientUUID, message);
+        }
+
+        public void OnMessage(PacketChat packet)
+        {
+            Player p = Player.PlayerFromUUID(players, packet.PlayerId);
+            if (p == null)
+            {
+                Debug.LogWarning(string.Format("Could not find player '{0}'!",
+                                               packet.PlayerId));
+                return;
+            }
+            LogMessage(string.Format("{0}: {1}",
+                       PlayerNameLoggable(p), packet.Message));
         }
 
         public void OnBuyHouse(PacketActionBuyHouseSucceed packet)
