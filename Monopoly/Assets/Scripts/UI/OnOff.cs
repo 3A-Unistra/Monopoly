@@ -33,7 +33,7 @@ namespace Monopoly.UI
             rightPos = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z);
             Front.onClick.AddListener(OnClick);
             GetComponent<Button>().onClick.AddListener(OnClick);
-            switchOn = true;
+            //switchOn = true;
             if (switchOn)
             {
                 Front.transform.localPosition = rightPos;
@@ -63,10 +63,6 @@ namespace Monopoly.UI
 
         private void OnClick()
         {
-           /* Debug.Log(transform.localPosition);
-            Debug.Log(Front.transform.localPosition);
-            Debug.Log(leftPos);
-            Debug.Log(rightPos);*/
            if (!animating)
            {
                animating = true;

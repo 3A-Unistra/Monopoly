@@ -26,6 +26,8 @@ namespace Monopoly.UI
         public GameObject LobbyMenuPrefab;
         public GameObject ConnectMenuPrefab;
         public GameObject OptionsMenuPrefab;
+        
+        public static bool OptionsOpened = false;
         void Start()
         {
             OptionsButton.onClick.AddListener(OpenOptionsMenu);
@@ -36,7 +38,12 @@ namespace Monopoly.UI
     
         public void OpenOptionsMenu()
         {
-            GameObject OptionsMenu = Instantiate(OptionsMenuPrefab,transform.parent);
+            if (!OptionsOpened)
+            {
+                GameObject OptionsMenu = Instantiate(OptionsMenuPrefab,transform.parent);
+                OptionsOpened = true;
+            }
+            
         }
         
         public void PlayOnline()
@@ -57,4 +64,3 @@ namespace Monopoly.UI
         }
     }
 }
-

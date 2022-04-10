@@ -21,12 +21,9 @@ using UnityEngine.UI;
 using Monopoly.Util;
 
 
-//TODO PLAYERPREFS
-//TODO PREFERENCEAPPLY
-//TODO TEXT FOR BUTTONS
+
 //TODO LANGUAGES
 //TODO DICE ANIMATION
-//TODO WEBGL VERSION
 
 namespace Monopoly.UI
 {
@@ -34,10 +31,9 @@ namespace Monopoly.UI
     {
 
         public GameObject PrefabPause;
-        public GameObject OptionsMenu;
-        public GameObject PauseMenu;
         public TMP_Dropdown ResolutionDropdown;
         public TMP_Dropdown QualityDropdown;
+        public TMP_Dropdown LanguageDropdown;
         public Button AntialiasingButton;
         public Button ShadowButton;
         public Button FullscreenButton;
@@ -50,25 +46,17 @@ namespace Monopoly.UI
         public Button Reset;
         public Button Close;
         private Resolution[] AvailableResolutions;
-        public static int Res;
-        public static int Quality;
-        public static bool FullScreen = true;
-        public static bool Antialiasing = true;
-        public static bool Shadow = true;
-        public static float Music;
-        public static float Sound;
 
         public static bool ChangesApplied, Dirty;
 
         void Start()
         {
-            //PauseMenu = GameObject.Find("MenuPause");
             BuildResolutions();
             BuildQuality();
-            ResolutionDropdown.onValueChanged.AddListener
-                (delegate { ResolutionChanging(); });
+            
             QualityDropdown.onValueChanged.AddListener(delegate { QualityChanging(); });
-
+            LanguageDropdown.onValueChanged.AddListener(delegate { LanguageChanging(); });
+            
             AntialiasingButton.onClick.AddListener(AntialiasingChanging);
             AntialiasingFrontButton.onClick.AddListener(AntialiasingChanging);
             FullscreenButton.onClick.AddListener(FullscreenChanging);
@@ -82,13 +70,15 @@ namespace Monopoly.UI
             Apply.onClick.AddListener(ApplyChanges);
             Reset.onClick.AddListener(delegate { ResetDefault(); });
             Close.onClick.AddListener(CloseMenu);
-
+            #if UNITY_WEBGL
+                ResolutionDropdown.gameObject.SetActive(false);
+            #else
+                ResolutionDropdown.onValueChanged.AddListener
+                    (delegate { ResolutionChanging(); });
+            #endif
 
             Dirty = false;
-            //OptionsMenu.GetComponent<RectTransform>().ForceUpdateRectTransforms();
-            //TEMPORARY
-            ResetDefault();
-            /*
+            
             ResolutionDropdown.value = PreferenceApply.Resolution;
             QualityDropdown.value = PreferenceApply.Quality;
             AntialiasingButton.GetComponent<OnOff>().switchOn = PreferenceApply.Antialiasing;
@@ -96,17 +86,14 @@ namespace Monopoly.UI
             FullscreenButton.GetComponent<OnOff>().switchOn = PreferenceApply.Fullscreen;
             MusicSlider.value = PreferenceApply.Music;
             SoundSlider.value = PreferenceApply.Sound;
-            */
             
             
-            FullScreen = FullscreenButton.GetComponent<OnOff>().switchOn;
-            Res = ResolutionDropdown.value;
-            Quality = QualityDropdown.value;
-            Antialiasing = AntialiasingButton.GetComponent<OnOff>().switchOn;
-            Shadow = ShadowButton.GetComponent<OnOff>().switchOn;
-            Music = MusicSlider.value;
-            Sound = SoundSlider.value;
-            
+            if (AntialiasingButton.GetComponent<OnOff>().switchOn != PreferenceApply.Antialiasing)
+                AntialiasingButton.GetComponent<OnOff>().Front.onClick.Invoke();
+            if (ShadowButton.GetComponent<OnOff>().switchOn != PreferenceApply.Shadow)
+                ShadowButton.GetComponent<OnOff>().Front.onClick.Invoke();
+            if (FullscreenButton.GetComponent<OnOff>().switchOn != PreferenceApply.Fullscreen)
+                FullscreenButton.GetComponent<OnOff>().Front.onClick.Invoke();
             ChangesApplied = true;
             Dirty = true;
         
@@ -117,6 +104,7 @@ namespace Monopoly.UI
             rt.pivot = new Vector2(0.5f, 0.5f);
             rt.localPosition = Vector3.zero;
         }
+        
 
         private void BuildQuality()
         {
@@ -142,7 +130,6 @@ namespace Monopoly.UI
         public void ResolutionChanging()
         {
             ChangesApplied = false;
-            //Dirty = true;
             Screen.SetResolution
             (AvailableResolutions[ResolutionDropdown.value].width,
                 AvailableResolutions[ResolutionDropdown.value].height, 
@@ -153,8 +140,7 @@ namespace Monopoly.UI
         public void QualityChanging()
         {
             ChangesApplied = false;
-            //Dirty = true;
-            QualitySettings.SetQualityLevel(QualityDropdown.value, true);
+            QualitySettings.SetQualityLevel(QualityDropdown.value, ShadowButton.GetComponent<OnOff>().switchOn);
         }
         
         public void ResetDefault()
@@ -186,7 +172,6 @@ namespace Monopoly.UI
         public void AntialiasingChanging()
         {
             ChangesApplied = false;
-            //Dirty = true;
             if (!AntialiasingButton.GetComponent<OnOff>().switchOn)
                 QualitySettings.antiAliasing = 4;
             else
@@ -196,8 +181,6 @@ namespace Monopoly.UI
         public void ShadowChanging()
         {
             ChangesApplied = false;
-            //Dirty = true;
-
             
             if (!ShadowButton.GetComponent<OnOff>().switchOn)
                 QualitySettings.shadows = ShadowQuality.All; 
@@ -211,79 +194,57 @@ namespace Monopoly.UI
         {
             ChangesApplied = false;
             Screen.fullScreen = !Screen.fullScreen;
-            //Dirty = true;
         }
         
         public void MusicChanging()
         {
             ChangesApplied = false;
-            //Dirty = true;
         }
 
         public void SoundChanging()
         {
             ChangesApplied = false;
-            //Dirty = true;
         }
 
+        public void LanguageChanging()
+        {
+            ChangesApplied = false;
+        }
+        
         public void ApplyChanges()
         {
-            // TODO: add a file write to the config file
-        
-            /*
             PreferenceApply.Resolution = ResolutionDropdown.value;
             PreferenceApply.Quality = QualityDropdown.value;
+            PreferenceApply.Language = LanguageDropdown.value == 1 ? "english" : "french";
             PreferenceApply.Antialiasing = AntialiasingButton.GetComponent<OnOff>().switchOn;
             PreferenceApply.Shadow = ShadowButton.GetComponent<OnOff>().switchOn;
             PreferenceApply.Fullscreen = FullscreenButton.GetComponent<OnOff>().switchOn;
             PreferenceApply.Music = MusicSlider.value;
             PreferenceApply.Sound = SoundSlider.value;
             PreferenceApply.SaveSettings();
-            
-            */
-            FullScreen = FullscreenButton.GetComponent<OnOff>().switchOn;
-            Res = ResolutionDropdown.value;
-            Quality = QualityDropdown.value;
-            Antialiasing = AntialiasingButton.GetComponent<OnOff>().switchOn;
-            Shadow = ShadowButton.GetComponent<OnOff>().switchOn;
-            Music = MusicSlider.value;
-            Sound = SoundSlider.value;
-            
             ChangesApplied = true;
-            //Dirty = false;
         }
 
         public void CloseMenu()
         {
             if (!ChangesApplied)
             {
-                
-                ResolutionDropdown.value = Res;
-                QualityDropdown.value = Quality;
-                if (AntialiasingButton.GetComponent<OnOff>().switchOn != Antialiasing)
-                    AntialiasingButton.GetComponent<OnOff>().Front.onClick.Invoke();
-                if (ShadowButton.GetComponent<OnOff>().switchOn != Shadow)
-                    ShadowButton.GetComponent<OnOff>().Front.onClick.Invoke();
-                if (FullscreenButton.GetComponent<OnOff>().switchOn != FullScreen)
-                    FullscreenButton.GetComponent<OnOff>().Front.onClick.Invoke();
-                MusicSlider.value = Music;
-                SoundSlider.value = Sound;
-                
-                Screen.fullScreen = FullScreen;
-                Screen.SetResolution(AvailableResolutions[Res].width, 
-                    AvailableResolutions[Res].height, FullScreen);
-                QualitySettings.SetQualityLevel(Quality, FullScreen);
-                /*
                 ResolutionDropdown.value = PreferenceApply.Resolution;
                 QualityDropdown.value = PreferenceApply.Quality;
+                LanguageDropdown.value = PreferenceApply.Language == "french" ? 1 : 0;
                 MusicSlider.value = PreferenceApply.Music;
                 SoundSlider.value = PreferenceApply.Sound;
                 PreferenceApply.ApplySettings();
-                */
             }
 
-            PauseMenu.SetActive(true);
-            OptionsMenu.SetActive(false);
+            if (MenuPause.OptionsOpenedFromPauseMenu)
+            {
+                MenuPause.OptionsOpenedFromPauseMenu = false;
+                GameObject pauseMenu = Instantiate(PrefabPause, transform.parent);
+            }
+            else
+                MainMenu.OptionsOpened = false;
+            Destroy(this.gameObject);
         }
     }
 }
