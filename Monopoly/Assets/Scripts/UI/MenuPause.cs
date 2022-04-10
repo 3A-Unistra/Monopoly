@@ -20,16 +20,16 @@ namespace Monopoly.UI
     [RequireComponent(typeof(RectTransform))]
     public class MenuPause : MonoBehaviour
     {
-        public GameObject OptionsMenu;
+        //public GameObject OptionsMenu;
         public GameObject PrefabOptions;
         public Button ResumeButton;
         public Button OptionsButton;
         public Button DisconnectButton;
         public Button QuitButton;
-        public Canvas canvas;
+        
+        public static bool OptionsOpenedFromPauseMenu = false;
         void Start()
         {
-            //OptionsMenu = GameObject.Find("MenuOptions");
             ResumeButton.onClick.AddListener(ResumeGame);
             OptionsButton.onClick.AddListener(OpenOptions);
             
@@ -51,13 +51,14 @@ namespace Monopoly.UI
 
         private void ResumeGame()
         {
-            gameObject.SetActive(false); 
+            Destroy(this.gameObject);
             PauseHelper.MenuOpened = false;
         }
         private void OpenOptions()
         {
-            OptionsMenu.SetActive(true);
-            gameObject.SetActive(false); 
+            OptionsOpenedFromPauseMenu = true;
+            GameObject optionsMenu = Instantiate(PrefabOptions,transform.parent);
+            Destroy(this.gameObject);
         }
 
         private void DisconnectFromTheGame()

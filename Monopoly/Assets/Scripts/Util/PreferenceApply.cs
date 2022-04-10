@@ -21,6 +21,7 @@ namespace Monopoly.Util
     {
         public static int Resolution { get; set; }
         public static int Quality { get; set; }
+        public static string Language { get; set; }
         public static bool Fullscreen { get; set; }
         public static bool Shadow { get; set; }
         public static bool Antialiasing { get; set; }
@@ -34,6 +35,7 @@ namespace Monopoly.Util
             if (Resolution >= ResolutionsArray.Length)
                 Resolution = 0;
             Quality = PlayerPrefs.GetInt("quality", 1);
+            Language = PlayerPrefs.GetString("language", "french");
             Antialiasing = PlayerPrefs.GetInt("antialiasing", 1) == 1;
             Shadow = PlayerPrefs.GetInt("shadow", 1) == 1;
             Fullscreen = PlayerPrefs.GetInt("fullscreen", 1) == 1;
@@ -48,6 +50,7 @@ namespace Monopoly.Util
                 Screen.SetResolution(ResolutionsArray[Resolution].width,
                         ResolutionsArray[Resolution].height, Fullscreen);
                 QualitySettings.SetQualityLevel(Quality, true);
+                StringLocaliser.SetLanguage(Language);
                 Screen.fullScreen = Fullscreen;
                 if (Shadow)
                     QualitySettings.shadows = ShadowQuality.All;
@@ -71,6 +74,7 @@ namespace Monopoly.Util
         {
             PlayerPrefs.SetInt("resolution", Resolution);
             PlayerPrefs.SetInt("quality", Quality);
+            PlayerPrefs.SetString("language", Language);
             PlayerPrefs.SetInt("antialiasing", Antialiasing ? 1 : 0);
             PlayerPrefs.SetInt("shadow", Shadow ? 1 : 0);
             PlayerPrefs.SetInt("fullscreen", Fullscreen ? 1 : 0);
