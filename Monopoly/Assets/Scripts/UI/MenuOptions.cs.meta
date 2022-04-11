@@ -3,7 +3,25 @@ guid: 152246a8d4ea15361bf2795aae4cbb71
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - PrefabPause: {fileID: 7408423699793841850, guid: 911135436da4bbe8cae8598b04869c0b, type: 3}
+  - OptionMenuPrefab: {fileID: 3944636517419420055, guid: 2cbc20803a2a56ae79e4946f699c7f3f, type: 3}
+  - ResolutionDropdown: {instanceID: 0}
+  - QualityDropdown: {instanceID: 0}
+  - LanguageDropdown: {instanceID: 0}
+  - AntialiasingButton: {instanceID: 0}
+  - ShadowButton: {instanceID: 0}
+  - FullscreenButton: {instanceID: 0}
+  - AntialiasingFrontButton: {instanceID: 0}
+  - AntialiasingText: {instanceID: 0}
+  - ShadowFrontButton: {instanceID: 0}
+  - FullscreenFrontButton: {instanceID: 0}
+  - FullscreenText: {instanceID: 0}
+  - MusicSlider: {instanceID: 0}
+  - SoundSlider: {instanceID: 0}
+  - Apply: {instanceID: 0}
+  - Reset: {instanceID: 0}
+  - Close: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

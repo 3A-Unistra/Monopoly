@@ -19,10 +19,27 @@ namespace Monopoly.UI
     [RequireComponent(typeof(Button))]
     public class OnOff : MonoBehaviour
     {
+        public Button Back;
         public Button Front;
         public bool switchOn;
         private bool animating;
         private Vector3 leftPos, rightPos;
+
+        public bool enabled
+        {
+            get
+            {
+                return this._enabled;
+            }
+            set
+            {
+                Back.enabled = value;
+                Front.enabled = value;
+                this._enabled = value;
+            }
+        }
+
+        private bool _enabled = true;
 
         public void Start()
         {

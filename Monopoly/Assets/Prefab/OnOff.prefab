@@ -255,6 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdc29dfb795a41c98a0f25ffbec60761, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Back: {fileID: 3032081495437452316}
   Front: {fileID: 3032081494749760271}
   switchOn: 0
 --- !u!1 &3444880716062890105

@@ -10,6 +10,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Monopoly.Util;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -23,9 +25,13 @@ namespace Monopoly.UI
         //public GameObject OptionsMenu;
         public GameObject PrefabOptions;
         public Button ResumeButton;
+        public TMP_Text ResumeText;
         public Button OptionsButton;
+        public TMP_Text OptionsText;
         public Button DisconnectButton;
+        public TMP_Text DisconnectText;
         public Button QuitButton;
+        public TMP_Text QuitText;
         
         public static bool OptionsOpenedFromPauseMenu = false;
         void Start()
@@ -39,13 +45,18 @@ namespace Monopoly.UI
             rt.anchorMax = new Vector2(0.5f, 0.5f);
             rt.pivot = new Vector2(0.5f, 0.5f);
             rt.localPosition = Vector3.zero;
+            ResumeText.text = StringLocaliser.GetString("resume");
+            OptionsText.text = StringLocaliser.GetString("options");
+            DisconnectText.text = StringLocaliser.GetString("disconnect");
             #if UNITY_WEBGL
                         DisconnectButton.onClick.AddListener(QuitGame);
                         QuitButton.gameObject.SetActive(false);
             #else
                         DisconnectButton.onClick.AddListener(DisconnectFromTheGame);
                         QuitButton.onClick.AddListener(QuitGame);
+                        QuitText.text = StringLocaliser.GetString("quit");
             #endif
+
         }
 
 
