@@ -19,20 +19,23 @@ namespace Monopoly.Runtime
     {
 
         private static bool init = false;
+        public GameObject MainMenuPrefab;
+        public GameObject Canvas;
 
-        private void LoadLanguage(string language)
+        private void LoadLanguage(int language)
         {
             // NOTE: PUT LANGUAGE MODULES HERE TO LOAD PLEASE
             StringLocaliser.LoadStrings("Locales/english", "english",
                                         "English");
             StringLocaliser.LoadStrings("Locales/french", "french",
                                         "Français");
-            if (!StringLocaliser.SetLanguage(language))
+            language = Mathf.Clamp(language, 0, StringLocaliser.GetLanguageList().Length-1);
+            if (!StringLocaliser.SetLanguage(StringLocaliser.GetLanguageList()[language]))
             {
-                language = "french";
-                StringLocaliser.SetLanguage(language);
+                language = 0;
+                StringLocaliser.SetLanguage(StringLocaliser.GetLanguageList()[language]);
             }
-            PlayerPrefs.SetString("language", language);
+            PlayerPrefs.SetInt("language", language);
         }
 
         void Awake()
@@ -45,7 +48,7 @@ namespace Monopoly.Runtime
                 return;
             }
             init = true;
-            string language = PlayerPrefs.GetString("language", "french");
+            int language = PlayerPrefs.GetInt("language", 0);
             LoadLanguage(language);
             PreferenceApply.LoadSettings();
             PreferenceApply.ApplySettings();
@@ -54,6 +57,8 @@ namespace Monopoly.Runtime
             // it is never destroyed. this allows for global runtime handlers or
             // other important events to be handled 'statically'.
             DontDestroyOnLoad(gameObject);
+            // start the menu
+            Instantiate(MainMenuPrefab, Canvas.transform);
             // init is done, delete me
             Destroy(this);
         }

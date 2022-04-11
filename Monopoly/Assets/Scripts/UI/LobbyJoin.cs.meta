@@ -3,7 +3,9 @@ guid: 1262f7ef35e60c8b1ad536ae33f0af27
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - JoinButton: {instanceID: 0}
+  - CreateMenuPrefab: {fileID: 1449483787266939209, guid: 081bc32491ab70248b85788243704c30, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

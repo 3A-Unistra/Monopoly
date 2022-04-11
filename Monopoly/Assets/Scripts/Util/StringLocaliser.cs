@@ -65,11 +65,13 @@ namespace Monopoly.Util
 
         private static readonly List<StringLanguage> languages;
         private static StringLanguage languageSelector;
+        private static int languageIndex;
 
         static StringLocaliser()
         {
             languages = new List<StringLanguage>();
             languageSelector = null;
+            languageIndex = 0;
         }
 
         /**
@@ -143,7 +145,18 @@ namespace Monopoly.Util
                 Debug.LogError("Attempted to set language to null.");
                 return false;
             }
-            StringLanguage language = languages.Find(x => x.Name.Equals(id));
+            StringLanguage language = null;
+            int i = 0;
+            foreach (StringLanguage l in languages)
+            {
+                if (l.Name.Equals(id))
+                {
+                    language = l;
+                    languageIndex = i;
+                    break;
+                }
+                ++i;
+            }
             if (language == null)
             {
                 Debug.LogError(
@@ -201,6 +214,43 @@ namespace Monopoly.Util
         }
 
         /**
+         *  <summary>
+         *      Return a string array of the friendly strings for each
+         *      language that has been loaded with
+         *      <see cref="LoadStrings(string, string, string)"/>.
+         *      If no languages have yet been loaded, then <c>null</c> is
+         *      returned.
+         *  </summary>
+         *  <returns>
+         *      A string array consisting of all friendly names for loaded
+         *      languages.
+         *  </returns>
+         */
+        public static string[] GetFriendlyLanguageList()
+        {
+            if (StringLocaliser.languages.Count == 0)
+                return null;
+            string[] languages = new string[StringLocaliser.languages.Count];
+            int i = 0;
+            foreach (StringLanguage l in StringLocaliser.languages)
+                languages[i++] = l.FriendlyName;
+            return languages;
+        }
+        
+        /**
+         *  <summary>
+         *      Return the index of the currently selected language.
+         *  </summary>
+         *  <returns>
+         *      The index from 0 to N of the current language.
+         *  </returns>
+         */
+        public static int GetLanguageIndex()
+        {
+            return languageIndex;
+        }
+        
+        /**
          * <summary>
          *     <para>
          *         Returns a string value from the set of strings loaded via.
@@ -241,6 +291,7 @@ namespace Monopoly.Util
         {
             languages.Clear();
             languageSelector = null;
+            languageIndex = 0;
         }
     }
 

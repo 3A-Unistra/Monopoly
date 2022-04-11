@@ -31,28 +31,39 @@ namespace Monopoly.UI
     {
 
         public GameObject PrefabPause;
+        public GameObject OptionMenuPrefab;
+        public GameObject MainMenuPrefab;
+        
         public TMP_Dropdown ResolutionDropdown;
         public TMP_Dropdown QualityDropdown;
         public TMP_Dropdown LanguageDropdown;
         public Button AntialiasingButton;
         public Button ShadowButton;
+        public TMP_Text ShadowText;
         public Button FullscreenButton;
         public Button AntialiasingFrontButton;
         public Button ShadowFrontButton;
         public Button FullscreenFrontButton;
+        public TMP_Text FullscreenText;
         public Slider MusicSlider;
+        public TMP_Text MusicText;
         public Slider SoundSlider;
+        public TMP_Text SoundText;
         public Button Apply;
+        public TMP_Text ApplyText;
         public Button Reset;
+        public TMP_Text ResetText;
         public Button Close;
+        public TMP_Text CloseText;
         private Resolution[] AvailableResolutions;
 
-        public static bool ChangesApplied, Dirty;
+        public static bool ChangesApplied, Dirty, LanguageDirty;
 
         void Start()
         {
             BuildResolutions();
             BuildQuality();
+            BuildLanguages();
             
             QualityDropdown.onValueChanged.AddListener(delegate { QualityChanging(); });
             LanguageDropdown.onValueChanged.AddListener(delegate { LanguageChanging(); });
@@ -77,6 +88,7 @@ namespace Monopoly.UI
                     (delegate { ResolutionChanging(); });
             #endif
 
+            LanguageDirty = false;
             Dirty = false;
             
             ResolutionDropdown.value = PreferenceApply.Resolution;
@@ -94,24 +106,26 @@ namespace Monopoly.UI
                 ShadowButton.GetComponent<OnOff>().Front.onClick.Invoke();
             if (FullscreenButton.GetComponent<OnOff>().switchOn != PreferenceApply.Fullscreen)
                 FullscreenButton.GetComponent<OnOff>().Front.onClick.Invoke();
+            
             ChangesApplied = true;
             Dirty = true;
-        
-            
-            RectTransform rt = GetComponent<RectTransform>();
-            rt.anchorMin = new Vector2(0.5f, 0.5f);
-            rt.anchorMax = new Vector2(0.5f, 0.5f);
-            rt.pivot = new Vector2(0.5f, 0.5f);
-            rt.localPosition = Vector3.zero;
+
+            FullscreenText.text = StringLocaliser.GetString("fullscreen");
+            ShadowText.text = StringLocaliser.GetString("shadow");
+            SoundText.text = StringLocaliser.GetString("sound");
+            MusicText.text = StringLocaliser.GetString("music");
+            ApplyText.text = StringLocaliser.GetString("apply");
+            ResetText.text = StringLocaliser.GetString("reset");
+            CloseText.text = StringLocaliser.GetString("close");
         }
         
 
         private void BuildQuality()
         {
             QualityDropdown.options.Clear();
-            QualityDropdown.options.Add(new TMP_Dropdown.OptionData("Low"));
-            QualityDropdown.options.Add(new TMP_Dropdown.OptionData("Medium"));
-            QualityDropdown.options.Add(new TMP_Dropdown.OptionData("High"));
+            QualityDropdown.options.Add(new TMP_Dropdown.OptionData(StringLocaliser.GetString("low")));
+            QualityDropdown.options.Add(new TMP_Dropdown.OptionData(StringLocaliser.GetString("medium")));
+            QualityDropdown.options.Add(new TMP_Dropdown.OptionData(StringLocaliser.GetString("high")));
             QualityDropdown.value = 1; // default value is medium
         }
         private void BuildResolutions()
@@ -126,6 +140,14 @@ namespace Monopoly.UI
                         r.height, r.refreshRate)));
             }
             ResolutionDropdown.value = ResolutionDropdown.options.Count - 1;
+        }
+
+        private void BuildLanguages()
+        {
+            LanguageDropdown.options.Clear();
+            foreach (string s in StringLocaliser.GetFriendlyLanguageList())
+                LanguageDropdown.options.Add(new TMP_Dropdown.OptionData(s));
+            LanguageDropdown.value = PreferenceApply.Language;
         }
         public void ResolutionChanging()
         {
@@ -154,6 +176,8 @@ namespace Monopoly.UI
                 ShadowButton.GetComponent<OnOff>().Front.onClick.Invoke();
             if (!FullscreenButton.GetComponent<OnOff>().switchOn)
                 FullscreenButton.GetComponent<OnOff>().Front.onClick.Invoke();
+            
+            LanguageDropdown.value = PreferenceApply.Language;
             MusicSlider.value = 0.5f;
             SoundSlider.value = 0.8f;
             if (Dirty)
@@ -181,7 +205,6 @@ namespace Monopoly.UI
         public void ShadowChanging()
         {
             ChangesApplied = false;
-            
             if (!ShadowButton.GetComponent<OnOff>().switchOn)
                 QualitySettings.shadows = ShadowQuality.All; 
                  
@@ -209,20 +232,32 @@ namespace Monopoly.UI
         public void LanguageChanging()
         {
             ChangesApplied = false;
+            LanguageDirty = true;
         }
         
         public void ApplyChanges()
         {
             PreferenceApply.Resolution = ResolutionDropdown.value;
             PreferenceApply.Quality = QualityDropdown.value;
-            PreferenceApply.Language = LanguageDropdown.value == 1 ? "english" : "french";
+            PreferenceApply.Language = LanguageDropdown.value;
             PreferenceApply.Antialiasing = AntialiasingButton.GetComponent<OnOff>().switchOn;
             PreferenceApply.Shadow = ShadowButton.GetComponent<OnOff>().switchOn;
             PreferenceApply.Fullscreen = FullscreenButton.GetComponent<OnOff>().switchOn;
             PreferenceApply.Music = MusicSlider.value;
             PreferenceApply.Sound = SoundSlider.value;
-            PreferenceApply.SaveSettings();
             ChangesApplied = true;
+            if (LanguageDirty)
+            {
+                PreferenceApply.ApplySettings();
+                PreferenceApply.SaveSettings();
+                GameObject optionMenu = Instantiate(OptionMenuPrefab, transform.parent);
+                Destroy(this.gameObject);
+
+            }
+            else
+            {
+                PreferenceApply.SaveSettings();
+            }
         }
 
         public void CloseMenu()
@@ -231,7 +266,7 @@ namespace Monopoly.UI
             {
                 ResolutionDropdown.value = PreferenceApply.Resolution;
                 QualityDropdown.value = PreferenceApply.Quality;
-                LanguageDropdown.value = PreferenceApply.Language == "french" ? 1 : 0;
+                LanguageDropdown.value = PreferenceApply.Language;
                 MusicSlider.value = PreferenceApply.Music;
                 SoundSlider.value = PreferenceApply.Sound;
                 PreferenceApply.ApplySettings();
@@ -243,7 +278,10 @@ namespace Monopoly.UI
                 GameObject pauseMenu = Instantiate(PrefabPause, transform.parent);
             }
             else
+            {
+                Instantiate(MainMenuPrefab, transform.parent);
                 MainMenu.OptionsOpened = false;
+            }
             Destroy(this.gameObject);
         }
     }
