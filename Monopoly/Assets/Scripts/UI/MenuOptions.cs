@@ -117,6 +117,8 @@ namespace Monopoly.UI
             ApplyText.text = StringLocaliser.GetString("apply");
             ResetText.text = StringLocaliser.GetString("reset");
             CloseText.text = StringLocaliser.GetString("close");
+
+            UIDirector.IsMenuOpen = true;
         }
         
 
@@ -272,6 +274,7 @@ namespace Monopoly.UI
                 PreferenceApply.ApplySettings();
             }
 
+            UIDirector.IsMenuOpen = false;
             if (MenuPause.OptionsOpenedFromPauseMenu)
             {
                 MenuPause.OptionsOpenedFromPauseMenu = false;

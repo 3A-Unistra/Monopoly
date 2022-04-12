@@ -4,11 +4,13 @@ using Monopoly.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using  Monopoly.Util;
-
 using UnityEngine.SceneManagement;
+
+using Monopoly.Util;
+
 public class MenuCreate : MonoBehaviour
 {
+
     public GameObject InviteField;
     public GameObject HostInputObject;
     public TMP_InputField LobbyName;
@@ -36,6 +38,7 @@ public class MenuCreate : MonoBehaviour
     
     [HideInInspector]
     public bool IsHost = false;
+
     void Start()
     {
         InitFields();
@@ -57,6 +60,8 @@ public class MenuCreate : MonoBehaviour
         NbPlayersText.text = StringLocaliser.GetString("number_players");
         NbBotsText.text = StringLocaliser.GetString("number_bots");
         NbTurnText.text = StringLocaliser.GetString("number_turns");
+
+        UIDirector.IsMenuOpen = true;
     }
 
     private void InitFields()
@@ -91,11 +96,13 @@ public class MenuCreate : MonoBehaviour
 
     public void LaunchLobby()
     {
+        UIDirector.IsMenuOpen = false;
         SceneManager.LoadScene("Scenes/BoardScene");
     }
 
     public void ReturnLobby()
     {
+        UIDirector.IsMenuOpen = false;
         GameObject lobbyMenu = Instantiate(LobbyMenuPrefab, transform.parent);
         Destroy((this.gameObject));
     }

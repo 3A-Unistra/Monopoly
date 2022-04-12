@@ -1,3 +1,11 @@
+/*
+ * ClientLobbyState.cs
+ * Client lobby state handler.
+ * 
+ * Date created : 11/04/2022
+ * Author       : Finn RAYMENT <rayment@etu.unistra.fr>
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -97,6 +105,7 @@ namespace Monopoly.Runtime
             }
             RegisterSocket(sock);
 
+            UIDirector.IsMenuOpen = false;
             if (mode == ConnectMode.BYIP)
                 lobbyInstance = Instantiate(connectConnector.LobbyMenuPrefab,
                                             connector.transform.parent);

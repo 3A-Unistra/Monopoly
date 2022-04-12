@@ -141,5 +141,8 @@
     "error_4202": "Le lobby a atteint son nombre maximal de joueurs.",
     "error_4205": "Accès refusé.",
     "error_4206": "Accès refusé.",
-    "error_4207": "Le lobby n'existe pas."
+    "error_4207": "Le lobby n'existe pas.",
+    "money_format": "{0} €",
+    "card_owner": "Propriétaire :",
+    "nobody": "Personne"
 }

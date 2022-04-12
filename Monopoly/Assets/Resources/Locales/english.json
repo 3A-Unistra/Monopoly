@@ -142,5 +142,8 @@
     "error_4202": "Lobby is full.",
     "error_4205": "Permission denied.",
     "error_4206": "Permission denied.",
-    "error_4207": "Lobby does not exist."
+    "error_4207": "Lobby does not exist.",
+    "money_format": "{0}€",
+    "card_owner": "Owner:",
+    "nobody": "Nobody"
 }

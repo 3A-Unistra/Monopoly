@@ -16,6 +16,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+using Monopoly.Runtime;
+
 namespace Monopoly.UI
 {
     
@@ -58,24 +60,27 @@ namespace Monopoly.UI
                 QuitText.text = StringLocaliser.GetString("quit");
             #endif
 
+            UIDirector.IsMenuOpen = true;
         }
-
 
         private void ResumeGame()
         {
             Destroy(this.gameObject);
             PauseHelper.MenuOpened = false;
+            UIDirector.IsMenuOpen = false;
         }
+
         private void OpenOptions()
         {
             OptionsOpenedFromPauseMenu = true;
+            UIDirector.IsMenuOpen = false;
             GameObject optionsMenu = Instantiate(PrefabOptions,transform.parent);
             Destroy(this.gameObject);
         }
 
         private void DisconnectFromTheGame()
         {
-            SceneManager.LoadScene("Scenes/MainMenu");
+            SceneManager.LoadScene("Scenes/MenuScene");
         }
         
         public void QuitGame()

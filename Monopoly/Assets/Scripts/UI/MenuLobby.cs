@@ -22,6 +22,7 @@ namespace Monopoly.UI
         public GameObject LobbyElementPrefab;
         public GameObject MainMenuPrefab;
         public GameObject CreateMenuPrefab;
+
         void Start()
         {
             MainMenuButton.onClick.AddListener(ReturnToMainMenu);
@@ -33,6 +34,8 @@ namespace Monopoly.UI
             SearchText.text = StringLocaliser.GetString("search");
             CreateText.text = StringLocaliser.GetString("create_lobby");
             MainMenuText.text = StringLocaliser.GetString("main_menu");
+
+            UIDirector.IsMenuOpen = true;
         }
 
         public void SearchToken()
@@ -43,17 +46,20 @@ namespace Monopoly.UI
         
         public void ReturnToMainMenu()
         {
+            UIDirector.IsMenuOpen = false;
             GameObject MainMenu = Instantiate(MainMenuPrefab, transform.parent);
             Destroy(this.gameObject);
         }
 
         public void CreateLobby()
         {
+            UIDirector.IsMenuOpen = false;
             GameObject CreateMenu = Instantiate(CreateMenuPrefab, transform.parent);
             CreateMenu.GetComponent<MenuCreate>().IsHost = true;
             Destroy(this.gameObject);
         }
 
+        // TODO: Populate
         public void CreateLobbyButton()
         {
             GameObject lobbyElement = Instantiate(LobbyElementPrefab, LobbyList.transform);

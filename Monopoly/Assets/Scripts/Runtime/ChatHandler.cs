@@ -20,10 +20,15 @@ namespace Monopoly.Runtime
     public class ChatHandler : MonoBehaviour
     {
 
+        public GameObject chatView;
         public TMP_Text chatHistory;
         public TMP_InputField chatInput;
         public Button chatSend;
         public TMP_Text chatSendText;
+
+        public Button toggleButton;
+
+        private bool chatToggle;
 
         void Start()
         {
@@ -31,7 +36,38 @@ namespace Monopoly.Runtime
             chatInput.onSubmit.AddListener(OnSendMessage);
             chatSend.onClick.AddListener(
                 delegate { OnSendMessage(chatInput.text); });
+            toggleButton.onClick.AddListener(ToggleChat);
+            chatToggle = PreferenceApply.ChatToggle;
             chatSendText.text = StringLocaliser.GetString("send");
+            chatInput.placeholder.GetComponent<TextMeshProUGUI>().text =
+                StringLocaliser.GetString("enter_chat");
+            if (chatToggle)
+                ShowChat();
+            else
+                HideChat();
+        }
+
+        private void ToggleChat()
+        {
+            chatToggle = !chatToggle;
+            if (chatToggle)
+                ShowChat();
+            else
+                HideChat();
+        }
+
+        private void HideChat()
+        {
+            chatView.gameObject.SetActive(false);
+            PreferenceApply.ChatToggle = false;
+            PlayerPrefs.SetInt("chat_toggle", 0);
+        }
+
+        private void ShowChat()
+        {
+            chatView.gameObject.SetActive(true);
+            PreferenceApply.ChatToggle = true;
+            PlayerPrefs.SetInt("chat_toggle", 1);
         }
 
         private string SanitiseInput(string msg)

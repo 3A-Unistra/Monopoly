@@ -1,3 +1,11 @@
+/*
+ * PauseHelper.cs
+ * UI helper script for the pause menu.
+ * 
+ * Date created : 03/04/2022
+ * Author       : Rayan Marmar <rayan.marmar@etu.unistra.fr>
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

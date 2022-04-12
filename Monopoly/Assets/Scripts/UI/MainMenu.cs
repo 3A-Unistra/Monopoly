@@ -51,6 +51,8 @@ namespace Monopoly.UI
             ConnectText.text = StringLocaliser.GetString("connect_ip");
             OptionsText.text = StringLocaliser.GetString("options");
             QuitText.text = StringLocaliser.GetString("quit");
+
+            UIDirector.IsMenuOpen = true;
         }
 
         void OnDestroy()
@@ -63,6 +65,7 @@ namespace Monopoly.UI
         {
             if (!OptionsOpened)
             {
+                UIDirector.IsMenuOpen = false;
                 GameObject OptionsMenu = Instantiate(OptionsMenuPrefab,transform.parent);
                 OptionsOpened = true;
                 Destroy(this.gameObject);
@@ -97,6 +100,7 @@ namespace Monopoly.UI
 
             // FIXME: uncomment everything above for the actual release, this is
             // just temporary so we can access the board scene!!!
+            UIDirector.IsMenuOpen = false;
             GameObject lobbyMenu =
                 Instantiate(LobbyMenuPrefab, transform.parent);
             Destroy(this.gameObject);
@@ -104,6 +108,7 @@ namespace Monopoly.UI
     
         public void ConnectIP()
         {
+            UIDirector.IsMenuOpen = false;
             GameObject ConnectMenu =
                 Instantiate(ConnectMenuPrefab, transform.parent);
             Destroy(this.gameObject);

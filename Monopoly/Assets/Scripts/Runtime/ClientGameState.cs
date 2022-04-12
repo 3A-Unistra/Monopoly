@@ -14,11 +14,13 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 using Monopoly.Classes;
 using Monopoly.Graphics;
 using Monopoly.Net;
 using Monopoly.Net.Packets;
+using Monopoly.UI;
 using Monopoly.Util;
 
 namespace Monopoly.Runtime
@@ -32,10 +34,13 @@ namespace Monopoly.Runtime
 
         public GameObject MainMenuPrefab;
 
+        public Sprite[] pieceImages;
+
         public GameObject[] piecePrefabs;
         public GameObject boardObject;
 
         public TMP_Text chatBox;
+        public UIPlayerInfo playerInfo;
 
         public Board Board { get; private set; }
         private List<Player> players;
@@ -44,6 +49,8 @@ namespace Monopoly.Runtime
 
         public bool CanRollDice { get; set; }
         public bool CanPerformAction { get; set; }
+
+        public static bool IsMenuOpen = false;
 
         private PacketCommunicator comm;
         private PacketSocket sock;
@@ -77,6 +84,8 @@ namespace Monopoly.Runtime
             PacketSocket socket = PacketSocket.CreateSocket("127.0.0.1", 8000, par, false);
             socket.Connect();
             sock = socket;*/
+            Player p = new Player("abc", "Rayment", 1);
+            ManuallyRegisterPlayer(p);
         }
 
         void OnDestroy()
@@ -105,12 +114,12 @@ namespace Monopoly.Runtime
 
         void Update()
         {
+#if !UNITY_WEBGL || UNITY_EDITOR
             if (sock != null)
             {
-#if !UNITY_WEBGL || UNITY_EDITOR
                 sock.Sock.DispatchMessageQueue();
-#endif
             }
+#endif
         }
 
         public Dictionary<string, int> GetSquareDataIndex(int idx)
@@ -129,12 +138,12 @@ namespace Monopoly.Runtime
             Debug.Log(msg);
         }
 
-        public string PlayerNameLoggable(Player player)
+        public static string PlayerNameLoggable(Player player)
         {
             return string.Format("<color=#db1b4e>{0}</color>", player.Name);
         }
 
-        public string OwnableNameLoggable(OwnableSquare square)
+        public static string OwnableNameLoggable(OwnableSquare square)
         {
             string name = null;
             string color = "ffffff";
@@ -221,6 +230,7 @@ namespace Monopoly.Runtime
             pp.playerIndex = players.Count - 1;
             pp.SetPosition(0);
             playerPieces.Add(pp);
+            playerInfo.AddPlayer(p);
         }
 
         public void DoMessage(string message)
@@ -389,6 +399,7 @@ namespace Monopoly.Runtime
                 return;
             }
             p.Money = packet.NewBalance;
+            playerInfo.SetMoney(p, p.Money);
         }
 
         public void OnMove(PacketPlayerMove packet)
