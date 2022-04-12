@@ -9,13 +9,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 using Monopoly.Graphics;
+using Monopoly.Util;
 
 namespace Monopoly.UI
 {
 
-    // TODO: its still colliding with UI elements...
     public class BoardUI : MonoBehaviour
     {
 
@@ -27,6 +29,14 @@ namespace Monopoly.UI
                 UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit[] cubeHits = Physics.RaycastAll(cubeRay);
             bool rendered = false;
+            List<RaycastResult> uiRaycasts =
+                RaycastUtil.GetRaycastEventSystemMouse();
+            if (uiRaycasts.Count > 0)
+            {
+                // the raycast hit a UI element so ignore the display
+                // request completely as it isn't valid
+                return;
+            }
             foreach (RaycastHit ray in cubeHits)
             {
                 GameObject obj = ray.collider.gameObject;
