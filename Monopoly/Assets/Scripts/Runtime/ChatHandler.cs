@@ -12,6 +12,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+using Monopoly.Util;
+
 namespace Monopoly.Runtime
 {
 
@@ -21,6 +23,7 @@ namespace Monopoly.Runtime
         public TMP_Text chatHistory;
         public TMP_InputField chatInput;
         public Button chatSend;
+        public TMP_Text chatSendText;
 
         void Start()
         {
@@ -28,6 +31,7 @@ namespace Monopoly.Runtime
             chatInput.onSubmit.AddListener(OnSendMessage);
             chatSend.onClick.AddListener(
                 delegate { OnSendMessage(chatInput.text); });
+            chatSendText.text = StringLocaliser.GetString("send");
         }
 
         private string SanitiseInput(string msg)

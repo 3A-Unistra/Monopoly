@@ -19,8 +19,6 @@ namespace Monopoly.Runtime
     {
 
         private static bool init = false;
-        public GameObject MainMenuPrefab;
-        public GameObject Canvas;
 
         private void LoadLanguage(int language)
         {
@@ -57,8 +55,6 @@ namespace Monopoly.Runtime
             // it is never destroyed. this allows for global runtime handlers or
             // other important events to be handled 'statically'.
             DontDestroyOnLoad(gameObject);
-            // start the menu
-            Instantiate(MainMenuPrefab, Canvas.transform);
             // init is done, delete me
             Destroy(this);
         }

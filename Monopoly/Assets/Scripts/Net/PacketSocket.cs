@@ -16,23 +16,31 @@ namespace Monopoly.Net
         private bool open, error;
 
         public static PacketSocket CreateSocket(string address, int port,
-                                                bool secure)
+                                                bool lobby, bool secure)
         {
-            return CreateSocket(address, port, null, secure);
+            return CreateSocket(address, port, null, lobby, secure);
         }
 
         public static PacketSocket CreateSocket(string address, int port,
-            Dictionary<string, string> paramsdic, bool secure)
+            Dictionary<string, string> paramsdic, bool lobby, bool secure)
         {
-            if (address == null || address.Equals(""))
-            {
-                Debug.LogError("Cannot create socket with empty address.");
-                return null;
-            }
-            else if (port < 0 || port > 65535)
+            if (port < 0 || port > 65535)
             {
                 Debug.LogError(
                     "Cannot create socket with invalid port number.");
+                return null;
+            }
+            return CreateSocket(string.Format("{0}:{1}", address, port),
+                                paramsdic, lobby, secure);
+        }
+
+        public static PacketSocket CreateSocket(string addressport,
+            Dictionary<string, string> paramsdic, bool lobby, bool secure)
+        {
+            addressport = addressport.Trim();
+            if (addressport == null || addressport.Equals(""))
+            {
+                Debug.LogError("Cannot create socket with empty address.");
                 return null;
             }
             StringBuilder sb = new StringBuilder();
@@ -50,9 +58,10 @@ namespace Monopoly.Net
                 }
             }
             string protocol = secure ? "wss" : "ws";
-            // TODO: add a boolean for lobby sockets and party sockets
-            string loc = string.Format("{0}://{1}:{2}/ws/lobby{3}",
-                                       protocol, address, port, sb.ToString());
+            string type = lobby ? "lobby" : "game";
+            string loc = string.Format("{0}://{1}/ws/{2}{3}",
+                                       protocol, addressport, type,
+                                       sb.ToString());
             return CreateSocket(loc);
         }
 
@@ -89,7 +98,7 @@ namespace Monopoly.Net
             Sock.OnError += (e) =>
             {
                 /* TODO: Implement timeout or error limit? */
-                Debug.LogError(
+                Debug.LogWarning(
                     string.Format("WebSocket error at '{0}': {1}", loc, e));
                 open = false;
                 error = true;
@@ -118,6 +127,18 @@ namespace Monopoly.Net
         public override string ToString()
         {
             return string.Format("PacketSocket<{0}>", loc);
+        }
+
+        public bool HasError()
+        {
+            Debug.Log("HasError");
+            return error;
+        }
+
+        public bool IsOpen()
+        {
+            Debug.Log("IsOpen");
+            return open;
         }
 
     }

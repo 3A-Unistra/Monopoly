@@ -43,8 +43,8 @@ namespace Monopoly.UI
             ConnectIPButton.onClick.AddListener(ConnectIP);
             QuitButton.onClick.AddListener(QuitGame);
 
-            PlayText.text = StringLocaliser.GetString("play online");
-            ConnectText.text = StringLocaliser.GetString("connect to ip");
+            PlayText.text = StringLocaliser.GetString("play_online");
+            ConnectText.text = StringLocaliser.GetString("connect_ip");
             OptionsText.text = StringLocaliser.GetString("options");
             QuitText.text = StringLocaliser.GetString("quit");
         }
