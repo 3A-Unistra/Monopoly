@@ -17,8 +17,11 @@ namespace Monopoly.UI
     [RequireComponent(typeof(Button))]
     public class PauseHelper : MonoBehaviour
     {
+
         public GameObject PrefabPause;
         public static bool MenuOpened;
+
+        private GameObject pauseObject;
 
         void Start()
         {
@@ -26,11 +29,31 @@ namespace Monopoly.UI
             GetComponent<Button>().onClick.AddListener(OpenPause);
         }
 
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                if (!MenuOpened)
+                    OpenPause();
+                else
+                    ClosePause();
+            }
+        }
+
+        private void ClosePause()
+        {
+            if (MenuOpened && pauseObject != null)
+            {
+                Destroy(pauseObject);
+                MenuOpened = false;
+            }
+        }
+
         private void OpenPause()
         {
             if (!MenuOpened)
             {
-                GameObject pauseMenu = Instantiate(PrefabPause,transform.parent);
+                pauseObject = Instantiate(PrefabPause,transform.parent);
                 MenuOpened = true;
             }
         }
