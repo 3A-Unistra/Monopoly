@@ -15,7 +15,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-
+using Monopoly.Runtime;
+using Monopoly.Util;
 
 namespace Monopoly.UI
 {
@@ -29,13 +30,16 @@ namespace Monopoly.UI
         public TMP_Text ConnectText;
         public Button QuitButton;
         public TMP_Text QuitText;
-        
-        
+        public TMP_Text ErrorText;
+
         public GameObject LobbyMenuPrefab;
         public GameObject ConnectMenuPrefab;
         public GameObject OptionsMenuPrefab;
         
         public static bool OptionsOpened = false;
+
+        private ClientLobbyState connector;
+
         void Start()
         {
             OptionsButton.onClick.AddListener(OpenOptionsMenu);
@@ -48,7 +52,13 @@ namespace Monopoly.UI
             OptionsText.text = StringLocaliser.GetString("options");
             QuitText.text = StringLocaliser.GetString("quit");
         }
-    
+
+        void OnDestroy()
+        {
+            if (connector != null)
+                Destroy(connector.gameObject);
+        }
+
         public void OpenOptionsMenu()
         {
             if (!OptionsOpened)
@@ -57,18 +67,45 @@ namespace Monopoly.UI
                 OptionsOpened = true;
                 Destroy(this.gameObject);
             }
-            
         }
         
         public void PlayOnline()
         {
-            GameObject lobbyMenu = Instantiate(LobbyMenuPrefab,transform.parent);
+            /*Dictionary<string, string> data = JsonLoader.LoadJsonAsset
+                <Dictionary<string, string>>("Data/data");
+            string address;
+            int port;
+            if (data == null ||
+                !data.ContainsKey("default_ip") ||
+                !data.ContainsKey("default_port") ||
+                !int.TryParse(data["default_port"], out port))
+            {
+                DisplayError("connection_baddata");
+                return;
+            }
+            address = data["default_ip"];
+            GameObject clientLobbyObject = new GameObject("ClientLobbyState");
+            ClientLobbyState state =
+                clientLobbyObject.AddComponent<ClientLobbyState>();
+            state.Canvas = transform.parent.gameObject;
+            connector = state;
+            // TODO: UPDATE TOKEN
+            state.StartCoroutine(
+                state.ConnectWithPort(
+                    address, port, "283e3f3e-3411-44c5-9bc5-037358c47100",
+                    this, ClientLobbyState.ConnectMode.ONLINE));*/
+
+            // FIXME: uncomment everything above for the actual release, this is
+            // just temporary so we can access the board scene!!!
+            GameObject lobbyMenu =
+                Instantiate(LobbyMenuPrefab, transform.parent);
             Destroy(this.gameObject);
         }
     
         public void ConnectIP()
         {
-            GameObject ConnectMenu = Instantiate(ConnectMenuPrefab, transform.parent);
+            GameObject ConnectMenu =
+                Instantiate(ConnectMenuPrefab, transform.parent);
             Destroy(this.gameObject);
         }
         
@@ -76,5 +113,13 @@ namespace Monopoly.UI
         {
             Application.Quit();
         }
+
+        public void DisplayError(string error)
+        {
+            ErrorText.text = StringLocaliser.GetString(error);
+            ErrorText.gameObject.SetActive(true);
+        }
+
     }
+
 }

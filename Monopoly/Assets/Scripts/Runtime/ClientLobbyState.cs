@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Monopoly.Net;
+using Monopoly.Net.Packets;
 using Monopoly.UI;
 
 namespace Monopoly.Runtime
@@ -13,11 +14,13 @@ namespace Monopoly.Runtime
 
         public static ClientLobbyState current;
 
-        private string loc;
-        private string token;
+        public GameObject Canvas;
+        public GameObject MainMenuPrefab;
 
-        private PacketCommunicator comm;
+        private PacketLobbyCommunicator comm;
         private PacketSocket sock;
+
+        private GameObject lobbyInstance;
 
         public enum ConnectMode
         {
@@ -35,8 +38,24 @@ namespace Monopoly.Runtime
             Debug.Log("Initialised lobby state.");
         }
 
-        public IEnumerator Connect(string loc, string token, MenuConnect connector,
-                                   ConnectMode mode)
+        void OnDestroy()
+        {
+            if (sock != null)
+                sock.Close();
+        }
+
+        public IEnumerator ConnectWithPort(string address, int port,
+                                           string token,
+                                           MonoBehaviour connector,
+                                           ConnectMode mode)
+        {
+            StartCoroutine(Connect(string.Format("{0}:{1}", address, port),
+                           token, connector, mode));
+            yield break;
+        }
+
+        public IEnumerator Connect(string loc, string token,
+                                   MonoBehaviour connector, ConnectMode mode)
         {
             if (loc == null)
             {
@@ -60,24 +79,52 @@ namespace Monopoly.Runtime
             {
                 return socket.HasError() || socket.IsOpen();
             });
+            MenuConnect connectConnector = null;
+            MainMenu mainConnector = null;
+            if (mode == ConnectMode.BYIP)
+                connectConnector = (MenuConnect) connector;
+            else
+                mainConnector = (MainMenu) connector;
             if (socket.HasError())
             {
-                connector.DisplayError("connection_fail");
+                if (mode == ConnectMode.BYIP)
+                    connectConnector.DisplayError("connection_fail");
+                else
+                    mainConnector.DisplayError("connection_fail");
                 Debug.LogWarning("Error occured opening lobby state!");
                 Destroy(this);
                 yield break;
             }
-            sock = socket;
-            comm = new PacketCommunicator(sock);
-            GameObject lobbyMenu = Instantiate(connector.LobbyMenuPrefab,
-                                               transform.parent);
+            RegisterSocket(sock);
+
+            if (mode == ConnectMode.BYIP)
+                lobbyInstance = Instantiate(connectConnector.LobbyMenuPrefab,
+                                            connector.transform.parent);
+            else
+                lobbyInstance = Instantiate(mainConnector.LobbyMenuPrefab,
+                                            connector.transform.parent);
             Destroy(connector.gameObject);
         }
 
-        void OnDestroy()
+        public void RegisterSocket(PacketSocket sock)
         {
-            if (sock != null)
-                sock.Close();
+            this.sock = sock;
+            comm = new PacketLobbyCommunicator(sock);
+            comm.OnError += OnError;
+        }
+
+        public void OnError(PacketException packet)
+        {
+            // TODO: implement webgl
+#if UNITY_WEBGL
+#else
+            GameObject mainMenu = Instantiate(MainMenuPrefab, Canvas.transform);
+            MainMenu menuScript = mainMenu.GetComponent<MainMenu>();
+            menuScript.DisplayError(string.Format("error_{0}", packet.Code));
+            if (lobbyInstance != null)
+                Destroy(lobbyInstance.gameObject);
+            Destroy(gameObject);
+#endif
         }
 
     }

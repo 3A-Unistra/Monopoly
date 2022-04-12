@@ -47,8 +47,11 @@ namespace Monopoly.UI
             GameObject clientLobbyObject = new GameObject("ClientLobbyState");
             ClientLobbyState state =
                 clientLobbyObject.AddComponent<ClientLobbyState>();
+            state.Canvas = transform.parent.gameObject;
+            state.MainMenuPrefab = MainMenuPrefab;
             connector = state;
-            StartCoroutine(
+            // TODO: UPDATE TOKEN
+            state.StartCoroutine(
                 state.Connect(loc, "283e3f3e-3411-44c5-9bc5-037358c47100",
                               this, ClientLobbyState.ConnectMode.BYIP));
         }
@@ -72,6 +75,7 @@ namespace Monopoly.UI
             ErrorText.text = StringLocaliser.GetString(error);
             ErrorTextField.SetActive(true);
         }
+
     }
 }
 

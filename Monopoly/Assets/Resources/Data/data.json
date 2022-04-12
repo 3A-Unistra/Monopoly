@@ -1,5 +1,6 @@
 {
     "money_start": 1000,
     "money_go": 200,
-    "default_port":  443
+    "default_ip": "localhost",
+    "default_port": 443
 }
