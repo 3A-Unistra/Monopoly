@@ -25,6 +25,10 @@ namespace Monopoly.Runtime
         public GameObject Canvas;
         public GameObject MainMenuPrefab;
 
+        // TODO: pass around
+        private string clientUUID;
+        private string token;
+
         private PacketLobbyCommunicator comm;
         private PacketSocket sock;
 
@@ -52,35 +56,37 @@ namespace Monopoly.Runtime
                 sock.Close();
         }
 
-        public IEnumerator ConnectWithPort(string address, int port,
-                                           string token,
-                                           MonoBehaviour connector,
-                                           ConnectMode mode)
-        {
-            StartCoroutine(Connect(string.Format("{0}:{1}", address, port),
-                           token, connector, mode));
-            yield break;
-        }
-
-        public IEnumerator Connect(string loc, string token,
+        // TODO: CARRY ON THE USER ID TO GAME STATE, STATIC????
+        public IEnumerator Connect(string address, int port,
+                                   string userId, string token,
                                    MonoBehaviour connector, ConnectMode mode)
         {
-            if (loc == null)
+            if (address == null)
             {
                 Debug.LogWarning("Cannot load lobby state from null url!");
-                Destroy(this);
+                Destroy(this.gameObject);
                 yield break;
             }
-            else if (token == null)
+            else if (port < 0 || port >= 65536)
+            {
+                Debug.LogWarning("Cannot load lobby state from invalid port!");
+                Destroy(this.gameObject);
+                yield break;
+            }
+            else if (token == null && mode == ConnectMode.ONLINE)
             {
                 Debug.LogWarning("Cannot load lobby state from null token!");
-                Destroy(this);
+                Destroy(this.gameObject);
                 yield break;
             }
             // let stuff in the scene load, then run this code:
             Dictionary<string, string> par = new Dictionary<string, string>();
-            par.Add("token", token);
-            PacketSocket socket = PacketSocket.CreateSocket(loc, par, true, false);
+            if (mode == ConnectMode.ONLINE)
+                par.Add("token", token);
+            else
+                par.Add("token", userId);
+            PacketSocket socket =
+                PacketSocket.CreateSocket(address, port, par, true, false);
             socket.Connect();
             // wait for the socket to open or die
             yield return new WaitUntil(delegate
@@ -88,36 +94,38 @@ namespace Monopoly.Runtime
                 return socket.HasError() || socket.IsOpen();
             });
             MenuConnect connectConnector = null;
-            MainMenu mainConnector = null;
+            MenuLogin loginConnector = null;
             if (mode == ConnectMode.BYIP)
                 connectConnector = (MenuConnect) connector;
             else
-                mainConnector = (MainMenu) connector;
+                loginConnector = (MenuLogin) connector;
             if (socket.HasError())
             {
                 if (mode == ConnectMode.BYIP)
                     connectConnector.DisplayError("connection_fail");
                 else
-                    mainConnector.DisplayError("connection_fail");
+                    loginConnector.DisplayError("connection_fail");
                 Debug.LogWarning("Error occured opening lobby state!");
-                Destroy(this);
+                Destroy(this.gameObject);
                 yield break;
             }
-            RegisterSocket(sock);
+            RegisterSocket(socket, userId, token);
 
             UIDirector.IsMenuOpen = false;
             if (mode == ConnectMode.BYIP)
                 lobbyInstance = Instantiate(connectConnector.LobbyMenuPrefab,
                                             connector.transform.parent);
             else
-                lobbyInstance = Instantiate(mainConnector.LobbyMenuPrefab,
+                lobbyInstance = Instantiate(loginConnector.LobbyMenuPrefab,
                                             connector.transform.parent);
             Destroy(connector.gameObject);
         }
 
-        public void RegisterSocket(PacketSocket sock)
+        public void RegisterSocket(PacketSocket sock, string uuid, string token)
         {
             this.sock = sock;
+            this.clientUUID = uuid;
+            this.token = token;
             comm = new PacketLobbyCommunicator(sock);
             comm.OnError += OnError;
         }

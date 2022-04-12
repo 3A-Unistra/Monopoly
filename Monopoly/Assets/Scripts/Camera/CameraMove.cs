@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Monopoly.UI;
 using Monopoly.Util;
 
 namespace Monopoly.Camera
@@ -194,7 +195,7 @@ namespace Monopoly.Camera
 
         void Update()
         {
-            if (!look.Animating)
+            if (!look.Animating && !UIDirector.IsMenuOpen)
             {
                 // camera movement
                 if (!MoveCameraMouse())

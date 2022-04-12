@@ -15,7 +15,7 @@ using Monopoly.Net.Packets;
 namespace Monopoly.Net
 {
 
-    public class PacketLobbyCommunicator : MonoBehaviour
+    public class PacketLobbyCommunicator
     {
 
         public delegate void PacketDelegate<T>(T packet);

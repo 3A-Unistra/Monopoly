@@ -15,6 +15,22 @@ using Newtonsoft.Json;
 public static class JsonLoader
 {
 
+    public static T LoadJson<T>(string json)
+    {
+        try
+        {
+            return JsonConvert.DeserializeObject<T>(json);
+        }
+        catch (JsonException e)
+        {
+            Debug.LogError(string.Format(
+                "Failed to deserialise JSON text '{0}'",
+                json));
+            Debug.LogException(e);
+            return default;
+        }
+    }
+
     public static T LoadJsonAsset<T>(string filename)
     {
         try

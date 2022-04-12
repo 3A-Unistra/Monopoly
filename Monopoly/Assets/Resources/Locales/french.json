@@ -120,7 +120,8 @@
     "create_lobby": "Créer lobby",
     "private_token": "Insérer la clé privée du lobby ici...",
     "connect": "Se connecter",
-    "ip_address": "Addresse IP...",
+    "ip_address_input": "Addresse IP...",
+    "port_input": "Port...",
     "enter_lobby_name": "Insérer le nom du lobby...",
     "enter_password": "Entrer un mot de pass...",
     "copy_token": "Copier la clé",
@@ -136,7 +137,10 @@
     "enter_chat": "Entrer une message à envoyer...",
     "connection_fail": "Échec de connexion !",
     "connection_noip": "Vous devez spécifier une IP !",
+    "connection_badport": "Veuillez spécifier un port entre 0 et 65535 !",
     "connection_baddata": "Erreur en traitant la location du server !",
+    "connection_nouser": "Veuillez spécifier votre nom d'utilisateur et mot de passe !",
+    "connection_badcreds": "Nom d'utilisateur ou mot de passe invalid !",
     "error_4201": "Mot de passe incorrect.",
     "error_4202": "Le lobby a atteint son nombre maximal de joueurs.",
     "error_4205": "Accès refusé.",
@@ -144,5 +148,7 @@
     "error_4207": "Le lobby n'existe pas.",
     "money_format": "{0} €",
     "card_owner": "Propriétaire :",
-    "nobody": "Personne"
+    "nobody": "Personne",
+    "username": "Nom d'utilisateur",
+    "password": "Mot de passe"
 }

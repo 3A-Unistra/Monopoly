@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+using Monopoly.Runtime;
 
 namespace Monopoly.UI
 {
@@ -46,6 +47,10 @@ namespace Monopoly.UI
         
         public void ReturnToMainMenu()
         {
+            if (ClientLobbyState.current != null)
+            {
+                Destroy(ClientLobbyState.current.gameObject);
+            }
             UIDirector.IsMenuOpen = false;
             GameObject MainMenu = Instantiate(MainMenuPrefab, transform.parent);
             Destroy(this.gameObject);

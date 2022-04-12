@@ -121,7 +121,8 @@
     "create_lobby": "Create lobby",
     "private_token": "Private lobby token goes here...",
     "connect": "Connect",
-    "ip_address": "IP address...",
+    "ip_address_input": "IP address...",
+    "port_input": "Port...",
     "enter_lobby_name": "Enter lobby's name...",
     "enter_password": "Enter a password",
     "copy_token": "Copy token",
@@ -137,7 +138,10 @@
     "enter_chat": "Enter a message to send...",
     "connection_fail": "Connection to socket failed!",
     "connection_noip": "No IP was provided!",
+    "connection_badport": "Need a port between 0 and 65535!",
     "connection_baddata": "Error parsing server location!",
+    "connection_nouser": "Both username and password required!",
+    "connection_badcreds": "Invalid username or password!",
     "error_4201": "Incorrect lobby password.",
     "error_4202": "Lobby is full.",
     "error_4205": "Permission denied.",
@@ -145,5 +149,7 @@
     "error_4207": "Lobby does not exist.",
     "money_format": "{0}€",
     "card_owner": "Owner:",
-    "nobody": "Nobody"
+    "nobody": "Nobody",
+    "username": "Username",
+    "password": "Password"
 }

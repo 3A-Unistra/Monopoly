@@ -46,6 +46,7 @@ namespace Monopoly.UI
             {
                 Destroy(pauseObject);
                 MenuOpened = false;
+                UIDirector.IsMenuOpen = false;
             }
         }
 
@@ -55,6 +56,7 @@ namespace Monopoly.UI
             {
                 pauseObject = Instantiate(PrefabPause,transform.parent);
                 MenuOpened = true;
+                UIDirector.IsMenuOpen = true;
             }
         }
 
