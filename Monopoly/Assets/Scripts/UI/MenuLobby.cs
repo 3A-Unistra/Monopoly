@@ -29,10 +29,10 @@ namespace Monopoly.UI
             CreateButton.onClick.AddListener(CreateLobby);
             CreateLobbyButton();
 
-            TokenField.placeholder.GetComponent<TextMeshProUGUI>().text = StringLocaliser.GetString("private token");
+            TokenField.placeholder.GetComponent<TextMeshProUGUI>().text = StringLocaliser.GetString("private_token");
             SearchText.text = StringLocaliser.GetString("search");
-            CreateText.text = StringLocaliser.GetString("create lobby");
-            MainMenuText.text = StringLocaliser.GetString("main menu");
+            CreateText.text = StringLocaliser.GetString("create_lobby");
+            MainMenuText.text = StringLocaliser.GetString("main_menu");
         }
 
         public void SearchToken()

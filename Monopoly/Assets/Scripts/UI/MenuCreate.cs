@@ -46,17 +46,17 @@ public class MenuCreate : MonoBehaviour
         BotsDropdown.onValueChanged.AddListener(delegate{BotsNumberChange();});
         BuildBotsDropdown();
         
-        LobbyName.placeholder.GetComponent<TextMeshProUGUI>().text = StringLocaliser.GetString("enter lobby name");
-        LobbyPassword.placeholder.GetComponent<TextMeshProUGUI>().text = StringLocaliser.GetString("enter password");
-        CopyText.text = StringLocaliser.GetString("copy token");
+        LobbyName.placeholder.GetComponent<TextMeshProUGUI>().text = StringLocaliser.GetString("enter_lobby_name");
+        LobbyPassword.placeholder.GetComponent<TextMeshProUGUI>().text = StringLocaliser.GetString("enter_password");
+        CopyText.text = StringLocaliser.GetString("copy_token");
         InviteText.text = StringLocaliser.GetString("invite");
         StartText.text = StringLocaliser.GetString("start");
         ReturnText.text = StringLocaliser.GetString("return");
         PrivateText.text = StringLocaliser.GetString("private");
-        DurationText.text = StringLocaliser.GetString("duration of a turn");
-        NbPlayersText.text = StringLocaliser.GetString("number of players");
-        NbBotsText.text = StringLocaliser.GetString("number of bots");
-        NbTurnText.text = StringLocaliser.GetString("number of turns");
+        DurationText.text = StringLocaliser.GetString("turn_duration");
+        NbPlayersText.text = StringLocaliser.GetString("number_players");
+        NbBotsText.text = StringLocaliser.GetString("number_bots");
+        NbTurnText.text = StringLocaliser.GetString("number_turns");
     }
 
     private void InitFields()

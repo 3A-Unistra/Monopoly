@@ -47,14 +47,15 @@ namespace Monopoly.UI
             rt.localPosition = Vector3.zero;
             ResumeText.text = StringLocaliser.GetString("resume");
             OptionsText.text = StringLocaliser.GetString("options");
-            DisconnectText.text = StringLocaliser.GetString("disconnect");
             #if UNITY_WEBGL
-                        DisconnectButton.onClick.AddListener(QuitGame);
-                        QuitButton.gameObject.SetActive(false);
+                DisconnectButton.onClick.AddListener(QuitGame);
+                DisconnectText.text = StringLocaliser.GetString("quit");
+                QuitButton.gameObject.SetActive(false);
             #else
-                        DisconnectButton.onClick.AddListener(DisconnectFromTheGame);
-                        QuitButton.onClick.AddListener(QuitGame);
-                        QuitText.text = StringLocaliser.GetString("quit");
+                DisconnectButton.onClick.AddListener(DisconnectFromTheGame);
+                QuitButton.onClick.AddListener(QuitGame);
+                DisconnectText.text = StringLocaliser.GetString("disconnect");
+                QuitText.text = StringLocaliser.GetString("quit");
             #endif
 
         }
