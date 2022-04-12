@@ -15,10 +15,11 @@ using Monopoly.Graphics;
 namespace Monopoly.UI
 {
 
+    // TODO: its still colliding with UI elements...
     public class BoardUI : MonoBehaviour
     {
 
-        public CardDisplay cardDisplay;
+        public BoardCardDisplay cardDisplay;
 
         private void DisplayCardPreview()
         {
@@ -43,7 +44,7 @@ namespace Monopoly.UI
 
         void Update()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (!UIDirector.IsMenuOpen && Input.GetMouseButtonDown(0))
                 DisplayCardPreview();
         }
 

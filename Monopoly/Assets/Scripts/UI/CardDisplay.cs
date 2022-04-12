@@ -76,29 +76,6 @@ namespace Monopoly.UI
             gameObject.SetActive(false);
         }
 
-        bool b = false;
-        private void UpdatePosition()
-        {
-            int w = Screen.width;
-            int h = Screen.height;
-            Vector3 mp = Input.mousePosition;
-            Vector2 size = rect.sizeDelta * rect.localScale;
-            Vector2 origin = new Vector2(mp.x, mp.y);
-            // top bottom selector
-            if (mp.y - size.y < 0)
-                origin.y += size.y + 10;
-            else
-                origin.y -= 10;
-            // left right selector
-            if (mp.x >= w - size.x)
-                origin.x -= size.x - 10;
-            else
-                origin.x += 10;
-            rect.position = new Vector2(origin.x, origin.y);
-            StringLocaliser.SetLanguage(!b ? "english" : "french");
-            b = !b;
-        }
-
         private void ShowProperty(int idx)
         {
             float h, s, v;
@@ -173,7 +150,6 @@ namespace Monopoly.UI
             propertyHouseCost.text = data["house_price"].ToString();
             propertyHotelCost.text = data["house_price"].ToString();
             propertyMortgageValue.text = (data["buy_price"] / 2).ToString();
-            UpdatePosition();
         }
 
         private void ShowStation(int idx)
@@ -208,7 +184,6 @@ namespace Monopoly.UI
             tramMortgageValueText.text =
                 StringLocaliser.GetString("mortgage_value");
             tramMortgageValue.text = (data["buy_price"] / 2).ToString();
-            UpdatePosition();
         }
 
         private void ShowMuseum(int idx)
@@ -227,7 +202,6 @@ namespace Monopoly.UI
             Dictionary<string, int> data =
                 ClientGameState.current.GetSquareDataIndex(idx);
             museumMortgageValue.text = (data["buy_price"] / 2).ToString();
-            UpdatePosition();
         }
 
         public void Render(int square)

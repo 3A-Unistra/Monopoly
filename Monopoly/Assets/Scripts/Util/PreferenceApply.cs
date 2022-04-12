@@ -28,6 +28,8 @@ namespace Monopoly.Util
         public static float Music { get; set; }
         public static float Sound { get; set; }
 
+        public static bool ChatToggle { get; set; }
+
         private static Resolution[] ResolutionsArray = Screen.resolutions;
         public static void LoadSettings()
         {
@@ -41,6 +43,7 @@ namespace Monopoly.Util
             Fullscreen = PlayerPrefs.GetInt("fullscreen", 1) == 1;
             Music = PlayerPrefs.GetFloat("music", 0.5f);
             Sound = PlayerPrefs.GetFloat("sound", 0.8f);
+            ChatToggle = PlayerPrefs.GetInt("chat_toggle", 1) == 1;
         }
     
         public static void ApplySettings()
@@ -80,6 +83,7 @@ namespace Monopoly.Util
             PlayerPrefs.SetInt("fullscreen", Fullscreen ? 1 : 0);
             PlayerPrefs.SetFloat("music", Music);
             PlayerPrefs.SetFloat("sound", Sound);
+            PlayerPrefs.SetInt("chat_toggle", ChatToggle ? 1 : 0);
         }
     }
 }

@@ -33,6 +33,8 @@ namespace Monopoly.UI
             IPInput.placeholder.GetComponent<TextMeshProUGUI>().text = StringLocaliser.GetString("ip_address");
 
             ErrorTextField.SetActive(false);
+
+            UIDirector.IsMenuOpen = true;
         }
         
         public void Connect()
@@ -66,6 +68,7 @@ namespace Monopoly.UI
                 Destroy(connector);
             }
 
+            UIDirector.IsMenuOpen = false;
             GameObject MainMenu = Instantiate(MainMenuPrefab, transform.parent);
             Destroy(this.gameObject);
         }
