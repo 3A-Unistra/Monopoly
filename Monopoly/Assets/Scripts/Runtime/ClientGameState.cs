@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 using Monopoly.Classes;
 using Monopoly.Graphics;
@@ -28,6 +29,8 @@ namespace Monopoly.Runtime
 
         public static ClientGameState current;
         public List<Dictionary<string, int>> squareData;
+
+        public GameObject MainMenuPrefab;
 
         public GameObject[] piecePrefabs;
         public GameObject boardObject;
@@ -170,6 +173,7 @@ namespace Monopoly.Runtime
             this.clientUUID = uuid;
             this.sock = sock;
             comm = new PacketCommunicator(sock);
+            comm.OnError += OnError;
             comm.OnMessage += OnMessage;
             comm.OnBuyHouse += OnBuyHouse;
             comm.OnSellHouse += OnSellHouse;
@@ -223,6 +227,15 @@ namespace Monopoly.Runtime
         {
             if (comm != null)
                 comm.DoMessage(clientUUID, message);
+        }
+
+        public void OnError(PacketException packet)
+        {
+            // TODO: add an error message and whatnot, plus implement webgl
+#if UNITY_WEBGL
+#else
+            SceneManager.LoadScene("Scenes/MenuScene");
+#endif
         }
 
         public void OnMessage(PacketChat packet)

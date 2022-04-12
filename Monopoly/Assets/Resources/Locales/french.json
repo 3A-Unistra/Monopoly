@@ -135,5 +135,11 @@
     "send": "Envoyer",
     "enter_chat": "Entrer une message à envoyer...",
     "connection_fail": "Échec de connexion !",
-    "connection_noip": "Vous devez spécifier une IP !"
+    "connection_noip": "Vous devez spécifier une IP !",
+    "connection_baddata": "Erreur en traitant la location du server !",
+    "error_4201": "Mot de passe incorrect.",
+    "error_4202": "Le lobby a atteint son nombre maximal de joueurs.",
+    "error_4205": "Accès refusé.",
+    "error_4206": "Accès refusé.",
+    "error_4207": "Le lobby n'existe pas."
 }

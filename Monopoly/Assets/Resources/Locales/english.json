@@ -136,5 +136,11 @@
     "send": "Send",
     "enter_chat": "Enter a message to send...",
     "connection_fail": "Connection to socket failed!",
-    "connection_noip": "No IP was provided!"
+    "connection_noip": "No IP was provided!",
+    "connection_baddata": "Error parsing server location!",
+    "error_4201": "Incorrect lobby password.",
+    "error_4202": "Lobby is full.",
+    "error_4205": "Permission denied.",
+    "error_4206": "Permission denied.",
+    "error_4207": "Lobby does not exist."
 }
