@@ -51,7 +51,7 @@ namespace Monopoly.UI
                 DisconnectButton.onClick.AddListener(QuitGame);
                 DisconnectText.text = StringLocaliser.GetString("quit");
                 QuitButton.gameObject.SetActive(false);
-            else
+            #else
                 DisconnectButton.onClick.AddListener(DisconnectFromTheGame);
                 QuitButton.onClick.AddListener(QuitGame);
                 DisconnectText.text = StringLocaliser.GetString("disconnect");
