@@ -83,7 +83,17 @@ namespace Monopoly.Net
                 new Dictionary<string, string>();
             // FIXME: FETCH CORRECT ORIGIN
             headers.Add("Origin", "http://localhost");
-            Sock = new WebSocket(loc, headers);
+            try
+            {
+                Sock = new WebSocket(loc, headers);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning(e.ToString());
+                error = true;
+                Sock = null;
+                return;
+            }
             Sock.OnOpen += () =>
             {
                 Debug.Log(string.Format("WebSocket opened at '{0}'", loc));
@@ -115,13 +125,15 @@ namespace Monopoly.Net
         public async void Connect()
         {
             Debug.Log("Websocket connecting...");
-            await Sock.Connect();
+            if (Sock != null)
+                await Sock.Connect();
         }
 
         public async void Close()
         {
             Debug.Log("Websocket closing...");
-            await Sock.Close();
+            if (Sock != null)
+                await Sock.Close();
         }
 
         public override string ToString()
@@ -131,13 +143,11 @@ namespace Monopoly.Net
 
         public bool HasError()
         {
-            Debug.Log("HasError");
             return error;
         }
 
         public bool IsOpen()
         {
-            Debug.Log("IsOpen");
             return open;
         }
 

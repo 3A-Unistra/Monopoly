@@ -16,6 +16,7 @@ namespace Monopoly.UI
         public Button ConnectButton;
         public TMP_Text ConnectText;
         public TMP_InputField IPInput;
+        public TMP_InputField PortInput;
         public GameObject ErrorTextField;
         public TMP_Text ErrorText;
         public GameObject MainMenuPrefab;
@@ -30,7 +31,8 @@ namespace Monopoly.UI
 
             MainMenuText.text = StringLocaliser.GetString("main_menu");
             ConnectText.text = StringLocaliser.GetString("connect");
-            IPInput.placeholder.GetComponent<TextMeshProUGUI>().text = StringLocaliser.GetString("ip_address");
+            IPInput.placeholder.GetComponent<TextMeshProUGUI>().text = StringLocaliser.GetString("ip_address_input");
+            PortInput.placeholder.GetComponent<TextMeshProUGUI>().text = StringLocaliser.GetString("port_input");
 
             ErrorTextField.SetActive(false);
 
@@ -39,22 +41,33 @@ namespace Monopoly.UI
         
         public void Connect()
         {
-            string loc = IPInput.text.Trim();
-            if (loc.Equals(""))
+            string address = IPInput.text.Trim();
+            if (address.Equals(""))
             {
                 IPInput.text = "";
                 DisplayError("connection_noip");
                 return;
             }
+            int port;
+            string porttxt = PortInput.text.Trim();
+            if (porttxt.Equals("") || !int.TryParse(porttxt, out port) ||
+                port < 0 || port >= 65536)
+            {
+                PortInput.text = "";
+                DisplayError("connection_badport");
+                return;
+            }
+            
             GameObject clientLobbyObject = new GameObject("ClientLobbyState");
             ClientLobbyState state =
                 clientLobbyObject.AddComponent<ClientLobbyState>();
             state.Canvas = transform.parent.gameObject;
             state.MainMenuPrefab = MainMenuPrefab;
             connector = state;
-            // TODO: UPDATE TOKEN
+            // TODO: UPDATE TOKEN AND SHIT FROM LOCAL FILE
             state.StartCoroutine(
-                state.Connect(loc, "283e3f3e-3411-44c5-9bc5-037358c47100",
+                state.Connect(address, port,
+                              RuntimeInit.localUUID.ToString(), null,
                               this, ClientLobbyState.ConnectMode.BYIP));
         }
         

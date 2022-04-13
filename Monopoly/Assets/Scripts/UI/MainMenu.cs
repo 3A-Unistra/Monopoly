@@ -7,7 +7,6 @@
  *                Maxime MAIRE <maxime.maire2@etu.unistra.fr
  */
 
-
 using System.Collections;
 using System.Collections.Generic;
 using Monopoly.Util;
@@ -32,7 +31,7 @@ namespace Monopoly.UI
         public TMP_Text QuitText;
         public TMP_Text ErrorText;
 
-        public GameObject LobbyMenuPrefab;
+        public GameObject LoginMenuPrefab;
         public GameObject ConnectMenuPrefab;
         public GameObject OptionsMenuPrefab;
         
@@ -74,35 +73,9 @@ namespace Monopoly.UI
         
         public void PlayOnline()
         {
-            /*Dictionary<string, string> data = JsonLoader.LoadJsonAsset
-                <Dictionary<string, string>>("Data/data");
-            string address;
-            int port;
-            if (data == null ||
-                !data.ContainsKey("default_ip") ||
-                !data.ContainsKey("default_port") ||
-                !int.TryParse(data["default_port"], out port))
-            {
-                DisplayError("connection_baddata");
-                return;
-            }
-            address = data["default_ip"];
-            GameObject clientLobbyObject = new GameObject("ClientLobbyState");
-            ClientLobbyState state =
-                clientLobbyObject.AddComponent<ClientLobbyState>();
-            state.Canvas = transform.parent.gameObject;
-            connector = state;
-            // TODO: UPDATE TOKEN
-            state.StartCoroutine(
-                state.ConnectWithPort(
-                    address, port, "283e3f3e-3411-44c5-9bc5-037358c47100",
-                    this, ClientLobbyState.ConnectMode.ONLINE));*/
-
-            // FIXME: uncomment everything above for the actual release, this is
-            // just temporary so we can access the board scene!!!
             UIDirector.IsMenuOpen = false;
-            GameObject lobbyMenu =
-                Instantiate(LobbyMenuPrefab, transform.parent);
+            GameObject loginMenu =
+                Instantiate(LoginMenuPrefab, transform.parent);
             Destroy(this.gameObject);
         }
     
@@ -113,7 +86,7 @@ namespace Monopoly.UI
                 Instantiate(ConnectMenuPrefab, transform.parent);
             Destroy(this.gameObject);
         }
-        
+
         public void QuitGame()
         {
             Application.Quit();

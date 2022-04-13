@@ -36,11 +36,11 @@ namespace Monopoly.UI
         public TMP_Text QuitText;
         
         public static bool OptionsOpenedFromPauseMenu = false;
+
         void Start()
         {
             ResumeButton.onClick.AddListener(ResumeGame);
             OptionsButton.onClick.AddListener(OpenOptions);
-            
             
             RectTransform rt = GetComponent<RectTransform>();
             rt.anchorMin = new Vector2(0.5f, 0.5f);
