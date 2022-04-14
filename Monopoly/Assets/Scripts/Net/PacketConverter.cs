@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
+using UnityEngine;
 
 using Monopoly.Net.Packets;
 
@@ -33,8 +34,17 @@ namespace Monopoly.Net
             new Dictionary<string, Type>()
         {
                 // TODO: ADD THE OTHERS HERE
-            { "Exception", typeof(PacketException) },
+
+            // LOBBY PACKETS
             { "AppletPrepare", typeof(PacketAppletPrepare) },
+            { "BroadcastUpdateLobby", typeof(PacketBroadcastUpdateLobby) },
+            { "BroadcastNewRoomToLobby", typeof(PacketBroadcastNewRoomToLobby) },
+            { "CreateGame", typeof(PacketCreateGame) },
+            { "CreateGameSucceed", typeof(PacketCreateGameSucceed) },
+            { "LaunchGame", typeof(PacketLaunchGame) },
+
+            // GAME PACKETS
+            { "Exception", typeof(PacketException) },
             { "AppletReady", typeof(PacketAppletReady) },
             { "GameStart", typeof(PacketGameStart) },
             { "GameEnd", typeof(PacketGameEnd) },
@@ -124,17 +134,26 @@ namespace Monopoly.Net
                                         object existingValue,
                                         JsonSerializer serializer)
         {
-            JObject jo = JObject.Load(reader);
-            string name = jo["name"].Value<string>();
-            Type type = null;
-            if (packetTypes.ContainsKey(name))
-                type = packetTypes[name];
-            if (type != null)
+            try
             {
-                return (Packet)
-                    JsonConvert.DeserializeObject(jo.ToString(),
-                                                  type,
-                                                  SpecifiedSubclassConversion);
+                JObject jo = JObject.Load(reader);
+                string name = jo["name"].Value<string>();
+                Type type = null;
+                if (packetTypes.ContainsKey(name))
+                    type = packetTypes[name];
+                if (type != null)
+                {
+                    return (Packet)
+                        JsonConvert.DeserializeObject(jo.ToString(),
+                                                      type,
+                                                      SpecifiedSubclassConversion);
+                }
+            }
+            catch (JsonReaderException e)
+            {
+                Debug.LogException(e);
+                return null;
+
             }
             throw new NotImplementedException();
         }

@@ -102,7 +102,8 @@ namespace Monopoly.Net
 #if UNITY_EDITOR
             Sock.OnMessage += (e) =>
             {
-                Debug.Log(string.Format("WebSocket message: {0}", e));
+                Debug.Log(string.Format("WebSocket message: {0}",
+                          Encoding.UTF8.GetString(e)));
             };
 #endif
             Sock.OnError += (e) =>

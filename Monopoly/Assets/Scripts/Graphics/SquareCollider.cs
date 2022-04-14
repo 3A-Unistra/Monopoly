@@ -4,7 +4,7 @@
  * 
  * Date created : 8/03/2022
  * Author       : Finn RAYMENT <rayment@etu.unistra.fr>
- * Author       : Christophe PIERSON <chrsitophe.pierson@etu.unistra.fr>
+ * Author       : Christophe PIERSON <christophe.pierson@etu.unistra.fr>
  */
 
 using System.Collections;
@@ -490,6 +490,7 @@ namespace Monopoly.Graphics
             UpdateText();
             UpdateHouses();
         }
+
         void Update()
         {
             if (dirty && (tempLvlhouse < houseLevel))

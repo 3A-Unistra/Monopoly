@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+using Monopoly.Net.Packets;
 using Monopoly.Runtime;
 
 namespace Monopoly.UI
@@ -24,6 +25,13 @@ namespace Monopoly.UI
         public GameObject MainMenuPrefab;
         public GameObject CreateMenuPrefab;
 
+        public static MenuLobby current;
+
+        static MenuLobby()
+        {
+            current = null;
+        }
+
         void Start()
         {
             MainMenuButton.onClick.AddListener(ReturnToMainMenu);
@@ -37,6 +45,14 @@ namespace Monopoly.UI
             MainMenuText.text = StringLocaliser.GetString("main_menu");
 
             UIDirector.IsMenuOpen = true;
+
+            current = this;
+        }
+
+        void OnDestroy()
+        {
+            if (current == this)
+                current = null;
         }
 
         public void SearchToken()
@@ -58,10 +74,8 @@ namespace Monopoly.UI
 
         public void CreateLobby()
         {
-            UIDirector.IsMenuOpen = false;
-            GameObject CreateMenu = Instantiate(CreateMenuPrefab, transform.parent);
-            CreateMenu.GetComponent<MenuCreate>().IsHost = true;
-            Destroy(this.gameObject);
+            ClientLobbyState.current.DoCreateGame(
+                ClientLobbyState.current.clientUUID, 2, "", "hello", false, 1500, true, false, 60, 100, false);
         }
 
         // TODO: Populate

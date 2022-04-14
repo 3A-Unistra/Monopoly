@@ -275,7 +275,8 @@ namespace Monopoly.Util
          */
         public static string GetString(string key)
         {
-            if (languageSelector == null ||
+            if (key == null || key.Trim().Length == 0 ||
+                languageSelector == null ||
                 !languageSelector.StringSet.ContainsKey(key))
                 return "null";
             return languageSelector.StringSet[key];
