@@ -36,6 +36,11 @@ namespace Monopoly.UI
 
             ErrorTextField.SetActive(false);
 
+            string defaultIP = PlayerPrefs.GetString("favourite_ip", "");
+            string defaultPort = PlayerPrefs.GetString("favourite_port", "");
+            IPInput.text = defaultIP;
+            PortInput.text = defaultPort;
+
             UIDirector.IsMenuOpen = true;
         }
         
@@ -63,6 +68,8 @@ namespace Monopoly.UI
                 clientLobbyObject.AddComponent<ClientLobbyState>();
             state.Canvas = transform.parent.gameObject;
             state.MainMenuPrefab = MainMenuPrefab;
+            PlayerPrefs.SetString("favourite_ip", address);
+            PlayerPrefs.SetString("favourite_port", port.ToString());
             connector = state;
             // TODO: UPDATE TOKEN AND SHIT FROM LOCAL FILE
             state.StartCoroutine(
