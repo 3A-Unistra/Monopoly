@@ -10,13 +10,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Monopoly.Util;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 using Monopoly.Runtime;
+using Monopoly.Util;
 
 namespace Monopoly.UI
 {
@@ -41,12 +41,6 @@ namespace Monopoly.UI
         {
             ResumeButton.onClick.AddListener(ResumeGame);
             OptionsButton.onClick.AddListener(OpenOptions);
-            
-            RectTransform rt = GetComponent<RectTransform>();
-            rt.anchorMin = new Vector2(0.5f, 0.5f);
-            rt.anchorMax = new Vector2(0.5f, 0.5f);
-            rt.pivot = new Vector2(0.5f, 0.5f);
-            rt.localPosition = Vector3.zero;
             ResumeText.text = StringLocaliser.GetString("resume");
             OptionsText.text = StringLocaliser.GetString("options");
             #if UNITY_WEBGL

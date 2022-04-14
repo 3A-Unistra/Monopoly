@@ -103,7 +103,7 @@ namespace Monopoly.Graphics
                 titleTrans.localScale = new Vector3(1f, 1f, 1f);
                 titleText.margin = new Vector4(0.17f, 0f, 19.2f, 4.8f);
                 priceText.characterSpacing = 5.76f;
-                priceTrans.localPosition = new Vector3(-0.517f, 0.2f, 0.236f);
+                priceTrans.localPosition = new Vector3(-0.538f, 0.2f, 0.236f);
                 priceTrans.localRotation = Quaternion.Euler(90f, 225f, -180f);
                 priceTrans.localScale = new Vector3(1f, 1f, 1f);
                 priceText.margin = new Vector4(0.26f, 0.02f, 19.2f, 4.8f);
