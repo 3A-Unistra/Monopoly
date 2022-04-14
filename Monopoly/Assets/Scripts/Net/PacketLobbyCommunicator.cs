@@ -22,9 +22,11 @@ namespace Monopoly.Net
 
         public event PacketDelegate<PacketException>            OnError;
         public event PacketDelegate<PacketCreateGameSucceed>
-                                                           OnCreateGameSucceed;
+                                                         OnCreateGameSucceed;
         public event PacketDelegate<PacketLaunchGame>           OnGameStart;
         public event PacketDelegate<PacketBroadcastUpdateLobby> OnLobbyUpdate;
+        public event PacketDelegate<PacketBroadcastNewRoomToLobby>
+                                                         OnBroadcastCreateGame;
 
         private PacketSocket socket;
 
@@ -80,6 +82,8 @@ namespace Monopoly.Net
                 OnGameStart(packet); break;
             case PacketBroadcastUpdateLobby packet:
                 OnLobbyUpdate(packet); break;
+            case PacketBroadcastNewRoomToLobby packet:
+                OnBroadcastCreateGame(packet); break;
             }
         }
 

@@ -17,15 +17,19 @@ namespace Monopoly.Net.Packets
     public class PacketCreateGameSucceed : Packet
     {
 
+        [JsonProperty("game_token")]
+        public string GameToken { get; private set; }
+
         [JsonProperty("player_token")]
         public string PlayerId { get; private set; }
 
         [JsonProperty("piece")]
         public int PieceId { get; private set; }
 
-        public PacketCreateGameSucceed(string playerId, int pieceId)
-            : base("CreateGameSucceed")
+        public PacketCreateGameSucceed(string gameToken, string playerId,
+                                       int pieceId) : base("CreateGameSucceed")
         {
+            this.GameToken = gameToken;
             this.PlayerId = playerId;
             this.PieceId = pieceId;
         }

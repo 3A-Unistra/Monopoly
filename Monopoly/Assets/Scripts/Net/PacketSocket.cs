@@ -82,7 +82,7 @@ namespace Monopoly.Net
             Dictionary<string, string> headers =
                 new Dictionary<string, string>();
             // FIXME: FETCH CORRECT ORIGIN
-            headers.Add("Origin", "http://localhost");
+            //headers.Add("Origin", "http://192.168.43.2");
             try
             {
                 Sock = new WebSocket(loc, headers);

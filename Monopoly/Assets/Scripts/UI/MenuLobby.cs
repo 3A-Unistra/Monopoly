@@ -27,9 +27,24 @@ namespace Monopoly.UI
 
         public static MenuLobby current;
 
+        public static List<LobbyElement> lobbyElements;
+        private List<LobbyJoin> lobbyJoinElements;
+
+        public class LobbyElement
+        {
+            public string Name { get; set; }
+            public string Token { get; set; }
+            public LobbyElement(string name, string token)
+            {
+                this.Name = name;
+                this.Token = token;
+            }
+        }
+
         static MenuLobby()
         {
             current = null;
+            lobbyElements = new List<LobbyElement>();
         }
 
         void Start()
@@ -37,16 +52,23 @@ namespace Monopoly.UI
             MainMenuButton.onClick.AddListener(ReturnToMainMenu);
             SearchButton.onClick.AddListener(SearchToken);
             CreateButton.onClick.AddListener(CreateLobby);
-            CreateLobbyButton();
 
             TokenField.placeholder.GetComponent<TextMeshProUGUI>().text = StringLocaliser.GetString("private_token");
             SearchText.text = StringLocaliser.GetString("search");
             CreateText.text = StringLocaliser.GetString("create_lobby");
             MainMenuText.text = StringLocaliser.GetString("main_menu");
 
+            lobbyJoinElements = new List<LobbyJoin>();
+
             UIDirector.IsMenuOpen = true;
 
             current = this;
+
+            foreach (LobbyElement e in lobbyElements)
+            {
+                Debug.Log("looping");
+                CreateLobbyButton(e.Name, e.Token, false);
+            }
         }
 
         void OnDestroy()
@@ -78,11 +100,20 @@ namespace Monopoly.UI
                 ClientLobbyState.current.clientUUID, 2, "", "hello", false, 1500, true, false, 60, 100, false);
         }
 
-        // TODO: Populate
-        public void CreateLobbyButton()
+        public void CreateLobbyButton(string name, string token, bool isnew)
         {
+            Debug.Log("creating");
             GameObject lobbyElement = Instantiate(LobbyElementPrefab, LobbyList.transform);
-            lobbyElement.GetComponent<LobbyJoin>().ParentMenu = gameObject;
+            LobbyJoin lobbyScript = lobbyElement.GetComponent<LobbyJoin>();
+            lobbyScript.ParentMenu = gameObject;
+            lobbyScript.LobbyName.text = name;
+            lobbyScript.Token = token;
+            lobbyJoinElements.Add(lobbyScript);
+            if (isnew)
+            {
+                Debug.Log("adding new");
+                lobbyElements.Add(new LobbyElement(name, token));
+            }
         }
         
     }

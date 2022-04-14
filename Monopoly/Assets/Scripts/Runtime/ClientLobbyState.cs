@@ -52,6 +52,8 @@ namespace Monopoly.Runtime
 
         void OnDestroy()
         {
+            Debug.Log("clearing");
+            MenuLobby.lobbyElements.Clear();
             if (sock != null)
                 sock.Close();
         }
@@ -139,6 +141,7 @@ namespace Monopoly.Runtime
             comm = new PacketLobbyCommunicator(sock);
             comm.OnError += OnError;
             comm.OnCreateGameSucceed += OnCreateGameSucceed;
+            comm.OnBroadcastCreateGame += OnBroadcastCreateGame;
         }
 
         public void DoCreateGame(string playerId, int maxPlayers,
@@ -173,8 +176,16 @@ namespace Monopoly.Runtime
             UIDirector.IsMenuOpen = false;
             GameObject CreateMenu = Instantiate(MenuLobby.current.CreateMenuPrefab,
                                                 MenuLobby.current.transform.parent);
-            CreateMenu.GetComponent<MenuCreate>().IsHost = true;
+            MenuCreate menuScript = CreateMenu.GetComponent<MenuCreate>();
+            menuScript.IsHost = true;
+            menuScript.GameToken = packet.GameToken;
             Destroy(MenuLobby.current.gameObject);
+        }
+
+        public void OnBroadcastCreateGame(PacketBroadcastNewRoomToLobby packet)
+        {
+            if (MenuLobby.current != null)
+                MenuLobby.current.CreateLobbyButton(packet.GameName, packet.LobbyToken, true);
         }
 
     }

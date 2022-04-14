@@ -8,11 +8,17 @@ using UnityEngine.UI;
 
 public class LobbyJoin : MonoBehaviour
 {
+
+    public TMP_Text LobbyName;
     public Button JoinButton;
     public TMP_Text JoinText;
     public GameObject CreateMenuPrefab;
+
     [HideInInspector]
     public GameObject ParentMenu;
+
+    [HideInInspector]
+    public string Token;
     
     void Start()
     {
@@ -26,4 +32,5 @@ public class LobbyJoin : MonoBehaviour
         CreateMenu.GetComponent<MenuCreate>().IsHost = false;
         Destroy(ParentMenu);
     }
+
 }

@@ -138,10 +138,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1262f7ef35e60c8b1ad536ae33f0af27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LobbyName: {fileID: 1929585293339946195}
   JoinButton: {fileID: 6342005856218691026}
   JoinText: {fileID: 1587841653253973351}
   CreateMenuPrefab: {fileID: 1449483787266939209, guid: 081bc32491ab70248b85788243704c30, type: 3}
   ParentMenu: {fileID: 0}
+  Token: 
 --- !u!1 &5700282192804653532
 GameObject:
   m_ObjectHideFlags: 0

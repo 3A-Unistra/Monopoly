@@ -39,6 +39,9 @@ public class MenuCreate : MonoBehaviour
     [HideInInspector]
     public bool IsHost = false;
 
+    [HideInInspector]
+    public string GameToken;
+
     void Start()
     {
         InitFields();
