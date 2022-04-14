@@ -67,7 +67,9 @@ namespace Monopoly.Runtime
             init = true;
             int language = PlayerPrefs.GetInt("language", 0);
             LoadLanguage(language);
+#if !UNITY_WEBGL
             LoadLocalClientInfo();
+#endif
             PreferenceApply.LoadSettings();
             PreferenceApply.ApplySettings();
             data = JsonLoader.LoadJsonAsset
