@@ -151,5 +151,13 @@
     "card_owner": "Owner:",
     "nobody": "Nobody",
     "username": "Username",
-    "password": "Password"
+    "password": "Password",
+    "button_pause": "Pause",
+    "button_auction": "Auction",
+    "button_buyproperty": "Purchase",
+    "button_exchange": "Trade",
+    "button_buyhouse": "Construct a house",
+    "button_camleft": "Turn left",
+    "button_cammode": "Switch perspective",
+    "button_camright": "Turn right"
 }

@@ -80,3 +80,7 @@ crashlytics-build.properties
 # Rider
 *.idea/
 
+# Modelling stuff
+*.psd*
+*.blend*
+

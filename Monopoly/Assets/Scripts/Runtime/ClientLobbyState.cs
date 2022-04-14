@@ -26,8 +26,8 @@ namespace Monopoly.Runtime
         public GameObject MainMenuPrefab;
 
         // TODO: pass around
-        private string clientUUID;
-        private string token;
+        public string clientUUID;
+        public string token;
 
         private PacketLobbyCommunicator comm;
         private PacketSocket sock;
@@ -54,6 +54,16 @@ namespace Monopoly.Runtime
         {
             if (sock != null)
                 sock.Close();
+        }
+
+        void Update()
+        {
+#if !UNITY_WEBGL || UNITY_EDITOR
+            if (sock != null)
+            {
+                sock.Sock.DispatchMessageQueue();
+            }
+#endif
         }
 
         // TODO: CARRY ON THE USER ID TO GAME STATE, STATIC????
@@ -128,6 +138,20 @@ namespace Monopoly.Runtime
             this.token = token;
             comm = new PacketLobbyCommunicator(sock);
             comm.OnError += OnError;
+            comm.OnCreateGameSucceed += OnCreateGameSucceed;
+        }
+
+        public void DoCreateGame(string playerId, int maxPlayers,
+                                 string password, string gameName,
+                                 bool privateGame, int startBalance,
+                                 bool auctions, bool doubleGo,
+                                 int turnTime, int maxRounds,
+                                 bool canBuyFirstCircle)
+        {
+            comm.DoCreateGame(playerId, maxPlayers, password, gameName,
+                              privateGame, startBalance, auctions,
+                              doubleGo, turnTime, maxPlayers,
+                              canBuyFirstCircle);
         }
 
         public void OnError(PacketException packet)
@@ -142,6 +166,15 @@ namespace Monopoly.Runtime
                 Destroy(lobbyInstance.gameObject);
             Destroy(gameObject);
 #endif
+        }
+
+        public void OnCreateGameSucceed(PacketCreateGameSucceed packet)
+        {
+            UIDirector.IsMenuOpen = false;
+            GameObject CreateMenu = Instantiate(MenuLobby.current.CreateMenuPrefab,
+                                                MenuLobby.current.transform.parent);
+            CreateMenu.GetComponent<MenuCreate>().IsHost = true;
+            Destroy(MenuLobby.current.gameObject);
         }
 
     }

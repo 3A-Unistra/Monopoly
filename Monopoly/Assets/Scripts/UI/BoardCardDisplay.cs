@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 using Monopoly.Classes;
 using Monopoly.Runtime;
@@ -25,6 +26,9 @@ namespace Monopoly.UI
 
         public TMP_Text OwnerText;
         public TMP_Text OwnerName;
+
+        public Button buyHouseButton;
+        public Button sellHouseButton;
 
         private RectTransform rect;
         private Canvas canvas;
@@ -81,6 +85,19 @@ namespace Monopoly.UI
                 OwnableSquare os = (OwnableSquare)
                     ClientGameState.current.Board.GetSquare(square);
                 SetOwner(os.Owner);
+                bool canModify = false;
+                if (PropertySquare.IsPropertyIndex(square))
+                {
+                    PropertySquare ps = (PropertySquare) os;
+                    if (ClientGameState.current.Board.OwnSameColorSet
+                        (ps.Owner, ps))
+                    {
+                        canModify = true;
+                    }
+                }
+                buyHouseButton.gameObject.SetActive(canModify);
+                sellHouseButton.gameObject.SetActive(canModify);
+
                 UpdatePosition();
                 gameObject.SetActive(true);
             }

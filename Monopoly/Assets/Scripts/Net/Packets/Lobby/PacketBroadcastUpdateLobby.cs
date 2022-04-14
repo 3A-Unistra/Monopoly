@@ -1,7 +1,7 @@
 ﻿/*
- * PacketBroadcastUpdateLobby.cs
+ * BroadcastNewRoomToLobby.cs
  * 
- * Date created : 12/04/2022
+ * Date created : 14/04/2022
  * Author       : Finn RAYMENT <rayment@etu.unistra.fr>
  */
 
