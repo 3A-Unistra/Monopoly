@@ -27,24 +27,29 @@ namespace Monopoly.UI
 
         public static MenuLobby current;
 
-        public static List<LobbyElement> lobbyElements;
+        //public static List<LobbyElement> lobbyElements;
         private List<LobbyJoin> lobbyJoinElements;
 
         public class LobbyElement
         {
             public string Name { get; set; }
             public string Token { get; set; }
-            public LobbyElement(string name, string token)
+            // TODO: UPDATE ON PACKET RECV
+            public int Num { get; set; }
+            public int Max { get; set; }
+            public LobbyElement(string name, string token, int num, int max)
             {
                 this.Name = name;
                 this.Token = token;
+                this.Num = num;
+                this.Max = max;
             }
         }
 
         static MenuLobby()
         {
             current = null;
-            lobbyElements = new List<LobbyElement>();
+            //lobbyElements = new List<LobbyElement>();
         }
 
         void Start()
@@ -60,15 +65,13 @@ namespace Monopoly.UI
 
             lobbyJoinElements = new List<LobbyJoin>();
 
-            UIDirector.IsMenuOpen = true;
-
             current = this;
 
-            foreach (LobbyElement e in lobbyElements)
-            {
-                Debug.Log("looping");
-                CreateLobbyButton(e.Name, e.Token, false);
-            }
+            UIDirector.IsMenuOpen = true;
+            UIDirector.IsUIBlockingNet = false;
+
+            //foreach (LobbyElement e in lobbyElements)
+            //    CreateLobbyButton(e.Name, e.Token, e.Num, e.Max, false);
         }
 
         void OnDestroy()
@@ -97,23 +100,82 @@ namespace Monopoly.UI
         public void CreateLobby()
         {
             ClientLobbyState.current.DoCreateGame(
-                ClientLobbyState.current.clientUUID, 2, "", "hello", false, 1500, true, false, 60, 100, false);
+                ClientLobbyState.clientUUID, 2, "", "hello", false, 1500, true, false, 60, 100, false);
         }
 
-        public void CreateLobbyButton(string name, string token, bool isnew)
+        private static void SetLobbyPlayerQty(LobbyJoin l)
         {
-            Debug.Log("creating");
+            l.NumberPlayersText.text = string.Format("{0}/{1}", l.Num, l.Max);
+        }
+
+        public void CreateLobbyButton(string name, string token,
+                                      int num, int max, bool isnew)
+        {
             GameObject lobbyElement = Instantiate(LobbyElementPrefab, LobbyList.transform);
             LobbyJoin lobbyScript = lobbyElement.GetComponent<LobbyJoin>();
             lobbyScript.ParentMenu = gameObject;
             lobbyScript.LobbyName.text = name;
             lobbyScript.Token = token;
+            lobbyScript.Num = num;
+            lobbyScript.Max = max;
+            SetLobbyPlayerQty(lobbyScript);
             lobbyJoinElements.Add(lobbyScript);
-            if (isnew)
+            //if (isnew)
+            //    lobbyElements.Add(new LobbyElement(name, token, num, max));
+        }
+
+        public void UpdateLobby(PacketBroadcastUpdateLobby packet)
+        {
+            LobbyJoin actual = null;
+            //if (MenuLobby.current != null)
+            //{
+            foreach (LobbyJoin lj in lobbyJoinElements)
             {
-                Debug.Log("adding new");
-                lobbyElements.Add(new LobbyElement(name, token));
+                if (lj.Token.Equals(packet.LobbyToken))
+                {
+                    actual = lj;
+                    break;
+                }
             }
+            if (actual == null)
+                return;
+            //}
+            //for (int i = 0; i < lobbyElements.Count; ++i)
+            //for (int i = 0; i < lobbyElements.Count; ++i)
+            //{
+            //    LobbyElement e = lobbyElements[i];
+            //    if (!e.Token.Equals(packet.LobbyToken))
+            //        continue;
+            switch (packet.Reason)
+            {
+            case PacketBroadcastUpdateLobby.UpdateReason.PLAYER_LEFT:
+                //--e.Num;
+                --actual.Num;
+                //if (actual != null)
+                SetLobbyPlayerQty(actual);//e.Num, e.Max);
+                break;
+            case PacketBroadcastUpdateLobby.UpdateReason.NEW_PLAYER:
+                ++actual.Num;
+                //if (actual != null)
+                SetLobbyPlayerQty(actual);//, e.Num, e.Max);
+                break;
+            case PacketBroadcastUpdateLobby.UpdateReason.NEW_BOT:
+                ++actual.Num;
+                //if (actual != null)
+                SetLobbyPlayerQty(actual);//, e.Num, e.Max);
+                break;
+            case PacketBroadcastUpdateLobby.UpdateReason.ROOM_DELETED:
+                //lobbyElements.Remove(e);
+                //if (actual != null)
+                lobbyJoinElements.Remove(actual);
+                Destroy(actual.gameObject);
+                //--i; // retry iterator
+                break;
+            default:
+                return; // ignore
+            }
+            //    break;
+            //}
         }
         
     }

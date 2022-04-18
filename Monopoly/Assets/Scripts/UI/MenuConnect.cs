@@ -19,7 +19,9 @@ namespace Monopoly.UI
         public TMP_InputField PortInput;
         public GameObject ErrorTextField;
         public TMP_Text ErrorText;
+
         public GameObject MainMenuPrefab;
+        public GameObject CreateMenuPrefab;
         public GameObject LobbyMenuPrefab;
 
         private ClientLobbyState connector = null;
@@ -31,8 +33,10 @@ namespace Monopoly.UI
 
             MainMenuText.text = StringLocaliser.GetString("main_menu");
             ConnectText.text = StringLocaliser.GetString("connect");
-            IPInput.placeholder.GetComponent<TextMeshProUGUI>().text = StringLocaliser.GetString("ip_address_input");
-            PortInput.placeholder.GetComponent<TextMeshProUGUI>().text = StringLocaliser.GetString("port_input");
+            IPInput.placeholder.GetComponent<TextMeshProUGUI>().text =
+                StringLocaliser.GetString("ip_address_input");
+            PortInput.placeholder.GetComponent<TextMeshProUGUI>().text =
+                StringLocaliser.GetString("port_input");
 
             ErrorTextField.SetActive(false);
 
@@ -42,10 +46,14 @@ namespace Monopoly.UI
             PortInput.text = defaultPort;
 
             UIDirector.IsMenuOpen = true;
+            UIDirector.IsUIBlockingNet = false;
         }
         
         public void Connect()
         {
+            if (ClientLobbyState.current != null)
+                return; // already doing one, ignore other presses
+
             string address = IPInput.text.Trim();
             if (address.Equals(""))
             {
@@ -62,12 +70,15 @@ namespace Monopoly.UI
                 DisplayError("connection_badport");
                 return;
             }
-            
+            ConnectButton.enabled = false;
+
             GameObject clientLobbyObject = new GameObject("ClientLobbyState");
             ClientLobbyState state =
                 clientLobbyObject.AddComponent<ClientLobbyState>();
             state.Canvas = transform.parent.gameObject;
             state.MainMenuPrefab = MainMenuPrefab;
+            state.CreateMenuPrefab = CreateMenuPrefab;
+            state.LobbyMenuPrefab = LobbyMenuPrefab;
             PlayerPrefs.SetString("favourite_ip", address);
             PlayerPrefs.SetString("favourite_port", port.ToString());
             connector = state;
@@ -81,11 +92,15 @@ namespace Monopoly.UI
         public void ReturnToMainMenu()
         {
             // if we manage to return during a socket connection, then close the
-            // socket as we leave
-            if (connector != null)
+            // lobby state and socket as we leave
+            if (ClientLobbyState.current != null)
             {
-                connector.StopAllCoroutines();
-                Destroy(connector);
+                if (connector != null)
+                {
+                    connector.StopAllCoroutines();
+                    Destroy(connector);
+                }
+                Destroy(ClientLobbyState.current.gameObject);
             }
 
             UIDirector.IsMenuOpen = false;
@@ -95,6 +110,7 @@ namespace Monopoly.UI
 
         public void DisplayError(string error)
         {
+            ConnectButton.enabled = true;
             ErrorText.text = StringLocaliser.GetString(error);
             ErrorTextField.SetActive(true);
         }

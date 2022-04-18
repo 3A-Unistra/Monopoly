@@ -9,6 +9,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 using Monopoly.Net;
 using Monopoly.Net.Packets;
@@ -24,10 +25,18 @@ namespace Monopoly.Runtime
 
         public GameObject Canvas;
         public GameObject MainMenuPrefab;
+        public GameObject CreateMenuPrefab;
+        public GameObject LobbyMenuPrefab;
 
         // TODO: pass around
-        public string clientUUID;
-        public string token;
+        public static string clientUUID;
+        public static string clientUsername;
+        public static string token;
+        public static string currentLobby;
+
+        public static string address;
+        public static int port;
+        public static ConnectMode connectMode;
 
         private PacketLobbyCommunicator comm;
         private PacketSocket sock;
@@ -46,29 +55,41 @@ namespace Monopoly.Runtime
                 Debug.LogError("Cannot create two concurrent lobby states!");
                 Destroy(this);
             }
+            token = null;
             current = this;
+            UIDirector.IsUIBlockingNet = false;
             Debug.Log("Initialised lobby state.");
         }
 
         void OnDestroy()
         {
-            Debug.Log("clearing");
-            MenuLobby.lobbyElements.Clear();
+            //MenuLobby.lobbyElements.Clear();
             if (sock != null)
                 sock.Close();
+        }
+
+        public void Crash()
+        {
+            /* close all menus and return to main */
+            // TODO: show error?
+            if (MenuLobby.current != null)
+                Destroy(MenuLobby.current.gameObject);
+            if (MenuCreate.current != null)
+                Destroy(MenuCreate.current.gameObject);
+
+            GameObject mainMenu = Instantiate(MainMenuPrefab, Canvas.transform);
         }
 
         void Update()
         {
 #if !UNITY_WEBGL || UNITY_EDITOR
-            if (sock != null)
+            if (sock != null && !UIDirector.IsUIBlockingNet)
             {
                 sock.Sock.DispatchMessageQueue();
             }
 #endif
         }
 
-        // TODO: CARRY ON THE USER ID TO GAME STATE, STATIC????
         public IEnumerator Connect(string address, int port,
                                    string userId, string token,
                                    MonoBehaviour connector, ConnectMode mode)
@@ -98,7 +119,7 @@ namespace Monopoly.Runtime
             else
                 par.Add("token", userId);
             PacketSocket socket =
-                PacketSocket.CreateSocket(address, port, par, true, false);
+                PacketSocket.CreateSocket(address, port, par, null, false);
             socket.Connect();
             // wait for the socket to open or die
             yield return new WaitUntil(delegate
@@ -108,9 +129,18 @@ namespace Monopoly.Runtime
             MenuConnect connectConnector = null;
             MenuLogin loginConnector = null;
             if (mode == ConnectMode.BYIP)
-                connectConnector = (MenuConnect) connector;
+            {
+                connectConnector = (MenuConnect)connector;
+                ClientLobbyState.token = userId;
+                ClientLobbyState.clientUsername = userId;
+            }
             else
+            {
                 loginConnector = (MenuLogin) connector;
+                ClientLobbyState.token = token;
+                // TODO: CHANGE TO THE ACTUAL USERNAME
+                ClientLobbyState.clientUsername = userId;
+            }
             if (socket.HasError())
             {
                 if (mode == ConnectMode.BYIP)
@@ -121,7 +151,9 @@ namespace Monopoly.Runtime
                 Destroy(this.gameObject);
                 yield break;
             }
-            RegisterSocket(socket, userId, token);
+            RegisterSocket(socket, userId);
+            ClientLobbyState.address = address;
+            ClientLobbyState.port = port;
 
             UIDirector.IsMenuOpen = false;
             if (mode == ConnectMode.BYIP)
@@ -133,15 +165,25 @@ namespace Monopoly.Runtime
             Destroy(connector.gameObject);
         }
 
-        public void RegisterSocket(PacketSocket sock, string uuid, string token)
+        public void RegisterSocket(PacketSocket sock, string uuid)
         {
             this.sock = sock;
-            this.clientUUID = uuid;
-            this.token = token;
+            ClientLobbyState.clientUUID = uuid;
             comm = new PacketLobbyCommunicator(sock);
             comm.OnError += OnError;
             comm.OnCreateGameSucceed += OnCreateGameSucceed;
+            comm.OnEnterRoomSucceed += OnEnterRoomSucceed;
+            comm.OnLeaveRoomSucceed += OnLeaveRoomSucceed;
+            comm.OnDeleteRoomSucceed += OnDeleteRoomSucceed;
             comm.OnBroadcastCreateGame += OnBroadcastCreateGame;
+            comm.OnLobbyUpdate += OnLobbyUpdate;
+            comm.OnRoomUpdate += OnRoomUpdate;
+            comm.OnAppletPrepare += OnAppletPrepare;
+        }
+
+        public void DoLaunchGame()
+        {
+            comm.DoLaunchGame();
         }
 
         public void DoCreateGame(string playerId, int maxPlayers,
@@ -153,8 +195,39 @@ namespace Monopoly.Runtime
         {
             comm.DoCreateGame(playerId, maxPlayers, password, gameName,
                               privateGame, startBalance, auctions,
-                              doubleGo, turnTime, maxPlayers,
+                              doubleGo, turnTime, maxRounds,
                               canBuyFirstCircle);
+        }
+
+        public void DoJoinGame(string lobbyToken, string password)
+        {
+
+            comm.DoEnterRoom(lobbyToken, password);
+        }
+
+        public void DoLeaveGame(string lobbyToken)
+        {
+            comm.DoLeaveRoom(clientUUID);
+            /* leave lobby immediately because there's no point forcing the user
+               to wait for the succeed packet */
+            /*UIDirector.IsMenuOpen = false;
+            GameObject lobbyMenu = Instantiate(LobbyMenuPrefab, Canvas.transform);
+            currentLobby = null;
+            if (MenuCreate.current != null)
+                Destroy(MenuCreate.current.gameObject);*/
+        }
+
+        public void DoDeleteGame(string lobbyToken)
+        {
+            comm.DoDeleteRoom(clientUUID);
+            /* leave lobby immediately because there's no point forcing the user
+               to wait for the succeed packet */
+            UIDirector.IsMenuOpen = false;
+            UIDirector.IsUIBlockingNet = false;
+            GameObject lobbyMenu = Instantiate(LobbyMenuPrefab, Canvas.transform);
+            currentLobby = null;
+            if (MenuCreate.current != null)
+                Destroy(MenuCreate.current.gameObject);
         }
 
         public void OnError(PacketException packet)
@@ -162,6 +235,8 @@ namespace Monopoly.Runtime
             // TODO: implement webgl
 #if UNITY_WEBGL
 #else
+            UIDirector.IsMenuOpen = false;
+            UIDirector.IsUIBlockingNet = true;
             GameObject mainMenu = Instantiate(MainMenuPrefab, Canvas.transform);
             MainMenu menuScript = mainMenu.GetComponent<MainMenu>();
             menuScript.DisplayError(string.Format("error_{0}", packet.Code));
@@ -174,18 +249,74 @@ namespace Monopoly.Runtime
         public void OnCreateGameSucceed(PacketCreateGameSucceed packet)
         {
             UIDirector.IsMenuOpen = false;
-            GameObject CreateMenu = Instantiate(MenuLobby.current.CreateMenuPrefab,
-                                                MenuLobby.current.transform.parent);
+            UIDirector.IsUIBlockingNet = true;
+            GameObject CreateMenu = Instantiate(CreateMenuPrefab,
+                                                Canvas.transform);
             MenuCreate menuScript = CreateMenu.GetComponent<MenuCreate>();
             menuScript.IsHost = true;
-            menuScript.GameToken = packet.GameToken;
-            Destroy(MenuLobby.current.gameObject);
+            currentLobby = packet.GameToken;
+            if (MenuLobby.current != null)
+                Destroy(MenuLobby.current.gameObject);
+        }
+
+        public void OnEnterRoomSucceed(PacketEnterRoomSucceed packet)
+        {
+            UIDirector.IsMenuOpen = false;
+            UIDirector.IsUIBlockingNet = true;
+            GameObject CreateMenu = Instantiate(CreateMenuPrefab, Canvas.transform);
+            CreateMenu.GetComponent<MenuCreate>().IsHost = false;
+            currentLobby = packet.LobbyToken;
+            if (MenuLobby.current != null)
+                Destroy(MenuLobby.current.gameObject);
+        }
+
+        public void OnLeaveRoomSucceed(PacketLeaveRoomSucceed packet)
+        {
+            UIDirector.IsMenuOpen = false;
+            UIDirector.IsUIBlockingNet = true;
+            GameObject lobbyMenu = Instantiate(LobbyMenuPrefab, Canvas.transform);
+            currentLobby = null;
+            if (MenuCreate.current != null)
+                Destroy(MenuCreate.current.gameObject);
+        }
+
+        public void OnDeleteRoomSucceed(PacketDeleteRoomSucceed packet)
+        {
+            /*UIDirector.IsMenuOpen = false;
+            GameObject lobbyMenu = Instantiate(LobbyMenuPrefab, Canvas.transform);
+            currentLobby = null;
+            if (MenuCreate.current != null)
+                Destroy(MenuCreate.current.gameObject);*/
         }
 
         public void OnBroadcastCreateGame(PacketBroadcastNewRoomToLobby packet)
         {
             if (MenuLobby.current != null)
-                MenuLobby.current.CreateLobbyButton(packet.GameName, packet.LobbyToken, true);
+                MenuLobby.current.CreateLobbyButton(
+                    packet.GameName, packet.LobbyToken,
+                    packet.NumberPlayers, packet.MaxPlayers, true);
+        }
+
+        public void OnLobbyUpdate(PacketBroadcastUpdateLobby packet)
+        {
+            if (MenuLobby.current != null)
+                MenuLobby.current.UpdateLobby(packet);
+        }
+
+        public void OnRoomUpdate(PacketBroadcastUpdateRoom packet)
+        {
+            if (MenuCreate.current != null)
+                MenuCreate.current.UpdateLobby(packet);
+        }
+
+        public void OnAppletPrepare(PacketAppletPrepare packet)
+        {
+            /* lobby handler is finished, lets quit and start the game socket */
+            if (sock != null)
+                sock.Close();
+            Debug.Log("applet prepare: " + ClientLobbyState.token);
+            UIDirector.IsMenuOpen = false;
+            SceneManager.LoadScene("Scenes/BoardScene");
         }
 
     }

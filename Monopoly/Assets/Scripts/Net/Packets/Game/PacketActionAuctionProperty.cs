@@ -16,7 +16,7 @@ namespace Monopoly.Net.Packets
     
     public class PacketActionAuctionProperty : Packet
     {
-        [JsonProperty("id_player")]
+        [JsonProperty("player_token")]
         public string PlayerId { get; private set; }
 
         [JsonProperty("min_price")]

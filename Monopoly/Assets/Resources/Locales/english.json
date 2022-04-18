@@ -121,6 +121,7 @@
     "create_lobby": "Create lobby",
     "private_token": "Private lobby token goes here...",
     "connect": "Connect",
+    "username_input": "Username...",
     "ip_address_input": "IP address...",
     "port_input": "Port...",
     "enter_lobby_name": "Enter lobby's name...",
@@ -159,5 +160,10 @@
     "button_buyhouse": "Construct a house",
     "button_camleft": "Turn left",
     "button_cammode": "Switch perspective",
-    "button_camright": "Turn right"
+    "button_camright": "Turn right",
+    "button_rolldice": "Roll dice",
+    "button_mortgage": "Mortgage property",
+    "button_unmortgage": "Unmortgage property",
+    "button_actionend": "End turn",
+    "game_start": "Let the game begin!"
 }

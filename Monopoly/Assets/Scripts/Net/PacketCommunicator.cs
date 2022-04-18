@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Monopoly.Net.Packets;
+using Monopoly.Runtime;
 
 namespace Monopoly.Net
 {
@@ -138,9 +139,18 @@ namespace Monopoly.Net
             socket.Sock.OnMessage += (data) => ReceivePacket(data);
         }
 
-        private void OnPing(Packet packet)
+        private void OnPing(PacketPing packet)
         {
             DoPing(); /* send back again */
+        }
+
+        private void OnPlayerValidated(Packet packet)
+        {
+            /* the dispatch queue of the socket will lock up until the game
+               scene is loaded, so as soon as that happens, we will need to send
+               the AppletReady packet regardless, so, we wait for this packet,
+               and we send it immediately */
+            DoAppletReady();
         }
 
         /* TODO: Params for all of the following DoX functions. */
@@ -163,16 +173,16 @@ namespace Monopoly.Net
             SendPacket(packet);
         }
 
-        public void DoGameStartDiceThrow()
+        public void DoGameStartDiceThrow(string uuid)
         {
-            //PacketGameStartDiceThrow packet = new PacketGameStartDiceThrow();
-            //SendPacket(packet);
+            PacketGameStartDiceThrow packet = new PacketGameStartDiceThrow(uuid);
+            SendPacket(packet);
         }
 
-        public void DoRoundDiceChoice()
+        public void DoRoundDiceChoice(string uuid, PacketRoundDiceChoice.DiceChoice choice)
         {
-            //PacketRoundDiceChoice packet = new PacketRoundDiceChoice();
-            //SendPacket(packet);
+            PacketRoundDiceChoice packet = new PacketRoundDiceChoice(uuid, choice);
+            SendPacket(packet);
         }
 
         public void DoAuctionProperty()
@@ -182,36 +192,39 @@ namespace Monopoly.Net
             //SendPacket(packet);
         }
 
-        public void DoBuyHouse()
+        public void DoBuyHouse(string uuid, int idx)
         {
-            //PacketActionBuyHouse packet = new PacketActionBuyHouse();
-            //SendPacket(packet);
+            PacketActionBuyHouse packet =
+                new PacketActionBuyHouse(uuid, idx);
+            SendPacket(packet);
         }
 
-        public void DoSellHouse()
+        public void DoSellHouse(string uuid, int idx)
         {
-            //PacketActionSellHouse packet = new PacketActionSellHouse();
-            //SendPacket(packet);
+            PacketActionSellHouse packet =
+                new PacketActionSellHouse(uuid, idx);
+            SendPacket(packet);
         }
 
-        public void DoBuyProperty()
+        public void DoBuyProperty(string uuid, int idx)
         {
-            //PacketActionBuyProperty packet = new PacketActionBuyProperty();
-            //SendPacket(packet);
+            PacketActionBuyProperty packet =
+                new PacketActionBuyProperty(uuid, idx);
+            SendPacket(packet);
         }
 
-        public void DoMortgageProperty()
+        public void DoMortgageProperty(string uuid, int idx)
         {
-            //PacketActionMortgageProperty packet
-            //    = new PacketActionMortgageProperty();
-            //SendPacket(packet);
+            PacketActionMortgageProperty packet
+                = new PacketActionMortgageProperty(uuid, idx);
+            SendPacket(packet);
         }
 
-        public void DoUnmortgageProperty()
+        public void DoUnmortgageProperty(string uuid, int idx)
         {
-            //PacketActionUnmortgageProperty packet
-            //    = new PacketActionUnmortgageProperty();
-            //SendPacket(packet);
+            PacketActionUnmortgageProperty packet
+                = new PacketActionUnmortgageProperty(uuid, idx);
+            SendPacket(packet);
         }
 
         public void DoEndAction()
@@ -270,8 +283,20 @@ namespace Monopoly.Net
 
         private async void SendPacket(Packet packet)
         {
-            await socket.Sock.SendText(packet.Serialize());
-        }
+#if UNITY_EDITOR
+            if (!packet.Name.Equals("Ping"))
+                Debug.Log("WebSocket send: " + packet.Serialize());
+#endif
+            try {
+                await socket.Sock.SendText(packet.Serialize());
+            }
+            catch (System.Exception e)
+            {
+                //Debug.LogException(e);
+                Debug.LogWarning("WebSocket died. Will now quit the game...");
+                ClientGameState.current.Crash();
+            }
+}
 
         private void ReceivePacket(byte[] data)
         {
@@ -312,6 +337,8 @@ namespace Monopoly.Net
                 OnReconnect(packet); break;
             case PacketPlayerDisconnect packet:
                 OnDisconnect(packet); break;
+            case PacketPlayerValid packet:
+                OnPlayerValidated(packet); break;
             case PacketPlayerUpdateBalance packet:
                 OnBalanceUpdate(packet); break;
             case PacketPlayerEnterPrison packet:

@@ -184,12 +184,12 @@ namespace Monopoly.Classes
         * the player is not a bot by default
         * </summary>
         */    
-        public Player(string id, string name, int characterIndex)
+        public Player(string id, string name, int money, int characterIndex)
         {
             this.Id = id;
             this.CharacterIdx = characterIndex;
             this.Name = name;
-            this.Money = 1500;
+            this.Money = money;
             this.Score = 0;
             this.Position = 0;
             this.InJail = false;

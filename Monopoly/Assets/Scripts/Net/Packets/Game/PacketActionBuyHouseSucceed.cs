@@ -16,10 +16,10 @@ namespace Monopoly.Net.Packets
 
     public class PacketActionBuyHouseSucceed : Packet
     {
-        [JsonProperty("id_player")]
+        [JsonProperty("player_token")]
         public string PlayerId { get; private set; }
 
-        [JsonProperty("id_house")]
+        [JsonProperty("property_id")]
         public int HouseId { get; private set; }
 
         public PacketActionBuyHouseSucceed(string playerId, int houseId) :

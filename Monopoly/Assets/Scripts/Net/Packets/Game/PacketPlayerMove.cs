@@ -16,10 +16,10 @@ namespace Monopoly.Net.Packets
 
     public class PacketPlayerMove : Packet
     {
-        [JsonProperty("id_moving_player")]
+        [JsonProperty("player_token")]
         public string MovingPlayerId { get; private set; }
 
-        [JsonProperty("destination_case")]
+        [JsonProperty("destination")]
         public int DestinationSquare { get; private set; }
 
         public PacketPlayerMove(string movingPlayerId, 

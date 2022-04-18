@@ -16,12 +16,25 @@ namespace Monopoly.Net.Packets
 
     public class PacketRoundDiceChoice : Packet
     {
-        [JsonProperty("id_player")]
+
+        public enum DiceChoice
+        {
+            ROLL_DICE = 0,
+            JAIL_PAY = 1,
+            JAIL_CARD = 2
+        }
+
+        [JsonProperty("player_token")]
         public string PlayerId { get; private set; }
 
-        public PacketRoundDiceChoice(string playerId) : base("RoundDiceChoice")
+        [JsonProperty("choice")]
+        public DiceChoice Choice { get; private set; }
+
+        public PacketRoundDiceChoice(string playerId, DiceChoice choice)
+            : base("RoundDiceChoice")
         {
             this.PlayerId = playerId;
+            this.Choice = choice;
         }
 
     }

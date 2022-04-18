@@ -120,6 +120,7 @@
     "create_lobby": "Créer lobby",
     "private_token": "Insérer la clé privée du lobby ici...",
     "connect": "Se connecter",
+    "username_input": "Nom d'utilisateur...",
     "ip_address_input": "Addresse IP...",
     "port_input": "Port...",
     "enter_lobby_name": "Insérer le nom du lobby...",
@@ -159,5 +160,10 @@
     "button_sellhouse": "Détruire une maison",
     "button_camleft": "Tourner à gauche",
     "button_cammode": "Changer la vue",
-    "button_camright": "Tourner à droite"
+    "button_camright": "Tourner à droite",
+    "button_rolldice": "Lancer les dés",
+    "button_mortgage": "Hypothèquer le propriété",
+    "button_unmortgage": "Déshypothèquer le propriété",
+    "button_actionend": "Fin du tour",
+    "game_start": "C'est parti !"
 }

@@ -141,6 +141,7 @@ MonoBehaviour:
   LobbyName: {fileID: 1929585293339946195}
   JoinButton: {fileID: 6342005856218691026}
   JoinText: {fileID: 1587841653253973351}
+  NumberPlayersText: {fileID: 4902054256281768267}
   CreateMenuPrefab: {fileID: 1449483787266939209, guid: 081bc32491ab70248b85788243704c30, type: 3}
   ParentMenu: {fileID: 0}
   Token: 
