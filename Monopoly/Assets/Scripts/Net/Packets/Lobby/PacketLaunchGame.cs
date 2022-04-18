@@ -17,12 +17,8 @@ namespace Monopoly.Net.Packets
     public class PacketLaunchGame : Packet
     {
 
-        [JsonProperty("player_token")]
-        public string PlayerId { get; private set; }
-
-        public PacketLaunchGame(string playerId) : base("LaunchGame")
+        public PacketLaunchGame() : base("LaunchGame")
         {
-            this.PlayerId = playerId;
         }
 
     }

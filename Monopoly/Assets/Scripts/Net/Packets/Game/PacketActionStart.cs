@@ -17,12 +17,8 @@ namespace Monopoly.Net.Packets
     public class PacketActionStart : Packet
     {
 
-        [JsonProperty("id_player")]
-        public string PlayerId { get; private set; }
-
-        public PacketActionStart(string playerId) : base("ActionStart")
+        public PacketActionStart() : base("ActionStart")
         {
-            this.PlayerId = playerId;
         }
 
     }

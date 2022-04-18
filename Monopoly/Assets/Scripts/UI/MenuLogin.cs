@@ -39,6 +39,7 @@ namespace Monopoly.UI
             ErrorTextField.SetActive(false);
 
             UIDirector.IsMenuOpen = true;
+            UIDirector.IsUIBlockingNet = false;
         }
         
         public void Connect()

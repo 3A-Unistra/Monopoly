@@ -134,7 +134,10 @@ namespace NativeWebSocket
             }
             else
             {
-                return WebSocketCloseCode.Undefined;
+                // jam a square into a circular hole
+                // use our own error codes
+                // this is the wild west
+                return (WebSocketCloseCode)closeCode;//WebSocketCloseCode.Undefined;
             }
 
         }

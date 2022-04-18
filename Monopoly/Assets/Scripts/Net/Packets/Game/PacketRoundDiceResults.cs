@@ -16,13 +16,13 @@ namespace Monopoly.Net.Packets
     
     public class PacketRoundDiceResults : Packet
     {
-        [JsonProperty("id_player")]
+        [JsonProperty("player_token")]
         public string PlayerId { get; private set; }
 
-        [JsonProperty("dice2")]
+        [JsonProperty("dice1")]
         public int DiceResult1 { get; private set; }
 
-        [JsonProperty("dice1")]
+        [JsonProperty("dice2")]
         public int DiceResult2 { get; private set; }
 
         public enum ResultEnum
@@ -40,20 +40,14 @@ namespace Monopoly.Net.Packets
 
         public PacketRoundDiceResults(string playerId,
                               int diceResult1, int diceResult2,
-                              int result) :
-            this(playerId, diceResult1, diceResult2, (ResultEnum) result)
-        {
-        }
-
-        public PacketRoundDiceResults(string playerId,
-                                      int diceResult1, int diceResult2,
-                                      ResultEnum reason) : 
-            base("RoundDiceResults")
+                              int result)
+            : base("RoundDiceResults")
         {
             this.PlayerId = playerId;
             this.DiceResult1 = diceResult1;
             this.DiceResult2 = diceResult2;
-            this.Reason = reason;
+            this.Reason = (ResultEnum) result;
+            this.Result = result;
         }
 
     }

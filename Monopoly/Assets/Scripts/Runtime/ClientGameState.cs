@@ -40,20 +40,33 @@ namespace Monopoly.Runtime
         public GameObject boardObject;
 
         public TMP_Text chatBox;
+        public ScrollRect chatScroller;
         public UIPlayerInfo playerInfo;
 
         public Board Board { get; private set; }
         private List<Player> players;
         private List<PlayerPiece> playerPieces;
+        private Player myPlayer;
+        private Player playerTurn;
+
         private string clientUUID;
+        private string token;
 
         public bool CanRollDice { get; set; }
         public bool CanPerformAction { get; set; }
 
         public static bool IsMenuOpen = false;
 
+        private bool isRoundStart = false;
+
         private PacketCommunicator comm;
         private PacketSocket sock;
+
+        public Button actionEndButton;
+        public Button rollDiceButton;
+        public Button exchangeButton;
+        public Button buyPropertyButton;
+        public Button auctionButton;
 
         private void LoadGameData()
         {
@@ -78,14 +91,16 @@ namespace Monopoly.Runtime
         void Start()
         {
             // let stuff in the scene load, then run this code:
-            /*
-            Dictionary<string, string> par = new Dictionary<string, string>();
-            par.Add("token", "283e3f3e-3411-44c5-9bc5-037358c47100");
-            PacketSocket socket = PacketSocket.CreateSocket("127.0.0.1", 8000, par, false);
-            socket.Connect();
-            sock = socket;*/
-            Player p = new Player("abc", "Rayment", 1);
-            ManuallyRegisterPlayer(p);
+            StartCoroutine(OpenGameSocket());
+
+            actionEndButton.gameObject.SetActive(false);
+            rollDiceButton.gameObject.SetActive(false);
+            exchangeButton.gameObject.SetActive(false);
+            buyPropertyButton.gameObject.SetActive(false);
+            auctionButton.gameObject.SetActive(false);
+            rollDiceButton.onClick.AddListener(DoRollDice);
+            buyPropertyButton.onClick.AddListener(DoBuyProperty);
+            actionEndButton.onClick.AddListener(DoActionEnd);
         }
 
         void OnDestroy()
@@ -103,6 +118,16 @@ namespace Monopoly.Runtime
             }
         }
 
+        public void Crash()
+        {
+            // FIXME: IMPLEMENT WEBGL
+#if UNITY_WEBGL
+
+#else
+            Application.Quit();
+#endif
+        }
+
         void OnApplicationQuit()
         {
             if (sock != null)
@@ -115,11 +140,69 @@ namespace Monopoly.Runtime
         void Update()
         {
 #if !UNITY_WEBGL || UNITY_EDITOR
-            if (sock != null)
+            if (sock != null && !UIDirector.IsUIBlockingNet)
             {
                 sock.Sock.DispatchMessageQueue();
             }
 #endif
+        }
+
+        private IEnumerator OpenGameSocket()
+        {
+            if (ClientLobbyState.token != null)
+            {
+                // we have arrived from the lobby, so now we need to open the
+                // game socket
+                string address = ClientLobbyState.address;
+                int port = ClientLobbyState.port;
+                ClientLobbyState.ConnectMode mode = ClientLobbyState.connectMode;
+                Dictionary<string, string> par = new Dictionary<string, string>();
+                if (mode == ClientLobbyState.ConnectMode.ONLINE)
+                    par.Add("token", ClientLobbyState.token);
+                else
+                    par.Add("token", ClientLobbyState.clientUUID);
+                string gameToken;
+                // FIXME: get the webgl token from the exec args!!
+#if UNITY_WEBGL
+                gameToken = null;
+#else
+                gameToken = ClientLobbyState.currentLobby;
+#endif
+                PacketSocket socket =
+                    PacketSocket.CreateSocket(address, port, par, gameToken, false);
+                socket.Connect();
+                // wait for the socket to open or die
+                yield return new WaitUntil(delegate
+                {
+                    return socket.HasError() || socket.IsOpen();
+                });
+                if (socket.HasError())
+                {
+                    /* FIXME: IMPLEMENT SOCKET ERROR */
+#if UNITY_WEBGL
+
+#else
+
+#endif
+                    //if (mode == ClientLobbyState.ConnectMode.BYIP)
+                    //connectConnector.DisplayError("connection_fail");
+                    //else
+                    //loginConnector.DisplayError("connection_fail");
+                    Debug.LogWarning("Error occured opening game state!");
+                    Destroy(this.gameObject);
+                    yield break;
+                }
+                RegisterSocket(ClientLobbyState.clientUUID,
+                               ClientLobbyState.token,
+                               socket);
+
+                //Player p = new Player(ClientLobbyState.clientUUID,
+                 //                     ClientLobbyState.clientUsername,
+                //                      1);
+                //ManuallyRegisterPlayer(p, true);
+
+                UIDirector.IsMenuOpen = false;
+            }
         }
 
         public Dictionary<string, int> GetSquareDataIndex(int idx)
@@ -135,6 +218,7 @@ namespace Monopoly.Runtime
             if (chatBox.text.Length > 0)
                 chatBox.text += "<br>";
             chatBox.text += msg;
+            chatScroller.normalizedPosition = new Vector2(0, 0);
             Debug.Log(msg);
         }
 
@@ -177,9 +261,10 @@ namespace Monopoly.Runtime
             CanPerformAction = false;
         }
 
-        public void RegisterSocket(string uuid, PacketSocket sock)
+        public void RegisterSocket(string uuid, string token, PacketSocket sock)
         {
             this.clientUUID = uuid;
+            this.token = token;
             this.sock = sock;
             comm = new PacketCommunicator(sock);
             comm.OnError += OnError;
@@ -193,10 +278,14 @@ namespace Monopoly.Runtime
             comm.OnMove += OnMove;
             comm.OnDisconnect += OnDisconnect;
             comm.OnReconnect += OnReconnect;
+            comm.OnGameStart += OnGameStart;
+            comm.OnGameStartDice += OnGameStartDice;
+            comm.OnGameStartDiceResult += OnGameStartDiceResult;
             comm.OnRoundStart += OnRoundStart;
             comm.OnRoundDiceResult += OnRoundDiceResult;
             comm.OnActionStart += OnActionStart;
             comm.OnActionTimeout += OnActionTimeout;
+            comm.OnRoundRandomCard += OnRoundRandomCard;
         }
 
         public int GetPlayerIndex(string uuid)
@@ -219,7 +308,7 @@ namespace Monopoly.Runtime
             return -1;
         }
 
-        public void ManuallyRegisterPlayer(Player p)
+        public void ManuallyRegisterPlayer(Player p, bool me)
         {
             players.Add(p);
             int prefabIndex = p.CharacterIdx % piecePrefabs.Length;
@@ -227,16 +316,70 @@ namespace Monopoly.Runtime
                 Instantiate(piecePrefabs[prefabIndex], boardObject.transform);
             PlayerPiece pp = playerPiece.GetComponent<PlayerPiece>();
             pp.playerUUID = p.Id;
-            pp.playerIndex = players.Count - 1;
+            pp.playerIndex = p.CharacterIdx;
             pp.SetPosition(0);
             playerPieces.Add(pp);
             playerInfo.AddPlayer(p);
+            if (me)
+                myPlayer = p;
+        }
+
+        public void DoRollDice()
+        {
+            if (comm == null)
+                return;
+            if (isRoundStart)
+            {
+                isRoundStart = false;
+                rollDiceButton.gameObject.SetActive(false);
+                comm.DoGameStartDiceThrow(clientUUID);
+            }
+            else
+            {
+                comm.DoRoundDiceChoice(clientUUID, PacketRoundDiceChoice.DiceChoice.ROLL_DICE);
+            }
+        }
+
+        public void DoBuyProperty()
+        {
+            if (comm != null)
+                comm.DoBuyProperty(clientUUID, myPlayer.Position);
+        }
+
+        public void DoBuyHouse()
+        {
+            if (comm != null)
+                comm.DoBuyHouse(clientUUID, myPlayer.Position);
+        }
+
+        public void DoMortgageProperty()
+        {
+            if (comm != null)
+                comm.DoMortgageProperty(clientUUID, myPlayer.Position);
+        }
+
+        public void DoUnmortgageProperty()
+        {
+            if (comm != null)
+                comm.DoUnmortgageProperty(clientUUID, myPlayer.Position);
+        }
+
+        public void DoSellHouse()
+        {
+            if (comm != null)
+                comm.DoSellHouse(clientUUID, myPlayer.Position);
         }
 
         public void DoMessage(string message)
         {
             if (comm != null)
                 comm.DoMessage(clientUUID, message);
+        }
+
+        public void DoActionEnd()
+        {
+            if (comm != null)
+                comm.DoEndAction();
         }
 
         public void OnError(PacketException packet)
@@ -339,6 +482,8 @@ namespace Monopoly.Runtime
                         OwnableNameLoggable(os)));
                 }
             }
+            buyPropertyButton.gameObject.SetActive(false);
+            auctionButton.gameObject.SetActive(false);
         }
 
         public void OnMortgageProperty(PacketActionMortgageSucceed packet)
@@ -411,10 +556,22 @@ namespace Monopoly.Runtime
                                                packet.MovingPlayerId));
                 return;
             }
+            buyPropertyButton.gameObject.SetActive(false);
+            auctionButton.gameObject.SetActive(false);
             if (packet.DestinationSquare >= 0 && packet.DestinationSquare <= 39)
             {
                 p.Position = packet.DestinationSquare;
                 playerPieces[GetPlayerPieceIndex(p.Id)].SetPosition(p.Position);
+                Square square = Board.GetSquare(packet.DestinationSquare);
+                if (myPlayer == playerTurn && square.IsOwnable())
+                {
+                    OwnableSquare os = (OwnableSquare) square;
+                    if (os.Owner == null)
+                    {
+                        buyPropertyButton.gameObject.SetActive(true);
+                        auctionButton.gameObject.SetActive(true);
+                    }
+                }
             }
         }
 
@@ -450,18 +607,24 @@ namespace Monopoly.Runtime
 
         public void OnRoundStart(PacketRoundStart packet)
         {
-            // TODO: Implement ui popup and whatnot
             Player p = Player.PlayerFromUUID(players, packet.PlayerId);
+            playerTurn = p;
             if (packet.PlayerId.Equals(clientUUID))
             {
                 CanRollDice = true;
                 Debug.Log(string.Format("Your turn to roll the dice. ({0})",
                                         clientUUID));
+                rollDiceButton.gameObject.SetActive(true);
+                exchangeButton.gameObject.SetActive(true);
             }
             else
             {
                 Debug.Log(string.Format("Player {0} to roll the dice.",
                                         clientUUID));
+                rollDiceButton.gameObject.SetActive(false);
+                exchangeButton.gameObject.SetActive(false);
+                buyPropertyButton.gameObject.SetActive(false);
+                auctionButton.gameObject.SetActive(false);
             }
             LogMessage(string.Format(
                 StringLocaliser.GetString("on_round_start"),
@@ -471,6 +634,7 @@ namespace Monopoly.Runtime
         public void OnRoundDiceResult(PacketRoundDiceResults packet)
         {
             // TODO: Implement ui popup, piece animation, etc.
+            rollDiceButton.gameObject.SetActive(false);
             Player p = Player.PlayerFromUUID(players, packet.PlayerId);
             switch (packet.Reason)
             {
@@ -503,11 +667,46 @@ namespace Monopoly.Runtime
             }
         }
 
+        public void OnRoundRandomCard(PacketRoundRandomCard packet)
+        {
+            if (packet.IsCommunity)
+            {
+
+            }
+            Debug.Log(StringLocaliser.GetString("card" + packet.CardId));
+        }
+
+        public void OnGameStart(PacketGameStart packet)
+        {
+            LogMessage(StringLocaliser.GetString("game_start"));
+            foreach (PacketGameStateInternal playerData in packet.Players)
+            {
+                Player player = new Player(playerData.PlayerId, playerData.PlayerName, playerData.Money, playerData.Piece);
+                ManuallyRegisterPlayer(player, playerData.PlayerId.Equals(ClientLobbyState.clientUUID));
+                playerInfo.SetMoney(player, player.Money);
+            }
+        }
+
+        public void OnGameStartDice(PacketGameStartDice packet)
+        {
+            isRoundStart = true;
+            rollDiceButton.gameObject.SetActive(true);
+        }
+
+        public void OnGameStartDiceResult(PacketGameStartDiceResults packet)
+        {
+            rollDiceButton.gameObject.SetActive(false);
+        }
+
         public void OnActionStart(PacketActionStart packet)
         {
             // TODO: Implement + update UI options
-            if (packet.PlayerId.Equals(clientUUID))
+            if (myPlayer == playerTurn)
+            {
                 CanPerformAction = true;
+                exchangeButton.gameObject.SetActive(true);
+                actionEndButton.gameObject.SetActive(true);
+            }
             Debug.Log("Turn started.");
         }
 
@@ -515,6 +714,8 @@ namespace Monopoly.Runtime
         {
             // TODO: Implement + update UI options
             CanPerformAction = false;
+            exchangeButton.gameObject.SetActive(false);
+            actionEndButton.gameObject.SetActive(false);
             Debug.Log("Turn ended.");
         }
 

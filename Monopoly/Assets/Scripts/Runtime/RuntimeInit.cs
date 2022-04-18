@@ -26,6 +26,8 @@ namespace Monopoly.Runtime
         public static Guid localUUID;
         public static string localUsername;
 
+        public static GameObject persistentGameObject;
+
         private void LoadLanguage(int language)
         {
             // NOTE: PUT LANGUAGE MODULES HERE TO LOAD PLEASE
@@ -50,6 +52,7 @@ namespace Monopoly.Runtime
             if (!Guid.TryParse(uuid, out localUUID))
                 localUUID = Guid.NewGuid();
             PlayerPrefs.SetString("local_uuid", localUUID.ToString());
+            localUUID = Guid.NewGuid(); // FIXME: REMOVE IN PRODUCTION!!!!!
             // now load the username
             localUsername = PlayerPrefs.GetString("local_usernme", "Player");
             PlayerPrefs.SetString("local_username", localUsername);
@@ -64,6 +67,7 @@ namespace Monopoly.Runtime
                 Destroy(gameObject);
                 return;
             }
+            persistentGameObject = this.gameObject;
             init = true;
             int language = PlayerPrefs.GetInt("language", 0);
             LoadLanguage(language);

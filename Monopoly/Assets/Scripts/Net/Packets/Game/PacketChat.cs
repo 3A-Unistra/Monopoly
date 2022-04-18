@@ -17,7 +17,7 @@ namespace Monopoly.Net.Packets
     public class PacketChat : Packet
     {
 
-        [JsonProperty("id_player")]
+        [JsonProperty("player_token")]
         public string PlayerId { get; private set; }
 
         [JsonProperty("message")]

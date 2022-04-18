@@ -16,7 +16,7 @@ namespace Monopoly.Net.Packets
 
     public class PacketRoundStart : Packet
     {
-        [JsonProperty("id_player")]
+        [JsonProperty("current_player")]
         public string PlayerId { get; private set; }
 
         public PacketRoundStart(string playerId) : base("RoundStart")

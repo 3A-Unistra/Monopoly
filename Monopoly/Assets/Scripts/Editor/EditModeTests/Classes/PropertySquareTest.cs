@@ -37,8 +37,8 @@ namespace Monopoly.Classes
         {
             PropertySquare st = new PropertySquare(3, 200, 40, 20, 80, 120, 140 , 200 , 250 );
             PropertySquare st2 = new PropertySquare(1, 200, 40, 20, 80, 120, 140 , 200 , 250 );
-            Player p = new Player("0", "test", 0);
-            Player p2 = new Player("1", "test1", 1);
+            Player p = new Player("0", "test", 1500, 0);
+            Player p2 = new Player("1", "test1", 1500, 1);
             st.Owner = p2;
             st.PayRent(p);
             Assert.AreEqual(1460, p.Money);

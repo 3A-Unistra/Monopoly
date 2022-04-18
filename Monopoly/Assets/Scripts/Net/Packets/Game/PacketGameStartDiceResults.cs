@@ -16,14 +16,24 @@ namespace Monopoly.Net.Packets
 
     public class PacketGameStartDiceResults : Packet
     {
-        [JsonProperty("id_player")]
+        [JsonProperty("player_token")]
         public string PlayerId { get; private set; }
 
-        [JsonProperty("dice_result")]
-        public int DiceResult { get; private set; }
+        [JsonProperty("dice_results")]
+        public Dictionary<string, int> DiceResult;
 
-        public PacketGameStartDiceResults(string playerId, int diceResult) : 
-            base("GameStartDiceResults")
+        /*[JsonProperty("dice1")]
+        public int Dice1 { get; private set; }
+
+        [JsonProperty("dice2")]
+        public int Dice2 { get; private set; }
+
+        [JsonProperty("win")]
+        public bool Win { get; private set; }*/
+
+        public PacketGameStartDiceResults(string playerId,
+                                          Dictionary<string, int> diceResult)
+            : base("GameStartDiceResults")
         {
             this.PlayerId = playerId;
             this.DiceResult = diceResult;

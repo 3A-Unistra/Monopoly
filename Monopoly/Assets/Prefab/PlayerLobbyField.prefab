@@ -404,8 +404,9 @@ GameObject:
   - component: {fileID: 6242178037683804897}
   - component: {fileID: 1846764324975666304}
   - component: {fileID: 7493987264988635987}
+  - component: {fileID: -1312710548222332791}
   m_Layer: 5
-  m_Name: Player
+  m_Name: PlayerLobbyField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -477,3 +478,17 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: 0
   m_LayoutPriority: 1
+--- !u!114 &-1312710548222332791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4880388025229066865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f469e94a9f8406e85b3c3777934a33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Avatar: {fileID: 3118473100482463077}
+  Name: {fileID: 3566633703578505752}

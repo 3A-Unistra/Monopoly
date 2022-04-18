@@ -16,7 +16,7 @@ namespace Monopoly.Net.Packets
 
     public class PacketPlayerExitPrison : Packet
     {
-        [JsonProperty("id_player")]
+        [JsonProperty("player_token")]
         public string PlayerId { get; private set; }
 
         public PacketPlayerExitPrison(string playerId) : 

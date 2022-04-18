@@ -16,7 +16,7 @@ namespace Monopoly.Net.Packets
 
     public class PacketActionExchange : Packet
     {
-        [JsonProperty("id_player")]
+        [JsonProperty("player_token")]
         public string PlayerId { get; private set; }
 
         public PacketActionExchange(string playerId) : base("ActionExchange")

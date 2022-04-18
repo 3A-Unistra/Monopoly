@@ -24,6 +24,14 @@ namespace Monopoly.UI
          */
         public static bool IsMenuOpen { get; set; }
 
+        /**
+         * <summary>
+         *     Boolean property that equates to <c>true</c> if and only if a
+         *     menu is trying to open and thus blocking net packets.
+         * </summary>
+         */
+        public static bool IsUIBlockingNet { get; set; }
+
     }
 
 }

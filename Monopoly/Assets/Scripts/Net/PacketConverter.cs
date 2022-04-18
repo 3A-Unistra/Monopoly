@@ -38,19 +38,30 @@ namespace Monopoly.Net
             // LOBBY PACKETS
             { "AppletPrepare", typeof(PacketAppletPrepare) },
             { "BroadcastUpdateLobby", typeof(PacketBroadcastUpdateLobby) },
+            { "BroadcastUpdateRoom", typeof(PacketBroadcastUpdateRoom) },
             { "BroadcastNewRoomToLobby", typeof(PacketBroadcastNewRoomToLobby) },
             { "CreateGame", typeof(PacketCreateGame) },
             { "CreateGameSucceed", typeof(PacketCreateGameSucceed) },
+            { "EnterRoom", typeof(PacketEnterRoom) },
+            { "EnterRoomSucceed", typeof(PacketEnterRoomSucceed) },
+            { "LeaveRoom", typeof(PacketLeaveRoom) },
+            { "LeaveRoomSucceed", typeof(PacketLeaveRoomSucceed) },
+            { "DeleteRoom", typeof(PacketDeleteRoom) },
+            { "DeleteRoomSucceed", typeof(PacketDeleteRoomSucceed) },
             { "LaunchGame", typeof(PacketLaunchGame) },
+            { "NewHost", typeof(PacketNewHost) },
+            { "AddBot", typeof(PacketAddBot) },
 
             // GAME PACKETS
             { "Exception", typeof(PacketException) },
             { "AppletReady", typeof(PacketAppletReady) },
+            { "Ping", typeof(PacketPing) },
             { "GameStart", typeof(PacketGameStart) },
             { "GameEnd", typeof(PacketGameEnd) },
             { "PlayerReconnect", typeof(PacketPlayerReconnect) },
             { "PlayerDisconnect", typeof(PacketPlayerDisconnect) },
             { "PlayerDefeat", typeof(PacketPlayerDefeat) },
+            { "PlayerValid", typeof(PacketPlayerValid) },
             { "GameStartDice", typeof(PacketGameStartDice) },
             { "GameStartDiceThrow", typeof(PacketGameStartDiceThrow) },
             { "GameStartDiceResults", typeof(PacketGameStartDiceResults) },
@@ -148,6 +159,7 @@ namespace Monopoly.Net
                                                       type,
                                                       SpecifiedSubclassConversion);
                 }
+                return null;
             }
             catch (JsonReaderException e)
             {
@@ -155,7 +167,7 @@ namespace Monopoly.Net
                 return null;
 
             }
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public override void WriteJson(JsonWriter writer, object value,

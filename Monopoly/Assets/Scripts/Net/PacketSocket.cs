@@ -16,13 +16,13 @@ namespace Monopoly.Net
         private bool open, error;
 
         public static PacketSocket CreateSocket(string address, int port,
-                                                bool lobby, bool secure)
+                                                string gameToken, bool secure)
         {
-            return CreateSocket(address, port, null, lobby, secure);
+            return CreateSocket(address, port, null, gameToken, secure);
         }
 
         public static PacketSocket CreateSocket(string address, int port,
-            Dictionary<string, string> paramsdic, bool lobby, bool secure)
+            Dictionary<string, string> paramsdic, string gameToken, bool secure)
         {
             if (port < 0 || port > 65535)
             {
@@ -31,11 +31,11 @@ namespace Monopoly.Net
                 return null;
             }
             return CreateSocket(string.Format("{0}:{1}", address, port),
-                                paramsdic, lobby, secure);
+                                paramsdic, gameToken, secure);
         }
 
         public static PacketSocket CreateSocket(string addressport,
-            Dictionary<string, string> paramsdic, bool lobby, bool secure)
+            Dictionary<string, string> paramsdic, string gameToken, bool secure)
         {
             addressport = addressport.Trim();
             if (addressport == null || addressport.Equals(""))
@@ -58,7 +58,8 @@ namespace Monopoly.Net
                 }
             }
             string protocol = secure ? "wss" : "ws";
-            string type = lobby ? "lobby" : "game";
+            string type = gameToken == null ? "lobby" :
+                          string.Format("game/{0}", gameToken);
             string loc = string.Format("{0}://{1}/ws/{2}{3}",
                                        protocol, addressport, type,
                                        sb.ToString());

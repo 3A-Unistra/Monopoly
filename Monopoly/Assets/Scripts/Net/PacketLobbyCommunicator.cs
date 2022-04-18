@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Monopoly.Net.Packets;
+using Monopoly.Runtime;
 
 namespace Monopoly.Net
 {
@@ -21,10 +22,18 @@ namespace Monopoly.Net
         public delegate void PacketDelegate<T>(T packet);
 
         public event PacketDelegate<PacketException>            OnError;
+        public event PacketDelegate<PacketAppletPrepare>        OnAppletPrepare;
         public event PacketDelegate<PacketCreateGameSucceed>
                                                          OnCreateGameSucceed;
+        public event PacketDelegate<PacketEnterRoomSucceed>
+                                                         OnEnterRoomSucceed;
+        public event PacketDelegate<PacketLeaveRoomSucceed>
+                                                         OnLeaveRoomSucceed;
+        public event PacketDelegate<PacketDeleteRoomSucceed>
+                                                         OnDeleteRoomSucceed;
         public event PacketDelegate<PacketLaunchGame>           OnGameStart;
         public event PacketDelegate<PacketBroadcastUpdateLobby> OnLobbyUpdate;
+        public event PacketDelegate<PacketBroadcastUpdateRoom>  OnRoomUpdate;
         public event PacketDelegate<PacketBroadcastNewRoomToLobby>
                                                          OnBroadcastCreateGame;
 
@@ -39,6 +48,12 @@ namespace Monopoly.Net
             }
             this.socket = socket;
             socket.Sock.OnMessage += (data) => ReceivePacket(data);
+        }
+
+        public void DoLaunchGame()
+        {
+            PacketLaunchGame packet = new PacketLaunchGame();
+            SendPacket(packet);
         }
 
         public void DoCreateGame(string playerId, int maxPlayers,
@@ -56,9 +71,42 @@ namespace Monopoly.Net
             SendPacket(packet);
         }
 
+        public void DoEnterRoom(string lobbyToken, string password)
+        {
+            PacketEnterRoom packet =
+                new PacketEnterRoom(lobbyToken, password);
+            SendPacket(packet);
+        }
+
+        public void DoLeaveRoom(string playerId)
+        {
+            PacketLeaveRoom packet = new PacketLeaveRoom(playerId);
+            SendPacket(packet);
+        }
+
+        public void DoDeleteRoom(string playerId)
+        {
+            PacketDeleteRoom packet =
+                new PacketDeleteRoom(playerId);
+            SendPacket(packet);
+        }
+
         private async void SendPacket(Packet packet)
         {
-            await socket.Sock.SendText(packet.Serialize());
+#if UNITY_EDITOR
+            Debug.Log("WebSocket send: " + packet.Serialize());
+#endif
+            // FIXME causes a crash if the server went offline
+            try
+            {
+                await socket.Sock.SendText(packet.Serialize());
+            }
+            catch (System.Exception e)
+            {
+                //Debug.LogException(e);
+                Debug.LogWarning("WebSocket died. Will now quit the lobby...");
+                ClientLobbyState.current.Crash();
+            }
         }
 
         private void ReceivePacket(byte[] data)
@@ -76,12 +124,22 @@ namespace Monopoly.Net
             {
             case PacketException packet:
                 OnError(packet); break;
+            case PacketAppletPrepare packet:
+                OnAppletPrepare(packet); break;
             case PacketCreateGameSucceed packet:
                 OnCreateGameSucceed(packet); break;
+            case PacketEnterRoomSucceed packet:
+                OnEnterRoomSucceed(packet); break;
+            case PacketLeaveRoomSucceed packet:
+                OnLeaveRoomSucceed(packet); break;
+            case PacketDeleteRoomSucceed packet:
+                OnDeleteRoomSucceed(packet); break;
             case PacketLaunchGame packet:
                 OnGameStart(packet); break;
             case PacketBroadcastUpdateLobby packet:
                 OnLobbyUpdate(packet); break;
+            case PacketBroadcastUpdateRoom packet:
+                OnRoomUpdate(packet); break;
             case PacketBroadcastNewRoomToLobby packet:
                 OnBroadcastCreateGame(packet); break;
             }

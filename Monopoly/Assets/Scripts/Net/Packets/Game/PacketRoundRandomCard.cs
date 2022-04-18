@@ -16,21 +16,21 @@ namespace Monopoly.Net.Packets
 
     public class PacketRoundRandomCard : Packet
     {
-        [JsonProperty("id_player")]
+        [JsonProperty("player_token")]
         public string PlayerId { get; private set; }
 
-        [JsonProperty("is_communautaire")]
-        public bool IsCommunautaire { get; private set; }
+        [JsonProperty("is_community")]
+        public bool IsCommunity { get; private set; }
 
-        [JsonProperty("card_content")]
-        public string CardContent { get; private set; }
+        [JsonProperty("card_id")]
+        public int CardId { get; private set; }
 
-        public PacketRoundRandomCard(string playerId, bool isCommunautaire, 
-            string cardContent) : base("RoundRandomCard")
+        public PacketRoundRandomCard(string playerId, bool isCommunity, 
+            int cardId) : base("RoundRandomCard")
         {
             this.PlayerId = playerId;
-            this.IsCommunautaire = isCommunautaire;
-            this.CardContent = cardContent;
+            this.IsCommunity = isCommunity;
+            this.CardId = cardId;
         }
 
     }

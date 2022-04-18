@@ -8,6 +8,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 using Monopoly.Net;
 
@@ -17,9 +18,18 @@ namespace Monopoly.Net.Packets
     public class PacketGameStart : Packet
     {
 
-        public PacketGameStart() : base("GameStart")
-        {
+        [JsonProperty("game_name")]
+        public string GameName { get; private set; }
 
+        [JsonProperty("players")]
+        public List<PacketGameStateInternal> Players { get; private set; }
+
+        public PacketGameStart(string gameName,
+                               List<PacketGameStateInternal> players)
+            : base("GameStart")
+        {
+            this.GameName = gameName;
+            this.Players = players;
         }
 
     }

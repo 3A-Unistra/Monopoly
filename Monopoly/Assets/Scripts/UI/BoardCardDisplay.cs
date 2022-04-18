@@ -29,6 +29,8 @@ namespace Monopoly.UI
 
         public Button buyHouseButton;
         public Button sellHouseButton;
+        public Button mortgageButton;
+        public Button unmortgageButton;
 
         private RectTransform rect;
         private Canvas canvas;
@@ -38,6 +40,22 @@ namespace Monopoly.UI
             canvas = transform.parent.GetComponent<Canvas>();
             rect = GetComponent<RectTransform>();
             SetOwner(null);
+            buyHouseButton.onClick.AddListener(delegate
+            {
+                ClientGameState.current.DoBuyHouse();
+            });
+            sellHouseButton.onClick.AddListener(delegate
+            {
+                ClientGameState.current.DoSellHouse();
+            });
+            mortgageButton.onClick.AddListener(delegate
+            {
+                ClientGameState.current.DoMortgageProperty();
+            });
+            unmortgageButton.onClick.AddListener(delegate
+            {
+                ClientGameState.current.DoUnmortgageProperty();
+            });
             gameObject.SetActive(false);
         }
 
@@ -86,17 +104,22 @@ namespace Monopoly.UI
                     ClientGameState.current.Board.GetSquare(square);
                 SetOwner(os.Owner);
                 bool canModify = false;
-                if (PropertySquare.IsPropertyIndex(square))
+                bool canUnmortgage = false;
+                if (os.Owner != null &&
+                    PropertySquare.IsPropertyIndex(square))
                 {
                     PropertySquare ps = (PropertySquare) os;
                     if (ClientGameState.current.Board.OwnSameColorSet
                         (ps.Owner, ps))
                     {
-                        canModify = true;
+                        canModify = !ps.Mortgaged;
+                        canUnmortgage = ps.Mortgaged;
                     }
                 }
                 buyHouseButton.gameObject.SetActive(canModify);
                 sellHouseButton.gameObject.SetActive(canModify);
+                mortgageButton.gameObject.SetActive(canModify);
+                unmortgageButton.gameObject.SetActive(canUnmortgage);
 
                 UpdatePosition();
                 gameObject.SetActive(true);

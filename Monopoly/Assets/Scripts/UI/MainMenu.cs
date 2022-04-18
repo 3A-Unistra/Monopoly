@@ -52,6 +52,7 @@ namespace Monopoly.UI
             QuitText.text = StringLocaliser.GetString("quit");
 
             UIDirector.IsMenuOpen = true;
+            UIDirector.IsUIBlockingNet = false;
         }
 
         void OnDestroy()
