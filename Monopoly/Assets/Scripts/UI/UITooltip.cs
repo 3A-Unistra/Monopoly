@@ -30,26 +30,17 @@ namespace Monopoly.UI
 
         private string text;
 
-        private static UITooltip current;
-
-        static UITooltip()
-        {
-            current = null;
-        }
-
         void Start()
         {
-            text = StringLocaliser.GetString(LocaleText);
+            text = null;
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            //if (current != null)
-            //    return;
-            //current = this;
             TooltipViewer viewer = TooltipViewer.current;
             if (viewer != null)
             {
+                text = StringLocaliser.GetString(LocaleText);
                 viewer.SetText(text);
                 viewer.gameObject.SetActive(true);
             }
@@ -57,7 +48,6 @@ namespace Monopoly.UI
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            current = null;
             TooltipViewer viewer = TooltipViewer.current;
             if (viewer != null)
                 viewer.gameObject.SetActive(false);

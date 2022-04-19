@@ -8,7 +8,9 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Monopoly.UI
 {
@@ -31,6 +33,28 @@ namespace Monopoly.UI
          * </summary>
          */
         public static bool IsUIBlockingNet { get; set; }
+
+        // http://answers.unity.com/answers/1797644/view.html
+        public static bool IsEditingInputField()
+        {
+            if (EventSystem.current != null)
+            {
+                GameObject currentFocus = EventSystem.current.currentSelectedGameObject;
+                if (currentFocus != null)
+                {
+                    Debug.Log(currentFocus);
+                    return currentFocus.TryGetComponent(out TMP_InputField _);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
 
     }
 

@@ -97,6 +97,8 @@
     "on_dice_throw": "{0} threw {1}.",
     "on_disconnect": "{0} disconnected.",
     "on_reconnect": "{0} reconnected.",
+    "on_enter_prison": "{0} has entered jail!",
+    "on_exit_prison": "{0} has left jail.",
     "fullscreen": "Fullscreen",
     "shadow": "Shadow",
     "quality": "Quality",
@@ -165,5 +167,8 @@
     "button_mortgage": "Mortgage property",
     "button_unmortgage": "Unmortgage property",
     "button_actionend": "End turn",
+    "button_togglechat": "Toggle chat",
+    "button_exitprisonmoney": "Leave jail (pay 50€)",
+    "button_exitprisoncard": "Leave jail (use free card)",
     "game_start": "Let the game begin!"
 }

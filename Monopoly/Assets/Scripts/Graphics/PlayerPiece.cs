@@ -49,11 +49,11 @@ namespace Monopoly.Graphics
         {
             idx = 0;
             oldIdx = 0;
-            if (playerUUID == null)
-            {
-                Debug.LogError("Tried to instantiate dead player piece.");
-                Destroy(gameObject);
-            }
+            //if (playerUUID == null)
+            //{
+            //    Debug.LogError("Tried to instantiate dead player piece.");
+            //    Destroy(gameObject);
+            //}
             transform.position = CalculateDesiredPosition(idx);
             transform.rotation = CalculateDesiredRotation(idx);
             //StartCoroutine(Move());
@@ -72,6 +72,7 @@ namespace Monopoly.Graphics
                     tmpindex = 0;
                     ++i;
                 }
+                SetPosition(tmpindex);
             }
         }
 

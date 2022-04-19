@@ -20,11 +20,6 @@ using UnityEngine.UI;
 
 using Monopoly.Util;
 
-
-
-//TODO LANGUAGES
-//TODO DICE ANIMATION
-
 namespace Monopoly.UI
 {
     public class MenuOptions : MonoBehaviour
@@ -57,10 +52,20 @@ namespace Monopoly.UI
         public TMP_Text CloseText;
         private Resolution[] AvailableResolutions;
 
+        public static MenuOptions current = null;
+
         public static bool ChangesApplied, Dirty, LanguageDirty;
 
         void Start()
         {
+            if (current != null)
+            {
+                Debug.LogWarning("Cannot instantiate multiple options menus!");
+                Destroy(this.gameObject);
+                return;
+            }
+            current = this;
+
             BuildResolutions();
             BuildQuality();
             BuildLanguages();
@@ -252,9 +257,9 @@ namespace Monopoly.UI
             {
                 PreferenceApply.ApplySettings();
                 PreferenceApply.SaveSettings();
+                current = null;
                 GameObject optionMenu = Instantiate(OptionMenuPrefab, transform.parent);
                 Destroy(this.gameObject);
-
             }
             else
             {
@@ -285,6 +290,7 @@ namespace Monopoly.UI
                 Instantiate(MainMenuPrefab, transform.parent);
                 MainMenu.OptionsOpened = false;
             }
+            current = null;
             Destroy(this.gameObject);
         }
     }

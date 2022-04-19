@@ -63,6 +63,7 @@ namespace Monopoly.UI
             }
             animating = false;
         }
+
         private void SwitchAnimation()
         {
             Vector3 toPos;

@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using Monopoly.UI;
+
 namespace Monopoly.Camera
 {
 
@@ -139,6 +141,20 @@ namespace Monopoly.Camera
          */
         public Button perspectiveButton;
 
+        /**
+         * <summary>
+         *     The sprite to use for the isometrtic view change.
+         * </summary>
+         */
+        public Sprite isometricSprite;
+
+        /**
+         * <summary>
+         *     The sprite to use for the top-down view change.
+         * </summary>
+         */
+        public Sprite topdownSprite;
+
         void Start()
         {
             float axisDistance = Mathf.Sqrt(2f) / 2f;
@@ -170,7 +186,10 @@ namespace Monopoly.Camera
                 );
             }
             if (perspectiveButton != null)
+            {
                 perspectiveButton.onClick.AddListener(ToggleCameraMode);
+                SetPerspectiveSprite();
+            }
         }
 
         /**
@@ -196,6 +215,7 @@ namespace Monopoly.Camera
                     pivotTo = Quaternion.Euler(90, 90+(90*rotationSide), 0);
                 }
                 animateTime = 0.0f;
+                SetPerspectiveSprite();
             }
         }
 
@@ -277,17 +297,31 @@ namespace Monopoly.Camera
             }
         }
 
+        private void SetPerspectiveSprite()
+        {
+            if (perspectiveButton != null)
+            {
+                if (LookMode == CameraLookMode.ISOMETRIC)
+                    perspectiveButton.image.sprite = topdownSprite;
+                else
+                    perspectiveButton.image.sprite = isometricSprite;
+            }
+        }
+
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.F))
+            if (!UIDirector.IsEditingInputField())
             {
-                ToggleCameraMode();
-            }
-            else if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.E))
-            {
-                int pivotDir = (Input.GetKeyDown(KeyCode.Q) ? 1 : 0) +
-                               (Input.GetKeyDown(KeyCode.E) ? -1 : 0);
-                RotateCamera(pivotDir);
+                if (Input.GetKeyDown(KeyCode.F))
+                {
+                    ToggleCameraMode();
+                }
+                else if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.E))
+                {
+                    int pivotDir = (Input.GetKeyDown(KeyCode.Q) ? 1 : 0) +
+                                   (Input.GetKeyDown(KeyCode.E) ? -1 : 0);
+                    RotateCamera(pivotDir);
+                }
             }
             if (Input.mouseScrollDelta.y != 0)
             {
