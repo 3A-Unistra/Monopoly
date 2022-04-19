@@ -290,13 +290,13 @@ namespace Monopoly.Net
             try {
                 await socket.Sock.SendText(packet.Serialize());
             }
-            catch (System.Exception e)
+            catch (System.Exception)
             {
                 //Debug.LogException(e);
                 Debug.LogWarning("WebSocket died. Will now quit the game...");
                 ClientGameState.current.Crash();
             }
-}
+        }
 
         private void ReceivePacket(byte[] data)
         {
@@ -308,7 +308,7 @@ namespace Monopoly.Net
             string stringData = System.Text.Encoding.UTF8.GetString(data);
             Packet p = Packet.Deserialize(stringData);
             if (p == null)
-                return; /* TODO: Error? */
+                return;
             switch (p)
             {
             case PacketException packet:

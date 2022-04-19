@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 using Monopoly.Util;
@@ -86,6 +87,7 @@ namespace Monopoly.Runtime
             if (msg.Length == 0)
                 return;
             chatInput.text = ""; // clear the input
+            EventSystem.current.SetSelectedGameObject(null, null);
             ClientGameState.current.DoMessage(msg);
         }
 

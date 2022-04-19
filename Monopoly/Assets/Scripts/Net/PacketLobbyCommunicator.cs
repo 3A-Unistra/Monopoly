@@ -96,12 +96,11 @@ namespace Monopoly.Net
 #if UNITY_EDITOR
             Debug.Log("WebSocket send: " + packet.Serialize());
 #endif
-            // FIXME causes a crash if the server went offline
             try
             {
                 await socket.Sock.SendText(packet.Serialize());
             }
-            catch (System.Exception e)
+            catch (System.Exception)
             {
                 //Debug.LogException(e);
                 Debug.LogWarning("WebSocket died. Will now quit the lobby...");
@@ -119,7 +118,7 @@ namespace Monopoly.Net
             string stringData = System.Text.Encoding.UTF8.GetString(data);
             Packet p = Packet.Deserialize(stringData);
             if (p == null)
-                return; /* TODO: Error? */
+                return;
             switch (p)
             {
             case PacketException packet:

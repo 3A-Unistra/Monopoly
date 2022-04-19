@@ -1,15 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using Monopoly.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 using Monopoly.Runtime;
 using Monopoly.Util;
 using Monopoly.Net.Packets;
-using System;
 
 namespace Monopoly.UI
 {

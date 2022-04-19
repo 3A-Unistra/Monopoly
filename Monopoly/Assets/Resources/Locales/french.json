@@ -96,6 +96,8 @@
     "on_dice_throw": "{0} a lancé {1}.",
     "on_disconnect": "{0} a déconnecté.",
     "on_reconnect": "{0} a reconnecté.",
+    "on_enter_prison": "{0} est envoyé en prison !",
+    "on_exit_prison": "{0} est sorti du prison.",
     "fullscreen": "Plein écran",
     "shadow": "Ombre",
     "quality": "Qualité",
@@ -165,5 +167,8 @@
     "button_mortgage": "Hypothèquer le propriété",
     "button_unmortgage": "Déshypothèquer le propriété",
     "button_actionend": "Fin du tour",
+    "button_togglechat": "Réduire le tchat",
+    "button_exitprisonmoney": "Sortir du prison (payer 50 €)",
+    "button_exitprisoncard": "Sortir du prison (carte sortir)",
     "game_start": "C'est parti !"
 }

@@ -23,8 +23,17 @@ namespace Monopoly.UI
 
         private GameObject pauseObject;
 
+        public static PauseHelper current;
+
         void Start()
         {
+            if (current != null)
+            {
+                Debug.LogWarning("Cannot instantiate multiple pause helpers!");
+                Destroy(this.gameObject);
+                return;
+            }
+            current = this;
             MenuOpened = false;
             GetComponent<Button>().onClick.AddListener(OpenPause);
         }
@@ -47,6 +56,13 @@ namespace Monopoly.UI
                 Destroy(pauseObject);
                 MenuOpened = false;
                 UIDirector.IsMenuOpen = false;
+            }
+            else if (MenuOpened && MenuPause.OptionsOpenedFromPauseMenu)
+            {
+                // options escaped, open the pause menu
+                Destroy(MenuOptions.current.gameObject);
+                pauseObject = Instantiate(PrefabPause, transform.parent);
+                UIDirector.IsMenuOpen = true;
             }
         }
 

@@ -67,6 +67,8 @@ namespace Monopoly.Runtime
         public Button exchangeButton;
         public Button buyPropertyButton;
         public Button auctionButton;
+        public Button exitPrisonMoneyButton;
+        public Button exitPrisonCardButton;
 
         private void LoadGameData()
         {
@@ -93,14 +95,12 @@ namespace Monopoly.Runtime
             // let stuff in the scene load, then run this code:
             StartCoroutine(OpenGameSocket());
 
-            actionEndButton.gameObject.SetActive(false);
-            rollDiceButton.gameObject.SetActive(false);
-            exchangeButton.gameObject.SetActive(false);
-            buyPropertyButton.gameObject.SetActive(false);
-            auctionButton.gameObject.SetActive(false);
+            HideAllInteractButtons();
             rollDiceButton.onClick.AddListener(DoRollDice);
             buyPropertyButton.onClick.AddListener(DoBuyProperty);
             actionEndButton.onClick.AddListener(DoActionEnd);
+            exitPrisonMoneyButton.onClick.AddListener(DoExitPrisonMoney);
+            exitPrisonCardButton.onClick.AddListener(DoExitPrisonCard);
         }
 
         void OnDestroy()
@@ -196,11 +196,6 @@ namespace Monopoly.Runtime
                                ClientLobbyState.token,
                                socket);
 
-                //Player p = new Player(ClientLobbyState.clientUUID,
-                 //                     ClientLobbyState.clientUsername,
-                //                      1);
-                //ManuallyRegisterPlayer(p, true);
-
                 UIDirector.IsMenuOpen = false;
             }
         }
@@ -286,6 +281,8 @@ namespace Monopoly.Runtime
             comm.OnActionStart += OnActionStart;
             comm.OnActionTimeout += OnActionTimeout;
             comm.OnRoundRandomCard += OnRoundRandomCard;
+            comm.OnEnterPrison += OnEnterPrison;
+            comm.OnExitPrison += OnExitPrison;
         }
 
         public int GetPlayerIndex(string uuid)
@@ -324,6 +321,17 @@ namespace Monopoly.Runtime
                 myPlayer = p;
         }
 
+        private void HideAllInteractButtons()
+        {
+            actionEndButton.gameObject.SetActive(false);
+            rollDiceButton.gameObject.SetActive(false);
+            exchangeButton.gameObject.SetActive(false);
+            buyPropertyButton.gameObject.SetActive(false);
+            auctionButton.gameObject.SetActive(false);
+            exitPrisonMoneyButton.gameObject.SetActive(false);
+            exitPrisonCardButton.gameObject.SetActive(false);
+        }
+
         public void DoRollDice()
         {
             if (comm == null)
@@ -338,6 +346,20 @@ namespace Monopoly.Runtime
             {
                 comm.DoRoundDiceChoice(clientUUID, PacketRoundDiceChoice.DiceChoice.ROLL_DICE);
             }
+        }
+
+        public void DoExitPrisonMoney()
+        {
+            if (comm == null)
+                return;
+            comm.DoRoundDiceChoice(clientUUID, PacketRoundDiceChoice.DiceChoice.JAIL_PAY);
+        }
+
+        public void DoExitPrisonCard()
+        {
+            if (comm == null)
+                return;
+            comm.DoRoundDiceChoice(clientUUID, PacketRoundDiceChoice.DiceChoice.JAIL_CARD);
         }
 
         public void DoBuyProperty()
@@ -486,6 +508,39 @@ namespace Monopoly.Runtime
             auctionButton.gameObject.SetActive(false);
         }
 
+        public void OnEnterPrison(PacketPlayerEnterPrison packet)
+        {
+            Player p = Player.PlayerFromUUID(players, packet.PlayerId);
+            if (p == null)
+            {
+                Debug.LogWarning(string.Format("Could not find player '{0}'!",
+                                               packet.PlayerId));
+                return;
+            }
+            LogMessage(string.Format(
+                StringLocaliser.GetString("on_enter_prison"),
+                PlayerNameLoggable(p)));
+            p.EnterPrison();
+            playerPieces[GetPlayerPieceIndex(p.Id)].SetPosition(p.Position);
+        }
+
+        public void OnExitPrison(PacketPlayerExitPrison packet)
+        {
+            Player p = Player.PlayerFromUUID(players, packet.PlayerId);
+            if (p == null)
+            {
+                Debug.LogWarning(string.Format("Could not find player '{0}'!",
+                                               packet.PlayerId));
+                return;
+            }
+            LogMessage(string.Format(
+                StringLocaliser.GetString("on_exit_prison"),
+                PlayerNameLoggable(p)));
+            exitPrisonMoneyButton.gameObject.SetActive(false);
+            exitPrisonCardButton.gameObject.SetActive(false);
+            p.ExitPrison();
+        }
+
         public void OnMortgageProperty(PacketActionMortgageSucceed packet)
         {
             Player p = Player.PlayerFromUUID(players, packet.PlayerId);
@@ -614,17 +669,19 @@ namespace Monopoly.Runtime
                 CanRollDice = true;
                 Debug.Log(string.Format("Your turn to roll the dice. ({0})",
                                         clientUUID));
+                if (p.InJail)
+                {
+                    exitPrisonMoneyButton.gameObject.SetActive(true);
+                    exitPrisonCardButton.gameObject.SetActive(true);
+                }
                 rollDiceButton.gameObject.SetActive(true);
-                exchangeButton.gameObject.SetActive(true);
             }
             else
             {
                 Debug.Log(string.Format("Player {0} to roll the dice.",
                                         clientUUID));
-                rollDiceButton.gameObject.SetActive(false);
-                exchangeButton.gameObject.SetActive(false);
-                buyPropertyButton.gameObject.SetActive(false);
-                auctionButton.gameObject.SetActive(false);
+                HideAllInteractButtons();
+
             }
             LogMessage(string.Format(
                 StringLocaliser.GetString("on_round_start"),
@@ -704,6 +761,7 @@ namespace Monopoly.Runtime
             if (myPlayer == playerTurn)
             {
                 CanPerformAction = true;
+                rollDiceButton.gameObject.SetActive(false);
                 exchangeButton.gameObject.SetActive(true);
                 actionEndButton.gameObject.SetActive(true);
             }
@@ -714,8 +772,7 @@ namespace Monopoly.Runtime
         {
             // TODO: Implement + update UI options
             CanPerformAction = false;
-            exchangeButton.gameObject.SetActive(false);
-            actionEndButton.gameObject.SetActive(false);
+            HideAllInteractButtons();
             Debug.Log("Turn ended.");
         }
 
