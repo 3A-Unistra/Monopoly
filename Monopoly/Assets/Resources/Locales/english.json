@@ -170,5 +170,9 @@
     "button_togglechat": "Toggle chat",
     "button_exitprisonmoney": "Leave jail (pay 50€)",
     "button_exitprisoncard": "Leave jail (use free card)",
-    "game_start": "Let the game begin!"
+    "game_start": "Let the game begin!",
+    "auctions": "Auctions",
+    "double_on_go": "Receive 400€ on GO",
+    "buy_first_turn": "Can buy property on first revolution",
+    "starting_balance": "Starting balance"
 }

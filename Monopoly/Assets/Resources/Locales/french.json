@@ -156,7 +156,7 @@
     "password": "Mot de passe",
     "button_pause": "Pause",
     "button_auction": "Enchérir",
-    "button_buyproperty": "Acheteter",
+    "button_buyproperty": "Acheter",
     "button_exchange": "Échanger",
     "button_buyhouse": "Construire une maison",
     "button_sellhouse": "Détruire une maison",
@@ -170,5 +170,9 @@
     "button_togglechat": "Réduire le tchat",
     "button_exitprisonmoney": "Sortir du prison (payer 50 €)",
     "button_exitprisoncard": "Sortir du prison (carte sortir)",
-    "game_start": "C'est parti !"
+    "game_start": "C'est parti !",
+    "auctions": "Enchères",
+    "double_on_go": "Recevoir 400 € sur la case GO",
+    "buy_first_turn": "Acheter dès le premier tour",
+    "starting_balance": "Solde de départ"
 }

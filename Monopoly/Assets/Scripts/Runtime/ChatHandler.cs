@@ -38,7 +38,7 @@ namespace Monopoly.Runtime
             chatSend.onClick.AddListener(
                 delegate { OnSendMessage(chatInput.text); });
             toggleButton.onClick.AddListener(ToggleChat);
-            chatToggle = PreferenceApply.ChatToggle;
+            chatToggle = PlayerPrefs.GetInt("chat_toggle", 0) == 1;
             chatSendText.text = StringLocaliser.GetString("send");
             chatInput.placeholder.GetComponent<TextMeshProUGUI>().text =
                 StringLocaliser.GetString("enter_chat");
@@ -60,14 +60,12 @@ namespace Monopoly.Runtime
         private void HideChat()
         {
             chatView.gameObject.SetActive(false);
-            PreferenceApply.ChatToggle = false;
             PlayerPrefs.SetInt("chat_toggle", 0);
         }
 
         private void ShowChat()
         {
             chatView.gameObject.SetActive(true);
-            PreferenceApply.ChatToggle = true;
             PlayerPrefs.SetInt("chat_toggle", 1);
         }
 
