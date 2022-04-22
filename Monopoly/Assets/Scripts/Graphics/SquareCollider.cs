@@ -470,7 +470,13 @@ namespace Monopoly.Graphics
                 dirty = false;                 
             }
             return;                 
-        } 
+        }
+
+        public static void UpdateAll()
+        {
+            foreach (SquareCollider sc in Colliders.Values)
+                sc.UpdateText();
+        }
 
         void Start()
         {

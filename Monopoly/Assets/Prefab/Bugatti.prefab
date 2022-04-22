@@ -45,7 +45,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerUUID: 
+  step1: 0
+  step2: 0
+  moveSpeed: 5
   playerIndex: 0
+  bigSquarePosition: {x: -0.288, y: 0.425}
+  squarePosition: {x: -0.354, y: 0}
+  prisonPosition: {x: -0.443, y: 0.461}
+  inPrisonPosition: {x: -0.029, y: 0.045}
+  squareScale: {x: 0.1, y: 0.1, z: 0.1}
 --- !u!1 &5415584672735384140
 GameObject:
   m_ObjectHideFlags: 0

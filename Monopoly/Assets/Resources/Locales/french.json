@@ -127,6 +127,7 @@
     "port_input": "Port...",
     "enter_lobby_name": "Insérer le nom du lobby...",
     "enter_password": "Entrer un mot de pass...",
+    "loading": "Chargement...",
     "copy_token": "Copier la clé",
     "invite": "Inviter",
     "start": "Démarrer",

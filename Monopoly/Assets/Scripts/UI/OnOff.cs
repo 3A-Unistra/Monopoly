@@ -25,7 +25,7 @@ namespace Monopoly.UI
         private bool animating;
         private Vector3 leftPos, rightPos;
 
-        public bool enabled
+        public new bool enabled
         {
             get
             {

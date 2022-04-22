@@ -100,6 +100,13 @@ namespace Monopoly.Camera
         public float zoomSpeed = 5.0f;
         /**
          * <summary>
+         *     The amount of zoom per scroll notch for the camera.
+         * </summary>
+         */
+        [Range(0.01f, 1.0f)]
+        public float zoomAmount = 0.2f;
+        /**
+         * <summary>
          *     The number of seconds that a switch between isometric and top-down
          *     viewing angles should take to occur.
          * </summary>
@@ -121,6 +128,7 @@ namespace Monopoly.Camera
         }
         private float animateTime = 0.0f;
         private int rotationSide = 0;
+        private float desiredZoom;
 
         /**
          * <summary>
@@ -190,6 +198,8 @@ namespace Monopoly.Camera
                 perspectiveButton.onClick.AddListener(ToggleCameraMode);
                 SetPerspectiveSprite();
             }
+
+            desiredZoom = cam.orthographicSize;
         }
 
         /**
@@ -258,10 +268,9 @@ namespace Monopoly.Camera
          */
         public void ZoomCamera(float delta)
         {
-            float zoomDisplacement = delta * Time.deltaTime * zoomSpeed;
-            cam.orthographicSize =
-                Mathf.Clamp(cam.orthographicSize + zoomDisplacement,
-                            zoomMin, zoomMax);
+            float amount = zoomAmount * Mathf.Sign(delta);
+            desiredZoom = Mathf.Clamp(desiredZoom + amount,
+                                      zoomMin, zoomMax);
         }
 
         /**
@@ -323,9 +332,18 @@ namespace Monopoly.Camera
                     RotateCamera(pivotDir);
                 }
             }
-            if (Input.mouseScrollDelta.y != 0)
+            if (Mathf.Abs(Input.mouseScrollDelta.y) > 0.1f &&
+                !UIDirector.IsEditingInputField() &&
+                !UIDirector.IsOverScrollView())
             {
                 ZoomCamera(Input.mouseScrollDelta.y);
+            }
+            if (Mathf.Abs(cam.orthographicSize - desiredZoom) > 0.01f)
+            {
+                // lerp the zoom
+                cam.orthographicSize =
+                    Mathf.Lerp(cam.orthographicSize, desiredZoom,
+                               Time.deltaTime * zoomSpeed);
             }
             if (Animating)
                 AnimateCamera();

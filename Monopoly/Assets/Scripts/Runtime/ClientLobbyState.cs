@@ -316,7 +316,7 @@ namespace Monopoly.Runtime
                 sock.Close();
             Debug.Log("applet prepare: " + ClientLobbyState.token);
             UIDirector.IsMenuOpen = false;
-            SceneManager.LoadScene("Scenes/BoardScene");
+            LoadHandler.LoadScene("Scenes/BoardScene");
         }
 
     }
