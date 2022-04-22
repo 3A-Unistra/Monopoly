@@ -39,21 +39,26 @@ namespace Monopoly.Graphics
         [Range(2.0f, 5.0f)]
         public float moveSpeed = 5.0f;
 
-        [HideInInspector]
         public int playerIndex = 0;
 
         private int idx = 0;
         private int oldIdx = 0;
 
+        public Vector2 bigSquarePosition;
+        public Vector2 squarePosition;
+        public Vector2 prisonPosition;
+        public Vector2 inPrisonPosition;
+        public Vector3 squareScale;
+
         void Start()
         {
             idx = 0;
             oldIdx = 0;
-            //if (playerUUID == null)
-            //{
-            //    Debug.LogError("Tried to instantiate dead player piece.");
-            //    Destroy(gameObject);
-            //}
+            if (playerUUID == null)
+            {
+                Debug.LogError("Tried to instantiate dead player piece.");
+                Destroy(gameObject);
+            }
             transform.position = CalculateDesiredPosition(idx);
             transform.rotation = CalculateDesiredRotation(idx);
             //StartCoroutine(Move());
@@ -65,7 +70,7 @@ namespace Monopoly.Graphics
             yield return new WaitForSeconds(1);
             while (i < 2)
             {
-                yield return new WaitForSeconds(2);
+                yield return new WaitForSeconds(1);
                 ++tmpindex;
                 if (tmpindex >= 40)
                 {
@@ -80,30 +85,48 @@ namespace Monopoly.Graphics
         {
             // this crap produces a grid-like offset that lets the 8 characters
             // occupy the same square without overlap
-            // FIXME: need to implement special cases for prison as well as
-            // rotations for corner pieces
-            float offset = 0.3f;
-            float xAmount = offset * playerIndex % 3;
-            float zAmount = offset * (playerIndex / 3);
             Vector3 pos = center;
-
-            float xOff =
-                (idx >= 0 && idx < 10 ? 1 : idx >= 20 && idx <= 30 ? -1 : 0);
-            float zOff =
-                (idx >= 10 && idx < 20 ? 1 : idx >= 30 && idx <= 40 ? -1 : 0);
-            
-            Debug.Log("xoff:" + xOff + ", zoff:" + zOff);
-            if ((idx >= 0 && idx < 10) || (idx >= 20 && idx < 30))
+            Vector2 off;
+            if (idx != 0 && idx != 10 && idx != 20 && idx != 30)
             {
-                pos.x += offset; // base offset
-                pos.x -= xOff * xAmount;
-                pos.z += zOff * zAmount;
+                off = squarePosition;
+            }
+            else if (idx != 10)
+            {
+                off = bigSquarePosition;
             }
             else
             {
-                pos.x -= xOff * zAmount;
-                pos.z -= offset; // base offset
-                pos.z += zOff * xAmount;
+                if (ClientGameState.current.GetPlayer(playerUUID).InJail)
+                    off = inPrisonPosition;
+                else
+                    off = prisonPosition;
+            }
+
+            if ((idx >= 0 && idx < 10))
+            {
+                pos.x -= off.x;
+                pos.z += off.y;
+            }
+            else if (idx >= 20 && idx < 30)
+            {
+                pos.x -= off.x;
+                pos.z -= off.y;
+            }
+            else if (idx > 10 && idx < 20)
+            {
+                pos.x += off.y;
+                pos.z += off.x;
+            }
+            else if (idx >= 30 && idx < 40)
+            {
+                pos.x += off.y;
+                pos.z += off.x;
+            }
+            else if (idx == 10)
+            {
+                pos.x += off.x;
+                pos.z += off.y;
             }
             return pos;
         }
@@ -123,13 +146,34 @@ namespace Monopoly.Graphics
 
         private Vector3 CalculateDesiredScale(int idx)
         {
-            return Vector3.one;
+            //if (idx != 0 && idx != 10 && idx != 20 && idx != 30)
+                return squareScale;
+            //return Vector3.one;
         }
 
         private Quaternion CalculateDesiredRotation(int idx)
         {
-            SquareCollider square = SquareCollider.Colliders[idx];
-            return square.transform.rotation;
+            if (idx != 0 && idx != 10 && idx != 20 && idx != 30)
+            {
+                SquareCollider square = SquareCollider.Colliders[idx];
+                return square.transform.rotation;
+            }
+            if (idx == 10)
+            {
+                return Quaternion.Euler(0.0f, 0.0f, 0.0f);
+            }
+            else if (idx == 20)
+            {
+                return Quaternion.Euler(0.0f, 90.0f, 0.0f);
+            }
+            else if (idx == 30)
+            {
+                return Quaternion.Euler(0.0f, 180.0f, 0.0f);
+            }
+            else
+            {
+                return Quaternion.Euler(0.0f, 0.0f, 0.0f);
+            }
         }
 
         public void SetPosition(int idx)

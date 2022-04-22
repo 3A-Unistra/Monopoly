@@ -198,11 +198,11 @@ namespace Monopoly.Camera
             if (!look.Animating && !UIDirector.IsMenuOpen)
             {
                 // camera movement
-                if (!MoveCameraMouse() && !UIDirector.IsEditingInputField())
-                {
+                //if (!MoveCameraMouse() && !UIDirector.IsEditingInputField())
+                //{
                     MoveCamera(Input.GetAxis("Horizontal"),
                                Input.GetAxis("Vertical"));
-                }
+                //}
             }
         }
 

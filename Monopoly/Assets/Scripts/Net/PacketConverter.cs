@@ -56,6 +56,7 @@ namespace Monopoly.Net
             { "Exception", typeof(PacketException) },
             { "AppletReady", typeof(PacketAppletReady) },
             { "Ping", typeof(PacketPing) },
+            { "Chat", typeof(PacketChat) },
             { "GameStart", typeof(PacketGameStart) },
             { "GameEnd", typeof(PacketGameEnd) },
             { "PlayerReconnect", typeof(PacketPlayerReconnect) },

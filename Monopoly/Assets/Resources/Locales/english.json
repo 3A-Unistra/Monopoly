@@ -1,4 +1,4 @@
-﻿{
+{
     "test_string": "test string",
     "card1": "Advance to Go (Collect {0}€).",
     "card2": "Advance to Les Ponts Couverts. If you pass Go, collect {0}€.",
@@ -128,12 +128,13 @@
     "port_input": "Port...",
     "enter_lobby_name": "Enter lobby's name...",
     "enter_password": "Enter a password",
+    "loading": "Loading...",
     "copy_token": "Copy token",
     "invite": "Invite",
     "start": "Start",
     "return": "Return",
     "private": "Private",
-    "turn_durtion": "Duration of a turn",
+    "turn_duration": "Duration of a turn",
     "number_turns": "Number of turns",
     "number_players": "Number of players",
     "number_bots": "Number of bots",

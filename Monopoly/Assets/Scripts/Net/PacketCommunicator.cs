@@ -315,6 +315,8 @@ namespace Monopoly.Net
                 OnError(packet); break;
             case PacketPing packet:
                 OnPing(packet); break;
+            case PacketChat packet:
+                OnMessage(packet); break;
             case PacketAppletPrepare packet:
                 OnGameLoad(packet); break;
             case PacketGameStart packet:

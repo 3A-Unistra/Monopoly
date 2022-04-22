@@ -11,13 +11,11 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel.Design.Serialization;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+using Monopoly.Graphics;
 using Monopoly.Util;
 
 namespace Monopoly.UI
@@ -259,6 +257,10 @@ namespace Monopoly.UI
                 PreferenceApply.SaveSettings();
                 current = null;
                 GameObject optionMenu = Instantiate(OptionMenuPrefab, transform.parent);
+                // FIXME: sliders are broken on language reset
+                Canvas.ForceUpdateCanvases();
+                // update the game board if possible
+                SquareCollider.UpdateAll();
                 Destroy(this.gameObject);
             }
             else

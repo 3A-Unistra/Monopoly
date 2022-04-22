@@ -11,6 +11,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
+
+using Monopoly.Util;
 
 namespace Monopoly.UI
 {
@@ -54,6 +57,18 @@ namespace Monopoly.UI
             {
                 return false;
             }
+        }
+
+        public static bool IsOverScrollView()
+        {
+            List<RaycastResult> rays = RaycastUtil.GetRaycastEventSystemMouse();
+            foreach (RaycastResult ray in rays)
+            {
+                if (ray.gameObject.TryGetComponent<ScrollRect>
+                        (out ScrollRect _))
+                    return true;
+            }
+            return false;
         }
 
     }

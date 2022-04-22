@@ -74,7 +74,7 @@ namespace Monopoly.UI
 
         private void DisconnectFromTheGame()
         {
-            SceneManager.LoadScene("Scenes/MenuScene");
+            LoadHandler.LoadScene("Scenes/MenuScene");
         }
         
         public void QuitGame()

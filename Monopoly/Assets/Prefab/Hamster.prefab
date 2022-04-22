@@ -26,12 +26,12 @@ Transform:
   m_GameObject: {fileID: 721238810005801385}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalScale: {x: 0.08, y: 0.08, z: 0.08}
   m_Children:
   - {fileID: 664771870278705739}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!114 &4949472843705397374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45,7 +45,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerUUID: 
+  step1: 0
+  step2: 0
+  moveSpeed: 5
   playerIndex: 0
+  bigSquarePosition: {x: 0.235, y: 0.457}
+  squarePosition: {x: 0.174, y: 0.14}
+  prisonPosition: {x: -0.499, y: -0.163}
+  inPrisonPosition: {x: 0.563, y: -0.447}
+  squareScale: {x: 0.08, y: 0.08, z: 0.08}
 --- !u!1 &8615264041729552752
 GameObject:
   m_ObjectHideFlags: 0
