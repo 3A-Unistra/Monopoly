@@ -127,9 +127,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerUUID: 
   step1: 0
-  step2: 0
-  moveSpeed: 5
+  moveSpeed: 8
   playerIndex: 0
+  height: 0.8
   bigSquarePosition: {x: 0.487, y: 0.428}
   squarePosition: {x: 0.323, y: 0.102}
   prisonPosition: {x: 0.605, y: 0.452}
