@@ -20,7 +20,11 @@ namespace Monopoly.UI
         public TMP_InputField LobbyPassword;
         public TMP_InputField TurnDuration;
         public TMP_InputField TurnNumbers;
+        public TMP_InputField StartingBalance;
         public OnOff PrivateSwitch;
+        public OnOff AuctionsSwitch;
+        public OnOff DoubleOnGoSwitch;
+        public OnOff BuyFirstTurnSwitch;
         public Button CopyButton;
         public TMP_Text CopyText;
         public Button InviteButton;
@@ -36,18 +40,26 @@ namespace Monopoly.UI
         public TMP_Text NbTurnText;
         public TMP_Text NbPlayersText;
         public TMP_Text NbBotsText;
-        public GameObject PlayerFieldViewport;
-
-        public GameObject LobbyMenuPrefab;
+        public TMP_Text AuctionsText;
+        public TMP_Text DoubleOnGoText;
+        public TMP_Text BuyFirstTurnText;
+        public TMP_Text StartingBalanceText;
+    
         public GameObject PlayerFieldPrefab;
+    
+        public GameObject PlayerFieldViewport;
+        
+        [HideInInspector]
+        public bool IsHost = false;
 
+        [HideInInspector]
+        public string GameToken;
+
+        [HideInInspector]
         private List<LobbyPlayerField> playerFields;
 
         [HideInInspector]
         public static MenuCreate current;
-
-        [HideInInspector]
-        public bool IsHost = false;
 
         void Start()
         {
@@ -58,7 +70,7 @@ namespace Monopoly.UI
                 return;
             }
             current = this;
-
+    
             InitFields();
             InviteButton.onClick.AddListener(InvitePlayer);
             StartButton.onClick.AddListener(LaunchLobby);
@@ -68,7 +80,7 @@ namespace Monopoly.UI
             BotsDropdown.onValueChanged.AddListener(
                 delegate { BotsNumberChange(); });
             BuildBotsDropdown();
-
+            
             LobbyName.placeholder.GetComponent<TextMeshProUGUI>().text =
                 StringLocaliser.GetString("enter_lobby_name");
             LobbyPassword.placeholder.GetComponent<TextMeshProUGUI>().text =
@@ -82,20 +94,18 @@ namespace Monopoly.UI
             NbPlayersText.text = StringLocaliser.GetString("number_players");
             NbBotsText.text = StringLocaliser.GetString("number_bots");
             NbTurnText.text = StringLocaliser.GetString("number_turns");
-
+            AuctionsText.text = StringLocaliser.GetString("auctions");
+            DoubleOnGoText.text = StringLocaliser.GetString("double_on_go");
+            BuyFirstTurnText.text = StringLocaliser.GetString("buy_first_turn");
+            StartingBalanceText.text = StringLocaliser.GetString("starting_balance");
+        
             playerFields = new List<LobbyPlayerField>();
 
             ManagePlayerList(PacketBroadcastUpdateRoom.UpdateReason.NEW_PLAYER,
                              ClientLobbyState.clientUsername);
-
+    
             UIDirector.IsMenuOpen = true;
             UIDirector.IsUIBlockingNet = false;
-        }
-
-        void OnDestroy()
-        {
-            if (current == this)
-                current = null;
         }
 
         private void InitFields()
@@ -110,7 +120,18 @@ namespace Monopoly.UI
             PrivateSwitch.enabled = IsHost;
             TurnDuration.enabled = IsHost;
             TurnNumbers.enabled = IsHost;
+            AuctionsSwitch.enabled = IsHost;
+            BuyFirstTurnSwitch.enabled = IsHost;
+            DoubleOnGoSwitch.enabled = IsHost;
+            StartingBalance.enabled = IsHost;
         }
+
+        void OnDestroy()
+        {
+            if (current == this)
+                current = null;
+        }
+
         private void BuildBotsDropdown()
         {
             int nbPlayers = PlayersDropdown.value + 2;
