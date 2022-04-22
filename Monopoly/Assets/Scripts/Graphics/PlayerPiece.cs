@@ -23,26 +23,29 @@ namespace Monopoly.Graphics
         [HideInInspector]
         public string playerUUID;
 
-        [HideInInspector]
         private float animateTime = 0.0f;
 
-        [HideInInspector]
         private bool dirty = true;
+        private bool animating = false;
 
         [HideInInspector]
         public bool step1 = false;
-        [HideInInspector]
-        public bool step2 = false;
 
         private Vector3 floor1;
+        private Vector3 startScale;
+        private Quaternion startRotation;
+        private Coroutine moveEnumerator = null;
 
-        [Range(2.0f, 5.0f)]
-        public float moveSpeed = 5.0f;
+        [Range(2.0f, 10.0f)]
+        public float moveSpeed = 8.0f;
 
         public int playerIndex = 0;
 
         private int idx = 0;
         private int oldIdx = 0;
+
+        [Range(0.1f, 2.0f)]
+        public float height = 0.8f;
 
         public Vector2 bigSquarePosition;
         public Vector2 squarePosition;
@@ -70,14 +73,14 @@ namespace Monopoly.Graphics
             yield return new WaitForSeconds(1);
             while (i < 2)
             {
-                yield return new WaitForSeconds(1);
+                yield return new WaitUntil(() => !animating);
                 ++tmpindex;
                 if (tmpindex >= 40)
                 {
                     tmpindex = 0;
                     ++i;
                 }
-                SetPosition(tmpindex);
+                MoveToPosition(tmpindex, true);
             }
         }
 
@@ -97,9 +100,9 @@ namespace Monopoly.Graphics
             }
             else
             {
-                if (ClientGameState.current.GetPlayer(playerUUID).InJail)
-                    off = inPrisonPosition;
-                else
+                //if (ClientGameState.current.GetPlayer(playerUUID).InJail)
+                //    off = inPrisonPosition;
+                //else
                     off = prisonPosition;
             }
 
@@ -158,25 +161,19 @@ namespace Monopoly.Graphics
                 SquareCollider square = SquareCollider.Colliders[idx];
                 return square.transform.rotation;
             }
-            if (idx == 10)
-            {
+            if (idx == 0)
+                return Quaternion.Euler(0.0f, 270.0f, 0.0f);
+            else if (idx == 10)
                 return Quaternion.Euler(0.0f, 0.0f, 0.0f);
-            }
             else if (idx == 20)
-            {
                 return Quaternion.Euler(0.0f, 90.0f, 0.0f);
-            }
             else if (idx == 30)
-            {
                 return Quaternion.Euler(0.0f, 180.0f, 0.0f);
-            }
             else
-            {
                 return Quaternion.Euler(0.0f, 0.0f, 0.0f);
-            }
         }
 
-        public void SetPosition(int idx)
+        public void MoveToPosition(int idx, bool instant)
         {
             if (idx < 0 || idx >= 40)
             {
@@ -184,66 +181,73 @@ namespace Monopoly.Graphics
                     "Can't set piece position to invalid location {0}!", idx));
                 return;
             }
+            if (moveEnumerator != null)
+                StopCoroutine(moveEnumerator);
+            moveEnumerator = StartCoroutine(MoveEnumerator(idx, instant));
+        }
 
-            this.idx = idx;
+        private IEnumerator MoveEnumerator(int idx, bool instant)
+        {
+            int startidx = this.idx;
+            int currentidx = instant ? idx : startidx;
+            do
+            {
+                animating = true;
+                this.idx = ++currentidx;
+                currentidx %= 40;
+                yield return new WaitUntil(() => !animating);
+                if (instant)
+                    break;
+            }
+            while (currentidx != idx);
+            moveEnumerator = null;
         }
 
         public void AnimationPawn(int idx)
         {
             animateTime += Time.deltaTime * moveSpeed;
-            transform.rotation = CalculateDesiredRotation(idx);
+            Quaternion targetRotation = CalculateDesiredRotation(idx);
             Vector3 pos = CalculateDesiredPosition(idx);
+            Vector3 targetScale = CalculateDesiredScale(idx);
             if (dirty)
             {
                 floor1 = transform.position;
+                startScale = transform.localScale;
+                startRotation = transform.rotation;
                 dirty = false;
             }
-            Vector3 ceiling1 = floor1;
-            ceiling1.y += 1.0f;
+            Vector3 ceiling = (floor1 + pos) / 2;
+            ceiling.y += height;
 
             Vector3 floor2 = pos;
-            Vector3 ceiling2 = floor2;
-            ceiling2.y += 1.0f;
-            Debug.Log(floor2);
+
             if (!step1)
             {
-                transform.position = Vector3.Lerp(floor1, ceiling1, animateTime);
-                if (transform.position.y >= ceiling1.y)
+                transform.position = Vector3.Lerp(floor1, ceiling, animateTime);
+                if (transform.position.y >= ceiling.y)
                 {
                     step1 = true;
-                    transform.position = ceiling1;
+                    transform.position = ceiling;
                     animateTime = 0.0f;
                 }
-                return;
             }
-
-            else if (!step2)
-            {
-                transform.position = Vector3.Lerp(ceiling1, ceiling2, animateTime);
-                if (animateTime > 1.0f)
-                {
-                    step2 = true;
-                    transform.position = ceiling2;
-                    animateTime = 0.0f;
-                }
-                return;
-            }
-
             else
             {
-                transform.position = Vector3.Lerp(ceiling2, floor2, animateTime);
+                transform.rotation = Quaternion.Lerp(startRotation, targetRotation, animateTime);
+                transform.localScale = Vector3.Lerp(startScale, targetScale, animateTime);
+                transform.position = Vector3.Lerp(ceiling, floor2, animateTime);
                 if (animateTime > 1.0f)
                 {
                     step1 = false;
-                    step2 = false;
                     animateTime = 0.0f;
+                    transform.position = floor2;
                     oldIdx = idx;
                     dirty = true;
-                    transform.rotation = CalculateDesiredRotation(idx);
+                    animating = false;
                 }
-                return;
             }
         }
+
 
         void Update()   
         {

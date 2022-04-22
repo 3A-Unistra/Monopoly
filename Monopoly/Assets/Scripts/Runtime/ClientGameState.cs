@@ -346,7 +346,7 @@ namespace Monopoly.Runtime
             PlayerPiece pp = playerPiece.GetComponent<PlayerPiece>();
             pp.playerUUID = p.Id;
             pp.playerIndex = p.CharacterIdx;
-            pp.SetPosition(0);
+            pp.MoveToPosition(0, true);
             playerPieces.Add(pp);
             playerInfo.AddPlayer(p);
             if (me)
@@ -553,7 +553,8 @@ namespace Monopoly.Runtime
                 StringLocaliser.GetString("on_enter_prison"),
                 PlayerNameLoggable(p)));
             p.EnterPrison();
-            playerPieces[GetPlayerPieceIndex(p.Id)].SetPosition(p.Position);
+            playerPieces[GetPlayerPieceIndex(p.Id)].
+                MoveToPosition(p.Position, true);
         }
 
         public void OnExitPrison(PacketPlayerExitPrison packet)
@@ -648,7 +649,8 @@ namespace Monopoly.Runtime
             if (packet.DestinationSquare >= 0 && packet.DestinationSquare <= 39)
             {
                 p.Position = packet.DestinationSquare;
-                playerPieces[GetPlayerPieceIndex(p.Id)].SetPosition(p.Position);
+                playerPieces[GetPlayerPieceIndex(p.Id)].
+                    MoveToPosition(p.Position, false);
             }
         }
 
