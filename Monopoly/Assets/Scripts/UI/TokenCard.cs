@@ -58,10 +58,10 @@ namespace Monopoly.UI
             communityBackground.SetActive(type == CardType.COMMUNITY);
             text.text = message;
             shouldHide = false;
-            routine = StartCoroutine(EnumerateCard(type, message));
+            routine = StartCoroutine(EnumerateCard());
         }
 
-        private IEnumerator EnumerateCard(CardType type, string message)
+        private IEnumerator EnumerateCard()
         {
             animate = 0.0f;
             while (canvasGroup.alpha < 1.0f)

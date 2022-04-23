@@ -31,6 +31,7 @@ namespace Monopoly.Runtime
 
         public static ClientGameState current;
         public List<Dictionary<string, int>> squareData;
+        public List<Dictionary<string, int>> cardData;
 
         public GameObject MainMenuPrefab;
 
@@ -43,6 +44,8 @@ namespace Monopoly.Runtime
         public ScrollRect chatScroller;
         public UIPlayerInfo playerInfo;
 
+        public TMP_Text parkingMoneyText;
+
         public TMP_Text actionText;
         private Coroutine actionEnumeration;
 
@@ -53,6 +56,7 @@ namespace Monopoly.Runtime
         private List<PlayerPiece> playerPieces;
         private Player myPlayer;
         private Player playerTurn;
+        private bool playerDoneMove;
 
         private string clientUUID;
         private string token;
@@ -80,6 +84,9 @@ namespace Monopoly.Runtime
             squareData =
                 JsonLoader.LoadJsonAsset<List<Dictionary<string, int>>>
                 ("Data/squares");
+            cardData =
+                JsonLoader.LoadJsonAsset<List<Dictionary<string, int>>>
+                ("Data/cards");
         }
 
         void Awake()
@@ -346,9 +353,10 @@ namespace Monopoly.Runtime
             PlayerPiece pp = playerPiece.GetComponent<PlayerPiece>();
             pp.playerUUID = p.Id;
             pp.playerIndex = p.CharacterIdx;
-            pp.MoveToPosition(0, true);
+            pp.MoveToPosition(0, true, null);
+            playerDoneMove = true;
             playerPieces.Add(pp);
-            playerInfo.AddPlayer(p);
+            playerInfo.AddPlayer(p, me);
             if (me)
                 myPlayer = p;
         }
@@ -554,7 +562,8 @@ namespace Monopoly.Runtime
                 PlayerNameLoggable(p)));
             p.EnterPrison();
             playerPieces[GetPlayerPieceIndex(p.Id)].
-                MoveToPosition(p.Position, true);
+                MoveToPosition(p.Position, true, null);
+            playerDoneMove = true;
         }
 
         public void OnExitPrison(PacketPlayerExitPrison packet)
@@ -624,12 +633,19 @@ namespace Monopoly.Runtime
 
         public void OnBalanceUpdate(PacketPlayerUpdateBalance packet)
         {
+            StartCoroutine(OnBalanceUpdateEnumerator(packet));
+        }
+
+        private IEnumerator OnBalanceUpdateEnumerator(
+            PacketPlayerUpdateBalance packet)
+        {
+            yield return new WaitUntil(() => playerDoneMove);
             Player p = Player.PlayerFromUUID(players, packet.PlayerId);
             if (p == null)
             {
                 Debug.LogWarning(string.Format("Could not find player '{0}'!",
                                                packet.PlayerId));
-                return;
+                yield break;
             }
             p.Money = packet.NewBalance;
             playerInfo.SetMoney(p, p.Money);
@@ -649,9 +665,15 @@ namespace Monopoly.Runtime
             if (packet.DestinationSquare >= 0 && packet.DestinationSquare <= 39)
             {
                 p.Position = packet.DestinationSquare;
+                playerDoneMove = false;
                 playerPieces[GetPlayerPieceIndex(p.Id)].
-                    MoveToPosition(p.Position, false);
+                    MoveToPosition(p.Position, false, OnMoveAnimateCallback);
             }
+        }
+
+        private void OnMoveAnimateCallback()
+        {
+            playerDoneMove = true;
         }
 
         public void OnDisconnect(PacketPlayerDisconnect packet)
@@ -688,6 +710,7 @@ namespace Monopoly.Runtime
         {
             Player p = Player.PlayerFromUUID(players, packet.PlayerId);
             playerTurn = p;
+            playerInfo.SetActive(p);
             if (packet.PlayerId.Equals(clientUUID))
             {
                 CanRollDice = true;
@@ -700,17 +723,6 @@ namespace Monopoly.Runtime
                     exitPrisonCardButton.gameObject.SetActive(true);
                 }
                 rollDiceButton.gameObject.SetActive(true);
-
-                Square square = Board.GetSquare(p.Position);
-                if (myPlayer == playerTurn && square.IsOwnable())
-                {
-                    OwnableSquare os = (OwnableSquare)square;
-                    if (os.Owner == null)
-                    {
-                        buyPropertyButton.gameObject.SetActive(true);
-                        auctionButton.gameObject.SetActive(true);
-                    }
-                }
             }
             else
             {
@@ -762,10 +774,27 @@ namespace Monopoly.Runtime
 
         public void OnRoundRandomCard(PacketRoundRandomCard packet)
         {
+            StartCoroutine(OnRoundRandomCardEnumeration(packet));
+        }
+
+        private IEnumerator OnRoundRandomCardEnumeration(
+            PacketRoundRandomCard packet)
+        {
+            yield return new WaitUntil(() => playerDoneMove);
             TokenCard.CardType type =
                 packet.IsCommunity ? TokenCard.CardType.COMMUNITY :
                                      TokenCard.CardType.CHANCE;
             string message = StringLocaliser.GetString("card" + packet.CardId);
+            try
+            {
+                // get card data for formatting
+                int val = cardData[packet.CardId - 1]["value"];
+                message = string.Format(message, val);
+            }
+            catch (System.Exception)
+            {
+                // die softly and cry
+            }
             tokenCard.ShowCard(type, packet.CardId, message);
         }
 
@@ -794,13 +823,26 @@ namespace Monopoly.Runtime
         public void OnActionStart(PacketActionStart packet)
         {
             // TODO: Implement + update UI options
-            if (myPlayer == playerTurn)
+            if (myPlayer != playerTurn)
+                return;
+
+
+            rollDiceButton.gameObject.SetActive(false);
+            exchangeButton.gameObject.SetActive(true);
+            actionEndButton.gameObject.SetActive(true);
+
+            Square square = Board.GetSquare(myPlayer.Position);
+            if (square.IsOwnable())
             {
-                CanPerformAction = true;
-                rollDiceButton.gameObject.SetActive(false);
-                exchangeButton.gameObject.SetActive(true);
-                actionEndButton.gameObject.SetActive(true);
+                OwnableSquare os = (OwnableSquare)square;
+                if (os.Owner == null)
+                {
+                    buyPropertyButton.gameObject.SetActive(true);
+                    auctionButton.gameObject.SetActive(true);
+                }
             }
+            CanPerformAction = true;
+
             Debug.Log("Turn started.");
         }
 

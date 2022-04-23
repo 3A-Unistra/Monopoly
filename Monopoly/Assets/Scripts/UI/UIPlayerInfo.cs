@@ -25,13 +25,19 @@ namespace Monopoly.UI
         [HideInInspector]
         public List<PlayerField> FieldList;
 
-        public void AddPlayer(Player player)
+        public void AddPlayer(Player player, bool me)
         {
             GameObject field =
                 Instantiate(PlayerFieldPrefab, FieldObject.transform);
             PlayerField fieldScript = field.GetComponent<PlayerField>();
-            fieldScript.SetUser(player);
+            fieldScript.SetUser(player, me);
             FieldList.Add(fieldScript);
+        }
+
+        public void SetActive(Player player)
+        {
+            foreach (PlayerField p in FieldList)
+                p.SetActive(p.HandlesPlayer(player));
         }
 
         public void SetMoney(Player player, int amount)
@@ -40,7 +46,7 @@ namespace Monopoly.UI
             {
                 if (p.HandlesPlayer(player))
                 {
-                    p.SetMoney(amount);
+                    p.SetMoney(amount, true);
                     return;
                 }
             }
