@@ -63,7 +63,12 @@ namespace Monopoly.UI
             }
             int port;
             string porttxt = PortInput.text.Trim();
-            if (porttxt.Equals("") || !int.TryParse(porttxt, out port) ||
+            if (porttxt.Equals(""))
+            {
+                // using the default port of 80 instead
+                porttxt = "80";
+            }
+            if (!int.TryParse(porttxt, out port) ||
                 port < 0 || port >= 65536)
             {
                 PortInput.text = "";

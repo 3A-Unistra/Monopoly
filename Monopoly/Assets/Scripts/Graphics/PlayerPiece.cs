@@ -7,6 +7,7 @@
  * Author       : Christophe PIERSON <chrsitophe.pierson@etu.unistra.fr>
  */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -80,7 +81,7 @@ namespace Monopoly.Graphics
                     tmpindex = 0;
                     ++i;
                 }
-                MoveToPosition(tmpindex, true);
+                MoveToPosition(tmpindex, true, null);
             }
         }
 
@@ -173,7 +174,7 @@ namespace Monopoly.Graphics
                 return Quaternion.Euler(0.0f, 0.0f, 0.0f);
         }
 
-        public void MoveToPosition(int idx, bool instant)
+        public void MoveToPosition(int idx, bool instant, Action callback)
         {
             if (idx < 0 || idx >= 40)
             {
@@ -183,24 +184,29 @@ namespace Monopoly.Graphics
             }
             if (moveEnumerator != null)
                 StopCoroutine(moveEnumerator);
-            moveEnumerator = StartCoroutine(MoveEnumerator(idx, instant));
+            moveEnumerator =
+                StartCoroutine(MoveEnumerator(idx, instant, callback));
         }
 
-        private IEnumerator MoveEnumerator(int idx, bool instant)
+        private IEnumerator MoveEnumerator(int idx, bool instant,
+                                           Action callback)
         {
             int startidx = this.idx;
             int currentidx = instant ? idx : startidx;
             do
             {
                 animating = true;
-                this.idx = ++currentidx;
+                ++currentidx;
                 currentidx %= 40;
+                this.idx = currentidx;
                 yield return new WaitUntil(() => !animating);
                 if (instant)
                     break;
             }
             while (currentidx != idx);
             moveEnumerator = null;
+            if (callback != null)
+                callback.Invoke();
         }
 
         public void AnimationPawn(int idx)
