@@ -34,6 +34,26 @@ namespace Monopoly.UI
             FieldList.Add(fieldScript);
         }
 
+        public PlayerField GetPlayerField(Player player)
+        {
+            foreach (PlayerField field in FieldList)
+            {
+                if (field.HandlesPlayer(player))
+                    return field;
+            }
+            return null;
+        }
+
+        public PlayerField GetPlayerField(string uuid)
+        {
+            foreach (PlayerField field in FieldList)
+            {
+                if (field.HandlesPlayer(uuid))
+                    return field;
+            }
+            return null;
+        }
+
         public void SetActive(Player player)
         {
             foreach (PlayerField p in FieldList)

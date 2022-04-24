@@ -408,6 +408,8 @@ namespace Monopoly.Runtime
             {
                 comm.DoRoundDiceChoice(clientUUID, PacketRoundDiceChoice.DiceChoice.ROLL_DICE);
             }
+            PlayerField pinfo = playerInfo.GetPlayerField(myPlayer);
+            pinfo.Dice.RollDice();
         }
 
         public void DoExitPrisonMoney()
@@ -699,6 +701,7 @@ namespace Monopoly.Runtime
                 if (os.Owner == null)
                 {
                     Board.BoardBank.BuyProperty(p, os);
+                    SquareCollider.Colliders[os.Id].SetSphereChild(p);
                     LogAction(string.Format(
                         StringLocaliser.GetString("on_buy_property"),
                         PlayerNameLoggable(p),
@@ -912,7 +915,9 @@ namespace Monopoly.Runtime
                 Debug.Log(string.Format("Player {0} to roll the dice.",
                                         clientUUID));
                 HideAllInteractButtons();
-
+                // show the dice rolling automatically
+                PlayerField pinfo = playerInfo.GetPlayerField(p);
+                pinfo.Dice.RollDice();
             }
             LogAction(string.Format(
                 StringLocaliser.GetString("on_round_start"),
@@ -926,21 +931,25 @@ namespace Monopoly.Runtime
             exitPrisonMoneyButton.gameObject.SetActive(false);
             exitPrisonCardButton.gameObject.SetActive(false);
             Player p = Player.PlayerFromUUID(players, packet.PlayerId);
+            PlayerField pinfo = playerInfo.GetPlayerField(p);
             switch (packet.Reason)
             {
             case PacketRoundDiceResults.ResultEnum.JAIL_CARD_CHANCE:
                 Debug.Log(string.Format(
                     "Player {0} used a chance jail card.", packet.PlayerId));
+                pinfo.Dice.HideDice();
                 break;
             case PacketRoundDiceResults.ResultEnum.JAIL_CARD_COMMUNITY:
                 Debug.Log(string.Format(
                     "Player {0} used a community jail card.",
                     packet.PlayerId));
+                pinfo.Dice.HideDice();
                 break;
             case PacketRoundDiceResults.ResultEnum.JAIL_PAY:
                 Debug.Log(string.Format(
                     "Player {0} paid to be released from jail.",
                     packet.PlayerId));
+                pinfo.Dice.HideDice();
                 break;
             case PacketRoundDiceResults.ResultEnum.ROLL_DICE:
                 string msg = string.Format(
@@ -952,6 +961,7 @@ namespace Monopoly.Runtime
                     msg += string.Format(" {0}",
                         StringLocaliser.GetString("doubles"));
                 }
+                pinfo.Dice.RevealDice(packet.DiceResult1, packet.DiceResult2);
                 LogAction(msg);
                 break;
             }
@@ -1008,6 +1018,12 @@ namespace Monopoly.Runtime
                 Player player = new Player(playerData.PlayerId, playerData.PlayerName, playerData.Money, playerData.Piece);
                 ManuallyRegisterPlayer(player, playerData.PlayerId.Equals(ClientLobbyState.clientUUID));
                 playerInfo.SetMoney(player, player.Money);
+
+                if (player != myPlayer)
+                {
+                    PlayerField pinfo = playerInfo.GetPlayerField(player);
+                    pinfo.Dice.RollDice();
+                }
             }
         }
 
@@ -1021,6 +1037,8 @@ namespace Monopoly.Runtime
         {
             foreach (PacketGameStartDiceResultsInternal result in packet.DiceResult)
             {
+                PlayerField pinfo = playerInfo.GetPlayerField(result.PlayerId);
+                pinfo.Dice.RevealDice(result.Dice1, result.Dice2);
                 if (result.Win)
                 {
                     // TODO: hide dice animations and what not
