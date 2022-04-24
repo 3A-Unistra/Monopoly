@@ -269,10 +269,11 @@ namespace Monopoly.Net
             SendPacket(packet);
         }
 
-        public void DoExchangePlayerSelect()
+        public void DoExchangePlayerSelect(string toUuid)
         {
-            //PacketActionExchangePlayerSelect packet = new PacketActionExchangePlayerSelect();
-            //SendPacket(packet);
+            PacketActionExchangePlayerSelect packet =
+                new PacketActionExchangePlayerSelect(toUuid);
+            SendPacket(packet);
         }
 
         public void DoExchangeTradeSelect()

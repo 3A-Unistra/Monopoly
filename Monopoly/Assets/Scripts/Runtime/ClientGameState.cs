@@ -481,13 +481,39 @@ namespace Monopoly.Runtime
                 comm.DoDeclineExchange();
         }
 
+        public void DoExchangeSelectPlayer(string uuid)
+        {
+            if (comm != null)
+                comm.DoExchangePlayerSelect(uuid);
+        }
+
         public void OnExchange(PacketActionExchange packet)
         {
+            Player p = Player.PlayerFromUUID(players, packet.PlayerId);
+            if (p == null)
+            {
+                Debug.LogWarning(string.Format("Could not find player '{0}'!",
+                                               packet.PlayerId));
+                return;
+            }
             GameObject exchangeMenu =
                 Instantiate(ExchangePrefab, canvas.transform);
             currentExchange = exchangeMenu.GetComponent<MenuExchange>();
-            currentExchange.PopulateLeft(myPlayer);
-            currentExchange.PopulatePlayers(players);
+            currentExchange.playerPrimary = p;
+            currentExchange.playerList = players;
+        }
+
+        public void OnExchangeSelectPlayer(PacketActionExchangePlayerSelect packet)
+        {
+            Player p = Player.PlayerFromUUID(players, packet.SelectedPlayerId);
+            if (p == null)
+            {
+                Debug.LogWarning(string.Format("Could not find player '{0}'!",
+                                               packet.SelectedPlayerId));
+                return;
+            }
+            if (currentExchange != null)
+                currentExchange.PopulateRight(p);
         }
 
         public void OnError(PacketException packet)

@@ -62,7 +62,7 @@ namespace Monopoly.UI
         public TMP_Text museumMortgageValue;
         public TMP_Text museumMortgageValueText;
 
-        void Start()
+        void Awake()
         {
             rect = GetComponent<RectTransform>();
             HideAll();

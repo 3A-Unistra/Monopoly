@@ -29,9 +29,13 @@ namespace Monopoly.UI
         public Button LeaveJailCommunityLeftButton;
         public Button LeaveJailChanceRightButton;
         public Button LeaveJailCommunityRightButton;
-        public TMP_Dropdown PlayerDropdown;
         public TMP_InputField MoneyPlayerLeft;
         public TMP_InputField MoneyPlayerRight;
+
+        public TMP_Text ExchangeText;
+        public TMP_Text PlayerLeftName;
+        public TMP_Text PlayerRightName;
+        public TMP_Dropdown PlayerRightDropdown;
 
         public GameObject MiniCardPrefab;
         public CardDisplay CardDisplayLeft;
@@ -43,12 +47,14 @@ namespace Monopoly.UI
 
         public GameObject CardViewportLeft;
         public GameObject CardViewportRight;
+        public Button CardHideButtonLeft;
+        public Button CardHideButtonRight;
 
         private List<MiniCard> CardListLeft;
         private List<MiniCard> CardListRight;
 
-        private Player playerPrimary;
-        private List<Player> playerList;
+        public Player playerPrimary;
+        public List<Player> playerList;
         private int playerPrimaryIndex;
 
         void Start()
@@ -61,13 +67,50 @@ namespace Monopoly.UI
             LeaveJailCommunityLeftButton.onClick.AddListener(LeaveJailCommunityLeftAction);
             LeaveJailChanceRightButton.onClick.AddListener(LeaveJailChanceRightAction);
             LeaveJailCommunityRightButton.onClick.AddListener(LeaveJailCommunityRightAction);
+            CardHideButtonLeft.onClick.AddListener(HideCardDisplayLeft);
+            CardHideButtonRight.onClick.AddListener(HideCardDisplayRight);
 
-            PlayerDropdown.onValueChanged.AddListener(ChangePlayer);
+            PlayerRightDropdown.onValueChanged.AddListener(ChangePlayer);
 
             CardListLeft = new List<MiniCard>();
             CardListRight = new List<MiniCard>();
 
+            PopulateLeft(playerPrimary);
+            PopulatePlayers(playerList);
+
             UIDirector.IsMenuOpen = true;
+        }
+
+        private void UpdateEditRights()
+        {
+            bool active = playerPrimary == ClientGameState.current.myPlayer;
+            // TODO: activate/disactivate buttons for users
+        }
+
+        private void HideCardDisplayLeft()
+        {
+            CardFieldLeft.SetActive(false);
+            ListFieldLeft.SetActive(true);
+        }
+
+        private void HideCardDisplayRight()
+        {
+            CardFieldRight.SetActive(false);
+            ListFieldRight.SetActive(true);
+        }
+
+        private void DisplayCardLeft(int idx)
+        {
+            CardDisplayLeft.Render(idx);
+            CardFieldLeft.SetActive(true);
+            ListFieldLeft.SetActive(false);
+        }
+
+        private void DisplayCardRight(int idx)
+        {
+            CardDisplayRight.Render(idx);
+            CardFieldRight.SetActive(true);
+            ListFieldRight.SetActive(false);
         }
 
         private void ReturnAction()
@@ -120,16 +163,29 @@ namespace Monopoly.UI
             {
                 if (!s.IsOwnable())
                     continue;
-                OwnableSquare os = (OwnableSquare) s;
+                OwnableSquare os = (OwnableSquare)s;
+                if (os.Owner != p)
+                    continue;
                 GameObject cardObject = Instantiate(MiniCardPrefab, CardViewportLeft.transform);
                 MiniCard cardScript = cardObject.GetComponent<MiniCard>();
                 cardScript.Price.text = os.Price.ToString();
                 cardScript.Index = s.Id;
-                //TODO fonction r?cupere le nom
+                cardScript.Name.text = os.Name;
+                cardScript.editable = p == ClientGameState.current.myPlayer;
+                cardScript.selectCallback =
+                    delegate { DisplayCardLeft(s.Id); };
 
                 CardListLeft.Add(cardScript);
             }
             playerPrimary = p;
+            PlayerLeftName.text = p.Name;
+            // activate right side based on who we are
+            PlayerRightName.gameObject.SetActive(
+                playerPrimary != ClientGameState.current.myPlayer);
+            PlayerRightDropdown.gameObject.SetActive(
+                playerPrimary == ClientGameState.current.myPlayer);
+            HideCardDisplayLeft();
+            UpdateEditRights();
         }
 
         public void PopulateRight(Player p)
@@ -146,10 +202,16 @@ namespace Monopoly.UI
                 MiniCard cardScript = cardObject.GetComponent<MiniCard>();
                 cardScript.Price.text = os.Price.ToString();
                 cardScript.Index = s.Id;
-                //TODO fonction recupere le nom
+                cardScript.Name.text = os.Name;
+                cardScript.editable =
+                    playerPrimary == ClientGameState.current.myPlayer;
+                cardScript.selectCallback =
+                    delegate { DisplayCardRight(s.Id); };
 
                 CardListRight.Add(cardScript);
             }
+            PlayerRightName.text = p.Name;
+            HideCardDisplayRight();
         }
 
         private void ClearCardList(List<MiniCard> cards)
@@ -203,7 +265,7 @@ namespace Monopoly.UI
 
         public void PopulatePlayers(List<Player> players)
         {
-            PlayerDropdown.options.Clear();
+            PlayerRightDropdown.options.Clear();
             playerList = players;
             int first = -1;
             for (int i = 0; i < players.Count; ++i)
@@ -216,18 +278,31 @@ namespace Monopoly.UI
                 }
                 if (first == -1)
                     first = i;
-                PlayerDropdown.options.Add(new TMP_Dropdown.OptionData(p.Name));
+                PlayerRightDropdown.options.Add(new TMP_Dropdown.OptionData(p.Name));
             }
-            PlayerDropdown.value = 0;
-            PopulateRight(players[first]);
+            //PlayerRightDropdown.value = -1;
+            PlayerRightDropdown.value = 0;
+            PopulateRight(playerList[first]);
         }
 
         private void ChangePlayer(int index)
         {
-            if (index >= playerPrimaryIndex)
-                ++index;
-
-            PopulateRight(playerList[index]);
+            int playerIdx = -1;
+            // not sure if the player list is guaranteed to be in the same order on
+            // all instances so its definitely safer to check for the correct person
+            // opposed to just assume
+            for (int i = 0; i < playerList.Count; ++i)
+            {
+                if (playerList[i].Name.Equals(PlayerRightDropdown.options[index].text))
+                    playerIdx = i;
+            }
+            if (playerIdx == -1)
+            {
+                // but if all else fails, go back to the original method I came up with
+                playerIdx = index >= playerPrimaryIndex ? index + 1 : index;
+            }
+            //PopulateRight(playerList[index]);
+            ClientGameState.current.DoExchangeSelectPlayer(playerList[index].Id);
         }
 
     }

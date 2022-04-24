@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4498580151060118547}
   - component: {fileID: 1065981550343909303}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: NameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -425,10 +425,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51a62129ff4cac944b2a4c9822df6f9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PreviewButton: {fileID: 546741329146055395}
-  SelectButton: {fileID: 421296396043239010}
+  PreviewButton: {fileID: 421296396043239010}
+  SelectButton: {fileID: 546741329146055395}
   Name: {fileID: 1065981550343909303}
   Price: {fileID: 3120944972349560831}
+  Index: 0
+  selectSprite: {fileID: -3653252780193634754, guid: 54471092074654746b2e2e8e37f59e38, type: 3}
+  deselectSprite: {fileID: 7033888185816625950, guid: 757bd08b67118469283709d351148d81, type: 3}
 --- !u!1 &3614686697287237396
 GameObject:
   m_ObjectHideFlags: 0
@@ -497,7 +500,7 @@ GameObject:
   - component: {fileID: 4510286945011706390}
   - component: {fileID: 5371733255680818268}
   m_Layer: 5
-  m_Name: SelectProp
+  m_Name: PreviewProp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -555,7 +558,7 @@ GameObject:
   - component: {fileID: 2776609788726859742}
   - component: {fileID: 3120944972349560831}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: ValueText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -691,7 +694,7 @@ GameObject:
   - component: {fileID: 421296396043239010}
   - component: {fileID: 2415260371204545515}
   m_Layer: 5
-  m_Name: Button
+  m_Name: PreviewButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -745,7 +748,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 7033888185816625950, guid: 757bd08b67118469283709d351148d81, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -754,7 +757,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 2
 --- !u!114 &421296396043239010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -833,7 +836,7 @@ GameObject:
   - component: {fileID: 546741329146055395}
   - component: {fileID: 7719004539875983881}
   m_Layer: 0
-  m_Name: Preview
+  m_Name: SelectButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -886,7 +889,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 7033888185816625950, guid: 757bd08b67118469283709d351148d81, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -895,7 +898,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 2
 --- !u!114 &546741329146055395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -955,8 +958,8 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: 32
   m_MinHeight: 32
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
+  m_PreferredWidth: 32
+  m_PreferredHeight: 32
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1

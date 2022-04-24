@@ -6,6 +6,7 @@
  *                Finn Rayment <rayment@etu.unistra.fr>
  */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -17,6 +18,7 @@ namespace Monopoly.UI
 {
     public class MiniCard : MonoBehaviour
     {
+
         public Button PreviewButton;
         public Button SelectButton;
         public TMP_Text Name;
@@ -26,15 +28,30 @@ namespace Monopoly.UI
         [HideInInspector]
         public int Index;
 
+        public Sprite selectSprite;
+        public Sprite deselectSprite;
+
+        [HideInInspector]
+        public Action selectCallback;
+
+        [HideInInspector]
+        public bool editable = false;
+
         void Start()
         {
             Selected = false;
+            SelectButton.image.sprite = deselectSprite;
             SelectButton.onClick.AddListener(ToggleSelect);
+            PreviewButton.onClick.AddListener(delegate { selectCallback(); });
+            if (!editable)
+                SelectButton.enabled = false;
         }
 
         private void ToggleSelect()
         {
             Selected = !Selected;
+            SelectButton.image.sprite =
+                Selected ? selectSprite : deselectSprite;
         }
 
     }
