@@ -2691,6 +2691,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Input Field
       objectReference: {fileID: 0}
+    - target: {fileID: 3269747719309276947, guid: bb1c2c4abdc44789a9de25fa8cf39542, type: 3}
+      propertyPath: m_ContentType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3269747719309276947, guid: bb1c2c4abdc44789a9de25fa8cf39542, type: 3}
+      propertyPath: m_KeyboardType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3269747719309276947, guid: bb1c2c4abdc44789a9de25fa8cf39542, type: 3}
+      propertyPath: m_CharacterValidation
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7272214205095219033, guid: bb1c2c4abdc44789a9de25fa8cf39542, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -4153,6 +4165,18 @@ PrefabInstance:
     - target: {fileID: 2507485511440496028, guid: bb1c2c4abdc44789a9de25fa8cf39542, type: 3}
       propertyPath: m_Name
       value: Input Field
+      objectReference: {fileID: 0}
+    - target: {fileID: 3269747719309276947, guid: bb1c2c4abdc44789a9de25fa8cf39542, type: 3}
+      propertyPath: m_ContentType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3269747719309276947, guid: bb1c2c4abdc44789a9de25fa8cf39542, type: 3}
+      propertyPath: m_KeyboardType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3269747719309276947, guid: bb1c2c4abdc44789a9de25fa8cf39542, type: 3}
+      propertyPath: m_CharacterValidation
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7272214205095219033, guid: bb1c2c4abdc44789a9de25fa8cf39542, type: 3}
       propertyPath: m_Pivot.x
