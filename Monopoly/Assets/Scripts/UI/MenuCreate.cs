@@ -62,6 +62,7 @@ namespace Monopoly.UI
         [HideInInspector]
         public static MenuCreate current;
 
+
         void Start()
         {
             if (current != null)
@@ -80,6 +81,7 @@ namespace Monopoly.UI
                 delegate { PlayerNumberChange(); });
             BotsDropdown.onValueChanged.AddListener(
                 delegate { BotsNumberChange(); });
+            CopyButton.onClick.AddListener(CopyToken);
             BuildBotsDropdown();
             
             LobbyName.placeholder.GetComponent<TextMeshProUGUI>().text =
@@ -184,7 +186,7 @@ namespace Monopoly.UI
             }
         }
 
-        public void SetName(String lobbyName)
+        public void SetName(string lobbyName)
         {
             LobbyName.text = lobbyName;
         }
@@ -237,6 +239,22 @@ namespace Monopoly.UI
         {
             TurnNumbers.text = nb.ToString();
         }
+
+        public PacketStatusRoom SetPacketStatusRoom()
+        {
+            List<string> playerNames = new List<string>();
+            foreach (LobbyPlayerField l in playerFields)
+                playerNames.Add(l.name);
+            PacketStatusRoom p = 
+                new PacketStatusRoom(ClientLobbyState.currentLobby, LobbyName.text,
+                    playerFields.Count, PlayersDropdown.value+2,
+                    playerNames,AuctionsSwitch.GetComponent<OnOff>().switchOn,DoubleOnGoSwitch.GetComponent<OnOff>().switchOn,
+                    BuyFirstTurnSwitch.GetComponent<OnOff>().switchOn,
+                    int.Parse(TurnNumbers.text)> 0? true : false, int.Parse(TurnDuration.text)> 0? true : false,
+                    int.Parse(StartingBalance.text));
+            return p;
+        }
+        
         public void InvitePlayer()
         {
 
@@ -260,6 +278,11 @@ namespace Monopoly.UI
         public void BotsNumberChange()
         {
 
+        }
+
+        public void CopyToken()
+        {
+            GUIUtility.systemCopyBuffer = ClientLobbyState.currentLobby;
         }
 
     }
