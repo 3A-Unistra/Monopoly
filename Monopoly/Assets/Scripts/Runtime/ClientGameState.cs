@@ -85,16 +85,6 @@ namespace Monopoly.Runtime
 
         private MenuExchange currentExchange;
 
-        static ClientGameState()
-        {
-            squareData =
-                JsonLoader.LoadJsonAsset<List<Dictionary<string, int>>>
-                ("Data/squares");
-            cardData =
-                JsonLoader.LoadJsonAsset<List<Dictionary<string, int>>>
-                ("Data/cards");
-        }
-
         void Awake()
         {
             if (current != null)
@@ -105,6 +95,14 @@ namespace Monopoly.Runtime
             current = this;
             currentExchange = null;
             actionEnumeration = null;
+
+            squareData =
+                JsonLoader.LoadJsonAsset<List<Dictionary<string, int>>>
+                ("Data/squares");
+            cardData =
+                JsonLoader.LoadJsonAsset<List<Dictionary<string, int>>>
+                ("Data/cards");
+
             InitGame();
             Debug.Log("Initialised gamestate.");
         }

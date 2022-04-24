@@ -26,7 +26,16 @@ namespace Monopoly.Classes
         public void OneTimeSetUp()
         {
             //GameObject clientStateObj = new GameObject("ClientGameState");
-            //clientStateObj.AddComponent<ClientGameState>();
+            //ClientGameState gameState =
+            //    clientStateObj.AddComponent<ClientGameState>();
+
+            // crappy hack
+            ClientGameState.squareData =
+                JsonLoader.LoadJsonAsset<List<Dictionary<string, int>>>
+                ("Data/squares");
+            ClientGameState.cardData =
+                JsonLoader.LoadJsonAsset<List<Dictionary<string, int>>>
+                ("Data/cards");
         }
 
         [Test]
