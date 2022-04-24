@@ -9,7 +9,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 using Monopoly.Net;
 using Monopoly.Net.Packets;
@@ -179,6 +178,7 @@ namespace Monopoly.Runtime
             comm.OnLobbyUpdate += OnLobbyUpdate;
             comm.OnRoomUpdate += OnRoomUpdate;
             comm.OnAppletPrepare += OnAppletPrepare;
+            comm.OnRoomModify += OnRoomModify;
         }
 
         public void DoLaunchGame()
@@ -264,7 +264,8 @@ namespace Monopoly.Runtime
             UIDirector.IsMenuOpen = false;
             UIDirector.IsUIBlockingNet = true;
             GameObject CreateMenu = Instantiate(CreateMenuPrefab, Canvas.transform);
-            CreateMenu.GetComponent<MenuCreate>().IsHost = false;
+            MenuCreate createScript = CreateMenu.GetComponent<MenuCreate>();
+            createScript.IsHost = false;
             currentLobby = packet.LobbyToken;
             if (MenuLobby.current != null)
                 Destroy(MenuLobby.current.gameObject);
@@ -307,6 +308,32 @@ namespace Monopoly.Runtime
         {
             if (MenuCreate.current != null)
                 MenuCreate.current.UpdateLobby(packet);
+        }
+
+        public void OnRoomModify(PacketStatusRoom packet)
+        {
+            StartCoroutine(OnRoomModifyEnumerator(packet));
+        }
+
+        private IEnumerator OnRoomModifyEnumerator(PacketStatusRoom packet)
+        {
+            // this packet comes way too fast so we need to do a little delay
+            // to allow the menu to open. if it still doesn't load in time then
+            // tough shit, your computer is a potato
+            yield return new WaitForSeconds(0.5f);
+            // FIXME: fix the updates and let them be sent off too!!!!!
+            if (MenuCreate.current == null)
+                yield break;
+            MenuCreate.current.SetName(packet.GameName);
+            //MenuCreate.current.SetPrivacy();
+            MenuCreate.current.SetAuctionSwitch(packet.EnableAuctions);
+            //MenuCreate.current.SetBotsNumber(packet.);
+            MenuCreate.current.SetBuyingSwitch(packet.EnableFirstTourBuy);
+            //MenuCreate.current.SetNbTurns(packet.MaxRounds);
+            MenuCreate.current.SetPlayerNumber(packet.MaxNumberPlayers);
+            MenuCreate.current.SetStartingBalance(packet.StartingBalance);
+            //MenuCreate.current.SetTurnTime(packet.TurnTimeout);
+            MenuCreate.current.SetDoubleOnStartSwitch(packet.EnableDoubleOnGo);
         }
 
         public void OnAppletPrepare(PacketAppletPrepare packet)

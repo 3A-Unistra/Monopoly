@@ -48,7 +48,7 @@ namespace Monopoly.Classes
             BoardMoney = 0;
             PrisonSquare = 10;
             List<Dictionary<string, int>> squares =
-                ClientGameState.current.squareData;
+                ClientGameState.squareData;
             foreach (Dictionary<string, int> dic in squares)
             {
                 int pos = dic["id"];

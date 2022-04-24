@@ -39,6 +39,9 @@ namespace Monopoly.Graphics
         private List<GameObject> houseObjects;
         public static Dictionary<int, SquareCollider> Colliders;
 
+        public SpriteRenderer sphereChild;
+        private Player owner;
+
         private bool dirty = false;
         public bool enableMove = false;
 
@@ -492,9 +495,26 @@ namespace Monopoly.Graphics
             }
             Colliders.Add(squareIndex, this);
             houseObjects = new List<GameObject>();
+            SetSphereChild(null);
             CreateTextObjects();
             UpdateText();
             UpdateHouses();
+        }
+
+        public void SetSphereChild(Player player)
+        {
+            if (player == null)
+            {
+                if (sphereChild != null)
+                    sphereChild.gameObject.SetActive(false);
+            }
+            else if (player != null && player != owner && sphereChild != null)
+            {
+                // there is an owner, so we need to animate the new sphere
+                // TODO: ANIMATE
+                sphereChild.gameObject.SetActive(true);
+            }
+            owner = player;
         }
 
         void Update()

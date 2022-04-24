@@ -101,9 +101,9 @@ namespace Monopoly.Graphics
             }
             else
             {
-                //if (ClientGameState.current.GetPlayer(playerUUID).InJail)
-                //    off = inPrisonPosition;
-                //else
+                if (ClientGameState.current.GetPlayer(playerUUID).InJail)
+                    off = inPrisonPosition;
+                else
                     off = prisonPosition;
             }
 
@@ -196,7 +196,8 @@ namespace Monopoly.Graphics
             do
             {
                 animating = true;
-                ++currentidx;
+                if (!instant)
+                    ++currentidx;
                 currentidx %= 40;
                 this.idx = currentidx;
                 yield return new WaitUntil(() => !animating);

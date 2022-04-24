@@ -11,9 +11,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+
 using Monopoly.Classes;
 using Monopoly.Runtime;
-
 
 namespace Monopoly.UI
 {
@@ -64,6 +64,9 @@ namespace Monopoly.UI
 
             PlayerDropdown.onValueChanged.AddListener(ChangePlayer);
 
+            CardListLeft = new List<MiniCard>();
+            CardListRight = new List<MiniCard>();
+
             UIDirector.IsMenuOpen = true;
         }
 
@@ -75,17 +78,20 @@ namespace Monopoly.UI
 
         private void RefuseAction()
         {
-
+            ClientGameState.current.DoExchangeRefuse();
+            Destroy(this.gameObject);
         }
 
         private void CounterAction()
         {
-
+            ClientGameState.current.DoExchangeCounter();
+            Destroy(this.gameObject);
         }
 
         private void AcceptAction()
         {
-
+            ClientGameState.current.DoExchangeAccept();
+            Destroy(this.gameObject);
         }
 
         private void LeaveJailChanceLeftAction()
@@ -119,7 +125,7 @@ namespace Monopoly.UI
                 MiniCard cardScript = cardObject.GetComponent<MiniCard>();
                 cardScript.Price.text = os.Price.ToString();
                 cardScript.Index = s.Id;
-                //TODO fonction récupere le nom
+                //TODO fonction r?cupere le nom
 
                 CardListLeft.Add(cardScript);
             }
@@ -134,11 +140,13 @@ namespace Monopoly.UI
                 if (!s.IsOwnable())
                     continue;
                 OwnableSquare os = (OwnableSquare)s;
+                if (os.Owner != p)
+                    continue;
                 GameObject cardObject = Instantiate(MiniCardPrefab, CardViewportRight.transform);
                 MiniCard cardScript = cardObject.GetComponent<MiniCard>();
                 cardScript.Price.text = os.Price.ToString();
                 cardScript.Index = s.Id;
-                //TODO fonction récupere le nom
+                //TODO fonction recupere le nom
 
                 CardListRight.Add(cardScript);
             }

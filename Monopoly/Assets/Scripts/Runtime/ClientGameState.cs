@@ -30,10 +30,11 @@ namespace Monopoly.Runtime
     {
 
         public static ClientGameState current;
-        public List<Dictionary<string, int>> squareData;
-        public List<Dictionary<string, int>> cardData;
+        public static List<Dictionary<string, int>> squareData;
+        public static List<Dictionary<string, int>> cardData;
 
         public GameObject MainMenuPrefab;
+        public GameObject ExchangePrefab;
 
         public Sprite[] pieceImages;
 
@@ -45,6 +46,7 @@ namespace Monopoly.Runtime
         public UIPlayerInfo playerInfo;
 
         public TMP_Text parkingMoneyText;
+        private int parkingMoney;
 
         public TMP_Text actionText;
         private Coroutine actionEnumeration;
@@ -52,9 +54,9 @@ namespace Monopoly.Runtime
         public TokenCard tokenCard;
 
         public Board Board { get; private set; }
-        private List<Player> players;
+        public List<Player> players;
         private List<PlayerPiece> playerPieces;
-        private Player myPlayer;
+        public Player myPlayer;
         private Player playerTurn;
         private bool playerDoneMove;
 
@@ -79,7 +81,11 @@ namespace Monopoly.Runtime
         public Button exitPrisonMoneyButton;
         public Button exitPrisonCardButton;
 
-        private void LoadGameData()
+        public Canvas canvas;
+
+        private MenuExchange currentExchange;
+
+        static ClientGameState()
         {
             squareData =
                 JsonLoader.LoadJsonAsset<List<Dictionary<string, int>>>
@@ -97,8 +103,8 @@ namespace Monopoly.Runtime
                 Destroy(this);
             }
             current = this;
+            currentExchange = null;
             actionEnumeration = null;
-            LoadGameData();
             InitGame();
             Debug.Log("Initialised gamestate.");
         }
@@ -112,6 +118,7 @@ namespace Monopoly.Runtime
             rollDiceButton.onClick.AddListener(DoRollDice);
             buyPropertyButton.onClick.AddListener(DoBuyProperty);
             actionEndButton.onClick.AddListener(DoActionEnd);
+            exchangeButton.onClick.AddListener(DoExchange);
             exitPrisonMoneyButton.onClick.AddListener(DoExitPrisonMoney);
             exitPrisonCardButton.onClick.AddListener(DoExitPrisonCard);
             actionText.text = "";
@@ -283,6 +290,7 @@ namespace Monopoly.Runtime
             playerPieces = new List<PlayerPiece>();
             CanRollDice = false;
             CanPerformAction = false;
+            UpdateParkingMoney(0);
         }
 
         public void RegisterSocket(string uuid, string token, PacketSocket sock)
@@ -312,6 +320,7 @@ namespace Monopoly.Runtime
             comm.OnRoundRandomCard += OnRoundRandomCard;
             comm.OnEnterPrison += OnEnterPrison;
             comm.OnExitPrison += OnExitPrison;
+            comm.OnExchange += OnExchange;
         }
 
         public Player GetPlayer(string uuid)
@@ -370,6 +379,12 @@ namespace Monopoly.Runtime
             auctionButton.gameObject.SetActive(false);
             exitPrisonMoneyButton.gameObject.SetActive(false);
             exitPrisonCardButton.gameObject.SetActive(false);
+        }
+
+        private void UpdateParkingMoney(int amount)
+        {
+            parkingMoneyText.text = string.Format(
+                StringLocaliser.GetString("money_format"), parkingMoney);
         }
 
         public void DoRollDice()
@@ -444,6 +459,39 @@ namespace Monopoly.Runtime
                 comm.DoEndAction();
         }
 
+        public void DoExchange()
+        {
+            if (comm != null)
+                comm.DoExchange(clientUUID);
+        }
+
+        public void DoExchangeAccept()
+        {
+            if (comm != null)
+                comm.DoDeclineExchange();
+        }
+
+        public void DoExchangeCounter()
+        {
+            if (comm != null)
+                comm.DoDeclineExchange();
+        }
+
+        public void DoExchangeRefuse()
+        {
+            if (comm != null)
+                comm.DoDeclineExchange();
+        }
+
+        public void OnExchange(PacketActionExchange packet)
+        {
+            GameObject exchangeMenu =
+                Instantiate(ExchangePrefab, canvas.transform);
+            currentExchange = exchangeMenu.GetComponent<MenuExchange>();
+            currentExchange.PopulateLeft(myPlayer);
+            currentExchange.PopulatePlayers(players);
+        }
+
         public void OnError(PacketException packet)
         {
             // TODO: add an error message and whatnot, plus implement webgl
@@ -492,6 +540,8 @@ namespace Monopoly.Runtime
                     }
                 }
             }
+            if (BoardCardDisplay.current.rendering)
+                BoardCardDisplay.current.Redraw();
         }
 
         public void OnSellHouse(PacketActionSellHouseSucceed packet)
@@ -520,6 +570,8 @@ namespace Monopoly.Runtime
                     }
                 }
             }
+            if (BoardCardDisplay.current.rendering)
+                BoardCardDisplay.current.Redraw();
         }
 
         public void OnBuyProperty(PacketActionBuyPropertySucceed packet)
@@ -546,6 +598,8 @@ namespace Monopoly.Runtime
             }
             buyPropertyButton.gameObject.SetActive(false);
             auctionButton.gameObject.SetActive(false);
+            if (BoardCardDisplay.current.rendering)
+                BoardCardDisplay.current.Redraw();
         }
 
         public void OnEnterPrison(PacketPlayerEnterPrison packet)
@@ -605,6 +659,8 @@ namespace Monopoly.Runtime
                         OwnableNameLoggable(os)));
                 }
             }
+            if (BoardCardDisplay.current.rendering)
+                BoardCardDisplay.current.Redraw();
         }
 
         public void OnUnmortgageProperty(PacketActionUnmortgageSucceed packet)
@@ -629,6 +685,8 @@ namespace Monopoly.Runtime
                         OwnableNameLoggable(os)));
                 }
             }
+            if (BoardCardDisplay.current.rendering)
+                BoardCardDisplay.current.Redraw();
         }
 
         public void OnBalanceUpdate(PacketPlayerUpdateBalance packet)
@@ -649,6 +707,18 @@ namespace Monopoly.Runtime
             }
             p.Money = packet.NewBalance;
             playerInfo.SetMoney(p, p.Money);
+            if (packet.Reason.Equals("tax_square") ||
+                packet.Reason.Equals("jail_leave_pay"))
+            {
+                // add to free parking pot
+                UpdateParkingMoney(parkingMoney +
+                    Mathf.Abs(packet.OldBalance - packet.NewBalance));
+            }
+            else if (packet.Reason.Equals("parking_square"))
+            {
+                // take all from free parking pot
+                UpdateParkingMoney(0);
+            }
         }
 
         public void OnMove(PacketPlayerMove packet)
@@ -667,7 +737,8 @@ namespace Monopoly.Runtime
                 p.Position = packet.DestinationSquare;
                 playerDoneMove = false;
                 playerPieces[GetPlayerPieceIndex(p.Id)].
-                    MoveToPosition(p.Position, false, OnMoveAnimateCallback);
+                    MoveToPosition(p.Position, packet.Instant,
+                                   OnMoveAnimateCallback);
             }
         }
 
@@ -711,17 +782,14 @@ namespace Monopoly.Runtime
             Player p = Player.PlayerFromUUID(players, packet.PlayerId);
             playerTurn = p;
             playerInfo.SetActive(p);
-            if (packet.PlayerId.Equals(clientUUID))
+            if (p == myPlayer)
             {
                 CanRollDice = true;
                 Debug.Log(string.Format("Your turn to roll the dice. ({0})",
                                         clientUUID));
                 // TODO: MESSAGE
-                if (p.InJail)
-                {
-                    exitPrisonMoneyButton.gameObject.SetActive(true);
-                    exitPrisonCardButton.gameObject.SetActive(true);
-                }
+                exitPrisonMoneyButton.gameObject.SetActive(p.InJail);
+                exitPrisonCardButton.gameObject.SetActive(p.InJail);
                 rollDiceButton.gameObject.SetActive(true);
             }
             else
@@ -740,6 +808,8 @@ namespace Monopoly.Runtime
         {
             // TODO: Implement ui popup, piece animation, etc.
             rollDiceButton.gameObject.SetActive(false);
+            exitPrisonMoneyButton.gameObject.SetActive(false);
+            exitPrisonCardButton.gameObject.SetActive(false);
             Player p = Player.PlayerFromUUID(players, packet.PlayerId);
             switch (packet.Reason)
             {
@@ -787,8 +857,17 @@ namespace Monopoly.Runtime
             string message = StringLocaliser.GetString("card" + packet.CardId);
             try
             {
+                int val;
                 // get card data for formatting
-                int val = cardData[packet.CardId - 1]["value"];
+                if ((Card.CardType)cardData[packet.CardId - 1]["type"] ==
+                    Card.CardType.GOTO_POSITION)
+                {
+                    val = 200; // these cards typically say to pass go for $200
+                }
+                else
+                {
+                    val = cardData[packet.CardId - 1]["value"];
+                }
                 message = string.Format(message, val);
             }
             catch (System.Exception)
@@ -817,7 +896,24 @@ namespace Monopoly.Runtime
 
         public void OnGameStartDiceResult(PacketGameStartDiceResults packet)
         {
-            rollDiceButton.gameObject.SetActive(false);
+            foreach (PacketGameStartDiceResultsInternal result in packet.DiceResult)
+            {
+                if (result.Win)
+                {
+                    // TODO: hide dice animations and what not
+                    Player p = Player.PlayerFromUUID(players, result.PlayerId);
+                    if (p == null)
+                    {
+                        Debug.LogWarning(string.Format("Could not find player '{0}'!",
+                                                       result.PlayerId));
+                        return;
+                    }
+                    LogAction(string.Format(
+                        StringLocaliser.GetString("on_game_start_dice_result"),
+                        PlayerNameLoggable(p), result.Dice1, result.Dice2));
+                    break;
+                }
+            }
         }
 
         public void OnActionStart(PacketActionStart packet)

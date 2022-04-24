@@ -25,8 +25,8 @@ namespace Monopoly.Classes
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            GameObject clientStateObj = new GameObject("ClientGameState");
-            clientStateObj.AddComponent<ClientGameState>();
+            //GameObject clientStateObj = new GameObject("ClientGameState");
+            //clientStateObj.AddComponent<ClientGameState>();
         }
 
         [Test]

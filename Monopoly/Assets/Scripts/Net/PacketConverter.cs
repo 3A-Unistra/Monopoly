@@ -51,6 +51,7 @@ namespace Monopoly.Net
             { "LaunchGame", typeof(PacketLaunchGame) },
             { "NewHost", typeof(PacketNewHost) },
             { "AddBot", typeof(PacketAddBot) },
+            { "StatusRoom", typeof(PacketStatusRoom) },
 
             // GAME PACKETS
             { "Exception", typeof(PacketException) },

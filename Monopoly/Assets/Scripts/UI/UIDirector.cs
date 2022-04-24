@@ -44,14 +44,9 @@ namespace Monopoly.UI
             {
                 GameObject currentFocus = EventSystem.current.currentSelectedGameObject;
                 if (currentFocus != null)
-                {
-                    Debug.Log(currentFocus);
                     return currentFocus.TryGetComponent(out TMP_InputField _);
-                }
                 else
-                {
                     return false;
-                }
             }
             else
             {
