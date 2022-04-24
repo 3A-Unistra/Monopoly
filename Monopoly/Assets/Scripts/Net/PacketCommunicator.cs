@@ -113,6 +113,8 @@ namespace Monopoly.Net
         public event PacketDelegate<PacketActionUnmortgageSucceed>
                                                          OnUnmortgage;
         public event PacketDelegate<PacketActionExchange>    OnExchange;
+        public event PacketDelegate<PacketActionExchangeSend>
+                                                         OnExchangeSend;
         public event PacketDelegate<PacketActionExchangeAccept>
                                                          OnExchangeAccept;
         public event PacketDelegate<PacketActionExchangeCancel>
@@ -157,7 +159,7 @@ namespace Monopoly.Net
 
         public void DoPing()
         {
-            PacketPing packet = new PacketPing();
+            PacketPing packet = new PacketPing("");
             SendPacket(packet);
         }
 
@@ -183,13 +185,6 @@ namespace Monopoly.Net
         {
             PacketRoundDiceChoice packet = new PacketRoundDiceChoice(uuid, choice);
             SendPacket(packet);
-        }
-
-        public void DoAuctionProperty()
-        {
-            //PacketActionAuctionProperty packet
-            //    = new PacketActionAuctionProperty();
-            //SendPacket(packet);
         }
 
         public void DoBuyHouse(string uuid, int idx)
@@ -227,10 +222,11 @@ namespace Monopoly.Net
             SendPacket(packet);
         }
 
-        public void DoEndAction()
+        public void DoAuctionProperty()
         {
-            PacketActionEnd packet = new PacketActionEnd();
-            SendPacket(packet);
+            //PacketActionAuctionProperty packet
+            //    = new PacketActionAuctionProperty();
+            //SendPacket(packet);
         }
 
         public void DoBidAuction()
@@ -245,9 +241,21 @@ namespace Monopoly.Net
             //SendPacket(packet);
         }
 
+        public void DoEndAction()
+        {
+            PacketActionEnd packet = new PacketActionEnd();
+            SendPacket(packet);
+        }
+
         public void DoExchange(string uuid)
         {
             PacketActionExchange packet = new PacketActionExchange(uuid);
+            SendPacket(packet);
+        }
+
+        public void DoSendExchange()
+        {
+            PacketActionExchangeSend packet = new PacketActionExchangeSend();
             SendPacket(packet);
         }
 
@@ -269,23 +277,34 @@ namespace Monopoly.Net
             SendPacket(packet);
         }
 
-        public void DoExchangePlayerSelect()
+        public void DoCancelExchange()
         {
-            //PacketActionExchangePlayerSelect packet = new PacketActionExchangePlayerSelect();
-            //SendPacket(packet);
+            PacketActionExchangeCancel packet = new PacketActionExchangeCancel();
+            SendPacket(packet);
         }
 
-        public void DoExchangeTradeSelect()
+        public void DoExchangePlayerSelect(string uuid, string toUuid)
         {
-            //PacketActionExchangeTradeSelect packet = new PacketActionExchangeTradeSelect();
-            //SendPacket(packet);
+            PacketActionExchangePlayerSelect packet =
+                new PacketActionExchangePlayerSelect(uuid, toUuid);
+            SendPacket(packet);
+        }
+
+        public void DoExchangeTradeSelect(
+            string uuid, bool recipient,
+            int value, PacketActionExchangeTradeSelect.SelectType type)
+        {
+            PacketActionExchangeTradeSelect packet =
+                new PacketActionExchangeTradeSelect(
+                    uuid, recipient, value, type);
+            SendPacket(packet);
         }
 
         private async void SendPacket(Packet packet)
         {
 #if UNITY_EDITOR
-            if (!packet.Name.Equals("Ping"))
-                Debug.Log("WebSocket send: " + packet.Serialize());
+            //if (!packet.Name.Equals("Ping"))
+            Debug.Log("WebSocket send: " + packet.Serialize());
 #endif
             try {
                 await socket.Sock.SendText(packet.Serialize());
@@ -308,7 +327,12 @@ namespace Monopoly.Net
             string stringData = System.Text.Encoding.UTF8.GetString(data);
             Packet p = Packet.Deserialize(stringData);
             if (p == null)
+            {
+                Debug.LogWarning(
+                    string.Format("Received unserialisable packet {0}!",
+                                  stringData));
                 return;
+            }
             switch (p)
             {
             case PacketException packet:

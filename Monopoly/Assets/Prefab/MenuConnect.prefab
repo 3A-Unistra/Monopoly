@@ -692,6 +692,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Input FIeld
       objectReference: {fileID: 0}
+    - target: {fileID: 3269747719309276947, guid: bb1c2c4abdc44789a9de25fa8cf39542, type: 3}
+      propertyPath: m_ContentType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3269747719309276947, guid: bb1c2c4abdc44789a9de25fa8cf39542, type: 3}
+      propertyPath: m_KeyboardType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3269747719309276947, guid: bb1c2c4abdc44789a9de25fa8cf39542, type: 3}
+      propertyPath: m_CharacterValidation
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3341919757702505077, guid: bb1c2c4abdc44789a9de25fa8cf39542, type: 3}
       propertyPath: m_text
       value: Port...
@@ -982,7 +994,6 @@ MonoBehaviour:
   MainMenuText: {fileID: 6498938999909971891}
   ConnectButton: {fileID: 4872900966003079389}
   ConnectText: {fileID: 984727801265154152}
-  UsernameInput: {fileID: 0}
   IPInput: {fileID: 3109716047484090265}
   PortInput: {fileID: 7549700701183303552}
   ErrorTextField: {fileID: 7904044394895204632}

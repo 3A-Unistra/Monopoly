@@ -1185,6 +1185,30 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5760270175847593014, guid: a66b55714c6aa438e88ac447c978f7ca, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5760270175847593014, guid: a66b55714c6aa438e88ac447c978f7ca, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5760270175847593014, guid: a66b55714c6aa438e88ac447c978f7ca, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5760270175847593014, guid: a66b55714c6aa438e88ac447c978f7ca, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5760270175847593014, guid: a66b55714c6aa438e88ac447c978f7ca, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5760270175847593014, guid: a66b55714c6aa438e88ac447c978f7ca, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6333945177411328229, guid: a66b55714c6aa438e88ac447c978f7ca, type: 3}
       propertyPath: fadeTime
       value: 0.5
@@ -9486,12 +9510,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1097975727600835701, guid: 43d395616f5684d5a9da905d8066928d, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 1097975727600835701, guid: 43d395616f5684d5a9da905d8066928d, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1097975727600835701, guid: 43d395616f5684d5a9da905d8066928d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1097975727600835703, guid: 43d395616f5684d5a9da905d8066928d, type: 3}
+      propertyPath: m_fontSize
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 1097975727600835703, guid: 43d395616f5684d5a9da905d8066928d, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 18
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43d395616f5684d5a9da905d8066928d, type: 3}

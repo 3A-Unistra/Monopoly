@@ -85,16 +85,6 @@ namespace Monopoly.Runtime
 
         private MenuExchange currentExchange;
 
-        static ClientGameState()
-        {
-            squareData =
-                JsonLoader.LoadJsonAsset<List<Dictionary<string, int>>>
-                ("Data/squares");
-            cardData =
-                JsonLoader.LoadJsonAsset<List<Dictionary<string, int>>>
-                ("Data/cards");
-        }
-
         void Awake()
         {
             if (current != null)
@@ -105,6 +95,14 @@ namespace Monopoly.Runtime
             current = this;
             currentExchange = null;
             actionEnumeration = null;
+
+            squareData =
+                JsonLoader.LoadJsonAsset<List<Dictionary<string, int>>>
+                ("Data/squares");
+            cardData =
+                JsonLoader.LoadJsonAsset<List<Dictionary<string, int>>>
+                ("Data/cards");
+
             InitGame();
             Debug.Log("Initialised gamestate.");
         }
@@ -218,6 +216,7 @@ namespace Monopoly.Runtime
                                socket);
 
                 UIDirector.IsMenuOpen = false;
+                UIDirector.IsGameMenuOpen = false;
             }
         }
 
@@ -321,6 +320,13 @@ namespace Monopoly.Runtime
             comm.OnEnterPrison += OnEnterPrison;
             comm.OnExitPrison += OnExitPrison;
             comm.OnExchange += OnExchange;
+            comm.OnExchangePlayerSelect += OnExchangeSelectPlayer;
+            comm.OnExchangeTradeSelect += OnExchangeSelectTrade;
+            comm.OnExchangeSend += OnExchangeSend;
+            comm.OnExchangeAccept += OnExchangeAccept;
+            comm.OnExchangeDecline += OnExchangeDecline;
+            comm.OnExchangeCounter += OnExchangeCounter;
+            comm.OnExchangeCancel += OnExchangeCancel;
         }
 
         public Player GetPlayer(string uuid)
@@ -383,6 +389,7 @@ namespace Monopoly.Runtime
 
         private void UpdateParkingMoney(int amount)
         {
+            parkingMoney = amount;
             parkingMoneyText.text = string.Format(
                 StringLocaliser.GetString("money_format"), parkingMoney);
         }
@@ -465,16 +472,22 @@ namespace Monopoly.Runtime
                 comm.DoExchange(clientUUID);
         }
 
+        public void DoExchangeSend()
+        {
+            if (comm != null)
+                comm.DoSendExchange();
+        }
+
         public void DoExchangeAccept()
         {
             if (comm != null)
-                comm.DoDeclineExchange();
+                comm.DoAcceptExchange();
         }
 
         public void DoExchangeCounter()
         {
             if (comm != null)
-                comm.DoDeclineExchange();
+                comm.DoCounterExchange();
         }
 
         public void DoExchangeRefuse()
@@ -483,13 +496,109 @@ namespace Monopoly.Runtime
                 comm.DoDeclineExchange();
         }
 
+        public void DoExchangeCancel()
+        {
+            if (comm != null)
+                comm.DoCancelExchange();
+        }
+
+        public void DoExchangeSelectPlayer(string uuid)
+        {
+            if (comm != null)
+                comm.DoExchangePlayerSelect(clientUUID, uuid);
+        }
+
+        public void DoExchangeSelectTrade(bool recipient,
+            int val, PacketActionExchangeTradeSelect.SelectType type)
+        {
+            if (comm != null)
+                comm.DoExchangeTradeSelect(clientUUID, recipient, val, type);
+        }
+
         public void OnExchange(PacketActionExchange packet)
         {
+            Player p = Player.PlayerFromUUID(players, packet.PlayerId);
+            if (p == null)
+            {
+                Debug.LogWarning(string.Format("Could not find player '{0}'!",
+                                               packet.PlayerId));
+                return;
+            }
             GameObject exchangeMenu =
                 Instantiate(ExchangePrefab, canvas.transform);
             currentExchange = exchangeMenu.GetComponent<MenuExchange>();
-            currentExchange.PopulateLeft(myPlayer);
-            currentExchange.PopulatePlayers(players);
+            currentExchange.playerPrimary = p;
+            currentExchange.playerList = players;
+        }
+
+        public void OnExchangeSelectPlayer(PacketActionExchangePlayerSelect packet)
+        {
+            Player p = Player.PlayerFromUUID(players, packet.SelectedPlayerId);
+            if (p == null)
+            {
+                Debug.LogWarning(string.Format("Could not find player '{0}'!",
+                                               packet.SelectedPlayerId));
+                return;
+            }
+            if (currentExchange != null)
+                currentExchange.PopulateRight(p);
+        }
+
+        public void OnExchangeSelectTrade(PacketActionExchangeTradeSelect packet)
+        {
+            if (currentExchange == null)
+                return;
+            switch (packet.ExchangeType)
+            {
+            case PacketActionExchangeTradeSelect.SelectType.MONEY:
+                if (packet.AffectsRecipient)
+                    currentExchange.SetMoneyRight(packet.Value);
+                else
+                    currentExchange.SetMoneyLeft(packet.Value);
+                break;
+            case PacketActionExchangeTradeSelect.SelectType.PROPERTY:
+                currentExchange.ToggleSelectProperty
+                    (packet.Value, packet.AffectsRecipient);
+                break;
+            // TODO: implement the rest
+            }
+        }
+
+        public void OnExchangeSend(PacketActionExchangeSend packet)
+        {
+            if (currentExchange == null)
+                return;
+            currentExchange.Swap();
+        }
+
+        public void OnExchangeAccept(PacketActionExchangeAccept packet)
+        {
+            Destroy(currentExchange.gameObject);
+            currentExchange = null;
+            UIDirector.IsGameMenuOpen = false;
+        }
+
+        public void OnExchangeDecline(PacketActionExchangeDecline packet)
+        {
+            Destroy(currentExchange.gameObject);
+            currentExchange = null;
+            UIDirector.IsGameMenuOpen = false;
+        }
+
+        public void OnExchangeCounter(PacketActionExchangeCounter packet)
+        {
+            if (currentExchange == null)
+                return;
+            // TODO: IMPLEMENT
+        }
+
+        public void OnExchangeCancel(PacketActionExchangeCancel packet)
+        {
+            if (currentExchange == null)
+                return;
+            Destroy(currentExchange.gameObject);
+            currentExchange = null;
+            UIDirector.IsGameMenuOpen = false;
         }
 
         public void OnError(PacketException packet)
@@ -757,6 +866,12 @@ namespace Monopoly.Runtime
                                                packet.PlayerId));
                 return;
             }
+            if (p == myPlayer)
+            {
+                // I have lost connection, so I need to die and return to the
+                // menu
+                LoadHandler.LoadScene("Scenes/MenuScene");
+            }
             LogMessage(string.Format(
                 StringLocaliser.GetString("on_disconnect"),
                     PlayerNameLoggable(p)));
@@ -858,17 +973,25 @@ namespace Monopoly.Runtime
             try
             {
                 int val;
+                Card.CardType cardType = (Card.CardType) cardData[packet.CardId - 1]["type"];
                 // get card data for formatting
-                if ((Card.CardType)cardData[packet.CardId - 1]["type"] ==
-                    Card.CardType.GOTO_POSITION)
+                if (cardType == Card.CardType.GOTO_POSITION)
                 {
                     val = 200; // these cards typically say to pass go for $200
+                    message = string.Format(message, val);
+                }
+                else if (cardType == Card.CardType.GIVE_BOARD_HOUSES)
+                {
+                    // make repairs $25 per house, $100 per property thingy
+                    val = 25;
+                    int val2 = 100;
+                    message = string.Format(message, val, val2);
                 }
                 else
                 {
                     val = cardData[packet.CardId - 1]["value"];
+                    message = string.Format(message, val);
                 }
-                message = string.Format(message, val);
             }
             catch (System.Exception)
             {
@@ -922,7 +1045,6 @@ namespace Monopoly.Runtime
             if (myPlayer != playerTurn)
                 return;
 
-
             rollDiceButton.gameObject.SetActive(false);
             exchangeButton.gameObject.SetActive(true);
             actionEndButton.gameObject.SetActive(true);
@@ -939,6 +1061,9 @@ namespace Monopoly.Runtime
             }
             CanPerformAction = true;
 
+            if (BoardCardDisplay.current.rendering)
+                BoardCardDisplay.current.Redraw();
+
             Debug.Log("Turn started.");
         }
 
@@ -947,6 +1072,8 @@ namespace Monopoly.Runtime
             // TODO: Implement + update UI options
             CanPerformAction = false;
             HideAllInteractButtons();
+            if (BoardCardDisplay.current.rendering)
+                BoardCardDisplay.current.Redraw();
             Debug.Log("Turn ended.");
         }
 

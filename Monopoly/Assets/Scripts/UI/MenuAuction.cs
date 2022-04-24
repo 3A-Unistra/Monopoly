@@ -24,13 +24,13 @@ namespace Monopoly.UI
         void Start()
         {
             ResumeButton.onClick.AddListener(ResumeGame);
-            UIDirector.IsMenuOpen = true;
+            UIDirector.IsGameMenuOpen = true;
         }
 
         private void ResumeGame()
         {
+            UIDirector.IsGameMenuOpen = false;
             Destroy(this.gameObject);
-            UIDirector.IsMenuOpen = false;
         }
 
     }
