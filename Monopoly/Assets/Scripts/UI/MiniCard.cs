@@ -54,7 +54,8 @@ namespace Monopoly.UI
             Selected = !Selected;
             SelectButton.image.sprite =
                 Selected ? selectSprite : deselectSprite;
-            selectCallback(Index, Selected);
+            if (callback)
+                selectCallback(Index, Selected);
         }
 
     }
