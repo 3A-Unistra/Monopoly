@@ -157,7 +157,7 @@ namespace Monopoly.Net
 
         public void DoPing()
         {
-            PacketPing packet = new PacketPing();
+            PacketPing packet = new PacketPing("");
             SendPacket(packet);
         }
 
@@ -313,7 +313,12 @@ namespace Monopoly.Net
             string stringData = System.Text.Encoding.UTF8.GetString(data);
             Packet p = Packet.Deserialize(stringData);
             if (p == null)
+            {
+                Debug.LogWarning(
+                    string.Format("Received unserialisable packet {0}!",
+                                  stringData));
                 return;
+            }
             switch (p)
             {
             case PacketException packet:
