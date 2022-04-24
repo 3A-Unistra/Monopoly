@@ -76,7 +76,7 @@ namespace Monopoly.UI
         void Update()
         {
             // hide card info if a menu appears
-            if (UIDirector.IsMenuOpen)
+            if (UIDirector.IsMenuOpen || UIDirector.IsGameMenuOpen)
                 gameObject.SetActive(false);
         }
 

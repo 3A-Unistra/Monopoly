@@ -3,7 +3,7 @@
  * 
  * Date created : 19/04/2022
  * Author       : Maxime MAIRE <maxime.maire2@etu.unistra.fr>
- *                Finn Rayment <rayment@etu.unistra.fr>
+ *              : Finn RAYMENT <rayment@etu.unistra.fr>
  */
 
 using System.Collections;
@@ -23,6 +23,7 @@ namespace Monopoly.UI
 
         // left right left right left right what a mess...
 
+        public Button SendButton;
         public Button ReturnButton;
         public Button RefuseButton;
         public Button CounterButton;
@@ -56,14 +57,19 @@ namespace Monopoly.UI
         private List<MiniCard> CardListRight;
 
         public Player playerPrimary;
+        private Player playerSecondary;
         public List<Player> playerList;
         private int playerPrimaryIndex;
 
         private Coroutine leftMoneyDispatch;
         private Coroutine rightMoneyDispatch;
 
+        private bool firstRound;
+        private bool decisionToMake;
+
         void Start()
         {
+            SendButton.onClick.AddListener(SendAction);
             ReturnButton.onClick.AddListener(ReturnAction);
             RefuseButton.onClick.AddListener(RefuseAction);
             CounterButton.onClick.AddListener(CounterAction);
@@ -83,10 +89,19 @@ namespace Monopoly.UI
             CardListLeft = new List<MiniCard>();
             CardListRight = new List<MiniCard>();
 
+            firstRound = true;
+            decisionToMake = false;
+
             PopulateLeft(playerPrimary);
             PopulatePlayers(playerList);
+            UpdateEditRights();
 
-            UIDirector.IsMenuOpen = true;
+            UIDirector.IsGameMenuOpen = true;
+        }
+
+        void OnDestroy()
+        {
+            UIDirector.IsGameMenuOpen = false;
         }
 
         private void DispatchLeftMoney(string val)
@@ -102,8 +117,7 @@ namespace Monopoly.UI
         private void DispatchMoney(string val, bool right)
         {
             val = val.Trim();
-            int intval;
-            if (!int.TryParse(val, out intval))
+            if (!int.TryParse(val, out int intval))
                 return; // nothing I can do if its a bad value
             // start an enumerator before sending to avoid spam
             if (right)
@@ -146,7 +160,25 @@ namespace Monopoly.UI
         private void UpdateEditRights()
         {
             bool active = playerPrimary == ClientGameState.current.myPlayer;
-            // TODO: activate/disactivate buttons for users
+            bool secondActive = !active &&
+                playerSecondary == ClientGameState.current.myPlayer;
+
+            SendButton.gameObject.SetActive(!decisionToMake && active);
+            ReturnButton.gameObject.SetActive(firstRound && active);
+            MoneyPlayerLeft.enabled = !decisionToMake && active;
+            MoneyPlayerRight.enabled = !decisionToMake && active;
+            RefuseButton.gameObject.SetActive(decisionToMake && secondActive);
+            CounterButton.gameObject.SetActive(decisionToMake && secondActive);
+            AcceptButton.gameObject.SetActive(decisionToMake && secondActive);
+            LeaveJailChanceLeftButton.enabled = !decisionToMake && active;
+            LeaveJailChanceRightButton.enabled = !decisionToMake && active;
+            LeaveJailCommunityLeftButton.enabled = !decisionToMake && active;
+            LeaveJailCommunityRightButton.enabled = !decisionToMake && active;
+
+            foreach (MiniCard m in CardListLeft)
+                m.SelectButton.enabled = !decisionToMake && active;
+            foreach (MiniCard m in CardListRight)
+                m.SelectButton.enabled = !decisionToMake && active;
         }
 
         private void HideCardDisplayLeft()
@@ -175,28 +207,31 @@ namespace Monopoly.UI
             ListFieldRight.SetActive(false);
         }
 
+        private void SendAction()
+        {
+            ClientGameState.current.DoExchangeSend();
+        }
+
         private void ReturnAction()
         {
-            UIDirector.IsMenuOpen = false;
+            UIDirector.IsGameMenuOpen = false;
+            ClientGameState.current.DoExchangeCancel();
             Destroy(this.gameObject);
         }
 
         private void RefuseAction()
         {
             ClientGameState.current.DoExchangeRefuse();
-            Destroy(this.gameObject);
         }
 
         private void CounterAction()
         {
             ClientGameState.current.DoExchangeCounter();
-            Destroy(this.gameObject);
         }
 
         private void AcceptAction()
         {
             ClientGameState.current.DoExchangeAccept();
-            Destroy(this.gameObject);
         }
 
         private void LeaveJailChanceLeftAction()
@@ -213,9 +248,40 @@ namespace Monopoly.UI
         {
 
         }
+
         private void LeaveJailCommunityRightAction()
         {
 
+        }
+
+        public void Swap()
+        {
+            firstRound = false;
+            decisionToMake = true;
+
+            Player left = playerPrimary;
+            Player right = playerSecondary;
+            List<int> leftPropertyChoice = GetPropertySelectionLeft();
+            List<int> rightPropertyChoice = GetPropertySelectionRight();
+            int leftMoney = GetMoneyLeft();
+            int rightMoney = GetMoneyRight();
+            // FIXME: add community/chance swap
+            //bool leftCommunity = ;
+
+            PopulateLeft(right);
+            PopulateRight(left);
+
+            foreach (int i in leftPropertyChoice)
+                ToggleSelectProperty(i, true);
+            foreach (int i in rightPropertyChoice)
+                ToggleSelectProperty(i, false);
+
+            SetMoneyLeft(rightMoney);
+            SetMoneyRight(leftMoney);
+
+            HideCardDisplayLeft();
+            HideCardDisplayRight();
+            UpdateEditRights();
         }
 
         public void PopulateLeft(Player p)
@@ -274,8 +340,10 @@ namespace Monopoly.UI
 
                 CardListRight.Add(cardScript);
             }
+            playerSecondary = p;
             PlayerRightName.text = p.Name;
             HideCardDisplayRight();
+            UpdateEditRights();
         }
 
         public void ToggleSelectProperty(int index, bool right)
@@ -336,16 +404,14 @@ namespace Monopoly.UI
 
         public int GetMoneyLeft()
         {
-            int money;
-            if (!int.TryParse(MoneyPlayerLeft.text, out money))
+            if (!int.TryParse(MoneyPlayerLeft.text, out int money))
                 money = 0;
             return money;
         }
 
         public int GetMoneyRight()
         {
-            int money;
-            if (!int.TryParse(MoneyPlayerRight.text, out money))
+            if (!int.TryParse(MoneyPlayerRight.text, out int money))
                 money = 0;
             return money;
         }

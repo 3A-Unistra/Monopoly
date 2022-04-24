@@ -51,11 +51,20 @@ namespace Monopoly.UI
 
         public void ToggleSelect(bool callback)
         {
-            Selected = !Selected;
-            SelectButton.image.sprite =
-                Selected ? selectSprite : deselectSprite;
             if (callback)
+            {
+                // we are the ones updatig the button and need the server to
+                // agree before we update it, so don't update the sprite nor
+                // the value for now
                 selectCallback(Index, Selected);
+            }
+            else
+            {
+                // we are being told to update this button
+                Selected = !Selected;
+                SelectButton.image.sprite =
+                    Selected ? selectSprite : deselectSprite;
+            }
         }
 
     }

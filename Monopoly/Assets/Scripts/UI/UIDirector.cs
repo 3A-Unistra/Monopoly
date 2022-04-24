@@ -32,6 +32,14 @@ namespace Monopoly.UI
         /**
          * <summary>
          *     Boolean property that equates to <c>true</c> if and only if a
+         *     game menu (exchanges, auctions, etc.) is currently open.
+         * </summary>
+         */
+        public static bool IsGameMenuOpen { get; set; }
+
+        /**
+         * <summary>
+         *     Boolean property that equates to <c>true</c> if and only if a
          *     menu is trying to open and thus blocking net packets.
          * </summary>
          */

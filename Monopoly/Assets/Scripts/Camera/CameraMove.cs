@@ -195,7 +195,8 @@ namespace Monopoly.Camera
 
         void Update()
         {
-            if (!look.Animating && !UIDirector.IsMenuOpen)
+            if (!look.Animating && !UIDirector.IsMenuOpen &&
+                !UIDirector.IsGameMenuOpen)
             {
                 // camera movement
                 //if (!MoveCameraMouse() && !UIDirector.IsEditingInputField())

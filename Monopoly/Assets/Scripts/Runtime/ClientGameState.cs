@@ -216,6 +216,7 @@ namespace Monopoly.Runtime
                                socket);
 
                 UIDirector.IsMenuOpen = false;
+                UIDirector.IsGameMenuOpen = false;
             }
         }
 
@@ -321,6 +322,11 @@ namespace Monopoly.Runtime
             comm.OnExchange += OnExchange;
             comm.OnExchangePlayerSelect += OnExchangeSelectPlayer;
             comm.OnExchangeTradeSelect += OnExchangeSelectTrade;
+            comm.OnExchangeSend += OnExchangeSend;
+            comm.OnExchangeAccept += OnExchangeAccept;
+            comm.OnExchangeDecline += OnExchangeDecline;
+            comm.OnExchangeCounter += OnExchangeCounter;
+            comm.OnExchangeCancel += OnExchangeCancel;
         }
 
         public Player GetPlayer(string uuid)
@@ -466,22 +472,34 @@ namespace Monopoly.Runtime
                 comm.DoExchange(clientUUID);
         }
 
+        public void DoExchangeSend()
+        {
+            if (comm != null)
+                comm.DoSendExchange();
+        }
+
         public void DoExchangeAccept()
         {
             if (comm != null)
-                comm.DoDeclineExchange();
+                comm.DoAcceptExchange();
         }
 
         public void DoExchangeCounter()
         {
             if (comm != null)
-                comm.DoDeclineExchange();
+                comm.DoCounterExchange();
         }
 
         public void DoExchangeRefuse()
         {
             if (comm != null)
                 comm.DoDeclineExchange();
+        }
+
+        public void DoExchangeCancel()
+        {
+            if (comm != null)
+                comm.DoCancelExchange();
         }
 
         public void DoExchangeSelectPlayer(string uuid)
@@ -544,6 +562,43 @@ namespace Monopoly.Runtime
                 break;
             // TODO: implement the rest
             }
+        }
+
+        public void OnExchangeSend(PacketActionExchangeSend packet)
+        {
+            if (currentExchange == null)
+                return;
+            currentExchange.Swap();
+        }
+
+        public void OnExchangeAccept(PacketActionExchangeAccept packet)
+        {
+            Destroy(currentExchange.gameObject);
+            currentExchange = null;
+            UIDirector.IsGameMenuOpen = false;
+        }
+
+        public void OnExchangeDecline(PacketActionExchangeDecline packet)
+        {
+            Destroy(currentExchange.gameObject);
+            currentExchange = null;
+            UIDirector.IsGameMenuOpen = false;
+        }
+
+        public void OnExchangeCounter(PacketActionExchangeCounter packet)
+        {
+            if (currentExchange == null)
+                return;
+            // TODO: IMPLEMENT
+        }
+
+        public void OnExchangeCancel(PacketActionExchangeCancel packet)
+        {
+            if (currentExchange == null)
+                return;
+            Destroy(currentExchange.gameObject);
+            currentExchange = null;
+            UIDirector.IsGameMenuOpen = false;
         }
 
         public void OnError(PacketException packet)

@@ -54,7 +54,8 @@ namespace Monopoly.UI
 
         void Update()
         {
-            if (!UIDirector.IsMenuOpen && Input.GetMouseButtonDown(0))
+            if (!UIDirector.IsMenuOpen && !UIDirector.IsGameMenuOpen &&
+                Input.GetMouseButtonDown(0))
                 DisplayCardPreview();
         }
 

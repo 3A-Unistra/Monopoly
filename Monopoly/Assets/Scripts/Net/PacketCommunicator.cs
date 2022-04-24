@@ -113,6 +113,8 @@ namespace Monopoly.Net
         public event PacketDelegate<PacketActionUnmortgageSucceed>
                                                          OnUnmortgage;
         public event PacketDelegate<PacketActionExchange>    OnExchange;
+        public event PacketDelegate<PacketActionExchangeSend>
+                                                         OnExchangeSend;
         public event PacketDelegate<PacketActionExchangeAccept>
                                                          OnExchangeAccept;
         public event PacketDelegate<PacketActionExchangeCancel>
@@ -185,13 +187,6 @@ namespace Monopoly.Net
             SendPacket(packet);
         }
 
-        public void DoAuctionProperty()
-        {
-            //PacketActionAuctionProperty packet
-            //    = new PacketActionAuctionProperty();
-            //SendPacket(packet);
-        }
-
         public void DoBuyHouse(string uuid, int idx)
         {
             PacketActionBuyHouse packet =
@@ -227,10 +222,11 @@ namespace Monopoly.Net
             SendPacket(packet);
         }
 
-        public void DoEndAction()
+        public void DoAuctionProperty()
         {
-            PacketActionEnd packet = new PacketActionEnd();
-            SendPacket(packet);
+            //PacketActionAuctionProperty packet
+            //    = new PacketActionAuctionProperty();
+            //SendPacket(packet);
         }
 
         public void DoBidAuction()
@@ -245,9 +241,21 @@ namespace Monopoly.Net
             //SendPacket(packet);
         }
 
+        public void DoEndAction()
+        {
+            PacketActionEnd packet = new PacketActionEnd();
+            SendPacket(packet);
+        }
+
         public void DoExchange(string uuid)
         {
             PacketActionExchange packet = new PacketActionExchange(uuid);
+            SendPacket(packet);
+        }
+
+        public void DoSendExchange()
+        {
+            PacketActionExchangeSend packet = new PacketActionExchangeSend();
             SendPacket(packet);
         }
 
@@ -266,6 +274,12 @@ namespace Monopoly.Net
         public void DoDeclineExchange()
         {
             PacketActionExchangeDecline packet = new PacketActionExchangeDecline();
+            SendPacket(packet);
+        }
+
+        public void DoCancelExchange()
+        {
+            PacketActionExchangeCancel packet = new PacketActionExchangeCancel();
             SendPacket(packet);
         }
 
