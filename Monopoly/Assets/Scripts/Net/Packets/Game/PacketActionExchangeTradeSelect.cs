@@ -34,8 +34,6 @@ namespace Monopoly.Net.Packets
         public int Value { get; private set; }
 
         [JsonProperty("exchange_type")]
-        public int ExchangeTypeInt { get; private set; }
-
         public SelectType ExchangeType { get; private set; }
 
         public PacketActionExchangeTradeSelect(string playerId, 
@@ -45,7 +43,6 @@ namespace Monopoly.Net.Packets
             this.PlayerId = playerId;
             this.AffectsRecipient = affectsRecipient;
             this.Value = value;
-            this.ExchangeTypeInt = exchangeType;
             this.ExchangeType = (SelectType) exchangeType;
         }
 
@@ -56,7 +53,6 @@ namespace Monopoly.Net.Packets
             this.PlayerId = playerId;
             this.AffectsRecipient = affectsRecipient;
             this.Value = value;
-            this.ExchangeTypeInt = (int) exchangeType;
             this.ExchangeType = exchangeType;
         }
 
