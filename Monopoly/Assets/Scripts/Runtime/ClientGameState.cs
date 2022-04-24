@@ -383,6 +383,7 @@ namespace Monopoly.Runtime
 
         private void UpdateParkingMoney(int amount)
         {
+            parkingMoney = amount;
             parkingMoneyText.text = string.Format(
                 StringLocaliser.GetString("money_format"), parkingMoney);
         }
@@ -911,17 +912,25 @@ namespace Monopoly.Runtime
             try
             {
                 int val;
+                Card.CardType cardType = (Card.CardType) cardData[packet.CardId - 1]["type"];
                 // get card data for formatting
-                if ((Card.CardType)cardData[packet.CardId - 1]["type"] ==
-                    Card.CardType.GOTO_POSITION)
+                if (cardType == Card.CardType.GOTO_POSITION)
                 {
                     val = 200; // these cards typically say to pass go for $200
+                    message = string.Format(message, val);
+                }
+                else if (cardType == Card.CardType.GIVE_BOARD_HOUSES)
+                {
+                    // make repairs $25 per house, $100 per property thingy
+                    val = 25;
+                    int val2 = 100;
+                    message = string.Format(message, val, val2);
                 }
                 else
                 {
                     val = cardData[packet.CardId - 1]["value"];
+                    message = string.Format(message, val);
                 }
-                message = string.Format(message, val);
             }
             catch (System.Exception)
             {
