@@ -20,7 +20,7 @@ namespace Monopoly.Net.Packets
         [JsonProperty("player_token")]
         public string PlayerId { get; private set; }
 
-        [JsonProperty("selected_token")]
+        [JsonProperty("selected_player_token")]
         public string SelectedPlayerId { get; private set; }
 
         public PacketActionExchangePlayerSelect(
