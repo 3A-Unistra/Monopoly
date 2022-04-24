@@ -137,6 +137,12 @@ namespace Monopoly.UI
                 leftMoneyDispatch = null;
         }
 
+        private void DispatchCard(int idx, bool selected, bool right)
+        {
+            ClientGameState.current.DoExchangeSelectTrade(right, idx,
+                Net.Packets.PacketActionExchangeTradeSelect.SelectType.PROPERTY);
+        }
+
         private void UpdateEditRights()
         {
             bool active = playerPrimary == ClientGameState.current.myPlayer;
@@ -228,7 +234,8 @@ namespace Monopoly.UI
                 cardScript.Index = s.Id;
                 cardScript.Name.text = os.Name;
                 cardScript.editable = p == ClientGameState.current.myPlayer;
-                cardScript.selectCallback =
+                cardScript.selectCallback = (x, y) => DispatchCard(x, y, false);
+                cardScript.previewCallback =
                     delegate { DisplayCardLeft(s.Id); };
 
                 CardListLeft.Add(cardScript);
@@ -261,13 +268,27 @@ namespace Monopoly.UI
                 cardScript.Name.text = os.Name;
                 cardScript.editable =
                     playerPrimary == ClientGameState.current.myPlayer;
-                cardScript.selectCallback =
+                cardScript.selectCallback = (x, y) => DispatchCard(x, y, true);
+                cardScript.previewCallback =
                     delegate { DisplayCardRight(s.Id); };
 
                 CardListRight.Add(cardScript);
             }
             PlayerRightName.text = p.Name;
             HideCardDisplayRight();
+        }
+
+        public void ToggleSelectProperty(int index, bool right)
+        {
+            List<MiniCard> list = right ? CardListRight : CardListLeft;
+            foreach (MiniCard m in list)
+            {
+                if (m.Index == index)
+                {
+                    m.ToggleSelect(false);
+                    break;
+                }
+            }
         }
 
         private void ClearCardList(List<MiniCard> cards)

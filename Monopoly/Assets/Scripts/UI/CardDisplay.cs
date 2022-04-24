@@ -65,7 +65,7 @@ namespace Monopoly.UI
         void Awake()
         {
             rect = GetComponent<RectTransform>();
-            HideAll();
+            //HideAll();
         }
 
         private void HideAll()

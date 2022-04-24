@@ -32,7 +32,9 @@ namespace Monopoly.UI
         public Sprite deselectSprite;
 
         [HideInInspector]
-        public Action selectCallback;
+        public Action previewCallback;
+        [HideInInspector]
+        public Action<int, bool> selectCallback;
 
         [HideInInspector]
         public bool editable = false;
@@ -41,17 +43,18 @@ namespace Monopoly.UI
         {
             Selected = false;
             SelectButton.image.sprite = deselectSprite;
-            SelectButton.onClick.AddListener(ToggleSelect);
-            PreviewButton.onClick.AddListener(delegate { selectCallback(); });
+            SelectButton.onClick.AddListener(delegate { ToggleSelect(true); });
+            PreviewButton.onClick.AddListener(delegate { previewCallback(); });
             if (!editable)
                 SelectButton.enabled = false;
         }
 
-        private void ToggleSelect()
+        public void ToggleSelect(bool callback)
         {
             Selected = !Selected;
             SelectButton.image.sprite =
                 Selected ? selectSprite : deselectSprite;
+            selectCallback(Index, Selected);
         }
 
     }

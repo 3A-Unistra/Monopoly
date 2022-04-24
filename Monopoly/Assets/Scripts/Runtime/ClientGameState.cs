@@ -537,6 +537,10 @@ namespace Monopoly.Runtime
                 else
                     currentExchange.SetMoneyLeft(packet.Value);
                 break;
+            case PacketActionExchangeTradeSelect.SelectType.PROPERTY:
+                currentExchange.ToggleSelectProperty
+                    (packet.Value, packet.AffectsRecipient);
+                break;
             // TODO: implement the rest
             }
         }
