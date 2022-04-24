@@ -811,6 +811,12 @@ namespace Monopoly.Runtime
                                                packet.PlayerId));
                 return;
             }
+            if (p == myPlayer)
+            {
+                // I have lost connection, so I need to die and return to the
+                // menu
+                LoadHandler.LoadScene("Scenes/MenuScene");
+            }
             LogMessage(string.Format(
                 StringLocaliser.GetString("on_disconnect"),
                     PlayerNameLoggable(p)));
