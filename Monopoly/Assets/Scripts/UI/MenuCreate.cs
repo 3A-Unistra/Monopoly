@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -21,10 +22,10 @@ namespace Monopoly.UI
         public TMP_InputField TurnDuration;
         public TMP_InputField TurnNumbers;
         public TMP_InputField StartingBalance;
-        public OnOff PrivateSwitch;
-        public OnOff AuctionsSwitch;
-        public OnOff DoubleOnGoSwitch;
-        public OnOff BuyFirstTurnSwitch;
+        public Button PrivateSwitch;
+        public Button AuctionsSwitch;
+        public Button DoubleOnGoSwitch;
+        public Button BuyFirstTurnSwitch;
         public Button CopyButton;
         public TMP_Text CopyText;
         public Button InviteButton;
@@ -183,6 +184,59 @@ namespace Monopoly.UI
             }
         }
 
+        public void SetName(String lobbyName)
+        {
+            LobbyName.text = lobbyName;
+        }
+
+        public void SetPlayerNumber(int n)
+        {
+            PlayersDropdown.value = n - 2;
+        }
+
+        public void SetBotsNumber(int n)
+        {
+            BotsDropdown.value = n;
+        }
+
+        public void SetAuctionSwitch(bool auction)
+        {
+            if(AuctionsSwitch.GetComponent<OnOff>().switchOn != auction)
+                AuctionsSwitch.onClick.Invoke();
+        }
+
+        public void SetDoubleOnStartSwitch(bool doubleOnStart)
+        {
+            if(DoubleOnGoSwitch.GetComponent<OnOff>().switchOn != doubleOnStart)
+                DoubleOnGoSwitch.onClick.Invoke();
+        }
+
+        public void SetBuyingSwitch(bool canBuy)
+        {
+            if(BuyFirstTurnSwitch.GetComponent<OnOff>().switchOn != canBuy)
+                BuyFirstTurnSwitch.onClick.Invoke();
+        }
+
+        public void SetPrivacy(bool isPrivate)
+        {
+            if(PrivateSwitch.GetComponent<OnOff>().switchOn != isPrivate)
+                PrivateSwitch.onClick.Invoke();
+        }
+
+        public void SetStartingBalance(int balance)
+        {
+            StartingBalance.text = balance.ToString();
+        }
+        
+        public void SetTurnTime(int time)
+        {
+            TurnDuration.text = time.ToString();
+        }
+
+        public void SetNbTurns(int nb)
+        {
+            TurnNumbers.text = nb.ToString();
+        }
         public void InvitePlayer()
         {
 

@@ -78,7 +78,7 @@ namespace Monopoly.UI
             StringBuilder sb = new StringBuilder();
             bool red = amount < 0;
             if (red)
-                sb.Append("<color=#ff0000>-");
+                sb.Append("<color=#ff5555>");
             sb.Append(string.Format(
                 StringLocaliser.GetString("money_format"), amount));
             if (red)
@@ -91,9 +91,9 @@ namespace Monopoly.UI
                 int modamount = Mathf.Abs(lastAmount - amount);
                 bool modred = amount < lastAmount;
                 if (modred)
-                    modsb.Append("<color=#ff0000>-");
+                    modsb.Append("<color=#ff5555>-");
                 else
-                    modsb.Append("<color=#00ff00>+");
+                    modsb.Append("<color=#55ff55>+");
                 modsb.Append(string.Format(
                     StringLocaliser.GetString("money_format"), modamount));
                 modsb.Append("</color>");

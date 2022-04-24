@@ -43,13 +43,13 @@ namespace Monopoly.UI
                 SquareCollider collider = obj.GetComponent<SquareCollider>();
                 if (collider != null)
                 {
-                    cardDisplay.Render(collider.squareIndex);
+                    cardDisplay.Render(collider.squareIndex, true);
                     rendered = true;
                     break;
                 }
             }
             if (!rendered)
-                cardDisplay.Render(-1); // hide card renderer
+                cardDisplay.Render(-1, false); // hide card renderer
         }
 
         void Update()

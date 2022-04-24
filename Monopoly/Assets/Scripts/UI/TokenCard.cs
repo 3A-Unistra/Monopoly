@@ -31,6 +31,8 @@ namespace Monopoly.UI
         public GameObject chanceBackground;
         public GameObject communityBackground;
 
+        public Sprite[] imageFaces;
+
         [Range(0.0f, 5.0f)]
         public float fadeTime = 0.5f;
         private float animate;
@@ -49,6 +51,12 @@ namespace Monopoly.UI
 
         public void ShowCard(CardType type, int idx, string message)
         {
+            if (idx < 1 || idx > 32)
+            {
+                Debug.LogWarning(string.Format(
+                    "Attempting to show invalid card #{0}!", idx));
+                return;
+            }
             gameObject.SetActive(true);
             canvasGroup.alpha = 0.0f;
             if (routine != null)
@@ -58,6 +66,8 @@ namespace Monopoly.UI
             communityBackground.SetActive(type == CardType.COMMUNITY);
             text.text = message;
             shouldHide = false;
+            if (imageFaces.Length >= idx)
+                image.sprite = imageFaces[idx - 1];
             routine = StartCoroutine(EnumerateCard());
         }
 

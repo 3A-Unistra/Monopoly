@@ -22,11 +22,15 @@ namespace Monopoly.Net.Packets
         [JsonProperty("destination")]
         public int DestinationSquare { get; private set; }
 
+        [JsonProperty("instant")]
+        public bool Instant { get; private set; }
+
         public PacketPlayerMove(string movingPlayerId, 
-            int destinationSquare) : base("PlayerMove")
+            int destinationSquare, bool instant) : base("PlayerMove")
         {
             this.MovingPlayerId = movingPlayerId;
             this.DestinationSquare = destinationSquare;
+            this.Instant = instant;
         }
 
     }

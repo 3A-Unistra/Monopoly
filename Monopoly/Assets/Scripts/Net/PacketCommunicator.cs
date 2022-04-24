@@ -245,10 +245,10 @@ namespace Monopoly.Net
             //SendPacket(packet);
         }
 
-        public void DoExchange()
+        public void DoExchange(string uuid)
         {
-            //PacketActionExchange packet = new PacketActionExchange();
-            //SendPacket(packet);
+            PacketActionExchange packet = new PacketActionExchange(uuid);
+            SendPacket(packet);
         }
 
         public void DoAcceptExchange()

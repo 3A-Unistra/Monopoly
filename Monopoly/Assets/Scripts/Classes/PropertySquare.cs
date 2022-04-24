@@ -281,51 +281,12 @@ namespace Monopoly.Classes
                 throw new WrongTypeException(
                     string.Format("Index {0} is not a property.", idx));
             }
-            if (ClientGameState.current == null)
-            {
-                throw new InvalidStateException("Client state not active.");
-            }
             Dictionary<string, int> dic =
-                ClientGameState.current.squareData[idx];
+                ClientGameState.squareData[idx];
             return new Color(dic["r"] / 255f,
                              dic["g"] / 255f,
                              dic["b"] / 255f,
                              1f);
-            /*switch (idx)
-            {
-            case 1:
-            case 3:
-                return new Color(88 / 255f, 12 / 255f, 57 / 255f, 1f);
-            case 6:
-            case 8:
-            case 9:
-                return new Color(135 / 255f, 165 / 255f, 215 / 255f, 1f);
-            case 11:
-            case 13:
-            case 14:
-                return new Color(239 / 255f, 56 / 255f, 120 / 255f, 1f);
-            case 16:
-            case 18:
-            case 19:
-                return new Color(245 / 255f, 128 / 255f, 35 / 255f, 1f);
-            case 21:
-            case 23:
-            case 24:
-                return new Color(212 / 255f, 0 / 255f, 0 / 255f, 1f);
-            case 26:
-            case 27:
-            case 29:
-                return new Color(255 / 255f, 204 / 255f, 0 / 255f, 1f);
-            case 31:
-            case 32:
-            case 34:
-                return new Color(9 / 255f, 135 / 255f, 51 / 255f, 1f);
-            case 37:
-            case 39:
-                return new Color(40 / 255f, 78 / 255f, 161 / 255f, 1f);
-            default:
-                return Color.white;
-            }*/
         }
 
     }

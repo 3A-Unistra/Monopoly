@@ -32,11 +32,24 @@ namespace Monopoly.UI
         public Button mortgageButton;
         public Button unmortgageButton;
 
+        public bool rendering;
+        private int square;
+
         private RectTransform rect;
         private Canvas canvas;
 
+        public static BoardCardDisplay current;
+
         void Start()
         {
+            if (current != null)
+            {
+                Debug.LogWarning("Cannot create multiple board card displays!");
+                Destroy(this.gameObject);
+                return;
+            }
+            current = this;
+
             canvas = transform.parent.GetComponent<Canvas>();
             rect = GetComponent<RectTransform>();
             SetOwner(null);
@@ -56,6 +69,7 @@ namespace Monopoly.UI
             {
                 ClientGameState.current.DoUnmortgageProperty();
             });
+            rendering = false;
             gameObject.SetActive(false);
         }
 
@@ -92,9 +106,15 @@ namespace Monopoly.UI
             rect.position = new Vector2(origin.x, origin.y);
         }
 
-        public void Render(int square)
+        public void Redraw()
+        {
+            Render(this.square, false);
+        }
+
+        public void Render(int square, bool updatePosition)
         {
             Card.Render(square);
+            this.square = square;
             if (PropertySquare.IsPropertyIndex(square) ||
                 StationSquare.IsStationIndex(square) ||
                 CompanySquare.IsCompanyIndex(square))
@@ -103,29 +123,38 @@ namespace Monopoly.UI
                 OwnableSquare os = (OwnableSquare)
                     ClientGameState.current.Board.GetSquare(square);
                 SetOwner(os.Owner);
-                bool canModify = false;
+                bool canMortgage = false;
+                bool canBuy = false;
+                bool canSell = false;
                 bool canUnmortgage = false;
-                if (os.Owner != null &&
-                    PropertySquare.IsPropertyIndex(square))
+                if (os.Owner == ClientGameState.current.myPlayer)
                 {
-                    PropertySquare ps = (PropertySquare) os;
-                    if (ClientGameState.current.Board.OwnSameColorSet
-                        (ps.Owner, ps))
+                    canMortgage = !os.Mortgaged;
+                    canUnmortgage = os.Mortgaged;
+                    if (PropertySquare.IsPropertyIndex(square))
                     {
-                        canModify = !ps.Mortgaged;
-                        canUnmortgage = ps.Mortgaged;
+                        PropertySquare ps = (PropertySquare)os;
+                        if (ClientGameState.current.Board.OwnSameColorSet
+                            (ps.Owner, ps) && !ps.Mortgaged)
+                        {
+                            canBuy = ps.NbHouse < 5;
+                            canSell = ps.NbHouse > 0;
+                        }
                     }
                 }
-                buyHouseButton.gameObject.SetActive(canModify);
-                sellHouseButton.gameObject.SetActive(canModify);
-                mortgageButton.gameObject.SetActive(canModify);
+                buyHouseButton.gameObject.SetActive(canBuy);
+                sellHouseButton.gameObject.SetActive(canSell);
+                mortgageButton.gameObject.SetActive(canMortgage);
                 unmortgageButton.gameObject.SetActive(canUnmortgage);
 
-                UpdatePosition();
+                if (updatePosition)
+                    UpdatePosition();
+                rendering = true;
                 gameObject.SetActive(true);
             }
             else
             {
+                rendering = false;
                 gameObject.SetActive(false);
             }
         }

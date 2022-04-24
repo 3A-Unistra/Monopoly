@@ -50,5 +50,17 @@ namespace Monopoly.Classes
             this.community = community;
         }
 
-    }
+        public enum CardType
+        {
+            RECEIVE_BANK = 0,
+            GIVE_BOARD = 1,
+            MOVE_BACKWARD = 2,
+            GOTO_POSITION = 3,
+            GOTO_JAIL = 4,
+            GIVE_ALL = 5,
+            RECEIVE_ALL = 6,
+            LEAVE_JAIL = 7
+        }
+
+}
 }

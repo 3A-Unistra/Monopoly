@@ -123,7 +123,6 @@ namespace Monopoly.UI
 
             UIDirector.IsMenuOpen = true;
         }
-        
 
         private void BuildQuality()
         {
