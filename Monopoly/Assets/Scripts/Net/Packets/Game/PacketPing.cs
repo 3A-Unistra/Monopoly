@@ -7,6 +7,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 using Monopoly.Net;
 
@@ -16,10 +17,13 @@ namespace Monopoly.Net.Packets
     public class PacketPing : Packet
     {
 
-        public PacketPing() : base("Ping")
-        {
+        [JsonProperty("player_token")]
+        public string PlayerId { get; private set; }
 
-        }
+        public PacketPing(string playerId) : base("Ping")
+        {
+            this.PlayerId = playerId;
+        } 
 
     }
 

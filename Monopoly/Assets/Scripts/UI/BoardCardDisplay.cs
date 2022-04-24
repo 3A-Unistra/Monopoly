@@ -76,7 +76,7 @@ namespace Monopoly.UI
         void Update()
         {
             // hide card info if a menu appears
-            if (UIDirector.IsMenuOpen)
+            if (UIDirector.IsMenuOpen || UIDirector.IsGameMenuOpen)
                 gameObject.SetActive(false);
         }
 
@@ -127,7 +127,8 @@ namespace Monopoly.UI
                 bool canBuy = false;
                 bool canSell = false;
                 bool canUnmortgage = false;
-                if (os.Owner == ClientGameState.current.myPlayer)
+                if (ClientGameState.current.CanPerformAction &&
+                    os.Owner == ClientGameState.current.myPlayer)
                 {
                     canMortgage = !os.Mortgaged;
                     canUnmortgage = os.Mortgaged;

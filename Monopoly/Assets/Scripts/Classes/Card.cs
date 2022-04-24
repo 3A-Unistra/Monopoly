@@ -59,8 +59,12 @@ namespace Monopoly.Classes
             GOTO_JAIL = 4,
             GIVE_ALL = 5,
             RECEIVE_ALL = 6,
-            LEAVE_JAIL = 7
+            LEAVE_JAIL = 7,
+            CLOSEST_STATION = 8,
+            CLOSEST_COMPANY = 9,
+            GIVE_BOARD_HOUSES = 10
         }
 
-}
+    }
+
 }

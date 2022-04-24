@@ -5,12 +5,14 @@
  * 
  * Date created : 21/02/2022
  * Author       : Rayan MARMAR <rayan.marmar@etu.unistra.fr>
+ *              : Finn RAYMENT <rayment@etu.unistra.fr>
  */
-
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+using Monopoly.Util;
 
 namespace Monopoly.Classes
 {
@@ -48,12 +50,34 @@ namespace Monopoly.Classes
          */
         public int Price{ get; set; }
   
-        /** <summary>
+        /**
+         * <summary>
          * The rent of the property that a player has to pay if he reaches a
          * property owned by another player.
          *  </summary>
          */
         public int Rent{ get; set; }
+
+        /**
+         * <summary>
+         * Load the name of the property via. localisation and return it.
+         * Not settable.
+         * </summary>
+         */
+        public string Name {
+            get
+            {
+                string key;
+                if (IsProperty())
+                    key = "property";
+                else if (IsStation())
+                    key = "station";
+                else
+                    key = "museum";
+                return StringLocaliser.GetString(
+                    string.Format("{0}{1}", key, Id));
+            }
+        }
 
         /**
           * <summary>
