@@ -20,31 +20,28 @@ namespace Monopoly.UI
 
         public GameObject Dice1;
         public GameObject Dice2;
-        public Button RollButton;
 
         public Sprite[] DiceSides;
 
         private Image Rend1;
         private Image Rend2;
         private bool AnimationStarted = false;
-        private bool PacketReceived = false;
+
         private float AnimationTime;
-        private float DisactivationTimer;
-        private int Dice1Results;
-        private int Dice2Results;
+
+        private static readonly float EXPIRE_TIME = 3.0f;
 
         void Start()
         {
-            RollButton.onClick.AddListener(RollDice);
             Rend1 = Dice1.GetComponent<Image>();
             Rend2 = Dice2.GetComponent<Image>();
-            Dice1.SetActive(AnimationStarted);
-            Dice2.SetActive(AnimationStarted);
+            Dice1.SetActive(false);
+            Dice2.SetActive(false);
         }
         
         void Update()
         {
-            if (AnimationStarted && !PacketReceived)
+            if (AnimationStarted)
             {
                 AnimationTime += Time.deltaTime;
                 if (AnimationTime >= 0.05f)
@@ -53,49 +50,41 @@ namespace Monopoly.UI
                     int dice2 = Random.Range(0, DiceSides.Length);
                     Rend1.sprite = DiceSides[dice1];
                     Rend2.sprite = DiceSides[dice2];
-                    AnimationTime = 0;
-                }
-            }
-            else if (PacketReceived)
-            {
-                DisactivationTimer += Time.deltaTime;
-                if (DisactivationTimer > 1.5f)
-                {
-                    Dice1.SetActive(false);
-                    Dice2.SetActive(false);
+                    AnimationTime = 0.0f;
                 }
             }
         }
 
-        private void RollDice()
+        public void RollDice()
         {
-            if (!AnimationStarted)
-            {
-                Dice1Results = Random.Range(0, 5); // we won't need this variable when we receive the packet
-                Dice2Results = Random.Range(0, 5); // we won't need this variable when we receive the packet
-                AnimationTime = 0;
-                AnimationStarted = true;
-                PacketReceived = false;
-                Dice1.SetActive(AnimationStarted);
-                Dice2.SetActive(AnimationStarted);
-            }
-            // FinalDiceSide() should be called when we receive the result
-            // packet from the server not on the second button click
-            else
-            {
-                FinalDiceSide();
-            }
+            AnimationTime = 0;
+            AnimationStarted = true;
+            Dice1.SetActive(true);
+            Dice2.SetActive(true);
         }
 
-        private void FinalDiceSide()
+        public void HideDice()
         {
-            PacketReceived = true;
             AnimationStarted = false;
-            Rend1.sprite = DiceSides[Dice1Results]; 
-            Rend2.sprite = DiceSides[Dice2Results];
-            DisactivationTimer = 0;
-            // DiceResults should be replaced by the dice number sent by the server
+            Dice1.SetActive(false);
+            Dice2.SetActive(false);
         }
+
+        public void RevealDice(int dice1, int dice2)
+        {
+            StartCoroutine(RevealDiceEnumrator(dice1, dice2));
+        }
+
+        private IEnumerator RevealDiceEnumrator(int dice1, int dice2)
+        {
+            AnimationStarted = false;
+            Rend1.sprite = DiceSides[dice1 - 1];
+            Rend2.sprite = DiceSides[dice2 - 1];
+            yield return new WaitForSeconds(EXPIRE_TIME);
+            Dice1.SetActive(false);
+            Dice2.SetActive(false);
+        }
+
     }
 
 }

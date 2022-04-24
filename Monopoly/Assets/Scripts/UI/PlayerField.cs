@@ -29,6 +29,8 @@ namespace Monopoly.UI
         public TMP_Text Money;
         public TMP_Text MoneyModifier;
 
+        public DiceAnimation Dice;
+
         private string uuid;
         private int lastAmount;
 
@@ -110,6 +112,11 @@ namespace Monopoly.UI
         public bool HandlesPlayer(Player player)
         {
             return player.Id.Equals(uuid);
+        }
+
+        public bool HandlesPlayer(string uuid)
+        {
+            return uuid.Equals(this.uuid);
         }
 
     }
