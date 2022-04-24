@@ -370,7 +370,8 @@ namespace Monopoly.UI
             //PlayerRightDropdown.value = -1;
             PlayerRightDropdown.value = 0;
             PopulateRight(playerList[first]);
-            ClientGameState.current.DoExchangeSelectPlayer(playerList[first].Id);
+            if (playerPrimary == ClientGameState.current.myPlayer)
+                ClientGameState.current.DoExchangeSelectPlayer(playerList[first].Id);
         }
 
         private void ChangePlayer(int index)
