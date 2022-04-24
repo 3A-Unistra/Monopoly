@@ -127,7 +127,8 @@ namespace Monopoly.UI
                 bool canBuy = false;
                 bool canSell = false;
                 bool canUnmortgage = false;
-                if (os.Owner == ClientGameState.current.myPlayer)
+                if (ClientGameState.current.CanPerformAction &&
+                    os.Owner == ClientGameState.current.myPlayer)
                 {
                     canMortgage = !os.Mortgaged;
                     canUnmortgage = os.Mortgaged;

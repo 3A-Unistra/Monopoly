@@ -946,7 +946,6 @@ namespace Monopoly.Runtime
             if (myPlayer != playerTurn)
                 return;
 
-
             rollDiceButton.gameObject.SetActive(false);
             exchangeButton.gameObject.SetActive(true);
             actionEndButton.gameObject.SetActive(true);
@@ -963,6 +962,9 @@ namespace Monopoly.Runtime
             }
             CanPerformAction = true;
 
+            if (BoardCardDisplay.current.rendering)
+                BoardCardDisplay.current.Redraw();
+
             Debug.Log("Turn started.");
         }
 
@@ -971,6 +973,8 @@ namespace Monopoly.Runtime
             // TODO: Implement + update UI options
             CanPerformAction = false;
             HideAllInteractButtons();
+            if (BoardCardDisplay.current.rendering)
+                BoardCardDisplay.current.Redraw();
             Debug.Log("Turn ended.");
         }
 
