@@ -36,16 +36,6 @@ namespace Monopoly.Net.Packets
         [JsonProperty("exchange_type")]
         public SelectType ExchangeType { get; private set; }
 
-        public PacketActionExchangeTradeSelect(string playerId, 
-            bool affectsRecipient, int value, int exchangeType)
-            : base("ActionExchangeTradeSelect")
-        {
-            this.PlayerId = playerId;
-            this.AffectsRecipient = affectsRecipient;
-            this.Value = value;
-            this.ExchangeType = (SelectType) exchangeType;
-        }
-
         public PacketActionExchangeTradeSelect(string playerId,
             bool affectsRecipient, int value, SelectType exchangeType)
             : base("ActionExchangeTradeSelect")
