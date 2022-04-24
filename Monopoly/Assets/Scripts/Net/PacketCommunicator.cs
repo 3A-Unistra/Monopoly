@@ -289,8 +289,8 @@ namespace Monopoly.Net
         private async void SendPacket(Packet packet)
         {
 #if UNITY_EDITOR
-            if (!packet.Name.Equals("Ping"))
-                Debug.Log("WebSocket send: " + packet.Serialize());
+            //if (!packet.Name.Equals("Ping"))
+            Debug.Log("WebSocket send: " + packet.Serialize());
 #endif
             try {
                 await socket.Sock.SendText(packet.Serialize());
