@@ -269,17 +269,21 @@ namespace Monopoly.Net
             SendPacket(packet);
         }
 
-        public void DoExchangePlayerSelect(string toUuid)
+        public void DoExchangePlayerSelect(string uuid, string toUuid)
         {
             PacketActionExchangePlayerSelect packet =
-                new PacketActionExchangePlayerSelect(toUuid);
+                new PacketActionExchangePlayerSelect(uuid, toUuid);
             SendPacket(packet);
         }
 
-        public void DoExchangeTradeSelect()
+        public void DoExchangeTradeSelect(
+            string uuid, bool recipient,
+            int value, PacketActionExchangeTradeSelect.SelectType type)
         {
-            //PacketActionExchangeTradeSelect packet = new PacketActionExchangeTradeSelect();
-            //SendPacket(packet);
+            PacketActionExchangeTradeSelect packet =
+                new PacketActionExchangeTradeSelect(
+                    uuid, recipient, value, type);
+            SendPacket(packet);
         }
 
         private async void SendPacket(Packet packet)

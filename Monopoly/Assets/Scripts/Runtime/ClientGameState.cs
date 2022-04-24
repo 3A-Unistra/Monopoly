@@ -319,6 +319,8 @@ namespace Monopoly.Runtime
             comm.OnEnterPrison += OnEnterPrison;
             comm.OnExitPrison += OnExitPrison;
             comm.OnExchange += OnExchange;
+            comm.OnExchangePlayerSelect += OnExchangeSelectPlayer;
+            comm.OnExchangeTradeSelect += OnExchangeSelectTrade;
         }
 
         public Player GetPlayer(string uuid)
@@ -484,7 +486,14 @@ namespace Monopoly.Runtime
         public void DoExchangeSelectPlayer(string uuid)
         {
             if (comm != null)
-                comm.DoExchangePlayerSelect(uuid);
+                comm.DoExchangePlayerSelect(clientUUID, uuid);
+        }
+
+        public void DoExchangeSelectTrade(bool recipient,
+            int val, PacketActionExchangeTradeSelect.SelectType type)
+        {
+            if (comm != null)
+                comm.DoExchangeTradeSelect(clientUUID, recipient, val, type);
         }
 
         public void OnExchange(PacketActionExchange packet)
@@ -514,6 +523,22 @@ namespace Monopoly.Runtime
             }
             if (currentExchange != null)
                 currentExchange.PopulateRight(p);
+        }
+
+        public void OnExchangeSelectTrade(PacketActionExchangeTradeSelect packet)
+        {
+            if (currentExchange == null)
+                return;
+            switch (packet.ExchangeType)
+            {
+            case PacketActionExchangeTradeSelect.SelectType.MONEY:
+                if (packet.AffectsRecipient)
+                    currentExchange.SetMoneyRight(packet.Value);
+                else
+                    currentExchange.SetMoneyLeft(packet.Value);
+                break;
+            // TODO: implement the rest
+            }
         }
 
         public void OnError(PacketException packet)

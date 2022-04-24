@@ -17,12 +17,18 @@ namespace Monopoly.Net.Packets
     public class PacketActionExchangePlayerSelect : Packet
     {
 
+        [JsonProperty("player_token")]
+        public string PlayerId { get; private set; }
+
         [JsonProperty("selected_token")]
         public string SelectedPlayerId { get; private set; }
 
-        public PacketActionExchangePlayerSelect(string selectedPlayerId)
+        public PacketActionExchangePlayerSelect(
+            string playerId,
+            string selectedPlayerId)
             : base("ActionExchangePlayerSelect")
         {
+            this.PlayerId = playerId;
             this.SelectedPlayerId = selectedPlayerId;
         }
 

@@ -21,6 +21,8 @@ namespace Monopoly.UI
     public class MenuExchange : MonoBehaviour
     {
 
+        // left right left right left right what a mess...
+
         public Button ReturnButton;
         public Button RefuseButton;
         public Button CounterButton;
@@ -57,6 +59,9 @@ namespace Monopoly.UI
         public List<Player> playerList;
         private int playerPrimaryIndex;
 
+        private Coroutine leftMoneyDispatch;
+        private Coroutine rightMoneyDispatch;
+
         void Start()
         {
             ReturnButton.onClick.AddListener(ReturnAction);
@@ -72,6 +77,9 @@ namespace Monopoly.UI
 
             PlayerRightDropdown.onValueChanged.AddListener(ChangePlayer);
 
+            MoneyPlayerLeft.onValueChanged.AddListener(DispatchLeftMoney);
+            MoneyPlayerRight.onValueChanged.AddListener(DispatchRightMoney);
+
             CardListLeft = new List<MiniCard>();
             CardListRight = new List<MiniCard>();
 
@@ -79,6 +87,54 @@ namespace Monopoly.UI
             PopulatePlayers(playerList);
 
             UIDirector.IsMenuOpen = true;
+        }
+
+        private void DispatchLeftMoney(string val)
+        {
+            DispatchMoney(val, false);
+        }
+
+        private void DispatchRightMoney(string val)
+        {
+            DispatchMoney(val, true);
+        }
+
+        private void DispatchMoney(string val, bool right)
+        {
+            val = val.Trim();
+            int intval;
+            if (!int.TryParse(val, out intval))
+                return; // nothing I can do if its a bad value
+            // start an enumerator before sending to avoid spam
+            if (right)
+            {
+                if (rightMoneyDispatch != null)
+                    StopCoroutine(rightMoneyDispatch);
+                rightMoneyDispatch =
+                    StartCoroutine(DispatchMoneyEnumerator(intval, right));
+            }
+            else
+            {
+                if (leftMoneyDispatch != null)
+                    StopCoroutine(leftMoneyDispatch);
+                leftMoneyDispatch =
+                    StartCoroutine(DispatchMoneyEnumerator(intval, right));
+            }
+        }
+
+        private IEnumerator DispatchMoneyEnumerator(int val, bool right)
+        {
+            // wait exactly one second. if a value was edited, this routine
+            // will be cancelled and restarted again. thus, this yield passes
+            // only if no further input was detected for at least a second
+            yield return new WaitForSeconds(1);
+            ClientGameState.current.DoExchangeSelectTrade(right, val,
+                Net.Packets.PacketActionExchangeTradeSelect.SelectType.MONEY);
+            // now remove the reference
+            if (right)
+                rightMoneyDispatch = null;
+            else
+                leftMoneyDispatch = null;
         }
 
         private void UpdateEditRights()
@@ -245,6 +301,16 @@ namespace Monopoly.UI
                     indices.Add(m.Index);
             }
             return indices;
+        }
+
+        public void SetMoneyLeft(int val)
+        {
+            MoneyPlayerLeft.text = val.ToString();
+        }
+
+        public void SetMoneyRight(int val)
+        {
+            MoneyPlayerRight.text = val.ToString();
         }
 
         public int GetMoneyLeft()

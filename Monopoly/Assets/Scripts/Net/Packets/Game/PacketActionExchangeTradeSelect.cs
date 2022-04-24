@@ -9,29 +9,55 @@
 using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Monopoly.Net;
 
 namespace Monopoly.Net.Packets
 {
 
     public class PacketActionExchangeTradeSelect : Packet
     {
-        [JsonProperty("id_init_request")]
-        public string PlayerIdInitRequest { get; private set; }
 
-        [JsonProperty("id_of_requested")]
-        public string PlayerIdRequested { get; private set; }
-
-        [JsonProperty("content_trade")]
-        public string ContentTrade { get; private set; }
-
-        public PacketActionExchangeTradeSelect(string playerIdInitRequest, 
-            string playerIdRequested, string contentTrade) : 
-            base("ActionExchangeTradeSelect")
+        public enum SelectType
         {
-            this.PlayerIdInitRequest = playerIdInitRequest;
-            this.PlayerIdRequested = playerIdRequested;
-            this.ContentTrade = contentTrade;
+            PROPERTY = 0,
+            MONEY = 1,
+            LEAVE_JAIL_COMMUNITY_CARD = 2,
+            LEAVE_JAIL_CHANCE_CARD = 3
+        }
+
+        [JsonProperty("player_token")]
+        public string PlayerId { get; private set; }
+
+        [JsonProperty("update_affects_recipient")]
+        public bool AffectsRecipient { get; private set; }
+
+        [JsonProperty("value")]
+        public int Value { get; private set; }
+
+        [JsonProperty("exchange_type")]
+        public int ExchangeTypeInt { get; private set; }
+
+        public SelectType ExchangeType { get; private set; }
+
+        public PacketActionExchangeTradeSelect(string playerId, 
+            bool affectsRecipient, int value, int exchangeType)
+            : base("ActionExchangeTradeSelect")
+        {
+            this.PlayerId = playerId;
+            this.AffectsRecipient = affectsRecipient;
+            this.Value = value;
+            this.ExchangeTypeInt = exchangeType;
+            this.ExchangeType = (SelectType) exchangeType;
+        }
+
+        public PacketActionExchangeTradeSelect(string playerId,
+            bool affectsRecipient, int value, SelectType exchangeType)
+            : base("ActionExchangeTradeSelect")
+        {
+            this.PlayerId = playerId;
+            this.AffectsRecipient = affectsRecipient;
+            this.Value = value;
+            this.ExchangeTypeInt = (int) exchangeType;
+            this.ExchangeType = exchangeType;
         }
 
     }
