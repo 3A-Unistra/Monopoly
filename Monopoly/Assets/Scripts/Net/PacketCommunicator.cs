@@ -393,6 +393,8 @@ namespace Monopoly.Net
                 OnUnmortgage(packet); break;
             case PacketActionExchange packet:
                 OnExchange(packet); break;
+            case PacketActionExchangeSend packet:
+                OnExchangeSend(packet); break;
             case PacketActionExchangeAccept packet:
                 OnExchangeAccept(packet); break;
             case PacketActionExchangeCancel packet:

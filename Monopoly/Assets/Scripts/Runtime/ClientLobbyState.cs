@@ -232,9 +232,7 @@ namespace Monopoly.Runtime
 
         public void OnError(PacketException packet)
         {
-            // TODO: implement webgl
-#if UNITY_WEBGL
-#else
+            // TODO: don't return to main menu for less fatal errors
             UIDirector.IsMenuOpen = false;
             UIDirector.IsUIBlockingNet = true;
             GameObject mainMenu = Instantiate(MainMenuPrefab, Canvas.transform);
@@ -243,7 +241,6 @@ namespace Monopoly.Runtime
             if (lobbyInstance != null)
                 Destroy(lobbyInstance.gameObject);
             Destroy(gameObject);
-#endif
         }
 
         public void OnCreateGameSucceed(PacketCreateGameSucceed packet)
@@ -329,10 +326,10 @@ namespace Monopoly.Runtime
             MenuCreate.current.SetAuctionSwitch(packet.EnableAuctions);
             //MenuCreate.current.SetBotsNumber(packet.);
             MenuCreate.current.SetBuyingSwitch(packet.EnableFirstTourBuy);
-            //MenuCreate.current.SetNbTurns(packet.MaxRounds);
+            MenuCreate.current.SetNbTurns(packet.MaxRounds);
             MenuCreate.current.SetPlayerNumber(packet.MaxNumberPlayers);
             MenuCreate.current.SetStartingBalance(packet.StartingBalance);
-            //MenuCreate.current.SetTurnTime(packet.TurnTimeout);
+            MenuCreate.current.SetTurnTime(packet.TurnTimeout);
             MenuCreate.current.SetDoubleOnStartSwitch(packet.EnableDoubleOnGo);
         }
 
@@ -341,7 +338,6 @@ namespace Monopoly.Runtime
             /* lobby handler is finished, lets quit and start the game socket */
             if (sock != null)
                 sock.Close();
-            Debug.Log("applet prepare: " + ClientLobbyState.token);
             UIDirector.IsMenuOpen = false;
             LoadHandler.LoadScene("Scenes/BoardScene");
         }

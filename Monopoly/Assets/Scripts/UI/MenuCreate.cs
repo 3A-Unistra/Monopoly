@@ -242,16 +242,23 @@ namespace Monopoly.UI
 
         public PacketStatusRoom SetPacketStatusRoom()
         {
+            if (!int.TryParse(TurnNumbers.text, out int turnNumber))
+                turnNumber = 200;
+            if (!int.TryParse(TurnDuration.text, out int turnDuration))
+                turnDuration = 60;
+            if (!int.TryParse(StartingBalance.text, out int startingBalance))
+                startingBalance = 1500;
             List<string> playerNames = new List<string>();
             foreach (LobbyPlayerField l in playerFields)
                 playerNames.Add(l.name);
             PacketStatusRoom p = 
-                new PacketStatusRoom(ClientLobbyState.currentLobby, LobbyName.text,
-                    playerFields.Count, PlayersDropdown.value+2,
-                    playerNames,AuctionsSwitch.GetComponent<OnOff>().switchOn,DoubleOnGoSwitch.GetComponent<OnOff>().switchOn,
+                new PacketStatusRoom(ClientLobbyState.currentLobby,
+                    LobbyName.text,
+                    playerFields.Count, PlayersDropdown.value + 2,
+                    playerNames,AuctionsSwitch.GetComponent<OnOff>().switchOn,
+                    DoubleOnGoSwitch.GetComponent<OnOff>().switchOn,
                     BuyFirstTurnSwitch.GetComponent<OnOff>().switchOn,
-                    int.Parse(TurnNumbers.text)> 0? true : false, int.Parse(TurnDuration.text)> 0? true : false,
-                    int.Parse(StartingBalance.text));
+                    turnNumber, turnDuration, startingBalance);
             return p;
         }
         

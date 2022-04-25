@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 using Monopoly.Classes;
@@ -68,7 +67,8 @@ namespace Monopoly.Runtime
 
         public static bool IsMenuOpen = false;
 
-        private bool isRoundStart = false;
+        private bool isGameStart = false;
+        private bool isFirstGameStartThrow = true;
 
         private PacketCommunicator comm;
         private PacketSocket sock;
@@ -83,6 +83,9 @@ namespace Monopoly.Runtime
 
         public Canvas canvas;
         public Canvas canvasPause;
+
+        public Timeout timeout;
+        private Dictionary<string, int> timeouts;
 
         private MenuExchange currentExchange;
 
@@ -140,11 +143,13 @@ namespace Monopoly.Runtime
 
         public void Crash()
         {
-            // FIXME: IMPLEMENT WEBGL
 #if UNITY_WEBGL
-
-#else
+            // not much we can do in webgl, so bye byeeeeeeee
             Application.Quit();
+#else
+            // if we crash in the binary we can just return to the main menu
+            // TODO: add error message in menu scene
+            LoadHandler.LoadScene("Scenes/MenuScene");
 #endif
         }
 
@@ -182,12 +187,7 @@ namespace Monopoly.Runtime
                 else
                     par.Add("token", ClientLobbyState.clientUUID);
                 string gameToken;
-                // FIXME: get the webgl token from the exec args!!
-#if UNITY_WEBGL
-                gameToken = null;
-#else
                 gameToken = ClientLobbyState.currentLobby;
-#endif
                 PacketSocket socket =
                     PacketSocket.CreateSocket(address, port, par, gameToken, false);
                 socket.Connect();
@@ -198,19 +198,13 @@ namespace Monopoly.Runtime
                 });
                 if (socket.HasError())
                 {
-                    /* FIXME: IMPLEMENT SOCKET ERROR */
-#if UNITY_WEBGL
-
-#else
-
-#endif
                     //if (mode == ClientLobbyState.ConnectMode.BYIP)
                     //connectConnector.DisplayError("connection_fail");
                     //else
                     //loginConnector.DisplayError("connection_fail");
                     Debug.LogWarning("Error occured opening game state!");
-                    Destroy(this.gameObject);
-                    yield break;
+                    Crash();
+                    yield break; // unreachable
                 }
                 RegisterSocket(ClientLobbyState.clientUUID,
                                ClientLobbyState.token,
@@ -404,9 +398,9 @@ namespace Monopoly.Runtime
         {
             if (comm == null)
                 return;
-            if (isRoundStart)
+            if (isGameStart)
             {
-                isRoundStart = false;
+                isGameStart = false;
                 rollDiceButton.gameObject.SetActive(false);
                 comm.DoGameStartDiceThrow(clientUUID);
             }
@@ -611,11 +605,8 @@ namespace Monopoly.Runtime
 
         public void OnError(PacketException packet)
         {
-            // TODO: add an error message and whatnot, plus implement webgl
-#if UNITY_WEBGL
-#else
-            LoadHandler.LoadScene("Scenes/MenuScene");
-#endif
+            // TODO: add an error message and whatnot
+            Crash();
         }
 
         public void OnMessage(PacketChat packet)
@@ -879,7 +870,7 @@ namespace Monopoly.Runtime
             {
                 // I have lost connection, so I need to die and return to the
                 // menu
-                LoadHandler.LoadScene("Scenes/MenuScene");
+                Crash();
             }
             LogMessage(string.Format(
                 StringLocaliser.GetString("on_disconnect"),
@@ -932,7 +923,6 @@ namespace Monopoly.Runtime
 
         public void OnRoundDiceResult(PacketRoundDiceResults packet)
         {
-            // TODO: Implement ui popup, piece animation, etc.
             rollDiceButton.gameObject.SetActive(false);
             exitPrisonMoneyButton.gameObject.SetActive(false);
             exitPrisonCardButton.gameObject.SetActive(false);
@@ -1022,7 +1012,7 @@ namespace Monopoly.Runtime
             foreach (PacketGameStateInternal playerData in packet.Players)
             {
                 Player player = new Player(playerData.PlayerId, playerData.PlayerName, playerData.Money, playerData.Piece);
-                ManuallyRegisterPlayer(player, playerData.PlayerId.Equals(ClientLobbyState.clientUUID));
+                ManuallyRegisterPlayer(player, playerData.PlayerId.Equals(clientUUID));
                 playerInfo.SetMoney(player, player.Money);
 
                 if (player != myPlayer)
@@ -1031,12 +1021,16 @@ namespace Monopoly.Runtime
                     pinfo.Dice.RollDice();
                 }
             }
+            // setup the timeouts
+            timeouts = packet.Timeouts;
         }
 
         public void OnGameStartDice(PacketGameStartDice packet)
         {
-            isRoundStart = true;
+            isGameStart = true;
             rollDiceButton.gameObject.SetActive(true);
+            timeout.SetTime(timeouts["START_DICE_WAIT"]);
+            timeout.Restart();
         }
 
         public void OnGameStartDiceResult(PacketGameStartDiceResults packet)
@@ -1061,11 +1055,14 @@ namespace Monopoly.Runtime
                     break;
                 }
             }
+            timeout.Hide();
         }
 
         public void OnActionStart(PacketActionStart packet)
         {
-            // TODO: Implement + update UI options
+            timeout.SetTime(timeouts["ACTION_TIMEOUT_WAIT"]);
+            timeout.Restart();
+
             if (myPlayer != playerTurn)
                 return;
 
@@ -1093,11 +1090,18 @@ namespace Monopoly.Runtime
 
         public void OnActionTimeout(PacketActionTimeout packet)
         {
-            // TODO: Implement + update UI options
             CanPerformAction = false;
+            // TODO: do the same thing for auctions
+            if (currentExchange != null)
+            {
+                Destroy(currentExchange.gameObject);
+                currentExchange = null;
+            }
+            UIDirector.IsGameMenuOpen = false;
             HideAllInteractButtons();
             if (BoardCardDisplay.current.rendering)
                 BoardCardDisplay.current.Redraw();
+            timeout.Hide();
             Debug.Log("Turn ended.");
         }
 

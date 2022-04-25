@@ -42,10 +42,10 @@ namespace Monopoly.Net.Packets
         public bool EnableFirstTourBuy { get; private set; }
 
         [JsonProperty("option_max_rounds")]
-        public bool MaxRounds { get; private set; }
+        public int MaxRounds { get; private set; }
 
         [JsonProperty("option_max_time")]
-        public bool TurnTimeout { get; private set; }
+        public int TurnTimeout { get; private set; }
 
         [JsonProperty("starting_balance")]
         public int StartingBalance { get; private set; }
@@ -58,8 +58,8 @@ namespace Monopoly.Net.Packets
                                 bool auctions,
                                 bool doubleOnGo,
                                 bool firstTourBuy,
-                                bool maxRounds,
-                                bool turnTimeout,
+                                int maxRounds,
+                                int turnTimeout,
                                 int startingBalance) : base("StatusRoom")
         {
             this.LobbyToken = lobbyToken;

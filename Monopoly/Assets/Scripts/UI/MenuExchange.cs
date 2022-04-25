@@ -167,9 +167,9 @@ namespace Monopoly.UI
             ReturnButton.gameObject.SetActive(firstRound && active);
             MoneyPlayerLeft.enabled = !decisionToMake && active;
             MoneyPlayerRight.enabled = !decisionToMake && active;
-            RefuseButton.gameObject.SetActive(decisionToMake && secondActive);
-            CounterButton.gameObject.SetActive(decisionToMake && secondActive);
-            AcceptButton.gameObject.SetActive(decisionToMake && secondActive);
+            RefuseButton.gameObject.SetActive(decisionToMake && active);
+            CounterButton.gameObject.SetActive(decisionToMake && active);
+            AcceptButton.gameObject.SetActive(decisionToMake && active);
             LeaveJailChanceLeftButton.enabled = !decisionToMake && active;
             LeaveJailChanceRightButton.enabled = !decisionToMake && active;
             LeaveJailCommunityLeftButton.enabled = !decisionToMake && active;
