@@ -8,6 +8,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using Monopoly.Runtime;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,7 +21,6 @@ namespace Monopoly.UI
 
         public GameObject PrefabPause;
         public static bool MenuOpened;
-
         private GameObject pauseObject;
 
         public static PauseHelper current;
@@ -56,12 +56,13 @@ namespace Monopoly.UI
                 Destroy(pauseObject);
                 MenuOpened = false;
                 UIDirector.IsMenuOpen = false;
+                ClientGameState.current.canvas.GetComponent<CanvasGroup>().alpha = 1;
             }
             else if (MenuOpened && MenuPause.OptionsOpenedFromPauseMenu)
             {
                 // options escaped, open the pause menu
                 Destroy(MenuOptions.current.gameObject);
-                pauseObject = Instantiate(PrefabPause, transform.parent);
+                pauseObject = Instantiate(PrefabPause, ClientGameState.current.canvasPause.transform);
                 UIDirector.IsMenuOpen = true;
             }
         }
@@ -70,9 +71,10 @@ namespace Monopoly.UI
         {
             if (!MenuOpened)
             {
-                pauseObject = Instantiate(PrefabPause,transform.parent);
+                pauseObject = Instantiate(PrefabPause,ClientGameState.current.canvasPause.transform);
                 MenuOpened = true;
                 UIDirector.IsMenuOpen = true;
+                ClientGameState.current.canvas.GetComponent<CanvasGroup>().alpha = 0;
             }
         }
 

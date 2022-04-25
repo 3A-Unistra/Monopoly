@@ -59,16 +59,20 @@ namespace Monopoly.UI
 
         private void ResumeGame()
         {
-            Destroy(this.gameObject);
             PauseHelper.MenuOpened = false;
             UIDirector.IsMenuOpen = false;
+            ClientGameState.current.canvas.GetComponent<CanvasGroup>().alpha = 1;
+            Destroy(this.gameObject);
         }
 
         private void OpenOptions()
         {
-            OptionsOpenedFromPauseMenu = true;
+            OptionsOpenedFromPauseMenu = PauseHelper.MenuOpened;
             UIDirector.IsMenuOpen = false;
-            GameObject optionsMenu = Instantiate(PrefabOptions,transform.parent);
+            if (OptionsOpenedFromPauseMenu)
+                Instantiate(PrefabOptions,ClientGameState.current.canvasPause.transform);
+            else
+                Instantiate(PrefabOptions,transform.parent);
             Destroy(this.gameObject);
         }
 

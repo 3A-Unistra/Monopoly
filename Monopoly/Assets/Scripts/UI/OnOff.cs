@@ -24,8 +24,11 @@ namespace Monopoly.UI
         public bool switchOn;
         private bool animating;
         private Vector3 leftPos, rightPos;
+        
+        private RectTransform backRect;
+        private RectTransform frontRect;
 
-        public new bool enabled
+            public new bool enabled
         {
             get
             {
@@ -43,22 +46,21 @@ namespace Monopoly.UI
 
         public void Start()
         {
-            RectTransform rectBack = GetComponent<RectTransform>();
-            float backWidth = rectBack.rect.width;
-            leftPos = new Vector3(transform.localPosition.x - backWidth / 2, transform.localPosition.y,
-                transform.localPosition.z);
-            rightPos = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z);
+            backRect = GetComponent<RectTransform>();
+            frontRect = Front.GetComponent<RectTransform>();
+            float backWidth = backRect.rect.width;
+            leftPos = new Vector3(-backWidth/2, 0, 0);
+            rightPos = new Vector3(0, 0, 0);
             Front.onClick.AddListener(OnClick);
             GetComponent<Button>().onClick.AddListener(OnClick);
-            //switchOn = true;
             if (switchOn)
             {
-                Front.transform.localPosition = rightPos;
+                frontRect.localPosition = rightPos;
                 GetComponent<Image>().color = Color.green;
             }
             else
             {
-                Front.transform.localPosition = leftPos;
+                frontRect.localPosition = leftPos;
                 GetComponent<Image>().color = Color.white;
             }
             animating = false;
@@ -71,8 +73,8 @@ namespace Monopoly.UI
                 toPos = rightPos;
             else
                 toPos = leftPos;
-            Front.transform.localPosition = Vector3.Lerp(Front.transform.localPosition, toPos, Time.deltaTime * 8f);
-            if (MathUtil.CompareVector3(Front.transform.localPosition, toPos) == 0)
+            frontRect.localPosition = Vector3.Lerp(frontRect.localPosition, toPos, Time.deltaTime * 8f);
+            if (MathUtil.CompareVector3(frontRect.localPosition, toPos) == 0)
             {
                 animating = false;
                 switchOn = !switchOn;

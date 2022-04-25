@@ -82,6 +82,7 @@ namespace Monopoly.Runtime
         public Button exitPrisonCardButton;
 
         public Canvas canvas;
+        public Canvas canvasPause;
 
         private MenuExchange currentExchange;
 
@@ -106,7 +107,7 @@ namespace Monopoly.Runtime
             InitGame();
             Debug.Log("Initialised gamestate.");
         }
-
+        
         void Start()
         {
             // let stuff in the scene load, then run this code:
@@ -233,10 +234,15 @@ namespace Monopoly.Runtime
             if (chatBox.text.Length > 0)
                 chatBox.text += "<br>";
             chatBox.text += msg;
-            chatScroller.normalizedPosition = new Vector2(0, 0);
+            StartCoroutine(ScrollUpdate());
             Debug.Log(msg);
         }
 
+        private IEnumerator ScrollUpdate()
+        {
+            yield return new WaitForEndOfFrame();
+            chatScroller.verticalNormalizedPosition = 0;
+        }
         private void LogAction(string msg)
         {
             if (actionEnumeration != null)
