@@ -58,6 +58,68 @@ namespace Monopoly.Runtime
             PlayerPrefs.SetString("local_username", localUsername);
         }
 
+        private void LoadGameDirectly()
+        {
+            string url = Application.absoluteURL;
+            // shitty parser that I wrote in a few minutes, it's good enough to
+            // get the job done
+            Dictionary<string, string> parameters =
+                new Dictionary<string, string>();
+            string[] blocks = url.Split('?');
+            if (blocks.Length < 2)
+            {
+                // crap url, do nothing and die
+                Application.Quit();
+            }
+            string paramBlock = blocks[1];
+            string[] individualParams = paramBlock.Split('&');
+            foreach (string p in individualParams)
+            {
+                string[] pieces = p.Split('=');
+                if (pieces.Length != 2)
+                {
+                    // also a crap url, do nothing and die
+                    Application.Quit();
+                }
+                string key = pieces[0].Trim();
+                string value = pieces[1].Trim();
+                parameters.Add(key, value);
+            }
+            if (!(parameters.ContainsKey("token") &&
+                  parameters.ContainsKey("game") &&
+                  parameters.ContainsKey("uuid")))
+            {
+                // crap url because I wasn't given the right data
+                // do nothing and die
+                Application.Quit();
+                // TODO: check if they are valid uuids? probs not, we have no v6
+            }
+            // okay so now we have a URL that is at least valid enough to start
+            // the damn game. normally we pass through ClientLobbyState and init
+            // a bunch of static variables which are later accessed in
+            // ClientGameState to kickstart the socket connection.
+            // adding a tonne of if branches and other code is a crappy solution
+            // in the game state so instead we can just bootstrap the same
+            // static variables that are normally set through the main menu
+            // scene and load the game scene directly which will then call these
+            // variables as if it was just opened from the menu scene and not
+            // a random webpage
+            ClientLobbyState.token = parameters["token"];
+            ClientLobbyState.connectMode = ClientLobbyState.ConnectMode.ONLINE;
+            ClientLobbyState.currentLobby = parameters["game"];
+            ClientLobbyState.clientUUID = parameters["uuid"];
+
+            // these two are basically hardcoded as they point to the 'official'
+            // website used by the game
+            // FIXME FIXME FIXME: replace with the actual destination
+            ClientLobbyState.address = "monopoly.schawnndev.fr";
+            ClientLobbyState.port = 80;
+
+            // alright, everything should be bootstrapped, time to load the
+            // board scene and cross our fingers!
+            LoadHandler.LoadScene("Scenes/BoardScene");
+        }
+
         void Awake()
         {
             if (init)
@@ -83,6 +145,9 @@ namespace Monopoly.Runtime
             // it is never destroyed. this allows for global runtime handlers or
             // other important events to be handled 'statically'.
             DontDestroyOnLoad(gameObject);
+#if UNITY_WEBGL
+            LoadGameDirectly();
+#endif
             // init is done, delete me
             Destroy(this);
         }

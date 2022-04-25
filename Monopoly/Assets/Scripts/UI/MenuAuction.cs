@@ -6,12 +6,10 @@
  * Author       : Maxime MAIRE <maxime.maire2@etu.unistra.fr
  */
 
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
 
 namespace Monopoly.UI
 {

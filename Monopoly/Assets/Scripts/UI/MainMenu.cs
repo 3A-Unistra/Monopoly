@@ -51,6 +51,11 @@ namespace Monopoly.UI
             OptionsText.text = StringLocaliser.GetString("options");
             QuitText.text = StringLocaliser.GetString("quit");
 
+            if (ClientLobbyState.current != null)
+                Destroy(ClientLobbyState.current.gameObject);
+            ClientLobbyState.current = null;
+            ClientGameState.current = null;
+
             UIDirector.IsMenuOpen = true;
             UIDirector.IsUIBlockingNet = false;
         }

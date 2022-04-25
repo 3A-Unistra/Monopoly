@@ -24,12 +24,17 @@ namespace Monopoly.Net.Packets
         [JsonProperty("players")]
         public List<PacketGameStateInternal> Players { get; private set; }
 
+        [JsonProperty("timeouts")]
+        public Dictionary<string, int> Timeouts { get; private set; }
+
         public PacketGameStart(string gameName,
-                               List<PacketGameStateInternal> players)
+                               List<PacketGameStateInternal> players,
+                               Dictionary<string, int> timeouts)
             : base("GameStart")
         {
             this.GameName = gameName;
             this.Players = players;
+            this.Timeouts = timeouts;
         }
 
     }
