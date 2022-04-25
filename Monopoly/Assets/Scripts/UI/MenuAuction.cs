@@ -1,15 +1,20 @@
 /*
  * MenuAuction.cs
- * This file contain the event listeners of the auction Menu buttons.
+ * Auction menu UI handler.
  * 
  * Date created : 19/04/2022
  * Author       : Maxime MAIRE <maxime.maire2@etu.unistra.fr
+ *              : Finn RAYMENT <rayment@etu.unistra.fr>
  */
 
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
+using Monopoly.Classes;
+using Monopoly.Runtime;
 
 namespace Monopoly.UI
 {
@@ -17,19 +22,104 @@ namespace Monopoly.UI
     public class MenuAuction : MonoBehaviour
     {
 
-        public Button ResumeButton;
+        public GameObject PlayerFieldPrefab;
+
+        public Button BidButton;
+        public TMP_InputField BidField;
+        public GameObject PlayerFieldViewport;
+        public CardDisplay CardDisplayObject;
+        public Timeout Timeout;
+
+        [HideInInspector]
+        public int TimeoutDuration;
+
+        [HideInInspector]
+        public int Index;
+
+        [HideInInspector]
+        public int CurrentBid;
+
+        private int bidWish;
+
+        private List<AuctionPlayerField> fields;
 
         void Start()
         {
-            ResumeButton.onClick.AddListener(ResumeGame);
+            BidButton.onClick.AddListener(BidAction);
+
+            BidField.onValueChanged.AddListener(ValidateInput);
+            BidButton.enabled = false;
+
+            fields = new List<AuctionPlayerField>();
+
+            BuildUI();
+            CardDisplayObject.Render(Index);
+
+            Timeout.SetTime(TimeoutDuration);
+            Timeout.Restart();
+
             UIDirector.IsGameMenuOpen = true;
         }
 
-        private void ResumeGame()
+        void OnDestroy()
         {
             UIDirector.IsGameMenuOpen = false;
-            Destroy(this.gameObject);
+        }
+
+        private void BuildUI()
+        {
+            foreach (Player player in ClientGameState.current.players)
+            {
+                GameObject fieldObject =
+                    Instantiate(PlayerFieldPrefab,
+                                PlayerFieldViewport.transform);
+                AuctionPlayerField fieldScript =
+                    fieldObject.GetComponent<AuctionPlayerField>();
+                fieldScript.SetUser(player,
+                                    player == ClientGameState.current.myPlayer);
+                fieldScript.SetPrice(0, false);
+                fields.Add(fieldScript);
+            }
+        }
+
+        private void ValidateInput(string strval)
+        {
+            strval = strval.Trim();
+            if (int.TryParse(strval, out int val) &&
+                val <= ClientGameState.current.myPlayer.Money && val > 0)
+            {
+                // valid bid amount
+                // TODO: add check for current high price
+                BidField.textComponent.color = Color.black;
+                BidButton.enabled = true;
+                bidWish = val;
+            }
+            else
+            {
+                // invalid bid amount
+                BidField.textComponent.color = Color.red;
+                BidButton.enabled = false;
+            }
+        }
+
+        private void BidAction()
+        {
+            ClientGameState.current.DoAuctionBid(bidWish);
+            BidField.text = "";
+        }
+
+        public void Bid(string playerUUID, int amount)
+        {
+            foreach (AuctionPlayerField field in fields)
+            {
+                if (field.HandlesPlayer(playerUUID))
+                    field.SetPrice(amount, true);
+                else
+                    field.SetPrice(field.GetPrice(), false);
+            }
+            Timeout.Restart();
         }
 
     }
+
 }

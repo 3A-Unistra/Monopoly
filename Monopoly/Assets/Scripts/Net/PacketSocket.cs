@@ -30,7 +30,20 @@ namespace Monopoly.Net
                     "Cannot create socket with invalid port number.");
                 return null;
             }
-            return CreateSocket(string.Format("{0}:{1}", address, port),
+            // splice together the address with the port
+            // foo.bar port 80 becomes foo.bar:80
+            // foo.bar/bam port 80 becomes foo.bar:80/bam
+            string[] addressPieces = address.Split('/');
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < addressPieces.Length; ++i)
+            {
+                sb.Append(addressPieces[i]);
+                if (i == 0)
+                    sb.Append(string.Format(":{0}", port));
+                if (i < addressPieces.Length - 1)
+                    sb.Append('/');
+            }
+            return CreateSocket(sb.ToString(),
                                 paramsdic, gameToken, secure);
         }
 

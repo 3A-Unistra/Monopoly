@@ -362,9 +362,7 @@ namespace Monopoly.UI
         private void ClearCardList(List<MiniCard> cards)
         {
             foreach (MiniCard m in cards)
-            {
                 Destroy(m.gameObject);
-            }
             cards.Clear();
         }
 

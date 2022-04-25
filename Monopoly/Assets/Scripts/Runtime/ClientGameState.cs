@@ -34,6 +34,7 @@ namespace Monopoly.Runtime
 
         public GameObject MainMenuPrefab;
         public GameObject ExchangePrefab;
+        public GameObject AuctionPrefab;
 
         public Sprite[] pieceImages;
 
@@ -88,6 +89,7 @@ namespace Monopoly.Runtime
         private Dictionary<string, int> timeouts;
 
         private MenuExchange currentExchange;
+        private MenuAuction currentAuction;
 
         void Awake()
         {
@@ -119,6 +121,7 @@ namespace Monopoly.Runtime
             HideAllInteractButtons();
             rollDiceButton.onClick.AddListener(DoRollDice);
             buyPropertyButton.onClick.AddListener(DoBuyProperty);
+            auctionButton.onClick.AddListener(DoAuction);
             actionEndButton.onClick.AddListener(DoActionEnd);
             exchangeButton.onClick.AddListener(DoExchange);
             exitPrisonMoneyButton.onClick.AddListener(DoExitPrisonMoney);
@@ -327,6 +330,9 @@ namespace Monopoly.Runtime
             comm.OnExchangeDecline += OnExchangeDecline;
             comm.OnExchangeCounter += OnExchangeCounter;
             comm.OnExchangeCancel += OnExchangeCancel;
+            comm.OnAuctionStart += OnAuction;
+            comm.OnAuctionBid += OnAuctionBid;
+            comm.OnAuctionEnd += OnAuctionEnd;
         }
 
         public Player GetPlayer(string uuid)
@@ -517,6 +523,18 @@ namespace Monopoly.Runtime
                 comm.DoExchangeTradeSelect(clientUUID, recipient, val, type);
         }
 
+        public void DoAuction()
+        {
+            if (comm != null)
+                comm.DoAuctionProperty(clientUUID, myPlayer.Position, 0);
+        }
+
+        public void DoAuctionBid(int bidAmount)
+        {
+            if (comm != null)
+                comm.DoBidAuction(clientUUID, bidAmount);
+        }
+
         public void OnExchange(PacketActionExchange packet)
         {
             Player p = Player.PlayerFromUUID(players, packet.PlayerId);
@@ -601,6 +619,41 @@ namespace Monopoly.Runtime
             Destroy(currentExchange.gameObject);
             currentExchange = null;
             UIDirector.IsGameMenuOpen = false;
+        }
+
+        public void OnAuction(PacketActionAuctionProperty packet)
+        {
+            Player p = Player.PlayerFromUUID(players, packet.PlayerId);
+            if (p == null)
+            {
+                Debug.LogWarning(string.Format("Could not find player '{0}'!",
+                                               packet.PlayerId));
+                return;
+            }
+            GameObject auctionMenu =
+                Instantiate(AuctionPrefab, canvas.transform);
+            currentAuction = auctionMenu.GetComponent<MenuAuction>();
+            currentAuction.Index = packet.Property;
+            currentAuction.CurrentBid = packet.MinBid;
+            currentAuction.TimeoutDuration = timeouts["AUCTION_TOUR_WAIT"];
+        }
+
+        public void OnAuctionBid(PacketAuctionBid packet)
+        {
+            if (currentAuction == null)
+                return;
+            currentAuction.Bid(packet.BidderId, packet.NewPrice);
+        }
+
+        public void OnAuctionEnd(PacketAuctionEnd packet)
+        {
+            if (currentAuction != null)
+            {
+                Destroy(currentAuction.gameObject);
+                currentAuction = null;
+                UIDirector.IsGameMenuOpen = false;
+            }
+            // TODO: show message and update timeout
         }
 
         public void OnError(PacketException packet)

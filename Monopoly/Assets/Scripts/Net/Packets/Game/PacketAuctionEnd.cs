@@ -8,8 +8,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
-
-using Monopoly.Net;
+using Newtonsoft.Json;
 
 namespace Monopoly.Net.Packets
 {
@@ -17,9 +16,21 @@ namespace Monopoly.Net.Packets
     public class PacketAuctionEnd : Packet
     {
 
-        public PacketAuctionEnd() : base("AuctionEnd")
-        {
+        [JsonProperty("player_token")]
+        public string PlayerId { get; private set; }
 
+        [JsonProperty("bid")]
+        public int Bid { get; private set; }
+
+        [JsonProperty("remaining_time")]
+        public int RemainingTurnTime { get; private set; }
+
+        public PacketAuctionEnd(string playerId, int bid, int remainingTime)
+            : base("AuctionEnd")
+        {
+            this.PlayerId = playerId;
+            this.Bid = bid;
+            this.RemainingTurnTime = remainingTime;
         }
 
     }
