@@ -19,18 +19,18 @@ namespace Monopoly.Net.Packets
         [JsonProperty("player_token")]
         public string PlayerId { get; private set; }
 
-        [JsonProperty("min_price")]
-        public int MinPrice { get; private set; }
+        [JsonProperty("min_bid")]
+        public int MinBid { get; private set; }
 
         [JsonProperty("property")]
-        public string Property{get; private set;}
+        public int Property {get; private set;}
 
 
-        public PacketActionAuctionProperty(string playerId, int minPrice, 
-            string property) : base("ActionAuctionProperty")
+        public PacketActionAuctionProperty(string playerId, int minBid, 
+            int property) : base("ActionAuctionProperty")
         {
             this.PlayerId = playerId;
-            this.MinPrice = minPrice;
+            this.MinBid = minBid;
             this.Property = property;
         }
 

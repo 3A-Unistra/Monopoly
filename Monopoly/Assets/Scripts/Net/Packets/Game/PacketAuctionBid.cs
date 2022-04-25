@@ -16,10 +16,10 @@ namespace Monopoly.Net.Packets
 
     public class PacketAuctionBid : Packet
     {
-        [JsonProperty("id_bidder")]
+        [JsonProperty("player_token")]
         public string BidderId { get; private set; }
 
-        [JsonProperty("new_price")]
+        [JsonProperty("bid")]
         public int NewPrice { get; private set; }
 
         public PacketAuctionBid(string bidderId, int newPrice) : 

@@ -58,38 +58,42 @@ namespace Monopoly.Runtime
             PlayerPrefs.SetString("local_username", localUsername);
         }
 
-        private void LoadGameDirectly()
+        private void WebGLNuke()
         {
-            string url = Application.absoluteURL;
-            // shitty parser that I wrote in a few minutes, it's good enough to
-            // get the job done
-            Dictionary<string, string> parameters =
-                new Dictionary<string, string>();
-            string[] blocks = url.Split('?');
-            if (blocks.Length < 2)
+            // first we need to completely nuke the scene to stop anything and
+            // everything else from loading in the menu scene - we want this
+            // script to run and exactly nothing else
+            foreach (Transform obj in FindObjectsOfType<Transform>())
             {
-                // crap url, do nothing and die
-                Application.Quit();
-            }
-            string paramBlock = blocks[1];
-            string[] individualParams = paramBlock.Split('&');
-            foreach (string p in individualParams)
-            {
-                string[] pieces = p.Split('=');
-                if (pieces.Length != 2)
+                if (obj != this.transform)
                 {
-                    // also a crap url, do nothing and die
-                    Application.Quit();
+                    // destroy the transform because it isn't ours
+                    Destroy(obj.gameObject);
                 }
-                string key = pieces[0].Trim();
-                string value = pieces[1].Trim();
-                parameters.Add(key, value);
             }
-            if (!(parameters.ContainsKey("token") &&
-                  parameters.ContainsKey("game") &&
-                  parameters.ContainsKey("uuid")))
+            // now we are the only thing that remains and can patiently wait for
+            // the bootstrap to occur
+            Debug.Log("WebGL has been nuked!");
+        }
+
+        public void WebGLBootstrap(string paramBlock)
+        {
+            // this function will be called from the webbrowser in a message
+            // request to bootstrap the rest of the application into opening the
+            // game scene with the correct values
+            Debug.Log(string.Format("Bootstrapping WebGL with param block: {0}",
+                                    paramBlock));
+
+            Dictionary<string, string> paramDic =
+                JsonLoader.LoadJson<Dictionary<string, string>>(paramBlock);
+
+            if (!(paramDic.ContainsKey("ip") &&
+                  paramDic.ContainsKey("port") &&
+                  paramDic.ContainsKey("token") &&
+                  paramDic.ContainsKey("game") &&
+                  paramDic.ContainsKey("uuid")))
             {
-                // crap url because I wasn't given the right data
+                // crap json data because I wasn't given the right data
                 // do nothing and die
                 Application.Quit();
                 // TODO: check if they are valid uuids? probs not, we have no v6
@@ -104,16 +108,20 @@ namespace Monopoly.Runtime
             // scene and load the game scene directly which will then call these
             // variables as if it was just opened from the menu scene and not
             // a random webpage
-            ClientLobbyState.token = parameters["token"];
-            ClientLobbyState.connectMode = ClientLobbyState.ConnectMode.ONLINE;
-            ClientLobbyState.currentLobby = parameters["game"];
-            ClientLobbyState.clientUUID = parameters["uuid"];
 
-            // these two are basically hardcoded as they point to the 'official'
-            // website used by the game
-            // FIXME FIXME FIXME: replace with the actual destination
-            ClientLobbyState.address = "monopoly.schawnndev.fr";
-            ClientLobbyState.port = 80;
+            ClientLobbyState.address = paramDic["ip"].Trim();
+            if (!int.TryParse(paramDic["port"].Trim(),
+                              out ClientLobbyState.port))
+            {
+                // crap port so die
+                Application.Quit();
+            }
+            ClientLobbyState.token = paramDic["token"].Trim();
+            ClientLobbyState.connectMode = ClientLobbyState.ConnectMode.ONLINE;
+            ClientLobbyState.currentLobby = paramDic["game"].Trim();
+            ClientLobbyState.clientUUID = paramDic["uuid"].Trim();
+
+            Debug.Log("WebGL has been bootstrapped!");
 
             // alright, everything should be bootstrapped, time to load the
             // board scene and cross our fingers!
@@ -146,10 +154,11 @@ namespace Monopoly.Runtime
             // other important events to be handled 'statically'.
             DontDestroyOnLoad(gameObject);
 #if UNITY_WEBGL
-            LoadGameDirectly();
-#endif
+            WebGLNuke();
+#else
             // init is done, delete me
             Destroy(this);
+#endif
         }
 
     }

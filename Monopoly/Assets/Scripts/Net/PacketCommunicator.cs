@@ -98,10 +98,10 @@ namespace Monopoly.Net
         public event PacketDelegate<PacketPlayerDefeat>      OnDefeat;
         public event PacketDelegate<PacketActionStart>       OnActionStart;
         public event PacketDelegate<PacketActionTimeout>     OnActionTimeout;
+        public event PacketDelegate<PacketActionAuctionProperty>
+                                                         OnAuctionStart;
         public event PacketDelegate<PacketAuctionEnd>        OnAuctionEnd;
-        public event PacketDelegate<PacketAuctionRound>      OnAuctionRound;
         public event PacketDelegate<PacketAuctionBid>        OnAuctionBid;
-        public event PacketDelegate<PacketAuctionConcede>    OnAuctionConcede;
         public event PacketDelegate<PacketActionBuyHouseSucceed>
                                                          OnBuyHouse;
         public event PacketDelegate<PacketActionSellHouseSucceed>
@@ -187,6 +187,12 @@ namespace Monopoly.Net
             SendPacket(packet);
         }
 
+        public void DoEndAction()
+        {
+            PacketActionEnd packet = new PacketActionEnd();
+            SendPacket(packet);
+        }
+
         public void DoBuyHouse(string uuid, int idx)
         {
             PacketActionBuyHouse packet =
@@ -222,28 +228,16 @@ namespace Monopoly.Net
             SendPacket(packet);
         }
 
-        public void DoAuctionProperty()
+        public void DoAuctionProperty(string uuid, int idx, int minPrice)
         {
-            //PacketActionAuctionProperty packet
-            //    = new PacketActionAuctionProperty();
-            //SendPacket(packet);
+            PacketActionAuctionProperty packet
+                = new PacketActionAuctionProperty(uuid, minPrice, idx);
+            SendPacket(packet);
         }
 
-        public void DoBidAuction()
+        public void DoBidAuction(string uuid, int price)
         {
-            //PacketAuctionBid packet = new PacketAuctionBid();
-            //SendPacket(packet);
-        }
-
-        public void DoConcedeAuction()
-        {
-            //PacketAuctionBid packet = new PacketAuctionBid();
-            //SendPacket(packet);
-        }
-
-        public void DoEndAction()
-        {
-            PacketActionEnd packet = new PacketActionEnd();
+            PacketAuctionBid packet = new PacketAuctionBid(uuid, price);
             SendPacket(packet);
         }
 
@@ -375,10 +369,10 @@ namespace Monopoly.Net
                 OnDefeat(packet); break;
             case PacketActionTimeout packet:
                 OnActionTimeout(packet); break;
+            case PacketActionAuctionProperty packet:
+                OnAuctionStart(packet); break;
             case PacketAuctionEnd packet:
                 OnAuctionEnd(packet); break;
-            case PacketAuctionRound packet:
-                OnAuctionRound(packet); break;
             case PacketActionStart packet:
                 OnActionStart(packet); break;
             case PacketActionBuyHouseSucceed packet:
