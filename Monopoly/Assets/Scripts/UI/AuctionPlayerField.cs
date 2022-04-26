@@ -39,11 +39,11 @@ namespace Monopoly.UI
         {
             username.text = player.Name;
             int avatar = player.CharacterIdx;
-            if (avatar > 0 &&
-                avatar < ClientGameState.current.pieceImages.Length)
+            if (avatar >= 0 &&
+                avatar < RuntimeData.current.pieceImages.Length)
             {
                 this.avatar.sprite =
-                    ClientGameState.current.pieceImages[avatar];
+                    RuntimeData.current.pieceImages[avatar];
             }
             username.color = me ? playerColor : otherColor;
             this.player = player;
