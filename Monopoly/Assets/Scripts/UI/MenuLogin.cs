@@ -21,8 +21,6 @@ namespace Monopoly.UI
         public TMP_InputField PasswordInput;
         public GameObject ErrorTextField;
         public TMP_Text ErrorText;
-        public GameObject MainMenuPrefab;
-        public GameObject LobbyMenuPrefab;
 
         private ClientLobbyState connector = null;
 
@@ -106,8 +104,8 @@ namespace Monopoly.UI
                 ClientLobbyState state =
                     clientLobbyObject.AddComponent<ClientLobbyState>();
                 state.Canvas = transform.parent.gameObject;
-                state.MainMenuPrefab = MainMenuPrefab;
                 connector = state;
+                PlayerPrefs.SetString("favourite_username", username);
                 state.StartCoroutine(
                     state.Connect(address, port,
                                   packet["userid"], packet["token"],
@@ -126,7 +124,8 @@ namespace Monopoly.UI
             }
 
             UIDirector.IsMenuOpen = false;
-            GameObject MainMenu = Instantiate(MainMenuPrefab, transform.parent);
+            GameObject MainMenu =
+                Instantiate(RuntimeData.current.MainMenuPrefab, transform.parent);
             Destroy(this.gameObject);
         }
 

@@ -20,10 +20,6 @@ namespace Monopoly.UI
         public GameObject ErrorTextField;
         public TMP_Text ErrorText;
 
-        public GameObject MainMenuPrefab;
-        public GameObject CreateMenuPrefab;
-        public GameObject LobbyMenuPrefab;
-
         private ClientLobbyState connector = null;
 
         void Start()
@@ -81,9 +77,6 @@ namespace Monopoly.UI
             ClientLobbyState state =
                 clientLobbyObject.AddComponent<ClientLobbyState>();
             state.Canvas = transform.parent.gameObject;
-            state.MainMenuPrefab = MainMenuPrefab;
-            state.CreateMenuPrefab = CreateMenuPrefab;
-            state.LobbyMenuPrefab = LobbyMenuPrefab;
             PlayerPrefs.SetString("favourite_ip", address);
             PlayerPrefs.SetString("favourite_port", port.ToString());
             connector = state;
@@ -109,7 +102,8 @@ namespace Monopoly.UI
             }
 
             UIDirector.IsMenuOpen = false;
-            GameObject MainMenu = Instantiate(MainMenuPrefab, transform.parent);
+            GameObject MainMenu =
+                Instantiate(RuntimeData.current.MainMenuPrefab, transform.parent);
             Destroy(this.gameObject);
         }
 

@@ -18,6 +18,11 @@ namespace Monopoly.Runtime
 
         public Sprite[] pieceImages;
 
+        public GameObject MainMenuPrefab;
+        public GameObject CreateMenuPrefab;
+        public GameObject LobbyMenuPrefab;
+        public GameObject LobbyPlayerFieldPrefab;
+
         [HideInInspector]
         public static RuntimeData current;
 

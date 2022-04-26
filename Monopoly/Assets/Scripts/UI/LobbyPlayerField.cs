@@ -23,12 +23,19 @@ namespace Monopoly.UI
 
         public Image Avatar;
         public TMP_Text Name;
+        public GameObject HostObject;
 
-        private string uuid;
+        public string uuid;
+        public new string name;
 
         private static readonly Color playerColor =
             new Color(1.0f, 0.86f, 0.32f);
         private static readonly Color otherColor = Color.white;
+
+        public void SetHost(bool host)
+        {
+            HostObject.SetActive(host);
+        }
 
         public void SetUser(string uuid, string name, int charIdx, bool me)
         {
@@ -40,6 +47,7 @@ namespace Monopoly.UI
                 Avatar.sprite = RuntimeData.current.pieceImages[avatar];
             }
             this.uuid = uuid;
+            this.name = name;
             Name.color = me ? playerColor : otherColor;
         }
 

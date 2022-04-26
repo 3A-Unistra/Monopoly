@@ -23,14 +23,12 @@ namespace Monopoly.Runtime
         public static ClientLobbyState current;
 
         public GameObject Canvas;
-        public GameObject MainMenuPrefab;
-        public GameObject CreateMenuPrefab;
-        public GameObject LobbyMenuPrefab;
 
         // the following fields are passed through to the game state for use
         // in both the WebGL and binary versions of the game
         public static string clientUUID;
         public static string clientUsername;
+        public static int clientPiece;
         public static string token;
         public static string currentLobby;
         public static string address;
@@ -76,7 +74,8 @@ namespace Monopoly.Runtime
             if (MenuCreate.current != null)
                 Destroy(MenuCreate.current.gameObject);
 
-            GameObject mainMenu = Instantiate(MainMenuPrefab, Canvas.transform);
+            GameObject mainMenu =
+                Instantiate(RuntimeData.current.MainMenuPrefab, Canvas.transform);
         }
 
         void Update()
@@ -156,10 +155,10 @@ namespace Monopoly.Runtime
 
             UIDirector.IsMenuOpen = false;
             if (mode == ConnectMode.BYIP)
-                lobbyInstance = Instantiate(connectConnector.LobbyMenuPrefab,
+                lobbyInstance = Instantiate(RuntimeData.current.LobbyMenuPrefab,
                                             connector.transform.parent);
             else
-                lobbyInstance = Instantiate(loginConnector.LobbyMenuPrefab,
+                lobbyInstance = Instantiate(RuntimeData.current.LobbyMenuPrefab,
                                             connector.transform.parent);
             Destroy(connector.gameObject);
         }
@@ -225,7 +224,7 @@ namespace Monopoly.Runtime
                to wait for the succeed packet */
             UIDirector.IsMenuOpen = false;
             UIDirector.IsUIBlockingNet = false;
-            GameObject lobbyMenu = Instantiate(LobbyMenuPrefab, Canvas.transform);
+            GameObject lobbyMenu = Instantiate(RuntimeData.current.LobbyMenuPrefab, Canvas.transform);
             currentLobby = null;
             if (MenuCreate.current != null)
                 Destroy(MenuCreate.current.gameObject);
@@ -236,7 +235,7 @@ namespace Monopoly.Runtime
             // TODO: don't return to main menu for less fatal errors
             UIDirector.IsMenuOpen = false;
             UIDirector.IsUIBlockingNet = true;
-            GameObject mainMenu = Instantiate(MainMenuPrefab, Canvas.transform);
+            GameObject mainMenu = Instantiate(RuntimeData.current.MainMenuPrefab, Canvas.transform);
             MainMenu menuScript = mainMenu.GetComponent<MainMenu>();
             menuScript.DisplayError(string.Format("error_{0}", packet.Code));
             if (lobbyInstance != null)
@@ -248,11 +247,13 @@ namespace Monopoly.Runtime
         {
             UIDirector.IsMenuOpen = false;
             UIDirector.IsUIBlockingNet = true;
-            GameObject CreateMenu = Instantiate(CreateMenuPrefab,
+            GameObject CreateMenu = Instantiate(RuntimeData.current.CreateMenuPrefab,
                                                 Canvas.transform);
             MenuCreate menuScript = CreateMenu.GetComponent<MenuCreate>();
             menuScript.UpdateFields(true);
             currentLobby = packet.GameToken;
+            clientPiece = packet.PieceId;
+            clientUsername = packet.Username;
             if (MenuLobby.current != null)
                 Destroy(MenuLobby.current.gameObject);
         }
@@ -261,7 +262,7 @@ namespace Monopoly.Runtime
         {
             UIDirector.IsMenuOpen = false;
             UIDirector.IsUIBlockingNet = true;
-            GameObject CreateMenu = Instantiate(CreateMenuPrefab, Canvas.transform);
+            GameObject CreateMenu = Instantiate(RuntimeData.current.CreateMenuPrefab, Canvas.transform);
             MenuCreate createScript = CreateMenu.GetComponent<MenuCreate>();
             createScript.UpdateFields(false);
             currentLobby = packet.LobbyToken;
@@ -273,7 +274,7 @@ namespace Monopoly.Runtime
         {
             UIDirector.IsMenuOpen = false;
             UIDirector.IsUIBlockingNet = true;
-            GameObject lobbyMenu = Instantiate(LobbyMenuPrefab, Canvas.transform);
+            GameObject lobbyMenu = Instantiate(RuntimeData.current.LobbyMenuPrefab, Canvas.transform);
             currentLobby = null;
             if (MenuCreate.current != null)
                 Destroy(MenuCreate.current.gameObject);
@@ -322,7 +323,7 @@ namespace Monopoly.Runtime
             // FIXME: fix the updates and let them be sent off too!!!!!
             if (MenuCreate.current == null)
                 yield break;
-            foreach (string username in packet.Players)
+            foreach (string username in packet.Usernames)
             {
                 MenuCreate.current.ManagePlayerList(
                     PacketBroadcastUpdateRoom.UpdateReason.NEW_PLAYER,
