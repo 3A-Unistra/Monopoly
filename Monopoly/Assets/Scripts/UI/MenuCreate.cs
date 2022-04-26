@@ -46,12 +46,10 @@ namespace Monopoly.UI
         public TMP_Text BuyFirstTurnText;
         public TMP_Text StartingBalanceText;
     
-        public GameObject PlayerFieldPrefab;
-    
         public GameObject PlayerFieldViewport;
         
         [HideInInspector]
-        public bool IsHost = false;
+        public bool IsHost { get; private set; }
 
         [HideInInspector]
         public string GameToken;
@@ -63,7 +61,7 @@ namespace Monopoly.UI
         public static MenuCreate current;
 
 
-        void Start()
+        void Awake()
         {
             if (current != null)
             {
@@ -73,7 +71,6 @@ namespace Monopoly.UI
             }
             current = this;
     
-            InitFields();
             InviteButton.onClick.AddListener(InvitePlayer);
             StartButton.onClick.AddListener(LaunchLobby);
             ReturnButton.onClick.AddListener(ReturnLobby);
@@ -101,18 +98,22 @@ namespace Monopoly.UI
             DoubleOnGoText.text = StringLocaliser.GetString("double_on_go");
             BuyFirstTurnText.text = StringLocaliser.GetString("buy_first_turn");
             StartingBalanceText.text = StringLocaliser.GetString("starting_balance");
-        
-            playerFields = new List<LobbyPlayerField>();
 
+            playerFields = new List<LobbyPlayerField>();
+        }
+
+        void Start()
+        {
             ManagePlayerList(PacketBroadcastUpdateRoom.UpdateReason.NEW_PLAYER,
                              ClientLobbyState.clientUsername);
-    
+
             UIDirector.IsMenuOpen = true;
             UIDirector.IsUIBlockingNet = false;
         }
 
-        private void InitFields()
+        public void UpdateFields(bool isHost)
         {
+            this.IsHost = isHost;
             InviteButton.enabled = IsHost;
             StartButton.gameObject.SetActive(IsHost);
             HostInputObject.SetActive(IsHost);
@@ -127,6 +128,8 @@ namespace Monopoly.UI
             BuyFirstTurnSwitch.enabled = IsHost;
             DoubleOnGoSwitch.enabled = IsHost;
             StartingBalance.enabled = IsHost;
+            foreach (LobbyPlayerField field in playerFields)
+                field.SetHost(field.HandlesPlayer(ClientLobbyState.clientUUID));
         }
 
         void OnDestroy()
@@ -152,31 +155,46 @@ namespace Monopoly.UI
             ManagePlayerList(packet.Reason, packet.Player);
         }
 
-        private void ManagePlayerList(
+        private bool IsPlayerListed(string uuid)
+        {
+            foreach (LobbyPlayerField field in playerFields)
+            {
+                if (field.HandlesPlayer(uuid))
+                    return true;
+            }
+            return false;
+        }
+
+        private LobbyPlayerField GetPlayerField(string uuid)
+        {
+            foreach (LobbyPlayerField field in playerFields)
+            {
+                if (field.HandlesPlayer(uuid))
+                    return field;
+            }
+            return null;
+        }
+
+        public void ManagePlayerList(
             PacketBroadcastUpdateRoom.UpdateReason reason, string username)
         {
             // FIXME: implement
             switch (reason)
             {
             case PacketBroadcastUpdateRoom.UpdateReason.NEW_PLAYER:
+                if (IsPlayerListed(username))
+                    return; // no need to duplicate the player id
                 GameObject playerField =
-                    Instantiate(PlayerFieldPrefab,
+                    Instantiate(RuntimeData.current.LobbyPlayerFieldPrefab,
                                 PlayerFieldViewport.transform);
                 LobbyPlayerField fieldScript =
                     playerField.GetComponent<LobbyPlayerField>();
-                fieldScript.Name.text = username;
+                fieldScript.SetUser(username, username, 0,
+                    username.Equals(ClientLobbyState.clientUUID));
                 playerFields.Add(fieldScript);
                 break;
             case PacketBroadcastUpdateRoom.UpdateReason.PLAYER_LEFT:
-                LobbyPlayerField field = null;
-                foreach (LobbyPlayerField f in playerFields)
-                {
-                    if (f.Name.text.Equals(username))
-                    {
-                        field = f;
-                        break;
-                    }
-                }
+                LobbyPlayerField field = GetPlayerField(username);
                 if (field != null)
                 {
                     playerFields.Remove(field);
@@ -248,14 +266,18 @@ namespace Monopoly.UI
                 turnDuration = 60;
             if (!int.TryParse(StartingBalance.text, out int startingBalance))
                 startingBalance = 1500;
-            List<string> playerNames = new List<string>();
+            List<string> playerIds = new List<string>();
+            List<string> playerUsernames = new List<string>();
             foreach (LobbyPlayerField l in playerFields)
-                playerNames.Add(l.name);
+            {
+                playerIds.Add(l.uuid);
+                playerUsernames.Add(l.name);
+            }
             PacketStatusRoom p = 
                 new PacketStatusRoom(ClientLobbyState.currentLobby,
                     LobbyName.text,
                     playerFields.Count, PlayersDropdown.value + 2,
-                    playerNames,AuctionsSwitch.GetComponent<OnOff>().switchOn,
+                    playerIds,playerUsernames,AuctionsSwitch.GetComponent<OnOff>().switchOn,
                     DoubleOnGoSwitch.GetComponent<OnOff>().switchOn,
                     BuyFirstTurnSwitch.GetComponent<OnOff>().switchOn,
                     turnNumber, turnDuration, startingBalance);

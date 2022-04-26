@@ -21,8 +21,6 @@ namespace Monopoly.UI
         public TMP_InputField PasswordInput;
         public GameObject ErrorTextField;
         public TMP_Text ErrorText;
-        public GameObject MainMenuPrefab;
-        public GameObject LobbyMenuPrefab;
 
         private ClientLobbyState connector = null;
 
@@ -38,6 +36,9 @@ namespace Monopoly.UI
 
             ErrorTextField.SetActive(false);
 
+            string defaultUsername = PlayerPrefs.GetString("favourite_username", "");
+            UsernameInput.text = defaultUsername;
+
             UIDirector.IsMenuOpen = true;
             UIDirector.IsUIBlockingNet = false;
         }
@@ -51,24 +52,25 @@ namespace Monopoly.UI
                 DisplayError("connection_nouser");
                 return;
             }
-            //StartCoroutine(Login("localhost", 8000, username, password));
+            StartCoroutine(
+                Login("monopoly2.schawnndev.fr", 80, username, password));
             // FIXME: this is temporary to just let us into the board scene for
             // testing
-            Instantiate(LobbyMenuPrefab, transform.parent);
-            Destroy(this.gameObject);
+            //Instantiate(LobbyMenuPrefab, transform.parent);
+            //Destroy(this.gameObject);
         }
 
         private IEnumerator Login(string address, int port, string username, string password)
         {
             Dictionary<string, string> dic = new Dictionary<string, string>();
-            dic.Add("login", username);
+            dic.Add("username", username);
             dic.Add("password", password);
 
             // FIXME: gonna use a reverse proxy, change this and remove the port
             // field from the function!!!!!
             string json = JsonConvert.SerializeObject(dic);
-            string addr = string.Format("http://{0}:3000/api/users/login",
-                                        address);
+            string addr = string.Format("http://{0}:{1}/api/users/login",
+                                        address, port);
 
             UnityWebRequest req = new UnityWebRequest(addr, "POST");
             byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
@@ -102,8 +104,8 @@ namespace Monopoly.UI
                 ClientLobbyState state =
                     clientLobbyObject.AddComponent<ClientLobbyState>();
                 state.Canvas = transform.parent.gameObject;
-                state.MainMenuPrefab = MainMenuPrefab;
                 connector = state;
+                PlayerPrefs.SetString("favourite_username", username);
                 state.StartCoroutine(
                     state.Connect(address, port,
                                   packet["userid"], packet["token"],
@@ -122,7 +124,8 @@ namespace Monopoly.UI
             }
 
             UIDirector.IsMenuOpen = false;
-            GameObject MainMenu = Instantiate(MainMenuPrefab, transform.parent);
+            GameObject MainMenu =
+                Instantiate(RuntimeData.current.MainMenuPrefab, transform.parent);
             Destroy(this.gameObject);
         }
 

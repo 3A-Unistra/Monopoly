@@ -32,6 +32,9 @@ namespace Monopoly.Net.Packets
         [JsonProperty("players")]
         public List<string> Players { get; private set; }
 
+        [JsonProperty("players_username")]
+        public List<string> Usernames { get; private set; }
+
         [JsonProperty("option_auction")]
         public bool EnableAuctions { get; private set; }
 
@@ -55,6 +58,7 @@ namespace Monopoly.Net.Packets
                                 int numPlayers,
                                 int maxPlayers,
                                 List<string> players,
+                                List<string> usernames,
                                 bool auctions,
                                 bool doubleOnGo,
                                 bool firstTourBuy,
@@ -67,6 +71,7 @@ namespace Monopoly.Net.Packets
             this.NumberPlayers = numPlayers;
             this.MaxNumberPlayers = maxPlayers;
             this.Players = players;
+            this.Usernames = usernames;
             this.EnableAuctions = auctions;
             this.EnableDoubleOnGo = doubleOnGo;
             this.EnableFirstTourBuy = firstTourBuy;

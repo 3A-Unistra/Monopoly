@@ -527,6 +527,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Input Field
       objectReference: {fileID: 0}
+    - target: {fileID: 3269747719309276947, guid: bb1c2c4abdc44789a9de25fa8cf39542, type: 3}
+      propertyPath: m_InputType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3269747719309276947, guid: bb1c2c4abdc44789a9de25fa8cf39542, type: 3}
+      propertyPath: m_ContentType
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 3341919757702505077, guid: bb1c2c4abdc44789a9de25fa8cf39542, type: 3}
       propertyPath: m_text
       value: Password
@@ -1147,8 +1155,6 @@ MonoBehaviour:
   PasswordInput: {fileID: 2640993002895634622}
   ErrorTextField: {fileID: 7904044394895204632}
   ErrorText: {fileID: 3575153667673021207}
-  MainMenuPrefab: {fileID: 416258846989310778, guid: badd0bee9af90cb4297324447809380c, type: 3}
-  LobbyMenuPrefab: {fileID: 8504932108902797408, guid: 6c4f2dc3dd6eb16edb738438859d80cb, type: 3}
 --- !u!114 &2618378703191394030
 MonoBehaviour:
   m_ObjectHideFlags: 0

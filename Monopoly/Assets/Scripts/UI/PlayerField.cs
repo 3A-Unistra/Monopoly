@@ -51,10 +51,10 @@ namespace Monopoly.UI
         {
             Username.text = player.Name;
             int avatar = player.CharacterIdx;
-            if (avatar > 0 &&
-                avatar < ClientGameState.current.pieceImages.Length)
+            if (avatar >= 0 &&
+                avatar < RuntimeData.current.pieceImages.Length)
             {
-                Avatar.sprite = ClientGameState.current.pieceImages[avatar];
+                Avatar.sprite = RuntimeData.current.pieceImages[avatar];
             }
             Username.color = me ? playerColor : otherColor;
             uuid = player.Id;

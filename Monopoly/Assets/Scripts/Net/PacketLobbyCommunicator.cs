@@ -38,6 +38,8 @@ namespace Monopoly.Net
                                                          OnBroadcastCreateGame;
         public event PacketDelegate<PacketStatusRoom>
                                                          OnRoomModify;
+        public event PacketDelegate<PacketNewHost>
+                                                         OnNewHost;
 
         private PacketSocket socket;
 
@@ -145,6 +147,8 @@ namespace Monopoly.Net
                 OnBroadcastCreateGame(packet); break;
             case PacketStatusRoom packet:
                 OnRoomModify(packet); break;
+            case PacketNewHost packet:
+                OnNewHost(packet); break;
             }
         }
 
