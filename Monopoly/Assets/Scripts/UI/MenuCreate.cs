@@ -51,7 +51,7 @@ namespace Monopoly.UI
         public GameObject PlayerFieldViewport;
         
         [HideInInspector]
-        public bool IsHost = false;
+        public bool IsHost { get; private set; }
 
         [HideInInspector]
         public string GameToken;
@@ -73,7 +73,6 @@ namespace Monopoly.UI
             }
             current = this;
     
-            InitFields();
             InviteButton.onClick.AddListener(InvitePlayer);
             StartButton.onClick.AddListener(LaunchLobby);
             ReturnButton.onClick.AddListener(ReturnLobby);
@@ -111,8 +110,9 @@ namespace Monopoly.UI
             UIDirector.IsUIBlockingNet = false;
         }
 
-        private void InitFields()
+        public void UpdateFields(bool isHost)
         {
+            this.IsHost = isHost;
             InviteButton.enabled = IsHost;
             StartButton.gameObject.SetActive(IsHost);
             HostInputObject.SetActive(IsHost);
@@ -152,31 +152,46 @@ namespace Monopoly.UI
             ManagePlayerList(packet.Reason, packet.Player);
         }
 
-        private void ManagePlayerList(
+        private bool IsPlayerListed(string uuid)
+        {
+            foreach (LobbyPlayerField field in playerFields)
+            {
+                if (field.HandlesPlayer(uuid))
+                    return true;
+            }
+            return false;
+        }
+
+        private LobbyPlayerField GetPlayerField(string uuid)
+        {
+            foreach (LobbyPlayerField field in playerFields)
+            {
+                if (field.HandlesPlayer(uuid))
+                    return field;
+            }
+            return null;
+        }
+
+        public void ManagePlayerList(
             PacketBroadcastUpdateRoom.UpdateReason reason, string username)
         {
             // FIXME: implement
             switch (reason)
             {
             case PacketBroadcastUpdateRoom.UpdateReason.NEW_PLAYER:
+                if (IsPlayerListed(username))
+                    return; // no need to duplicate the player id
                 GameObject playerField =
                     Instantiate(PlayerFieldPrefab,
                                 PlayerFieldViewport.transform);
                 LobbyPlayerField fieldScript =
                     playerField.GetComponent<LobbyPlayerField>();
-                fieldScript.Name.text = username;
+                fieldScript.SetUser(username, username, 0,
+                    username.Equals(ClientLobbyState.clientUUID));
                 playerFields.Add(fieldScript);
                 break;
             case PacketBroadcastUpdateRoom.UpdateReason.PLAYER_LEFT:
-                LobbyPlayerField field = null;
-                foreach (LobbyPlayerField f in playerFields)
-                {
-                    if (f.Name.text.Equals(username))
-                    {
-                        field = f;
-                        break;
-                    }
-                }
+                LobbyPlayerField field = GetPlayerField(username);
                 if (field != null)
                 {
                     playerFields.Remove(field);

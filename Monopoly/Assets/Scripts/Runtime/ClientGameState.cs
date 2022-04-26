@@ -36,8 +36,6 @@ namespace Monopoly.Runtime
         public GameObject ExchangePrefab;
         public GameObject AuctionPrefab;
 
-        public Sprite[] pieceImages;
-
         public GameObject[] piecePrefabs;
         public GameObject boardObject;
 

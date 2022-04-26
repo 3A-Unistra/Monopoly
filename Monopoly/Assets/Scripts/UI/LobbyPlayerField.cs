@@ -12,6 +12,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+using Monopoly.Classes;
+using Monopoly.Runtime;
+
 namespace Monopoly.UI
 {
 
@@ -21,9 +24,28 @@ namespace Monopoly.UI
         public Image Avatar;
         public TMP_Text Name;
 
-        void Start()
-        {
+        private string uuid;
 
+        private static readonly Color playerColor =
+            new Color(1.0f, 0.86f, 0.32f);
+        private static readonly Color otherColor = Color.white;
+
+        public void SetUser(string uuid, string name, int charIdx, bool me)
+        {
+            Name.text = name;
+            int avatar = charIdx;
+            if (avatar >= 0 &&
+                avatar < RuntimeData.current.pieceImages.Length)
+            {
+                Avatar.sprite = RuntimeData.current.pieceImages[avatar];
+            }
+            this.uuid = uuid;
+            Name.color = me ? playerColor : otherColor;
+        }
+
+        public bool HandlesPlayer(string uuid)
+        {
+            return uuid.Equals(this.uuid);
         }
 
     }

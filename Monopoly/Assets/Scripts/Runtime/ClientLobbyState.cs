@@ -27,12 +27,12 @@ namespace Monopoly.Runtime
         public GameObject CreateMenuPrefab;
         public GameObject LobbyMenuPrefab;
 
-        // TODO: pass around
+        // the following fields are passed through to the game state for use
+        // in both the WebGL and binary versions of the game
         public static string clientUUID;
         public static string clientUsername;
         public static string token;
         public static string currentLobby;
-
         public static string address;
         public static int port;
         public static ConnectMode connectMode;
@@ -179,6 +179,7 @@ namespace Monopoly.Runtime
             comm.OnRoomUpdate += OnRoomUpdate;
             comm.OnAppletPrepare += OnAppletPrepare;
             comm.OnRoomModify += OnRoomModify;
+            comm.OnNewHost += OnNewHost;
         }
 
         public void DoLaunchGame()
@@ -250,7 +251,7 @@ namespace Monopoly.Runtime
             GameObject CreateMenu = Instantiate(CreateMenuPrefab,
                                                 Canvas.transform);
             MenuCreate menuScript = CreateMenu.GetComponent<MenuCreate>();
-            menuScript.IsHost = true;
+            menuScript.UpdateFields(true);
             currentLobby = packet.GameToken;
             if (MenuLobby.current != null)
                 Destroy(MenuLobby.current.gameObject);
@@ -262,7 +263,7 @@ namespace Monopoly.Runtime
             UIDirector.IsUIBlockingNet = true;
             GameObject CreateMenu = Instantiate(CreateMenuPrefab, Canvas.transform);
             MenuCreate createScript = CreateMenu.GetComponent<MenuCreate>();
-            createScript.IsHost = false;
+            createScript.UpdateFields(false);
             currentLobby = packet.LobbyToken;
             if (MenuLobby.current != null)
                 Destroy(MenuLobby.current.gameObject);
@@ -321,6 +322,12 @@ namespace Monopoly.Runtime
             // FIXME: fix the updates and let them be sent off too!!!!!
             if (MenuCreate.current == null)
                 yield break;
+            foreach (string username in packet.Players)
+            {
+                MenuCreate.current.ManagePlayerList(
+                    PacketBroadcastUpdateRoom.UpdateReason.NEW_PLAYER,
+                    username);
+            }
             MenuCreate.current.SetName(packet.GameName);
             //MenuCreate.current.SetPrivacy();
             MenuCreate.current.SetAuctionSwitch(packet.EnableAuctions);
@@ -331,6 +338,12 @@ namespace Monopoly.Runtime
             MenuCreate.current.SetStartingBalance(packet.StartingBalance);
             MenuCreate.current.SetTurnTime(packet.TurnTimeout);
             MenuCreate.current.SetDoubleOnStartSwitch(packet.EnableDoubleOnGo);
+        }
+
+        public void OnNewHost(PacketNewHost packet)
+        {
+            if (MenuCreate.current != null)
+                MenuCreate.current.UpdateFields(packet.PlayerId.Equals(clientUUID));
         }
 
         public void OnAppletPrepare(PacketAppletPrepare packet)

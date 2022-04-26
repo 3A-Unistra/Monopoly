@@ -17,8 +17,12 @@ namespace Monopoly.Net.Packets
     public class PacketNewHost : Packet
     {
 
-        public PacketNewHost() : base("NewHost")
+        [JsonProperty("player_token")]
+        public string PlayerId { get; private set; }
+
+        public PacketNewHost(string playerId) : base("NewHost")
         {
+            this.PlayerId = playerId;
         }
 
     }
