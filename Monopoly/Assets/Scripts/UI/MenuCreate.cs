@@ -105,6 +105,7 @@ namespace Monopoly.UI
         void Start()
         {
             ManagePlayerList(PacketBroadcastUpdateRoom.UpdateReason.NEW_PLAYER,
+                             ClientLobbyState.clientUUID,
                              ClientLobbyState.clientUsername);
 
             UIDirector.IsMenuOpen = true;
@@ -152,7 +153,7 @@ namespace Monopoly.UI
 
         public void UpdateLobby(PacketBroadcastUpdateRoom packet)
         {
-            ManagePlayerList(packet.Reason, packet.Player);
+            ManagePlayerList(packet.Reason, packet.PlayerId, packet.Username);
         }
 
         private bool IsPlayerListed(string uuid)
@@ -176,7 +177,8 @@ namespace Monopoly.UI
         }
 
         public void ManagePlayerList(
-            PacketBroadcastUpdateRoom.UpdateReason reason, string username)
+            PacketBroadcastUpdateRoom.UpdateReason reason,
+            string uuid, string username)
         {
             // FIXME: implement
             switch (reason)
@@ -189,8 +191,8 @@ namespace Monopoly.UI
                                 PlayerFieldViewport.transform);
                 LobbyPlayerField fieldScript =
                     playerField.GetComponent<LobbyPlayerField>();
-                fieldScript.SetUser(username, username, 0,
-                    username.Equals(ClientLobbyState.clientUUID));
+                fieldScript.SetUser(uuid, username, 0,
+                    uuid.Equals(ClientLobbyState.clientUUID));
                 playerFields.Add(fieldScript);
                 break;
             case PacketBroadcastUpdateRoom.UpdateReason.PLAYER_LEFT:

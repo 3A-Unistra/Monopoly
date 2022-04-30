@@ -35,18 +35,27 @@ namespace Monopoly.Net.Packets
         public int NumberPlayers { get; private set; }
 
         [JsonProperty("player")]
-        public string Player { get; private set; }
+        public string PlayerId { get; private set; }
+
+        [JsonProperty("username")]
+        public string Username { get; private set; }
+
+        [JsonProperty("piece")]
+        public int Piece { get; private set; }
 
         [JsonProperty("reason")]
         public UpdateReason Reason { get; private set; }
 
         public PacketBroadcastUpdateRoom(string lobbyToken, int nbPlayers,
-                                         string player, int reason) 
+                                         string player, string username,
+                                         int piece, int reason) 
             : base("BroadcastUpdateRoom")
         {
             this.LobbyToken = lobbyToken;
             this.NumberPlayers = nbPlayers;
-            this.Player = player;
+            this.PlayerId = player;
+            this.Username = username;
+            this.Piece = piece;
             this.Reason = (UpdateReason) reason;
         }
 

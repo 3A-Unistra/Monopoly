@@ -15,6 +15,7 @@ using UnityEngine.UI;
 
 using Monopoly.Classes;
 using Monopoly.Runtime;
+using Monopoly.Util;
 
 namespace Monopoly.UI
 {
@@ -29,6 +30,9 @@ namespace Monopoly.UI
         public GameObject PlayerFieldViewport;
         public CardDisplay CardDisplayObject;
         public Timeout Timeout;
+
+        public TMP_Text CurrentPrice;
+        public TMP_Text OriginalPrice;
 
         [HideInInspector]
         public int TimeoutDuration;
@@ -53,7 +57,7 @@ namespace Monopoly.UI
             fields = new List<AuctionPlayerField>();
 
             BuildUI();
-            CardDisplayObject.Render(Index);
+            BuildCard();
 
             Timeout.SetTime(TimeoutDuration);
             Timeout.Restart();
@@ -64,6 +68,25 @@ namespace Monopoly.UI
         void OnDestroy()
         {
             UIDirector.IsGameMenuOpen = false;
+        }
+
+        private void UpdatePrice(int amount)
+        {
+            CurrentBid = amount;
+            CurrentPrice.text = string.Format(
+                StringLocaliser.GetString("money_format"), amount);
+        }
+
+        private void BuildCard()
+        {
+            CardDisplayObject.Render(Index);
+            Square square = ClientGameState.current.Board.GetSquare(Index);
+            if (square.IsOwnable())
+            {
+                OwnableSquare os = (OwnableSquare) square;
+                OriginalPrice.text = string.Format(
+                    StringLocaliser.GetString("money_format"), os.Price);
+            }
         }
 
         private void BuildUI()
@@ -117,6 +140,7 @@ namespace Monopoly.UI
                 else
                     field.SetPrice(field.GetPrice(), false);
             }
+            UpdatePrice(amount);
             Timeout.Restart();
         }
 

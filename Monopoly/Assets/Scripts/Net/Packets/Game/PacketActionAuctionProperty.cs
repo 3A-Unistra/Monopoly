@@ -22,7 +22,7 @@ namespace Monopoly.Net.Packets
         [JsonProperty("min_bid")]
         public int MinBid { get; private set; }
 
-        [JsonProperty("property")]
+        [JsonProperty("property_id")]
         public int Property {get; private set;}
 
 
