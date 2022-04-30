@@ -23,6 +23,8 @@ namespace Monopoly.Graphics
     [RequireComponent(typeof(BoxCollider))]
     public class SquareCollider : MonoBehaviour
     {
+        [HideInInspector]
+        public string playerUUID;
 
         [Range(0, 39)]
         public int squareIndex;
@@ -43,12 +45,16 @@ namespace Monopoly.Graphics
         private Player owner;
 
         private bool dirty = false;
+        private bool dirtySphere = false;
         public bool enableMove = false;
 
         private float[] animateTime = new float[5];
-
+        private float sphereTime = 0.0f;
         [Range(0.01f, 2.0f)]
         public float moveSpeed = 1.8f;
+
+        private Vector3 initPos;
+        private Vector3 endPos;
 
         static SquareCollider()
         {
@@ -502,7 +508,7 @@ namespace Monopoly.Graphics
         }
 
         public void SetSphereChild(Player player)
-        {
+        {           
             if (player == null)
             {
                 if (sphereChild != null)
@@ -510,11 +516,23 @@ namespace Monopoly.Graphics
             }
             else if (player != null && player != owner && sphereChild != null)
             {
-                // there is an owner, so we need to animate the new sphere
-                // TODO: ANIMATE
+                sphereTime = 0.0f;
                 sphereChild.gameObject.SetActive(true);
-            }
-            owner = player;
+                owner = player;
+                dirtySphere = true;               
+                endPos = sphereChild.gameObject.transform.localPosition;
+                initPos = endPos;
+                initPos.y = 100.0f;
+                sphereChild.gameObject.transform.localPosition = initPos;
+            }  
+        }
+
+        private void AnimateSphere()
+        {
+            sphereTime += moveSpeed * Time.deltaTime;
+            sphereChild.gameObject.transform.localPosition = Vector3.Lerp(initPos, endPos, sphereTime);
+            if (MathUtil.CompareVector3(sphereChild.gameObject.transform.localPosition, endPos) == 0)
+                dirtySphere = false;
         }
 
         void Update()
@@ -523,12 +541,12 @@ namespace Monopoly.Graphics
                 PlaceHouse();
             if (dirty && (tempLvlhouse > houseLevel))
                 RemoveHouse();
-            if (tempLvlhouse != houseLevel)
-            {
+            if (tempLvlhouse != houseLevel)         
                 dirty = true;
-            }
             if(!dirty)
-                tempLvlhouse = houseLevel;            
+                tempLvlhouse = houseLevel;
+            if (dirtySphere)
+                AnimateSphere();
         }
 
     }

@@ -413,6 +413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 0
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
@@ -1106,11 +1107,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 27
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 1527677325}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &255899629
@@ -1507,11 +1509,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 12
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 2060579427}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &288676205
@@ -1911,11 +1914,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 1
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 10832237}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &322535413
@@ -2535,11 +2539,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 21
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 744203249}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &488836752
@@ -2600,11 +2605,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 5
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 2028617846}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &543257179
@@ -2665,11 +2671,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 35
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 1849072140}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &559050558
@@ -2878,11 +2885,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 11
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 79438709}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &627818010
@@ -2942,6 +2950,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 38
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
@@ -3291,11 +3300,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 8
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 1167790551}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &724889788
@@ -3674,11 +3684,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 31
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 297467992}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &768927303
@@ -3897,6 +3908,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 7
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
@@ -4230,11 +4242,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 26
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 314164774}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &959967107
@@ -4333,6 +4346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 22
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
@@ -4398,11 +4412,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 34
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 590984664}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &1030536895
@@ -4617,6 +4632,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 4
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
@@ -4816,11 +4832,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 37
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 5429202}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &1106144824
@@ -4881,11 +4898,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 15
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 1177381710}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &1107936718
@@ -5022,11 +5040,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 29
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 718452997}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &1133083094
@@ -5387,11 +5406,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 14
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 1228012759}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &1157771827
@@ -5534,11 +5554,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 18
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 2049552932}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &1171923349
@@ -5681,11 +5702,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 3
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 1697955164}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &1197189804
@@ -5746,11 +5768,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 9
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 1321687505}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &1214706444
@@ -6017,11 +6040,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 25
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 12014250}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &1278977941
@@ -6215,6 +6239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 36
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
@@ -6362,11 +6387,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 39
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 2068910162}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &1333242063
@@ -6688,11 +6714,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 32
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 1391186827}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &1392571426
@@ -6835,11 +6862,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 28
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 148922647}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &1414001871
@@ -6961,11 +6989,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 6
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 228284714}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &1441307015
@@ -7026,11 +7055,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 23
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 1405629574}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &1453326409
@@ -7379,11 +7409,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 13
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 106196628}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &1575531774
@@ -7680,11 +7711,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 16
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 464984065}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &1667160593
@@ -7745,6 +7777,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 20
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
@@ -7809,6 +7842,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 30
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
@@ -7955,6 +7989,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 17
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
@@ -8019,6 +8054,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 33
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
@@ -8084,11 +8120,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 19
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 1465153534}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &1754431053
@@ -8594,6 +8631,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 10
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
@@ -8659,11 +8697,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 24
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
   hotelPrefab: {fileID: 4418385317665795829, guid: 5ddce2df16c5943ce83af41f3fd11b7a, type: 3}
-  sphereChild: {fileID: 0}
+  sphereChild: {fileID: 307307925}
   enableMove: 0
   moveSpeed: 1.8
 --- !u!65 &1953613133
@@ -9021,6 +9060,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bacdfac10a5488c83ab3fc02dc1ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUUID: 
   squareIndex: 2
   houseLevel: 0
   housePrefab: {fileID: 7579699689466319036, guid: b39481558abe1491c97a083e6e344926, type: 3}
