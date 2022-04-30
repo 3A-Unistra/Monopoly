@@ -29,7 +29,6 @@ namespace Monopoly.UI
         public TMP_InputField BidField;
         public TMP_Text AuctionText;
         public TMP_Text BidText;
-        public TMP_Text ConcedeText;
         public TMP_Text PriceText;
         public GameObject PlayerFieldViewport;
         public CardDisplay CardDisplayObject;
@@ -57,7 +56,6 @@ namespace Monopoly.UI
 
             BidField.onValueChanged.AddListener(ValidateInput);
             BidText.text = StringLocaliser.GetString("bid");
-            ConcedeText.text = StringLocaliser.GetString("concede");
             AuctionText.text = StringLocaliser.GetString("auction");
             PriceText.text = StringLocaliser.GetString("price");
             BidField.placeholder.GetComponent<TextMeshProUGUI>().text = StringLocaliser.GetString("input_bid");
