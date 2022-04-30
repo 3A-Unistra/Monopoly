@@ -14,6 +14,7 @@ using TMPro;
 
 using Monopoly.Classes;
 using Monopoly.Runtime;
+using Monopoly.Util;
 
 namespace Monopoly.UI
 {
@@ -36,6 +37,11 @@ namespace Monopoly.UI
         public TMP_InputField MoneyPlayerRight;
 
         public TMP_Text ExchangeText;
+        public TMP_Text ReturnText;
+        public TMP_Text SendText;
+        public TMP_Text RefuseText;
+        public TMP_Text AcceptText;
+        public TMP_Text CounterText;
         public TMP_Text PlayerLeftName;
         public TMP_Text PlayerRightName;
         public TMP_Dropdown PlayerRightDropdown;
@@ -67,7 +73,7 @@ namespace Monopoly.UI
         private bool firstRound;
         private bool decisionToMake;
 
-        void Start()
+        void Awake()
         {
             SendButton.onClick.AddListener(SendAction);
             ReturnButton.onClick.AddListener(ReturnAction);
@@ -86,12 +92,26 @@ namespace Monopoly.UI
             MoneyPlayerLeft.onValueChanged.AddListener(DispatchLeftMoney);
             MoneyPlayerRight.onValueChanged.AddListener(DispatchRightMoney);
 
+            CounterText.text = StringLocaliser.GetString("counter");
+            AcceptText.text = StringLocaliser.GetString("accept");
+            SendText.text = StringLocaliser.GetString("send");
+            ExchangeText.text = StringLocaliser.GetString("exchange");
+            RefuseText.text = StringLocaliser.GetString("refuse");
+            ReturnText.text = StringLocaliser.GetString("return");
+            MoneyPlayerLeft.placeholder.GetComponent<TextMeshProUGUI>().text =
+                StringLocaliser.GetString("input_send_money");
+            MoneyPlayerRight.placeholder.GetComponent<TextMeshProUGUI>().text =
+                StringLocaliser.GetString("input_receive_money");
+
             CardListLeft = new List<MiniCard>();
             CardListRight = new List<MiniCard>();
 
             firstRound = true;
             decisionToMake = false;
-
+        }
+        
+        void Start()
+        {
             PopulateLeft(playerPrimary);
             PopulatePlayers(playerList);
             UpdateEditRights();

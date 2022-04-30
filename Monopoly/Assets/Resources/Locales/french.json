@@ -180,5 +180,16 @@
     "double_on_go": "Recevoir 400 € sur la case GO",
     "buy_first_turn": "Acheter dès le premier tour",
     "starting_balance": "Solde de départ",
-    "waiting_for_players": "En attent des autres joueurs..."
+    "waiting_for_players": "En attent des autres joueurs...",
+    "exchange": "Échange",
+    "refuse": "Refuser",
+    "counter": "Contrer",
+    "accept": "Accepter",
+    "auction": "Enchère",
+    "concede": "Concéder",
+    "bid": "Enchérir",
+    "price": "Prix",
+    "input_receive_money": "Montant d'argent à recevoir...",
+    "input_send_money": "Montant d'argent à envoyer...",
+    "input_bid": "Votre offre..."
 }

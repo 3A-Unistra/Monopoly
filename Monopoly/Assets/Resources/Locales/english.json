@@ -179,5 +179,16 @@
     "double_on_go": "Receive 400€ on GO",
     "buy_first_turn": "Can buy property on first revolution",
     "starting_balance": "Starting balance",
-    "waiting_for_players": "Waiting for players..."
+    "waiting_for_players": "Waiting for players...",
+    "exchange": "Exchange",
+    "refuse": "Refuse",
+    "counter": "Counter",
+    "accept": "Accept",
+    "auction": "Auction",
+    "concede": "Concede",
+    "bid": "Bid",
+    "price": "Price",
+    "input_receive_money": "Money to receive...",
+    "input_send_money": "Money to send...",
+    "input_bid": "Your bid..."
 }

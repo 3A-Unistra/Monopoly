@@ -54,12 +54,12 @@ namespace Monopoly.UI
         [HideInInspector]
         public string GameToken;
 
-        [HideInInspector]
         private List<LobbyPlayerField> playerFields;
 
         [HideInInspector]
         public static MenuCreate current;
 
+        private Coroutine updateRoutine;
 
         void Awake()
         {
@@ -70,6 +70,7 @@ namespace Monopoly.UI
                 return;
             }
             current = this;
+            updateRoutine = null;
     
             InviteButton.onClick.AddListener(InvitePlayer);
             StartButton.onClick.AddListener(LaunchLobby);
@@ -78,6 +79,17 @@ namespace Monopoly.UI
                 delegate { PlayerNumberChange(); });
             BotsDropdown.onValueChanged.AddListener(
                 delegate { BotsNumberChange(); });
+            PrivateSwitch.onClick.AddListener(PrivacyChange);
+            PrivateSwitch.GetComponent<OnOff>().Front.onClick.AddListener(PrivacyChange);
+            AuctionsSwitch.onClick.AddListener(AuctionsChange);
+            AuctionsSwitch.GetComponent<OnOff>().Front.onClick.AddListener(AuctionsChange);
+            DoubleOnGoSwitch.onClick.AddListener(DoubleOnGoChange);
+            DoubleOnGoSwitch.GetComponent<OnOff>().Front.onClick.AddListener(DoubleOnGoChange);
+            BuyFirstTurnSwitch.onClick.AddListener(BuyingChange);
+            BuyFirstTurnSwitch.GetComponent<OnOff>().Front.onClick.AddListener(BuyingChange);
+            StartingBalance.onValueChanged.AddListener(delegate {BalanceChange();});
+            TurnNumbers.onValueChanged.AddListener(delegate{TurnNumbersChange();});
+            TurnDuration.onValueChanged.AddListener(delegate{TurnDurationChange();});
             CopyButton.onClick.AddListener(CopyToken);
             BuildBotsDropdown();
             
@@ -208,60 +220,104 @@ namespace Monopoly.UI
 
         public void SetName(string lobbyName)
         {
+            if (IsHost)
+                return;
             LobbyName.text = lobbyName;
+            LobbyName.enabled = IsHost;
         }
 
         public void SetPlayerNumber(int n)
         {
+            if (IsHost)
+                return;
             PlayersDropdown.value = n - 2;
+            PlayersDropdown.enabled = IsHost;
         }
 
         public void SetBotsNumber(int n)
         {
+            if (IsHost)
+                return;
             BotsDropdown.value = n;
+            BotsDropdown.enabled = IsHost;
         }
 
         public void SetAuctionSwitch(bool auction)
         {
+            if (IsHost)
+                return;
             if(AuctionsSwitch.GetComponent<OnOff>().switchOn != auction)
                 AuctionsSwitch.onClick.Invoke();
+            AuctionsSwitch.enabled = IsHost;
+            AuctionsSwitch.GetComponent<OnOff>().Front.enabled = IsHost;
+
         }
 
         public void SetDoubleOnStartSwitch(bool doubleOnStart)
         {
+            if (IsHost)
+                return;
             if(DoubleOnGoSwitch.GetComponent<OnOff>().switchOn != doubleOnStart)
                 DoubleOnGoSwitch.onClick.Invoke();
+            DoubleOnGoSwitch.enabled = IsHost; 
+            DoubleOnGoSwitch.GetComponent<OnOff>().Front.enabled = IsHost;
         }
 
         public void SetBuyingSwitch(bool canBuy)
         {
+            if (IsHost)
+                return;
             if(BuyFirstTurnSwitch.GetComponent<OnOff>().switchOn != canBuy)
                 BuyFirstTurnSwitch.onClick.Invoke();
+            BuyFirstTurnSwitch.enabled = IsHost;
+            BuyFirstTurnSwitch.GetComponent<OnOff>().Front.enabled = IsHost;
         }
 
         public void SetPrivacy(bool isPrivate)
         {
+            if (IsHost)
+                return;
             if(PrivateSwitch.GetComponent<OnOff>().switchOn != isPrivate)
                 PrivateSwitch.onClick.Invoke();
+            PrivateSwitch.enabled = IsHost;
+            PrivateSwitch.GetComponent<OnOff>().Front.enabled = IsHost;
         }
 
         public void SetStartingBalance(int balance)
         {
+            if (IsHost)
+                return;
             StartingBalance.text = balance.ToString();
+            StartingBalance.enabled = IsHost;
         }
         
         public void SetTurnTime(int time)
         {
+            if (IsHost)
+                return;
             TurnDuration.text = time.ToString();
+            TurnDuration.enabled = IsHost;
         }
 
         public void SetNbTurns(int nb)
         {
+            if (IsHost)
+                return;
             TurnNumbers.text = nb.ToString();
+            TurnNumbers.enabled = IsHost;
+        }
+        
+        private void SetPacketStatusRoom()
+        {
+            if (updateRoutine != null)
+                StopCoroutine(updateRoutine);
+            updateRoutine = StartCoroutine(SetPacketStatusRoomEnumerator());
         }
 
-        public PacketStatusRoom SetPacketStatusRoom()
+        private IEnumerator SetPacketStatusRoomEnumerator()
         {
+            yield return new WaitForSeconds(1); // wait a second before send to avoid spam
+
             if (!int.TryParse(TurnNumbers.text, out int turnNumber))
                 turnNumber = 200;
             if (!int.TryParse(TurnDuration.text, out int turnDuration))
@@ -275,15 +331,13 @@ namespace Monopoly.UI
                 playerIds.Add(l.uuid);
                 playerUsernames.Add(l.name);
             }
-            PacketStatusRoom p = 
-                new PacketStatusRoom(ClientLobbyState.currentLobby,
-                    LobbyName.text,
-                    playerFields.Count, PlayersDropdown.value + 2,
-                    playerIds,playerUsernames,AuctionsSwitch.GetComponent<OnOff>().switchOn,
-                    DoubleOnGoSwitch.GetComponent<OnOff>().switchOn,
-                    BuyFirstTurnSwitch.GetComponent<OnOff>().switchOn,
-                    turnNumber, turnDuration, startingBalance);
-            return p;
+            ClientLobbyState.current.DoRoomModify(LobbyName.text,
+                playerFields.Count, PlayersDropdown.value + 2,
+                playerIds, playerUsernames,
+                AuctionsSwitch.GetComponent<OnOff>().switchOn,
+                DoubleOnGoSwitch.GetComponent<OnOff>().switchOn,
+                BuyFirstTurnSwitch.GetComponent<OnOff>().switchOn,
+                turnNumber, turnDuration, startingBalance);
         }
         
         public void InvitePlayer()
@@ -304,13 +358,66 @@ namespace Monopoly.UI
         public void PlayerNumberChange()
         {
             BuildBotsDropdown();
+            Debug.Log("player number change");
+            if(IsHost)
+                SetPacketStatusRoom();
         }
 
         public void BotsNumberChange()
         {
-
+            Debug.Log("bots number change");
+            if(IsHost)
+                SetPacketStatusRoom();
         }
 
+        public void PrivacyChange()
+        {
+            Debug.Log("privacy change");
+            if(IsHost)
+                SetPacketStatusRoom();
+        }
+
+        public void AuctionsChange()
+        {
+            Debug.Log("auctions change");
+            if(IsHost)
+                SetPacketStatusRoom();
+        }
+        
+        public void DoubleOnGoChange()
+        {
+            Debug.Log("double on go change");
+            if(IsHost)
+                SetPacketStatusRoom();
+        }
+        
+        public void BuyingChange()
+        {
+            Debug.Log("buying change");
+            if(IsHost)
+                SetPacketStatusRoom();
+        }
+        
+        public void TurnNumbersChange()
+        {
+            Debug.Log("turn number change");
+            if(IsHost)
+                SetPacketStatusRoom();
+        }
+        
+        public void TurnDurationChange()
+        {
+            Debug.Log("turn duration change");
+            if(IsHost)
+                SetPacketStatusRoom();
+        }
+        
+        public void BalanceChange()
+        {
+            Debug.Log("balance change");
+            if(IsHost)
+                SetPacketStatusRoom();
+        }
         public void CopyToken()
         {
             GUIUtility.systemCopyBuffer = ClientLobbyState.currentLobby;

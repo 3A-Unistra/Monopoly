@@ -215,6 +215,16 @@ namespace Monopoly.Runtime
             if (MenuCreate.current != null)
                 Destroy(MenuCreate.current.gameObject);*/
         }
+        
+        public void DoRoomModify(string lobbyName, int nbPlayers, 
+            int maxPlayers, List<string> ids, List<string> names, bool auction, 
+            bool doubleOnGo, bool buying, int maxTurns, 
+            int timeout, int balance)
+        {
+            if (comm != null)
+                comm.DoRoomModify(lobbyName, nbPlayers, maxPlayers, ids, names, 
+                    auction, doubleOnGo, buying, maxTurns, timeout, balance);
+        }
 
         public void OnError(PacketException packet)
         {
