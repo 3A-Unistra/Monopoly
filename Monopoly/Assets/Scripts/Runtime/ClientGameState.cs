@@ -644,6 +644,7 @@ namespace Monopoly.Runtime
                 if (os.Owner == null)
                 {
                     Board.BoardBank.BuyProperty(p, os);
+                    SquareCollider.Colliders[os.Id].SetSphereChild(p);
                     LogAction(string.Format(
                         StringLocaliser.GetString("on_buy_property"),
                         PlayerNameLoggable(p),
