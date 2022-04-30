@@ -177,5 +177,6 @@
     "auctions": "Enchères",
     "double_on_go": "Recevoir 400 € sur la case GO",
     "buy_first_turn": "Acheter dès le premier tour",
-    "starting_balance": "Solde de départ"
+    "starting_balance": "Solde de départ",
+    "waiting_for_players": "En attent des autres joueurs..."
 }

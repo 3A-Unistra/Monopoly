@@ -83,6 +83,9 @@ namespace Monopoly.Runtime
         public Canvas canvas;
         public Canvas canvasPause;
 
+        public GameObject waitBlock;
+        public TMP_Text waitText;
+
         public Timeout timeout;
         private Dictionary<string, int> timeouts;
 
@@ -125,6 +128,7 @@ namespace Monopoly.Runtime
             exitPrisonMoneyButton.onClick.AddListener(DoExitPrisonMoney);
             exitPrisonCardButton.onClick.AddListener(DoExitPrisonCard);
             actionText.text = "";
+            waitText.text = StringLocaliser.GetString("waiting_for_players");
         }
 
         void OnDestroy()
@@ -1059,6 +1063,8 @@ namespace Monopoly.Runtime
 
         public void OnGameStart(PacketGameStart packet)
         {
+            canvas.GetComponent<CanvasGroup>().alpha = 1.0f;
+            Destroy(waitBlock);
             LogAction(StringLocaliser.GetString("game_start"));
             foreach (PacketGameStateInternal playerData in packet.Players)
             {

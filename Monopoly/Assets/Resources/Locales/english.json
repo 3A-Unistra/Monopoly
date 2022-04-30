@@ -176,5 +176,6 @@
     "auctions": "Auctions",
     "double_on_go": "Receive 400€ on GO",
     "buy_first_turn": "Can buy property on first revolution",
-    "starting_balance": "Starting balance"
+    "starting_balance": "Starting balance",
+    "waiting_for_players":  "Waiting for players..."
 }
