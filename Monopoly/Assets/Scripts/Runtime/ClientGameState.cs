@@ -1162,6 +1162,29 @@ namespace Monopoly.Runtime
             Debug.Log("Turn ended.");
         }
 
+        public void OnDefeat(PacketPlayerDefeat packet)
+        {
+            Player p = Player.PlayerFromUUID(players, packet.PlayerId);
+            if (p == null)
+            {
+                Debug.LogWarning(string.Format("Could not find player '{0}'!",
+                                               packet.PlayerId));
+                return;
+            }
+            if (p == myPlayer)
+            {
+                LogAction(string.Format(
+                    StringLocaliser.GetString("on_defeat_me")));
+                // FIXME: DISABLE EVERYTHING OR LEAVE ON DEFEAT
+            }
+            else
+            {
+                LogAction(string.Format(
+                    StringLocaliser.GetString("on_defeat"),
+                    PlayerNameLoggable(p)));
+            }
+        }
+
     }
 
 }

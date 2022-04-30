@@ -100,6 +100,8 @@
     "on_enter_prison": "{0} has entered jail!",
     "on_exit_prison": "{0} has left jail.",
     "on_game_start_dice_result": "{0} thew {1} and {2} and won!",
+    "on_defeat": "{0} has gone bankrupt!",
+    "on_defeat_me": "You have gone bankrupt!",
     "fullscreen": "Fullscreen",
     "shadow": "Shadow",
     "quality": "Quality",
@@ -177,5 +179,5 @@
     "double_on_go": "Receive 400€ on GO",
     "buy_first_turn": "Can buy property on first revolution",
     "starting_balance": "Starting balance",
-    "waiting_for_players":  "Waiting for players..."
+    "waiting_for_players": "Waiting for players..."
 }
