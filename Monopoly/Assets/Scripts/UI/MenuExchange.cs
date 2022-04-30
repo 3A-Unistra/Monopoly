@@ -137,13 +137,13 @@ namespace Monopoly.UI
         private void DispatchMoney(string val, bool right)
         {
             val = val.Trim();
-            if (!int.TryParse(val, out int intval))
-                return; // nothing I can do if its a bad value
             // start an enumerator before sending to avoid spam
             if (right)
             {
                 if (rightMoneyDispatch != null)
                     StopCoroutine(rightMoneyDispatch);
+                if (!ValidateInput(val, right, out int intval))
+                    return; // nothing I can do if its a bad value
                 rightMoneyDispatch =
                     StartCoroutine(DispatchMoneyEnumerator(intval, right));
             }
@@ -151,6 +151,8 @@ namespace Monopoly.UI
             {
                 if (leftMoneyDispatch != null)
                     StopCoroutine(leftMoneyDispatch);
+                if (!ValidateInput(val, right, out int intval))
+                    return; // nothing I can do if its a bad value
                 leftMoneyDispatch =
                     StartCoroutine(DispatchMoneyEnumerator(intval, right));
             }
@@ -476,6 +478,34 @@ namespace Monopoly.UI
             }
             //PopulateRight(playerList[index]);
             ClientGameState.current.DoExchangeSelectPlayer(playerList[index].Id);
+        }
+
+        private bool ValidateInput(string strval, bool right, out int val)
+        {
+            strval = strval.Trim();
+            int playerMoney = right ? playerSecondary.Money : playerPrimary.Money;
+            if (int.TryParse(strval, out val) &&
+                val <= playerMoney && val > 0)
+            {
+                // valid bid amount
+                // TODO: add check for current high price
+                if (right)
+                    MoneyPlayerRight.textComponent.color = Color.black;
+                else
+                    MoneyPlayerLeft.textComponent.color = Color.black;
+                SendButton.enabled = true;
+                return true;
+            }
+            else
+            {
+                // invalid bid amount
+                if (right)
+                    MoneyPlayerRight.textComponent.color = Color.red;
+                else
+                    MoneyPlayerLeft.textComponent.color = Color.red;
+                SendButton.enabled = false;
+                return false;
+            }
         }
 
     }

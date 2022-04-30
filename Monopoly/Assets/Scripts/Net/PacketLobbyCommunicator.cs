@@ -29,8 +29,6 @@ namespace Monopoly.Net
                                                          OnEnterRoomSucceed;
         public event PacketDelegate<PacketLeaveRoomSucceed>
                                                          OnLeaveRoomSucceed;
-        public event PacketDelegate<PacketDeleteRoomSucceed>
-                                                         OnDeleteRoomSucceed;
         public event PacketDelegate<PacketLaunchGame>           OnGameStart;
         public event PacketDelegate<PacketBroadcastUpdateLobby> OnLobbyUpdate;
         public event PacketDelegate<PacketBroadcastUpdateRoom>  OnRoomUpdate;
@@ -100,13 +98,6 @@ namespace Monopoly.Net
             SendPacket(packet);
         }
 
-        public void DoDeleteRoom(string playerId)
-        {
-            PacketDeleteRoom packet =
-                new PacketDeleteRoom(playerId);
-            SendPacket(packet);
-        }
-
         private async void SendPacket(Packet packet)
         {
 #if UNITY_EDITOR
@@ -147,8 +138,6 @@ namespace Monopoly.Net
                 OnEnterRoomSucceed(packet); break;
             case PacketLeaveRoomSucceed packet:
                 OnLeaveRoomSucceed(packet); break;
-            case PacketDeleteRoomSucceed packet:
-                OnDeleteRoomSucceed(packet); break;
             case PacketLaunchGame packet:
                 OnGameStart(packet); break;
             case PacketBroadcastUpdateLobby packet:

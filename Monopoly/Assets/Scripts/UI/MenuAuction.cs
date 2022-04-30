@@ -29,11 +29,13 @@ namespace Monopoly.UI
         public TMP_InputField BidField;
         public TMP_Text AuctionText;
         public TMP_Text BidText;
-        public TMP_Text ConcedeText;
         public TMP_Text PriceText;
         public GameObject PlayerFieldViewport;
         public CardDisplay CardDisplayObject;
         public Timeout Timeout;
+
+        public TMP_Text CurrentPrice;
+        public TMP_Text OriginalPrice;
 
         [HideInInspector]
         public int TimeoutDuration;
@@ -54,7 +56,6 @@ namespace Monopoly.UI
 
             BidField.onValueChanged.AddListener(ValidateInput);
             BidText.text = StringLocaliser.GetString("bid");
-            ConcedeText.text = StringLocaliser.GetString("concede");
             AuctionText.text = StringLocaliser.GetString("auction");
             PriceText.text = StringLocaliser.GetString("price");
             BidField.placeholder.GetComponent<TextMeshProUGUI>().text = StringLocaliser.GetString("input_bid");
@@ -64,7 +65,7 @@ namespace Monopoly.UI
             fields = new List<AuctionPlayerField>();
 
             BuildUI();
-            CardDisplayObject.Render(Index);
+            BuildCard();
 
             Timeout.SetTime(TimeoutDuration);
             Timeout.Restart();
@@ -75,6 +76,25 @@ namespace Monopoly.UI
         void OnDestroy()
         {
             UIDirector.IsGameMenuOpen = false;
+        }
+
+        private void UpdatePrice(int amount)
+        {
+            CurrentBid = amount;
+            CurrentPrice.text = string.Format(
+                StringLocaliser.GetString("money_format"), amount);
+        }
+
+        private void BuildCard()
+        {
+            CardDisplayObject.Render(Index);
+            Square square = ClientGameState.current.Board.GetSquare(Index);
+            if (square.IsOwnable())
+            {
+                OwnableSquare os = (OwnableSquare) square;
+                OriginalPrice.text = string.Format(
+                    StringLocaliser.GetString("money_format"), os.Price);
+            }
         }
 
         private void BuildUI()
@@ -97,7 +117,8 @@ namespace Monopoly.UI
         {
             strval = strval.Trim();
             if (int.TryParse(strval, out int val) &&
-                val <= ClientGameState.current.myPlayer.Money && val > 0)
+                val <= ClientGameState.current.myPlayer.Money && val > 0 &&
+                val > CurrentBid)
             {
                 // valid bid amount
                 // TODO: add check for current high price
@@ -128,6 +149,7 @@ namespace Monopoly.UI
                 else
                     field.SetPrice(field.GetPrice(), false);
             }
+            UpdatePrice(amount);
             Timeout.Restart();
         }
 

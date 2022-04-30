@@ -172,7 +172,6 @@ namespace Monopoly.Runtime
             comm.OnCreateGameSucceed += OnCreateGameSucceed;
             comm.OnEnterRoomSucceed += OnEnterRoomSucceed;
             comm.OnLeaveRoomSucceed += OnLeaveRoomSucceed;
-            comm.OnDeleteRoomSucceed += OnDeleteRoomSucceed;
             comm.OnBroadcastCreateGame += OnBroadcastCreateGame;
             comm.OnLobbyUpdate += OnLobbyUpdate;
             comm.OnRoomUpdate += OnRoomUpdate;
@@ -227,19 +226,6 @@ namespace Monopoly.Runtime
                     auction, doubleOnGo, buying, maxTurns, timeout, balance);
         }
 
-        public void DoDeleteGame(string lobbyToken)
-        {
-            comm.DoDeleteRoom(clientUUID);
-            /* leave lobby immediately because there's no point forcing the user
-               to wait for the succeed packet */
-            UIDirector.IsMenuOpen = false;
-            UIDirector.IsUIBlockingNet = false;
-            GameObject lobbyMenu = Instantiate(RuntimeData.current.LobbyMenuPrefab, Canvas.transform);
-            currentLobby = null;
-            if (MenuCreate.current != null)
-                Destroy(MenuCreate.current.gameObject);
-        }
-
         public void OnError(PacketException packet)
         {
             // TODO: don't return to main menu for less fatal errors
@@ -272,6 +258,7 @@ namespace Monopoly.Runtime
         {
             UIDirector.IsMenuOpen = false;
             UIDirector.IsUIBlockingNet = true;
+            clientUsername = packet.Username;
             GameObject CreateMenu = Instantiate(RuntimeData.current.CreateMenuPrefab, Canvas.transform);
             MenuCreate createScript = CreateMenu.GetComponent<MenuCreate>();
             createScript.UpdateFields(false);
@@ -288,15 +275,6 @@ namespace Monopoly.Runtime
             currentLobby = null;
             if (MenuCreate.current != null)
                 Destroy(MenuCreate.current.gameObject);
-        }
-
-        public void OnDeleteRoomSucceed(PacketDeleteRoomSucceed packet)
-        {
-            /*UIDirector.IsMenuOpen = false;
-            GameObject lobbyMenu = Instantiate(LobbyMenuPrefab, Canvas.transform);
-            currentLobby = null;
-            if (MenuCreate.current != null)
-                Destroy(MenuCreate.current.gameObject);*/
         }
 
         public void OnBroadcastCreateGame(PacketBroadcastNewRoomToLobby packet)
@@ -337,7 +315,7 @@ namespace Monopoly.Runtime
             {
                 MenuCreate.current.ManagePlayerList(
                     PacketBroadcastUpdateRoom.UpdateReason.NEW_PLAYER,
-                    username);
+                    username, username);
             }
             MenuCreate.current.SetName(packet.GameName);
             //MenuCreate.current.SetPrivacy();

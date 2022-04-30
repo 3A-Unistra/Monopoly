@@ -84,6 +84,9 @@ namespace Monopoly.Runtime
         public Canvas canvas;
         public Canvas canvasPause;
 
+        public GameObject waitBlock;
+        public TMP_Text waitText;
+
         public Timeout timeout;
         private Dictionary<string, int> timeouts;
 
@@ -126,6 +129,7 @@ namespace Monopoly.Runtime
             exitPrisonMoneyButton.onClick.AddListener(DoExitPrisonMoney);
             exitPrisonCardButton.onClick.AddListener(DoExitPrisonCard);
             actionText.text = "";
+            waitText.text = StringLocaliser.GetString("waiting_for_players");
         }
 
         void OnDestroy()
@@ -1061,6 +1065,8 @@ namespace Monopoly.Runtime
 
         public void OnGameStart(PacketGameStart packet)
         {
+            canvas.GetComponent<CanvasGroup>().alpha = 1.0f;
+            Destroy(waitBlock);
             LogAction(StringLocaliser.GetString("game_start"));
             foreach (PacketGameStateInternal playerData in packet.Players)
             {
@@ -1156,6 +1162,29 @@ namespace Monopoly.Runtime
                 BoardCardDisplay.current.Redraw();
             timeout.Hide();
             Debug.Log("Turn ended.");
+        }
+
+        public void OnDefeat(PacketPlayerDefeat packet)
+        {
+            Player p = Player.PlayerFromUUID(players, packet.PlayerId);
+            if (p == null)
+            {
+                Debug.LogWarning(string.Format("Could not find player '{0}'!",
+                                               packet.PlayerId));
+                return;
+            }
+            if (p == myPlayer)
+            {
+                LogAction(string.Format(
+                    StringLocaliser.GetString("on_defeat_me")));
+                // FIXME: DISABLE EVERYTHING OR LEAVE ON DEFEAT
+            }
+            else
+            {
+                LogAction(string.Format(
+                    StringLocaliser.GetString("on_defeat"),
+                    PlayerNameLoggable(p)));
+            }
         }
 
     }

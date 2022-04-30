@@ -46,8 +46,6 @@ namespace Monopoly.Net
             { "EnterRoomSucceed", typeof(PacketEnterRoomSucceed) },
             { "LeaveRoom", typeof(PacketLeaveRoom) },
             { "LeaveRoomSucceed", typeof(PacketLeaveRoomSucceed) },
-            { "DeleteRoom", typeof(PacketDeleteRoom) },
-            { "DeleteRoomSucceed", typeof(PacketDeleteRoomSucceed) },
             { "LaunchGame", typeof(PacketLaunchGame) },
             { "NewHost", typeof(PacketNewHost) },
             { "AddBot", typeof(PacketAddBot) },
