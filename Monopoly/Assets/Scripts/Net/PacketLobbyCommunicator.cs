@@ -82,6 +82,18 @@ namespace Monopoly.Net
             SendPacket(packet);
         }
 
+        public void DoRoomModify(string lobbyName, int nbPlayers, 
+            int maxPlayers, List<string> ids, List<string> names, bool auction, 
+            bool doubleOnGo, bool buying, int maxTurns, 
+            int timeout, int balance)
+        {
+            PacketStatusRoom packet =
+                new PacketStatusRoom(ClientLobbyState.currentLobby,
+                    lobbyName, nbPlayers, maxPlayers, ids, names, auction,
+                    doubleOnGo, buying, maxTurns, timeout, balance);
+            SendPacket(packet);
+        }
+
         public void DoLeaveRoom(string playerId)
         {
             PacketLeaveRoom packet = new PacketLeaveRoom(playerId);
