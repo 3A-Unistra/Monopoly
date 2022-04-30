@@ -41,6 +41,7 @@ namespace Monopoly.Runtime
 
         public TMP_Text chatBox;
         public ScrollRect chatScroller;
+        private bool scrollMoved = false;
         public UIPlayerInfo playerInfo;
 
         public TMP_Text parkingMoneyText;
@@ -225,11 +226,12 @@ namespace Monopoly.Runtime
 
         public void LogMessage(string msg)
         {
-            // TODO: Fix update scrollbar.
+            scrollMoved = chatScroller.verticalNormalizedPosition != 0 ? true : false;
             if (chatBox.text.Length > 0)
                 chatBox.text += "<br>";
             chatBox.text += msg;
-            StartCoroutine(ScrollUpdate());
+            if(!scrollMoved)
+                StartCoroutine(ScrollUpdate());
             Debug.Log(msg);
         }
 

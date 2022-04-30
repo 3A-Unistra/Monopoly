@@ -703,7 +703,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
+  m_fontSize: 16
   m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2924,7 +2924,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
+  m_fontSize: 16
   m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5453,7 +5453,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3032081495437452314, guid: d9e49595062d0b6faa90482e6d92d102, type: 3}
       propertyPath: m_Name
-      value: OnOff
+      value: AuctionsOnOff
       objectReference: {fileID: 0}
     - target: {fileID: 3032081495437452317, guid: d9e49595062d0b6faa90482e6d92d102, type: 3}
       propertyPath: m_Pivot.x
@@ -6283,7 +6283,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3032081495437452314, guid: d9e49595062d0b6faa90482e6d92d102, type: 3}
       propertyPath: m_Name
-      value: OnOff
+      value: DoubleOnGoOnOff
       objectReference: {fileID: 0}
     - target: {fileID: 3032081495437452317, guid: d9e49595062d0b6faa90482e6d92d102, type: 3}
       propertyPath: m_Pivot.x
@@ -6400,7 +6400,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3032081495437452314, guid: d9e49595062d0b6faa90482e6d92d102, type: 3}
       propertyPath: m_Name
-      value: OnOff
+      value: PrivacyOnOff
       objectReference: {fileID: 0}
     - target: {fileID: 3032081495437452317, guid: d9e49595062d0b6faa90482e6d92d102, type: 3}
       propertyPath: m_Pivot.x
@@ -6517,7 +6517,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3032081495437452314, guid: d9e49595062d0b6faa90482e6d92d102, type: 3}
       propertyPath: m_Name
-      value: OnOff
+      value: BuyingOnOff
       objectReference: {fileID: 0}
     - target: {fileID: 3032081495437452317, guid: d9e49595062d0b6faa90482e6d92d102, type: 3}
       propertyPath: m_Pivot.x
