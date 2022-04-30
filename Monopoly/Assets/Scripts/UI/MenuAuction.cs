@@ -109,7 +109,8 @@ namespace Monopoly.UI
         {
             strval = strval.Trim();
             if (int.TryParse(strval, out int val) &&
-                val <= ClientGameState.current.myPlayer.Money && val > 0)
+                val <= ClientGameState.current.myPlayer.Money && val > 0 &&
+                val > CurrentBid)
             {
                 // valid bid amount
                 // TODO: add check for current high price
