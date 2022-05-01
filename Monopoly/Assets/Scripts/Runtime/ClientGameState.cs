@@ -93,6 +93,8 @@ namespace Monopoly.Runtime
         private MenuExchange currentExchange;
         private MenuAuction currentAuction;
 
+        private PacketGameStartInternal gameRules;
+
         void Awake()
         {
             if (current != null)
@@ -1068,7 +1070,9 @@ namespace Monopoly.Runtime
                 int val;
                 Card.CardType cardType = (Card.CardType) cardData[packet.CardId - 1]["type"];
                 // get card data for formatting
-                if (cardType == Card.CardType.GOTO_POSITION)
+                if (cardType == Card.CardType.GOTO_POSITION ||
+                    cardType == Card.CardType.CLOSEST_STATION ||
+                    cardType == Card.CardType.CLOSEST_COMPANY)
                 {
                     val = 200; // these cards typically say to pass go for $200
                     message = string.Format(message, val);
@@ -1083,6 +1087,12 @@ namespace Monopoly.Runtime
                 else
                 {
                     val = cardData[packet.CardId - 1]["value"];
+                    if (cardType == Card.CardType.GOTO_POSITION &&
+                        (packet.CardId == 1 || packet.CardId == 17) &&
+                        gameRules.EnableDoubleOnGo)
+                    {
+                        val *= 2; /* show $400 on go rather than $200 */
+                    }
                     message = string.Format(message, val);
                 }
             }
@@ -1110,6 +1120,7 @@ namespace Monopoly.Runtime
                     pinfo.Dice.RollDice();
                 }
             }
+            gameRules = packet.Options;
             // setup the timeouts
             timeouts = packet.Timeouts;
         }
@@ -1166,7 +1177,8 @@ namespace Monopoly.Runtime
                 if (os.Owner == null)
                 {
                     buyPropertyButton.gameObject.SetActive(true);
-                    auctionButton.gameObject.SetActive(true);
+                    auctionButton.gameObject.SetActive(
+                        gameRules.EnableAuctions);
                 }
             }
             CanPerformAction = true;
