@@ -99,8 +99,20 @@ namespace Monopoly.UI
 
         public void CreateLobby()
         {
-            ClientLobbyState.current.DoCreateGame(
-                ClientLobbyState.clientUUID, 2, "", "hello", false, 1500, false, false, 60, 100, false);
+            string name = string.Format(
+                StringLocaliser.GetString("default_lobby"),
+                ClientLobbyState.clientUsername);
+            ClientLobbyState.current.DoCreateGame(ClientLobbyState.clientUUID,
+                                                  8,
+                                                  "",
+                                                  name,
+                                                  false,
+                                                  1500,
+                                                  true,
+                                                  false,
+                                                  60,
+                                                  100,
+                                                  false);
         }
 
         private static void SetLobbyPlayerQty(LobbyJoin l)

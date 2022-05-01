@@ -371,6 +371,8 @@ namespace Monopoly.Net
                 OnActionTimeout(packet); break;
             case PacketActionAuctionProperty packet:
                 OnAuctionStart(packet); break;
+            case PacketAuctionBid packet:
+                OnAuctionBid(packet); break;
             case PacketAuctionEnd packet:
                 OnAuctionEnd(packet); break;
             case PacketActionStart packet:

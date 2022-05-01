@@ -72,7 +72,7 @@ namespace Monopoly.Net
             { "RoundRandomCard", typeof(PacketRoundRandomCard) },
             { "PlayerMove", typeof(PacketPlayerMove) },
             { "PlayerEnterPrison", typeof(PacketPlayerEnterPrison) },
-            { "PlayerExitPrion", typeof(PacketPlayerExitPrison) },
+            { "PlayerExitPrison", typeof(PacketPlayerExitPrison) },
             { "ActionStart", typeof(PacketActionStart) },
             { "ActionTimeout", typeof(PacketActionTimeout) },
             { "ActionExchange", typeof(PacketActionExchange) },

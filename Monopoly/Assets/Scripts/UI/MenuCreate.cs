@@ -69,9 +69,10 @@ namespace Monopoly.UI
                 Destroy(this.gameObject);
                 return;
             }
+
             current = this;
             updateRoutine = null;
-    
+            LobbyName.onValueChanged.AddListener(delegate { NameChange(); });
             InviteButton.onClick.AddListener(InvitePlayer);
             StartButton.onClick.AddListener(LaunchLobby);
             ReturnButton.onClick.AddListener(ReturnLobby);
@@ -331,7 +332,7 @@ namespace Monopoly.UI
                 playerIds.Add(l.uuid);
                 playerUsernames.Add(l.name);
             }
-            ClientLobbyState.current.DoRoomModify(LobbyName.text,
+            ClientLobbyState.current.DoRoomModify(LobbyName.text.Trim(),
                 playerFields.Count, PlayersDropdown.value + 2,
                 playerIds, playerUsernames,
                 AuctionsSwitch.GetComponent<OnOff>().switchOn,
@@ -344,7 +345,7 @@ namespace Monopoly.UI
         {
 
         }
-
+        
         public void LaunchLobby()
         {
             ClientLobbyState.current.DoLaunchGame();
@@ -354,67 +355,62 @@ namespace Monopoly.UI
         {
             ClientLobbyState.current.DoLeaveGame(ClientLobbyState.currentLobby);
         }
-
+        public void NameChange()
+        {
+            if(IsHost)
+                SetPacketStatusRoom();
+        }
         public void PlayerNumberChange()
         {
             BuildBotsDropdown();
-            Debug.Log("player number change");
             if(IsHost)
                 SetPacketStatusRoom();
         }
 
         public void BotsNumberChange()
         {
-            Debug.Log("bots number change");
             if(IsHost)
                 SetPacketStatusRoom();
         }
 
         public void PrivacyChange()
         {
-            Debug.Log("privacy change");
             if(IsHost)
                 SetPacketStatusRoom();
         }
 
         public void AuctionsChange()
         {
-            Debug.Log("auctions change");
             if(IsHost)
                 SetPacketStatusRoom();
         }
         
         public void DoubleOnGoChange()
         {
-            Debug.Log("double on go change");
             if(IsHost)
                 SetPacketStatusRoom();
         }
         
         public void BuyingChange()
         {
-            Debug.Log("buying change");
             if(IsHost)
                 SetPacketStatusRoom();
         }
         
         public void TurnNumbersChange()
         {
-            Debug.Log("turn number change");
             if(IsHost)
                 SetPacketStatusRoom();
         }
         
         public void TurnDurationChange()
         {
-            Debug.Log("turn duration change");
             if(IsHost)
                 SetPacketStatusRoom();
         }
         
         public void BalanceChange()
         {
-            Debug.Log("balance change");
             if(IsHost)
                 SetPacketStatusRoom();
         }
