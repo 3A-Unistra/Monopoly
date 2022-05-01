@@ -41,15 +41,16 @@ namespace Monopoly.Graphics
         private List<GameObject> houseObjects;
         public static Dictionary<int, SquareCollider> Colliders;
 
-        public SpriteRenderer sphereChild;
+        public GameObject ownerChild;
+        public SpriteRenderer ownerRenderer;
         private Player owner;
 
         private bool dirty = false;
-        private bool dirtySphere = false;
+        private bool dirtyOwner = false;
         public bool enableMove = false;
 
         private float[] animateTime = new float[5];
-        private float sphereTime = 0.0f;
+        private float ownerTime = 0.0f;
         [Range(0.01f, 2.0f)]
         public float moveSpeed = 1.8f;
 
@@ -511,28 +512,30 @@ namespace Monopoly.Graphics
         {           
             if (player == null)
             {
-                if (sphereChild != null)
-                    sphereChild.gameObject.SetActive(false);
+                if (ownerChild != null)
+                    ownerChild.gameObject.SetActive(false);
             }
-            else if (player != null && player != owner && sphereChild != null)
+            else if (player != null && player != owner && ownerChild != null)
             {
-                sphereTime = 0.0f;
-                sphereChild.gameObject.SetActive(true);
+                ownerRenderer.sprite =
+                    RuntimeData.current.pieceImages[player.CharacterIdx];
+                ownerTime = 0.0f;
+                ownerChild.gameObject.SetActive(true);
                 owner = player;
-                dirtySphere = true;               
-                endPos = sphereChild.gameObject.transform.localPosition;
+                dirtyOwner = true;               
+                endPos = ownerChild.gameObject.transform.localPosition;
                 initPos = endPos;
                 initPos.y = 100.0f;
-                sphereChild.gameObject.transform.localPosition = initPos;
+                ownerChild.gameObject.transform.localPosition = initPos;
             }  
         }
 
         private void AnimateSphere()
         {
-            sphereTime += moveSpeed * Time.deltaTime;
-            sphereChild.gameObject.transform.localPosition = Vector3.Lerp(initPos, endPos, sphereTime);
-            if (MathUtil.CompareVector3(sphereChild.gameObject.transform.localPosition, endPos) == 0)
-                dirtySphere = false;
+            ownerTime += moveSpeed * Time.deltaTime;
+            ownerChild.gameObject.transform.localPosition = Vector3.Lerp(initPos, endPos, ownerTime);
+            if (MathUtil.CompareVector3(ownerChild.gameObject.transform.localPosition, endPos) == 0)
+                dirtyOwner = false;
         }
 
         void Update()
@@ -545,7 +548,7 @@ namespace Monopoly.Graphics
                 dirty = true;
             if(!dirty)
                 tempLvlhouse = houseLevel;
-            if (dirtySphere)
+            if (dirtyOwner)
                 AnimateSphere();
         }
 

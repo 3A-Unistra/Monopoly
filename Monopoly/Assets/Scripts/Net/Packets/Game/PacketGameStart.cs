@@ -27,14 +27,19 @@ namespace Monopoly.Net.Packets
         [JsonProperty("timeouts")]
         public Dictionary<string, int> Timeouts { get; private set; }
 
+        [JsonProperty("options")]
+        public PacketGameStartInternal Options { get; private set; }
+
         public PacketGameStart(string gameName,
                                List<PacketGameStateInternal> players,
-                               Dictionary<string, int> timeouts)
+                               Dictionary<string, int> timeouts,
+                               PacketGameStartInternal options)
             : base("GameStart")
         {
             this.GameName = gameName;
             this.Players = players;
             this.Timeouts = timeouts;
+            this.Options = options;
         }
 
     }
