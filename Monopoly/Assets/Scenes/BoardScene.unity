@@ -9920,15 +9920,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3355072222639907673, guid: 852112be96ddf49d782c237f9d8097e0, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3355072222639907673, guid: 852112be96ddf49d782c237f9d8097e0, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5288046077410279755, guid: 852112be96ddf49d782c237f9d8097e0, type: 3}
       propertyPath: m_Name
       value: Timeout
+      objectReference: {fileID: 0}
+    - target: {fileID: 5288046077410279755, guid: 852112be96ddf49d782c237f9d8097e0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9079770572871343318, guid: 852112be96ddf49d782c237f9d8097e0, type: 3}
       propertyPath: m_Pivot.x

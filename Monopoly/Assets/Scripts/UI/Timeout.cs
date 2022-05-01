@@ -32,7 +32,6 @@ namespace Monopoly.UI
         {
             Restart();
             canAnimate = false;
-            Hide();
         }
 
         void Update()
@@ -54,6 +53,12 @@ namespace Monopoly.UI
             timeoutSeconds = time;
         }
 
+        public void SetRemainingTime(int time)
+        {
+            animationTime =
+                Mathf.Clamp(timeoutSeconds - time, 0, timeoutSeconds);
+        }
+
         public void Restart()
         {
             slider.value = 1;
@@ -61,6 +66,11 @@ namespace Monopoly.UI
             animationTime = 0.0f;
             canAnimate = true;
             gameObject.SetActive(true);
+        }
+
+        public void Resume()
+        {
+            canAnimate = true;
         }
 
         public void Pause()

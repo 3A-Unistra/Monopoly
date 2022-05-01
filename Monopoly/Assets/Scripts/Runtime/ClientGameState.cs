@@ -634,6 +634,7 @@ namespace Monopoly.Runtime
                                                packet.PlayerId));
                 return;
             }
+            timeout.Pause();
             GameObject auctionMenu =
                 Instantiate(AuctionPrefab, canvas.transform);
             currentAuction = auctionMenu.GetComponent<MenuAuction>();
@@ -651,13 +652,42 @@ namespace Monopoly.Runtime
 
         public void OnAuctionEnd(PacketAuctionEnd packet)
         {
-            if (currentAuction != null)
+            timeout.SetRemainingTime(packet.RemainingTurnTime);
+            timeout.Resume();
+            if (currentAuction == null)
+                return;
+            int houseId = currentAuction.Index;
+            Destroy(currentAuction.gameObject);
+            currentAuction = null;
+            UIDirector.IsGameMenuOpen = false;
+            if (!packet.PlayerId.Trim().Equals(""))
             {
-                Destroy(currentAuction.gameObject);
-                currentAuction = null;
-                UIDirector.IsGameMenuOpen = false;
+                Player p =
+                    Player.PlayerFromUUID(players, packet.PlayerId.Trim());
+                if (p == null)
+                {
+                    Debug.LogWarning(string.Format("Could not find player '{0}'!",
+                                                   packet.PlayerId));
+                    return;
+                }
+                Square s = Board.GetSquare(houseId);
+                if (s.IsOwnable())
+                {
+                    OwnableSquare os = (OwnableSquare) s;
+                    if (os.Owner == null)
+                    {
+                        Board.BoardBank.BuyProperty(p, os);
+                        SquareCollider.Colliders[os.Id].SetSphereChild(p);
+                        LogAction(string.Format(
+                            StringLocaliser.GetString("on_auction_win"),
+                            PlayerNameLoggable(p),
+                            string.Format(
+                                StringLocaliser.GetString("money_format"),
+                                packet.Bid)));
+                    }
+                }
             }
-            // TODO: show message and update timeout
+            // TODO: update timeout
         }
 
         public void OnError(PacketException packet)

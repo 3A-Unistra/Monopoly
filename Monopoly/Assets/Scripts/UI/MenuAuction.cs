@@ -30,6 +30,7 @@ namespace Monopoly.UI
         public TMP_Text AuctionText;
         public TMP_Text BidText;
         public TMP_Text PriceText;
+        public TMP_Text CurrentBidText;
         public GameObject PlayerFieldViewport;
         public CardDisplay CardDisplayObject;
         public Timeout Timeout;
@@ -58,6 +59,7 @@ namespace Monopoly.UI
             BidText.text = StringLocaliser.GetString("bid");
             AuctionText.text = StringLocaliser.GetString("auction");
             PriceText.text = StringLocaliser.GetString("price");
+            CurrentBidText.text = StringLocaliser.GetString("current_bid");
             BidField.placeholder.GetComponent<TextMeshProUGUI>().text = StringLocaliser.GetString("input_bid");
             
             BidButton.enabled = false;

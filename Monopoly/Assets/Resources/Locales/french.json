@@ -60,6 +60,7 @@
     "station35": "Gare Centrale",
     "property37": "Parlement Européen",
     "property39": "La Cathédrale de Strasbourg",
+    "default_lobby": "Lobby de {0}",
     "community": "Caisse Communitaire",
     "chance": "Caisse de Chance",
     "income_tax": "Impôts sur le Revenu",
@@ -90,6 +91,7 @@
     "cost_per_hotel": "PRIX par hôtel: 4 maisons +",
     "on_buy_house": "{0} a achété une maison pour {1}.",
     "on_sell_house": "{0} a vendu une maison de {1}.",
+    "on_auction_win": "{0} a gagné l'enchère pour {1} !",
     "on_buy_property": "{0} a achété {1}.",
     "on_mortgage_property": "{0} a hypothéqué {1}.",
     "on_unmortgage_property": "{0} a déshypothéqué {1}.",
@@ -188,8 +190,9 @@
     "auction": "Enchère",
     "concede": "Concéder",
     "bid": "Enchérir",
-    "price": "Prix",
+    "price": "Prix :",
     "input_receive_money": "Montant d'argent à recevoir...",
     "input_send_money": "Montant d'argent à envoyer...",
-    "input_bid": "Votre offre..."
+    "input_bid": "Votre offre...",
+    "current_bid": "Offre actuel :"
 }

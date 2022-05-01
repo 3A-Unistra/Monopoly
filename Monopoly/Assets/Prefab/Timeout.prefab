@@ -254,8 +254,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 7564171629549123592}
   fill: {fileID: 3599426408336795635}
-  colorFull: {r: 0, g: 1, b: 0.009653807, a: 0}
-  colorEmpty: {r: 1, g: 0, b: 0, a: 0}
+  colorFull: {r: 0, g: 1, b: 0.009653807, a: 1}
+  colorEmpty: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &6749391437405089814
 GameObject:
   m_ObjectHideFlags: 0

@@ -231,6 +231,16 @@ namespace Monopoly.UI
 
         private void SendAction()
         {
+            SendButton.enabled = false;
+            MoneyPlayerLeft.enabled = false;
+            MoneyPlayerRight.enabled = false;
+            StartCoroutine(SendActionEnumerator());
+        }
+
+        private IEnumerator SendActionEnumerator()
+        {
+            yield return new WaitWhile(() => leftMoneyDispatch != null);
+            yield return new WaitWhile(() => rightMoneyDispatch != null);
             ClientGameState.current.DoExchangeSend();
         }
 

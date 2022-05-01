@@ -15,6 +15,7 @@ using UnityEngine.UI;
 
 namespace Monopoly.UI
 {
+
     [RequireComponent(typeof(RectTransform))]
     [RequireComponent(typeof(Button))]
     public class OnOff : MonoBehaviour
@@ -22,13 +23,13 @@ namespace Monopoly.UI
         public Button Back;
         public Button Front;
         public bool switchOn;
-        private bool animating;
+        private bool animating, tempSwitchOn;
         private Vector3 leftPos, rightPos;
         
         private RectTransform backRect;
         private RectTransform frontRect;
 
-            public new bool enabled
+        public new bool enabled
         {
             get
             {
@@ -63,13 +64,14 @@ namespace Monopoly.UI
                 frontRect.localPosition = leftPos;
                 GetComponent<Image>().color = Color.white;
             }
+            tempSwitchOn = switchOn;
             animating = false;
         }
 
         private void SwitchAnimation()
         {
             Vector3 toPos;
-            if (!switchOn)
+            if (!tempSwitchOn)
                 toPos = rightPos;
             else
                 toPos = leftPos;
@@ -77,20 +79,19 @@ namespace Monopoly.UI
             if (MathUtil.CompareVector3(frontRect.localPosition, toPos) == 0)
             {
                 animating = false;
-                switchOn = !switchOn;
+                tempSwitchOn = switchOn;
             }
         }
 
         private void OnClick()
         {
-           if (!animating)
-           {
-               animating = true;
-               if (!switchOn)
-                   GetComponent<Image>().color = Color.green;
-               else
-                   GetComponent<Image>().color = Color.white;
-           }
+            tempSwitchOn = switchOn;
+            switchOn = !switchOn;
+            animating = true;
+            if (!tempSwitchOn)
+                GetComponent<Image>().color = Color.green;
+            else
+                GetComponent<Image>().color = Color.white;
         }
         
         void Update()
