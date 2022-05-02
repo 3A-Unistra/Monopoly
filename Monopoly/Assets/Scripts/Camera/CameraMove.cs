@@ -35,6 +35,13 @@ namespace Monopoly.Camera
         public float moveSpeed = 5.0f;
         /**
          * <summary>
+         *     The speed at which the camera should move when dragged.
+         * </summary>
+         */
+        [Range(0.1f, 5.0f)]
+        public float dragSpeed = 2.0f;
+        /**
+         * <summary>
          *     The pivot point from which all of the camera rotations and
          *     movements take place. This point should be flat on the surface of
          *     the game board.
@@ -78,6 +85,7 @@ namespace Monopoly.Camera
 
         private UnityEngine.Camera cam;
         private CameraLook look;
+        private Vector3 mouseDragOrigin, mouseDragLast;
 
         void Start()
         {
@@ -124,12 +132,17 @@ namespace Monopoly.Camera
          * <param name="vertical">
          *     The vertical delta by which to move the camera.
          * </param>
+         * <param name="exact">
+         *     Whether or not the <paramref name="horizontal"/> and
+         *     <paramref name="vertical"/> parameters are multiples of the
+         *     movement speed or the exact displacement of the camera.
+         * </param>
          */
-        public void MoveCamera(float horizontal, float vertical)
+        public void MoveCamera(float horizontal, float vertical, bool exact)
         {
             if (horizontal == 0f && vertical == 0f)
                 return;
-            float d = moveSpeed * Time.deltaTime;
+            float d = exact ? 1.0f : moveSpeed * Time.deltaTime;
             if (look.LookMode == CameraLook.CameraLookMode.ISOMETRIC)
             {
                 /*
@@ -164,17 +177,14 @@ namespace Monopoly.Camera
 
         /**
          * <summary>
-         *     Attempts to move the camera based on the position of the mouse
-         *     on the screen.
+         *     Attempts to move the camera based on drag-and-drop
+         *     interactability of the mouse on the screen.
          * </summary>
-         * <returns>
-         *     <c>true</c> if the mouse was on an edge and moved the camera.
-         * </returns>
          */
         private bool MoveCameraMouse()
         {
             /* TODO: Disable mouse movement when mouse is over UI. */
-            if (!moveCameraByMouse)
+            /*if (!moveCameraByMouse)
                 return false;
             if (RaycastUtil.IsMouseRaycast("UI"))
                 return false; // don't move the mouse if it's on a UI element
@@ -190,7 +200,28 @@ namespace Monopoly.Camera
             else if (mp.y >= sy - boundsMouse.y)
                 dy = 1;
             MoveCamera(dx, dy);
-            return dx != 0 || dy != 0;
+            return dx != 0 || dy != 0;*/
+            if (Input.GetMouseButtonDown(0))
+            {
+                mouseDragOrigin = Input.mousePosition;
+                return true;
+            }
+            else if (Input.GetMouseButton(0))
+            {
+                mouseDragLast = mouseDragOrigin;
+                mouseDragOrigin = Input.mousePosition;
+            }
+            else
+            {
+                return false;
+            }
+
+            Vector3 pos = cam.ScreenToViewportPoint(
+                mouseDragLast - mouseDragOrigin) * look.desiredZoom * dragSpeed;
+            Vector2 move = new Vector2(pos.x, pos.y);
+            Debug.Log("dragging by " + move + " from " + pivotPoint.transform.localPosition);
+            MoveCamera(move.x, move.y, true);
+            return move.x != 0 || move.y != 0;
         }
 
         void Update()
@@ -201,8 +232,12 @@ namespace Monopoly.Camera
                 // camera movement
                 //if (!MoveCameraMouse() && !UIDirector.IsEditingInputField())
                 //{
+                if (!MoveCameraMouse() && !UIDirector.IsEditingInputField())
+                {
                     MoveCamera(Input.GetAxis("Horizontal"),
-                               Input.GetAxis("Vertical"));
+                               Input.GetAxis("Vertical"),
+                               false);
+                }
                 //}
             }
         }
