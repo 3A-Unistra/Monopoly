@@ -55,7 +55,7 @@ namespace Monopoly.Net
         public void DoLaunchGame()
         {
             PacketLaunchGame packet = new PacketLaunchGame();
-            SendPacket(packet);
+            socket.SendPacket(packet);
         }
 
         public void DoCreateGame(string playerId, int maxPlayers,
@@ -70,14 +70,14 @@ namespace Monopoly.Net
                                      privateGame, startBalance, auctions,
                                      doubleGo, turnTime, maxPlayers,
                                      canBuyFirstCircle);
-            SendPacket(packet);
+            socket.SendPacket(packet);
         }
 
         public void DoEnterRoom(string lobbyToken, string password)
         {
             PacketEnterRoom packet =
                 new PacketEnterRoom(lobbyToken, password);
-            SendPacket(packet);
+            socket.SendPacket(packet);
         }
 
         public void DoRoomModify(string lobbyName, int nbPlayers, 
@@ -89,30 +89,13 @@ namespace Monopoly.Net
                 new PacketStatusRoom(ClientLobbyState.currentLobby,
                     lobbyName, nbPlayers, maxPlayers, players, auction,
                     doubleOnGo, buying, maxTurns, timeout, balance);
-            SendPacket(packet);
+            socket.SendPacket(packet);
         }
 
         public void DoLeaveRoom(string playerId)
         {
             PacketLeaveRoom packet = new PacketLeaveRoom(playerId);
-            SendPacket(packet);
-        }
-
-        private async void SendPacket(Packet packet)
-        {
-#if UNITY_EDITOR
-            Debug.Log("WebSocket send: " + packet.Serialize());
-#endif
-            try
-            {
-                await socket.Sock.SendText(packet.Serialize());
-            }
-            catch (System.Exception)
-            {
-                //Debug.LogException(e);
-                Debug.LogWarning("WebSocket died. Will now quit the lobby...");
-                ClientLobbyState.current.Crash();
-            }
+            socket.SendPacket(packet);
         }
 
         private void ReceivePacket(byte[] data)

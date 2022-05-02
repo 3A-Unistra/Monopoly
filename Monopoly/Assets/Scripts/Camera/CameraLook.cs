@@ -128,7 +128,14 @@ namespace Monopoly.Camera
         }
         private float animateTime = 0.0f;
         private int rotationSide = 0;
-        private float desiredZoom;
+
+        /**
+         * <summary>
+         *     Current camera zoom.
+         * </summary>
+         */
+        [HideInInspector]
+        public float desiredZoom;
 
         /**
          * <summary>

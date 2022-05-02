@@ -23,7 +23,7 @@ namespace Monopoly.Net.Packets
         public int HouseId { get; private set; }
 
         public PacketActionBuyHouse(string playerId, int houseId) :
-            base("ActionActionBuyHouse")
+            base("ActionBuyHouse")
         {
             this.PlayerId = playerId;
             this.HouseId = houseId;
