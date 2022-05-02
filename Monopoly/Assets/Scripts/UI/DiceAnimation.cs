@@ -80,6 +80,8 @@ namespace Monopoly.UI
             AnimationStarted = false;
             Rend1.sprite = DiceSides[dice1 - 1];
             Rend2.sprite = DiceSides[dice2 - 1];
+            Dice1.SetActive(true);
+            Dice2.SetActive(true);
             yield return new WaitForSeconds(EXPIRE_TIME);
             Dice1.SetActive(false);
             Dice2.SetActive(false);

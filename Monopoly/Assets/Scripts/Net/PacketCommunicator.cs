@@ -155,133 +155,131 @@ namespace Monopoly.Net
             DoAppletReady();
         }
 
-        /* TODO: Params for all of the following DoX functions. */
-
         public void DoPing()
         {
             PacketPing packet = new PacketPing("");
-            SendPacket(packet);
+            socket.SendPacket(packet);
         }
 
         public void DoMessage(string uuid, string message)
         {
             PacketChat packet = new PacketChat(uuid, message);
-            SendPacket(packet);
+            socket.SendPacket(packet);
         }
 
         public void DoAppletReady()
         {
             PacketAppletReady packet = new PacketAppletReady();
-            SendPacket(packet);
+            socket.SendPacket(packet);
         }
 
         public void DoGameStartDiceThrow(string uuid)
         {
             PacketGameStartDiceThrow packet = new PacketGameStartDiceThrow(uuid);
-            SendPacket(packet);
+            socket.SendPacket(packet);
         }
 
         public void DoRoundDiceChoice(string uuid, PacketRoundDiceChoice.DiceChoice choice)
         {
             PacketRoundDiceChoice packet = new PacketRoundDiceChoice(uuid, choice);
-            SendPacket(packet);
+            socket.SendPacket(packet);
         }
 
         public void DoEndAction()
         {
             PacketActionEnd packet = new PacketActionEnd();
-            SendPacket(packet);
+            socket.SendPacket(packet);
         }
 
         public void DoBuyHouse(string uuid, int idx)
         {
             PacketActionBuyHouse packet =
                 new PacketActionBuyHouse(uuid, idx);
-            SendPacket(packet);
+            socket.SendPacket(packet);
         }
 
         public void DoSellHouse(string uuid, int idx)
         {
             PacketActionSellHouse packet =
                 new PacketActionSellHouse(uuid, idx);
-            SendPacket(packet);
+            socket.SendPacket(packet);
         }
 
         public void DoBuyProperty(string uuid, int idx)
         {
             PacketActionBuyProperty packet =
                 new PacketActionBuyProperty(uuid, idx);
-            SendPacket(packet);
+            socket.SendPacket(packet);
         }
 
         public void DoMortgageProperty(string uuid, int idx)
         {
             PacketActionMortgageProperty packet
                 = new PacketActionMortgageProperty(uuid, idx);
-            SendPacket(packet);
+            socket.SendPacket(packet);
         }
 
         public void DoUnmortgageProperty(string uuid, int idx)
         {
             PacketActionUnmortgageProperty packet
                 = new PacketActionUnmortgageProperty(uuid, idx);
-            SendPacket(packet);
+            socket.SendPacket(packet);
         }
 
         public void DoAuctionProperty(string uuid, int idx, int minPrice)
         {
             PacketActionAuctionProperty packet
                 = new PacketActionAuctionProperty(uuid, minPrice, idx);
-            SendPacket(packet);
+            socket.SendPacket(packet);
         }
 
         public void DoBidAuction(string uuid, int price)
         {
             PacketAuctionBid packet = new PacketAuctionBid(uuid, price);
-            SendPacket(packet);
+            socket.SendPacket(packet);
         }
 
         public void DoExchange(string uuid)
         {
             PacketActionExchange packet = new PacketActionExchange(uuid);
-            SendPacket(packet);
+            socket.SendPacket(packet);
         }
 
         public void DoSendExchange()
         {
             PacketActionExchangeSend packet = new PacketActionExchangeSend();
-            SendPacket(packet);
+            socket.SendPacket(packet);
         }
 
         public void DoAcceptExchange()
         {
             PacketActionExchangeAccept packet = new PacketActionExchangeAccept();
-            SendPacket(packet);
+            socket.SendPacket(packet);
         }
 
         public void DoCounterExchange()
         {
             PacketActionExchangeCounter packet = new PacketActionExchangeCounter();
-            SendPacket(packet);
+            socket.SendPacket(packet);
         }
 
         public void DoDeclineExchange()
         {
             PacketActionExchangeDecline packet = new PacketActionExchangeDecline();
-            SendPacket(packet);
+            socket.SendPacket(packet);
         }
 
         public void DoCancelExchange()
         {
             PacketActionExchangeCancel packet = new PacketActionExchangeCancel();
-            SendPacket(packet);
+            socket.SendPacket(packet);
         }
 
         public void DoExchangePlayerSelect(string uuid, string toUuid)
         {
             PacketActionExchangePlayerSelect packet =
                 new PacketActionExchangePlayerSelect(uuid, toUuid);
-            SendPacket(packet);
+            socket.SendPacket(packet);
         }
 
         public void DoExchangeTradeSelect(
@@ -291,24 +289,7 @@ namespace Monopoly.Net
             PacketActionExchangeTradeSelect packet =
                 new PacketActionExchangeTradeSelect(
                     uuid, recipient, value, type);
-            SendPacket(packet);
-        }
-
-        private async void SendPacket(Packet packet)
-        {
-#if UNITY_EDITOR
-            //if (!packet.Name.Equals("Ping"))
-            Debug.Log("WebSocket send: " + packet.Serialize());
-#endif
-            try {
-                await socket.Sock.SendText(packet.Serialize());
-            }
-            catch (System.Exception)
-            {
-                //Debug.LogException(e);
-                Debug.LogWarning("WebSocket died. Will now quit the game...");
-                ClientGameState.current.Crash();
-            }
+            socket.SendPacket(packet);
         }
 
         private void ReceivePacket(byte[] data)

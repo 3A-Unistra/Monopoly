@@ -55,19 +55,19 @@ namespace Monopoly.UI
             SetOwner(null);
             buyHouseButton.onClick.AddListener(delegate
             {
-                ClientGameState.current.DoBuyHouse();
+                ClientGameState.current.DoBuyHouse(square);
             });
             sellHouseButton.onClick.AddListener(delegate
             {
-                ClientGameState.current.DoSellHouse();
+                ClientGameState.current.DoSellHouse(square);
             });
             mortgageButton.onClick.AddListener(delegate
             {
-                ClientGameState.current.DoMortgageProperty();
+                ClientGameState.current.DoMortgageProperty(square);
             });
             unmortgageButton.onClick.AddListener(delegate
             {
-                ClientGameState.current.DoUnmortgageProperty();
+                ClientGameState.current.DoUnmortgageProperty(square);
             });
             rendering = false;
             gameObject.SetActive(false);

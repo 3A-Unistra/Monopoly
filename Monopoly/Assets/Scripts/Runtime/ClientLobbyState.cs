@@ -311,13 +311,8 @@ namespace Monopoly.Runtime
             // FIXME: fix the updates and let them be sent off too!!!!!
             if (MenuCreate.current == null)
                 yield break;
-            foreach (PacketStatusInternal playerData in packet.Players)
-            {
-                // TODO: use the avatar and piece
-                MenuCreate.current.ManagePlayerList(
-                    PacketBroadcastUpdateRoom.UpdateReason.NEW_PLAYER,
-                    playerData.PlayerId, playerData.Username);
-            }
+            MenuCreate.current.EnableEdits(false);
+            MenuCreate.current.UpdateParticipants(packet.Players);
             MenuCreate.current.SetName(packet.GameName);
             //MenuCreate.current.SetPrivacy();
             MenuCreate.current.SetAuctionSwitch(packet.EnableAuctions);
@@ -328,6 +323,8 @@ namespace Monopoly.Runtime
             MenuCreate.current.SetStartingBalance(packet.StartingBalance);
             MenuCreate.current.SetTurnTime(packet.TurnTimeout);
             MenuCreate.current.SetDoubleOnStartSwitch(packet.EnableDoubleOnGo);
+            MenuCreate.current.UpdateFields();
+            MenuCreate.current.EnableEdits(true);
         }
 
         public void OnNewHost(PacketNewHost packet)
