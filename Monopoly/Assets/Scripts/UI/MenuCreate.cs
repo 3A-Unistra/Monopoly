@@ -59,6 +59,8 @@ namespace Monopoly.UI
         [HideInInspector]
         public static MenuCreate current;
 
+        private bool canEdit;
+
         private Coroutine updateRoutine;
 
         void Awake()
@@ -81,16 +83,23 @@ namespace Monopoly.UI
             BotsDropdown.onValueChanged.AddListener(
                 delegate { BotsNumberChange(); });
             PrivateSwitch.onClick.AddListener(PrivacyChange);
-            PrivateSwitch.GetComponent<OnOff>().Front.onClick.AddListener(PrivacyChange);
+            PrivateSwitch.GetComponent<OnOff>().
+                Front.onClick.AddListener(PrivacyChange);
             AuctionsSwitch.onClick.AddListener(AuctionsChange);
-            AuctionsSwitch.GetComponent<OnOff>().Front.onClick.AddListener(AuctionsChange);
+            AuctionsSwitch.GetComponent<OnOff>().
+                Front.onClick.AddListener(AuctionsChange);
             DoubleOnGoSwitch.onClick.AddListener(DoubleOnGoChange);
-            DoubleOnGoSwitch.GetComponent<OnOff>().Front.onClick.AddListener(DoubleOnGoChange);
+            DoubleOnGoSwitch.GetComponent<OnOff>().
+                Front.onClick.AddListener(DoubleOnGoChange);
             BuyFirstTurnSwitch.onClick.AddListener(BuyingChange);
-            BuyFirstTurnSwitch.GetComponent<OnOff>().Front.onClick.AddListener(BuyingChange);
-            StartingBalance.onValueChanged.AddListener(delegate {BalanceChange();});
-            TurnNumbers.onValueChanged.AddListener(delegate{TurnNumbersChange();});
-            TurnDuration.onValueChanged.AddListener(delegate{TurnDurationChange();});
+            BuyFirstTurnSwitch.GetComponent<OnOff>().
+                Front.onClick.AddListener(BuyingChange);
+            StartingBalance.onValueChanged.AddListener(
+                delegate { BalanceChange(); });
+            TurnNumbers.onValueChanged.AddListener(
+                delegate{ TurnNumbersChange(); });
+            TurnDuration.onValueChanged.AddListener(
+                delegate{ TurnDurationChange(); });
             CopyButton.onClick.AddListener(CopyToken);
             BuildBotsDropdown();
             
@@ -110,19 +119,48 @@ namespace Monopoly.UI
             AuctionsText.text = StringLocaliser.GetString("auctions");
             DoubleOnGoText.text = StringLocaliser.GetString("double_on_go");
             BuyFirstTurnText.text = StringLocaliser.GetString("buy_first_turn");
-            StartingBalanceText.text = StringLocaliser.GetString("starting_balance");
+            StartingBalanceText.text =
+                StringLocaliser.GetString("starting_balance");
 
             playerFields = new List<LobbyPlayerField>();
+
+            canEdit = true;
         }
 
         void Start()
         {
-            ManagePlayerList(PacketBroadcastUpdateRoom.UpdateReason.NEW_PLAYER,
+            /*ManagePlayerList(PacketBroadcastUpdateRoom.UpdateReason.NEW_PLAYER,
                              ClientLobbyState.clientUUID,
-                             ClientLobbyState.clientUsername);
-
+                             ClientLobbyState.clientUsername,
+                             null,
+                             ClientLobbyState.clientPiece);*/
             UIDirector.IsMenuOpen = true;
             UIDirector.IsUIBlockingNet = false;
+        }
+
+        public void EnableEdits(bool edit)
+        {
+            canEdit = IsHost && edit; // can't edit for others
+            this.IsHost = edit;
+            InviteButton.enabled = edit;
+            StartButton.gameObject.SetActive(edit);
+            HostInputObject.SetActive(edit);
+            InviteField.SetActive(edit);
+            LobbyName.enabled = edit;
+            PlayersDropdown.enabled = edit;
+            BotsDropdown.enabled = edit;
+            PrivateSwitch.enabled = edit;
+            TurnDuration.enabled = edit;
+            TurnNumbers.enabled = edit;
+            AuctionsSwitch.enabled = edit;
+            BuyFirstTurnSwitch.enabled = edit;
+            DoubleOnGoSwitch.enabled = edit;
+            StartingBalance.enabled = edit;
+        }
+
+        public void UpdateFields()
+        {
+            UpdateFields(IsHost);
         }
 
         public void UpdateFields(bool isHost)
@@ -166,7 +204,10 @@ namespace Monopoly.UI
 
         public void UpdateLobby(PacketBroadcastUpdateRoom packet)
         {
-            ManagePlayerList(packet.Reason, packet.PlayerId, packet.Username);
+            ManagePlayerList(packet.Reason,
+                packet.PlayerId, packet.Username,
+                null, packet.Piece);
+            UpdateFields();
         }
 
         private bool IsPlayerListed(string uuid)
@@ -191,31 +232,58 @@ namespace Monopoly.UI
 
         public void ManagePlayerList(
             PacketBroadcastUpdateRoom.UpdateReason reason,
-            string uuid, string username)
+            string uuid, string username, string avatar, int piece)
         {
-            // FIXME: implement
+            // FIXME: implement and avatar if not null!!!
             switch (reason)
             {
             case PacketBroadcastUpdateRoom.UpdateReason.NEW_PLAYER:
-                if (IsPlayerListed(username))
+                if (IsPlayerListed(uuid))
                     return; // no need to duplicate the player id
                 GameObject playerField =
                     Instantiate(RuntimeData.current.LobbyPlayerFieldPrefab,
                                 PlayerFieldViewport.transform);
                 LobbyPlayerField fieldScript =
                     playerField.GetComponent<LobbyPlayerField>();
-                fieldScript.SetUser(uuid, username, 0,
+                fieldScript.SetUser(uuid, username, piece,
                     uuid.Equals(ClientLobbyState.clientUUID));
                 playerFields.Add(fieldScript);
                 break;
             case PacketBroadcastUpdateRoom.UpdateReason.PLAYER_LEFT:
-                LobbyPlayerField field = GetPlayerField(username);
+                LobbyPlayerField field = GetPlayerField(uuid);
                 if (field != null)
                 {
                     playerFields.Remove(field);
                     Destroy(field.gameObject);
                 }
                 break;
+            }
+        }
+
+        public void UpdateParticipants(List<PacketStatusInternal> players)
+        {
+            if (players.Count < playerFields.Count)
+            {
+                Debug.LogWarning(
+                    "Server sent back a StatusRoom packet with less players" +
+                    "than expected. Will balance...");
+                for (int i = 0; i < playerFields.Count; ++i)
+                {
+                    LobbyPlayerField field = playerFields[i];
+                    if (!players.Exists((x) => x.PlayerId.Equals(field.uuid)))
+                    {
+                        playerFields.Remove(field);
+                        Destroy(field.gameObject);
+                        --i; // go again
+                    }
+                }
+            }
+            foreach (PacketStatusInternal playerData in players)
+            {
+                ManagePlayerList(
+                    PacketBroadcastUpdateRoom.UpdateReason.NEW_PLAYER,
+                    playerData.PlayerId, playerData.Username,
+                    playerData.AvatarURL, playerData.Piece);
             }
         }
 
@@ -291,7 +359,7 @@ namespace Monopoly.UI
             StartingBalance.text = balance.ToString();
             StartingBalance.enabled = IsHost;
         }
-        
+
         public void SetTurnTime(int time)
         {
             if (IsHost)
@@ -348,65 +416,70 @@ namespace Monopoly.UI
         {
             ClientLobbyState.current.DoLeaveGame(ClientLobbyState.currentLobby);
         }
+
         public void NameChange()
         {
-            if(IsHost)
+            if (canEdit)
                 SetPacketStatusRoom();
         }
+
         public void PlayerNumberChange()
         {
-            BuildBotsDropdown();
-            if(IsHost)
+            if (canEdit)
+            {
+                BuildBotsDropdown();
                 SetPacketStatusRoom();
+            }
         }
 
         public void BotsNumberChange()
         {
-            if(IsHost)
+            if (canEdit)
                 SetPacketStatusRoom();
         }
 
         public void PrivacyChange()
         {
-            if(IsHost)
+            if (canEdit)
                 SetPacketStatusRoom();
         }
 
         public void AuctionsChange()
         {
-            if(IsHost)
+            if (canEdit)
                 SetPacketStatusRoom();
         }
         
         public void DoubleOnGoChange()
         {
-            if(IsHost)
+            if (canEdit)
                 SetPacketStatusRoom();
         }
         
         public void BuyingChange()
         {
-            if(IsHost)
+            if (canEdit)
                 SetPacketStatusRoom();
         }
         
         public void TurnNumbersChange()
         {
-            if(IsHost)
+            if (canEdit)
                 SetPacketStatusRoom();
         }
         
         public void TurnDurationChange()
         {
-            if(IsHost)
+            if (canEdit)
                 SetPacketStatusRoom();
         }
         
         public void BalanceChange()
         {
-            if(IsHost)
+            if (canEdit)
                 SetPacketStatusRoom();
         }
+
         public void CopyToken()
         {
             GUIUtility.systemCopyBuffer = ClientLobbyState.currentLobby;

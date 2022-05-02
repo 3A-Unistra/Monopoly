@@ -145,7 +145,6 @@ namespace Monopoly.Net
 #endif
             Sock.OnError += (e) =>
             {
-                /* TODO: Implement timeout or error limit? */
                 Debug.LogWarning(
                     string.Format("WebSocket error at '{0}': {1}", loc, e));
                 open = false;
