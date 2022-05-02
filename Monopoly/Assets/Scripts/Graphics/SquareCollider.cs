@@ -530,6 +530,12 @@ namespace Monopoly.Graphics
             }  
         }
 
+        public void RemoveSphereChild()
+        {
+            owner = null;
+            // TODO: animate
+        }
+
         private void AnimateSphere()
         {
             ownerTime += moveSpeed * Time.deltaTime;

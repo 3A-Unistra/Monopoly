@@ -325,16 +325,9 @@ namespace Monopoly.UI
                 turnDuration = 60;
             if (!int.TryParse(StartingBalance.text, out int startingBalance))
                 startingBalance = 1500;
-            List<string> playerIds = new List<string>();
-            List<string> playerUsernames = new List<string>();
-            foreach (LobbyPlayerField l in playerFields)
-            {
-                playerIds.Add(l.uuid);
-                playerUsernames.Add(l.name);
-            }
             ClientLobbyState.current.DoRoomModify(LobbyName.text.Trim(),
                 playerFields.Count, PlayersDropdown.value + 2,
-                playerIds, playerUsernames,
+                null,
                 AuctionsSwitch.GetComponent<OnOff>().switchOn,
                 DoubleOnGoSwitch.GetComponent<OnOff>().switchOn,
                 BuyFirstTurnSwitch.GetComponent<OnOff>().switchOn,
