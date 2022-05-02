@@ -96,7 +96,6 @@ namespace Monopoly.Runtime
                 // crap json data because I wasn't given the right data
                 // do nothing and die
                 Application.Quit();
-                // TODO: check if they are valid uuids? probs not, we have no v6
             }
             // okay so now we have a URL that is at least valid enough to start
             // the damn game. normally we pass through ClientLobbyState and init

@@ -5,6 +5,8 @@ using UnityEngine;
 
 using NativeWebSocket;
 
+using Monopoly.Runtime;
+
 namespace Monopoly.Net
 {
 
@@ -89,6 +91,27 @@ namespace Monopoly.Net
             return new PacketSocket(loc);
         }
 
+        public async void SendPacket(Packet packet)
+        {
+            string serial = packet.Serialize();
+#if UNITY_EDITOR || UNITY_WEBGL
+            Debug.Log("WebSocket send: " + serial);
+#endif
+            try
+            {
+                await Sock.SendText(serial);
+            }
+            catch (System.Exception)
+            {
+                //Debug.LogException(e);
+                Debug.LogWarning("WebSocket died. Will now quit the game...");
+                if (ClientGameState.current != null)
+                    ClientGameState.current.Crash();
+                else
+                    ClientLobbyState.current.Crash();
+            }
+        }
+
         private PacketSocket(string loc)
         {
             this.loc = loc;
@@ -113,10 +136,10 @@ namespace Monopoly.Net
                 Debug.Log(string.Format("WebSocket opened at '{0}'", loc));
                 open = true;
             };
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_WEBGL
             Sock.OnMessage += (e) =>
             {
-                Debug.Log(string.Format("WebSocket message: {0}",
+                Debug.Log(string.Format("WebSocket recv: {0}",
                           Encoding.UTF8.GetString(e)));
             };
 #endif
