@@ -68,19 +68,6 @@ namespace Monopoly.Classes
             b.BuyProperty(p,s);
             Assert.True(s.Owner == p);
 
-        }
-        [Test]        
-        public void TestSellProperty()
-        {
-            Bank b = new Bank();
-            Player p = new Player("1","Bob", 1500, 0);
-            CompanySquare s = new CompanySquare(12, 150); 
-            b.BuyProperty(p,s);
-            Assert.True(s.Owner == p);
-            Assert.True(p.Money == 1350);
-            b.SellProperty(p,s);   
-            Assert.True(p.Money == 1425);
-            Assert.True(s.Owner == null);
-        }        
+        }      
     }
 }

@@ -217,12 +217,12 @@ namespace Monopoly.Runtime
         }
         
         public void DoRoomModify(string lobbyName, int nbPlayers, 
-            int maxPlayers, List<string> ids, List<string> names, bool auction, 
+            int maxPlayers, List<PacketStatusInternal> players, bool auction, 
             bool doubleOnGo, bool buying, int maxTurns, 
             int timeout, int balance)
         {
             if (comm != null)
-                comm.DoRoomModify(lobbyName, nbPlayers, maxPlayers, ids, names, 
+                comm.DoRoomModify(lobbyName, nbPlayers, maxPlayers, players, 
                     auction, doubleOnGo, buying, maxTurns, timeout, balance);
         }
 
@@ -311,11 +311,12 @@ namespace Monopoly.Runtime
             // FIXME: fix the updates and let them be sent off too!!!!!
             if (MenuCreate.current == null)
                 yield break;
-            foreach (string username in packet.Usernames)
+            foreach (PacketStatusInternal playerData in packet.Players)
             {
+                // TODO: use the avatar and piece
                 MenuCreate.current.ManagePlayerList(
                     PacketBroadcastUpdateRoom.UpdateReason.NEW_PLAYER,
-                    username, username);
+                    playerData.PlayerId, playerData.Username);
             }
             MenuCreate.current.SetName(packet.GameName);
             //MenuCreate.current.SetPrivacy();

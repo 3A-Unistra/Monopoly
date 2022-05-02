@@ -339,6 +339,7 @@ namespace Monopoly.Runtime
             comm.OnAuctionStart += OnAuction;
             comm.OnAuctionBid += OnAuctionBid;
             comm.OnAuctionEnd += OnAuctionEnd;
+            comm.OnDefeat += OnDefeat;
         }
 
         public Player GetPlayer(string uuid)
@@ -1219,7 +1220,6 @@ namespace Monopoly.Runtime
             {
                 LogAction(string.Format(
                     StringLocaliser.GetString("on_defeat_me")));
-                // FIXME: DISABLE EVERYTHING OR LEAVE ON DEFEAT
             }
             else
             {
@@ -1227,6 +1227,21 @@ namespace Monopoly.Runtime
                     StringLocaliser.GetString("on_defeat"),
                     PlayerNameLoggable(p)));
             }
+            // get rid of all houses/hotels on the square and give the property
+            // back to the bank
+            foreach (OwnableSquare os in Board.SquareOwned(p))
+            {
+                if (os.IsProperty())
+                {
+                    PropertySquare ps = (PropertySquare)os;
+                    for (int i = 0; i < ps.NbHouse; ++i)
+                        SquareCollider.Colliders[os.Id].RemoveHouse();
+                }
+                SquareCollider.Colliders[os.Id].RemoveSphereChild();
+                Board.BoardBank.RelinquishProperty(p, os);
+            }
+            // FIXME: REMOVE PLAYER PIECE FROM BOARD AND CHANGE MONEY INDICATOR
+            // TO SKULL AND BONES
         }
 
     }
