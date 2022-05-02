@@ -41,6 +41,7 @@ namespace Monopoly.Runtime
 
         public TMP_Text chatBox;
         public ScrollRect chatScroller;
+        public ChatHelper chatHelper;
         private bool scrollMoved = false;
         public UIPlayerInfo playerInfo;
 
@@ -236,6 +237,7 @@ namespace Monopoly.Runtime
             if (chatBox.text.Length > 0)
                 chatBox.text += "<br>";
             chatBox.text += msg;
+            chatHelper.Notify();
             if(!scrollMoved)
                 StartCoroutine(ScrollUpdate());
             Debug.Log(msg);

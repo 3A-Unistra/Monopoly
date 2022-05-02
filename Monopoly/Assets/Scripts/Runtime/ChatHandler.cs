@@ -51,6 +51,7 @@ namespace Monopoly.Runtime
         private void ToggleChat()
         {
             chatToggle = !chatToggle;
+            ClientGameState.current.chatHelper.Clear();
             if (chatToggle)
                 ShowChat();
             else
