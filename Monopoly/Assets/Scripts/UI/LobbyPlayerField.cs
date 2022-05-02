@@ -29,8 +29,8 @@ namespace Monopoly.UI
         public new string name;
 
         private static readonly Color playerColor =
-            new Color(1.0f, 0.86f, 0.32f);
-        private static readonly Color otherColor = Color.white;
+            new Color(0.70f, 0.44f, 0.0f);
+        private static readonly Color otherColor = Color.black;
 
         public void SetHost(bool host)
         {
