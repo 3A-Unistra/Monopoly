@@ -52,7 +52,7 @@ namespace Monopoly.Runtime
             if (!Guid.TryParse(uuid, out localUUID))
                 localUUID = Guid.NewGuid();
             PlayerPrefs.SetString("local_uuid", localUUID.ToString());
-            localUUID = Guid.NewGuid(); // FIXME: REMOVE IN PRODUCTION!!!!!
+            localUUID = Guid.NewGuid();
             // now load the username
             localUsername = PlayerPrefs.GetString("local_usernme", "Player");
             PlayerPrefs.SetString("local_username", localUsername);
@@ -91,7 +91,8 @@ namespace Monopoly.Runtime
                   paramDic.ContainsKey("port") &&
                   paramDic.ContainsKey("token") &&
                   paramDic.ContainsKey("game") &&
-                  paramDic.ContainsKey("uuid")))
+                  paramDic.ContainsKey("uuid") &&
+                  paramDic.ContainsKey("online")))
             {
                 // crap json data because I wasn't given the right data
                 // do nothing and die
@@ -116,7 +117,10 @@ namespace Monopoly.Runtime
                 Application.Quit();
             }
             ClientLobbyState.token = paramDic["token"].Trim();
-            ClientLobbyState.connectMode = ClientLobbyState.ConnectMode.ONLINE;
+            ClientLobbyState.connectMode =
+                paramDic["online"].Trim().Equals("1") ?
+                    ClientLobbyState.ConnectMode.ONLINE :
+                    ClientLobbyState.ConnectMode.BYIP;
             ClientLobbyState.currentLobby = paramDic["game"].Trim();
             ClientLobbyState.clientUUID = paramDic["uuid"].Trim();
 
