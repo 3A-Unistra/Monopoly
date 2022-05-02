@@ -77,6 +77,7 @@ namespace Monopoly.Net
         // - ActionExchangeDecline      (also sent)
         // - ActionExchangePlayerSelect (also sent)
         // - ActionExchangeTradeSelect  (also sent)
+        // - ActionExchangeTransfer
 
         public event PacketDelegate<PacketException>         OnError;
         public event PacketDelegate<PacketChat>              OnMessage;
@@ -127,6 +128,8 @@ namespace Monopoly.Net
                                                          OnExchangePlayerSelect;
         public event PacketDelegate<PacketActionExchangeTradeSelect>
                                                          OnExchangeTradeSelect;
+        public event PacketDelegate<PacketActionExchangeTransfer>
+                                                         OnExchangeTransfer;
 
         private PacketSocket socket;
 
@@ -384,6 +387,8 @@ namespace Monopoly.Net
                 OnExchangePlayerSelect(packet); break;
             case PacketActionExchangeTradeSelect packet:
                 OnExchangeTradeSelect(packet); break;
+            case PacketActionExchangeTransfer packet:
+                OnExchangeTransfer(packet); break;
             }
         }
 

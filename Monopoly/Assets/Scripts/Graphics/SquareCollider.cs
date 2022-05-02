@@ -44,6 +44,7 @@ namespace Monopoly.Graphics
         public GameObject ownerChild;
         public SpriteRenderer ownerRenderer;
         private Player owner;
+        private bool onceOwnerAnimated = false;
 
         private bool dirty = false;
         private bool dirtyOwner = false;
@@ -519,14 +520,17 @@ namespace Monopoly.Graphics
             {
                 ownerRenderer.sprite =
                     RuntimeData.current.pieceImages[player.CharacterIdx];
-                ownerTime = 0.0f;
                 ownerChild.gameObject.SetActive(true);
                 owner = player;
-                dirtyOwner = true;               
-                endPos = ownerChild.gameObject.transform.localPosition;
-                initPos = endPos;
-                initPos.y = 100.0f;
-                ownerChild.gameObject.transform.localPosition = initPos;
+                if (!onceOwnerAnimated)
+                {
+                    ownerTime = 0.0f;
+                    dirtyOwner = true;
+                    endPos = ownerChild.gameObject.transform.localPosition;
+                    initPos = endPos;
+                    initPos.y = 100.0f;
+                    ownerChild.gameObject.transform.localPosition = initPos;
+                }
             }  
         }
 
@@ -541,7 +545,10 @@ namespace Monopoly.Graphics
             ownerTime += moveSpeed * Time.deltaTime;
             ownerChild.gameObject.transform.localPosition = Vector3.Lerp(initPos, endPos, ownerTime);
             if (MathUtil.CompareVector3(ownerChild.gameObject.transform.localPosition, endPos) == 0)
+            {
                 dirtyOwner = false;
+                onceOwnerAnimated = true;
+            }
         }
 
         void Update()

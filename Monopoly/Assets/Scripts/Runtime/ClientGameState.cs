@@ -336,6 +336,7 @@ namespace Monopoly.Runtime
             comm.OnExchangeDecline += OnExchangeDecline;
             comm.OnExchangeCounter += OnExchangeCounter;
             comm.OnExchangeCancel += OnExchangeCancel;
+            comm.OnExchangeTransfer += OnExchangeTransfer;
             comm.OnAuctionStart += OnAuction;
             comm.OnAuctionBid += OnAuctionBid;
             comm.OnAuctionEnd += OnAuctionEnd;
@@ -626,6 +627,44 @@ namespace Monopoly.Runtime
             Destroy(currentExchange.gameObject);
             currentExchange = null;
             UIDirector.IsGameMenuOpen = false;
+        }
+
+        public void OnExchangeTransfer(PacketActionExchangeTransfer packet)
+        {
+            Player from = Player.PlayerFromUUID(players, packet.FromId);
+            if (from == null)
+            {
+                Debug.LogWarning(string.Format("Could not find player '{0}'!",
+                                               packet.FromId));
+                return;
+            }
+            Player to = Player.PlayerFromUUID(players, packet.ToId);
+            if (to == null)
+            {
+                Debug.LogWarning(string.Format("Could not find player '{0}'!",
+                                               packet.ToId));
+                return;
+            }
+            if (packet.Type == PacketActionExchangeTransfer.TransferType.PROPERTY)
+            {
+                Square s = Board.GetSquare(packet.Value);
+                if (s.IsOwnable())
+                {
+                    OwnableSquare os = (OwnableSquare) s;
+                    os.Owner = to;
+                    SquareCollider.Colliders[os.Id].SetSphereChild(to);
+                    //LogAction(string.Format(
+                    //    StringLocaliser.GetString("on_buy_property"),
+                    //    PlayerNameLoggable(p),
+                    //    OwnableNameLoggable(os)));
+                }
+            }
+            else
+            {
+                // TODO: IMPLEMENT CARD TRANSFER
+            }
+            if (BoardCardDisplay.current.rendering)
+                BoardCardDisplay.current.Redraw();
         }
 
         public void OnAuction(PacketActionAuctionProperty packet)
