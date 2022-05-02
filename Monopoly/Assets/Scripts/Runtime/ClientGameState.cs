@@ -445,28 +445,28 @@ namespace Monopoly.Runtime
                 comm.DoBuyProperty(clientUUID, myPlayer.Position);
         }
 
-        public void DoBuyHouse()
+        public void DoBuyHouse(int pos)
         {
             if (comm != null)
-                comm.DoBuyHouse(clientUUID, myPlayer.Position);
+                comm.DoBuyHouse(clientUUID, pos);
         }
 
-        public void DoMortgageProperty()
+        public void DoMortgageProperty(int pos)
         {
             if (comm != null)
-                comm.DoMortgageProperty(clientUUID, myPlayer.Position);
+                comm.DoMortgageProperty(clientUUID, pos);
         }
 
-        public void DoUnmortgageProperty()
+        public void DoUnmortgageProperty(int pos)
         {
             if (comm != null)
-                comm.DoUnmortgageProperty(clientUUID, myPlayer.Position);
+                comm.DoUnmortgageProperty(clientUUID, pos);
         }
 
-        public void DoSellHouse()
+        public void DoSellHouse(int pos)
         {
             if (comm != null)
-                comm.DoSellHouse(clientUUID, myPlayer.Position);
+                comm.DoSellHouse(clientUUID, pos);
         }
 
         public void DoMessage(string message)
