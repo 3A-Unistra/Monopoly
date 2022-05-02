@@ -642,7 +642,7 @@ namespace Monopoly.Runtime
                 Instantiate(AuctionPrefab, canvas.transform);
             currentAuction = auctionMenu.GetComponent<MenuAuction>();
             currentAuction.Index = packet.Property;
-            currentAuction.CurrentBid = packet.MinBid;
+            currentAuction.UpdatePrice(packet.MinBid);
             currentAuction.TimeoutDuration = timeouts["AUCTION_TOUR_WAIT"];
         }
 
@@ -690,7 +690,6 @@ namespace Monopoly.Runtime
                     }
                 }
             }
-            // TODO: update timeout
         }
 
         public void OnError(PacketException packet)
