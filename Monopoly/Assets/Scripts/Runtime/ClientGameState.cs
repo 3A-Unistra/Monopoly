@@ -683,6 +683,7 @@ namespace Monopoly.Runtime
             currentAuction.Index = packet.Property;
             currentAuction.UpdatePrice(packet.MinBid);
             currentAuction.TimeoutDuration = timeouts["AUCTION_TOUR_WAIT"];
+            auctionButton.gameObject.SetActive(false);
         }
 
         public void OnAuctionBid(PacketAuctionBid packet)
@@ -701,6 +702,7 @@ namespace Monopoly.Runtime
             int houseId = currentAuction.Index;
             Destroy(currentAuction.gameObject);
             currentAuction = null;
+            auctionButton.gameObject.SetActive(false);
             UIDirector.IsGameMenuOpen = false;
             if (!packet.PlayerId.Trim().Equals(""))
             {
