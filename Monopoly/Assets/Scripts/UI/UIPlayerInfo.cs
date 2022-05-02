@@ -72,6 +72,12 @@ namespace Monopoly.UI
             }
         }
 
+        public void HideAllDice()
+        {
+            foreach (PlayerField p in FieldList)
+                p.Dice.HideDice();
+        }
+
     }
 
 }

@@ -984,23 +984,19 @@ namespace Monopoly.Runtime
 
         public void OnRoundStart(PacketRoundStart packet)
         {
+            playerInfo.HideAllDice();
             Player p = Player.PlayerFromUUID(players, packet.PlayerId);
             playerTurn = p;
             playerInfo.SetActive(p);
             if (p == myPlayer)
             {
                 CanRollDice = true;
-                Debug.Log(string.Format("Your turn to roll the dice. ({0})",
-                                        clientUUID));
-                // TODO: MESSAGE
                 exitPrisonMoneyButton.gameObject.SetActive(p.InJail);
                 exitPrisonCardButton.gameObject.SetActive(p.InJail);
                 rollDiceButton.gameObject.SetActive(true);
             }
             else
             {
-                Debug.Log(string.Format("Player {0} to roll the dice.",
-                                        clientUUID));
                 HideAllInteractButtons();
                 // show the dice rolling automatically
                 PlayerField pinfo = playerInfo.GetPlayerField(p);
@@ -1111,15 +1107,11 @@ namespace Monopoly.Runtime
             LogAction(StringLocaliser.GetString("game_start"));
             foreach (PacketGameStateInternal playerData in packet.Players)
             {
-                Player player = new Player(playerData.PlayerId, playerData.PlayerName, playerData.Money, playerData.Piece);
-                ManuallyRegisterPlayer(player, playerData.PlayerId.Equals(clientUUID));
+                Player player = new Player(playerData.PlayerId,
+                    playerData.PlayerName, playerData.Money, playerData.Piece);
+                ManuallyRegisterPlayer(player,
+                                       playerData.PlayerId.Equals(clientUUID));
                 playerInfo.SetMoney(player, player.Money);
-
-                if (player != myPlayer)
-                {
-                    PlayerField pinfo = playerInfo.GetPlayerField(player);
-                    pinfo.Dice.RollDice();
-                }
             }
             gameRules = packet.Options;
             // setup the timeouts
@@ -1130,19 +1122,26 @@ namespace Monopoly.Runtime
         {
             isGameStart = true;
             rollDiceButton.gameObject.SetActive(true);
+            foreach (Player player in players)
+            {
+                if (player == myPlayer)
+                    continue;
+                PlayerField pinfo = playerInfo.GetPlayerField(player.Id);
+                pinfo.Dice.RollDice();
+            }
             timeout.SetTime(timeouts["START_DICE_WAIT"]);
             timeout.Restart();
         }
 
         public void OnGameStartDiceResult(PacketGameStartDiceResults packet)
         {
+            rollDiceButton.gameObject.SetActive(false);
             foreach (PacketGameStartDiceResultsInternal result in packet.DiceResult)
             {
                 PlayerField pinfo = playerInfo.GetPlayerField(result.PlayerId);
                 pinfo.Dice.RevealDice(result.Dice1, result.Dice2);
                 if (result.Win)
                 {
-                    // TODO: hide dice animations and what not
                     Player p = Player.PlayerFromUUID(players, result.PlayerId);
                     if (p == null)
                     {
