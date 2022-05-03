@@ -104,6 +104,7 @@
     "on_game_start_dice_result": "{0} thew {1} and {2} and won!",
     "on_defeat": "{0} has gone bankrupt!",
     "on_defeat_me": "You have gone bankrupt!",
+    "on_win": "{0} has won the game!",
     "fullscreen": "Fullscreen",
     "shadow": "Shadow",
     "quality": "Quality",

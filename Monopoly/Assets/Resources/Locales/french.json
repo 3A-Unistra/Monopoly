@@ -104,6 +104,7 @@
     "on_game_start_dice_result": "{0} a lancé {1} et {2} et a gagné !",
     "on_defeat": "{0} a fait faillite !",
     "on_defeat_me": "Vous avez fait faillite !",
+    "on_win": "{0} a gagné la partie !",
     "fullscreen": "Plein écran",
     "shadow": "Ombre",
     "quality": "Qualité",

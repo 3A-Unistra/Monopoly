@@ -1323,12 +1323,27 @@ namespace Monopoly.Runtime
 
         public void OnGameWin(PacketGameWin packet)
         {
-
+            Player p = Player.PlayerFromUUID(players, packet.PlayerId);
+            if (p == null)
+            {
+                Debug.LogWarning(string.Format("Could not find player '{0}'!",
+                                               packet.PlayerId));
+                return;
+            }
+            LogAction(string.Format(
+                StringLocaliser.GetString("on_win"),
+                PlayerNameLoggable(p)));
         }
 
         public void OnGameEnd(PacketGameEnd packet)
         {
-
+#if UNITY_WEBGL
+            // nothing more to do, quit the application and die
+            Application.Quit();
+#else
+            // return to the menu for another round!
+            LoadHandler.LoadScene("Scenes/MenuScene");
+#endif
         }
 
     }
