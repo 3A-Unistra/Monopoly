@@ -256,8 +256,7 @@ namespace Monopoly.UI
                 PreferenceApply.SaveSettings();
                 current = null;
                 GameObject optionMenu = Instantiate(OptionMenuPrefab, transform.parent);
-                // FIXME: sliders are broken on language reset
-                Canvas.ForceUpdateCanvases();
+                Canvas.ForceUpdateCanvases(); // idk if its still necessary but whatevs
                 // update the game board if possible
                 SquareCollider.UpdateAll();
                 Destroy(this.gameObject);

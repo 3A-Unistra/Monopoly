@@ -42,6 +42,7 @@ namespace Monopoly.Runtime
         public TMP_Text chatBox;
         public ScrollRect chatScroller;
         public ChatHelper chatHelper;
+        public ChatHandler chatHandler;
         private bool scrollMoved = false;
         public UIPlayerInfo playerInfo;
 
@@ -237,7 +238,8 @@ namespace Monopoly.Runtime
             if (chatBox.text.Length > 0)
                 chatBox.text += "<br>";
             chatBox.text += msg;
-            chatHelper.Notify();
+            if (!chatHandler.IsOpen())
+                chatHelper.Notify();
             if(!scrollMoved)
                 StartCoroutine(ScrollUpdate());
             Debug.Log(msg);
@@ -315,6 +317,7 @@ namespace Monopoly.Runtime
             comm.OnSellHouse += OnSellHouse;
             comm.OnBuyProperty += OnBuyProperty;
             comm.OnBalanceUpdate += OnBalanceUpdate;
+            comm.OnPropertyUpdate += OnPropertyUpdate;
             comm.OnMortgage += OnMortgageProperty;
             comm.OnUnmortgage += OnUnmortgageProperty;
             comm.OnMove += OnMove;
@@ -343,6 +346,8 @@ namespace Monopoly.Runtime
             comm.OnAuctionBid += OnAuctionBid;
             comm.OnAuctionEnd += OnAuctionEnd;
             comm.OnDefeat += OnDefeat;
+            comm.OnGameWin += OnGameWin;
+            comm.OnGameEnd += OnGameEnd;
         }
 
         public Player GetPlayer(string uuid)
@@ -426,6 +431,7 @@ namespace Monopoly.Runtime
             }
             PlayerField pinfo = playerInfo.GetPlayerField(myPlayer);
             pinfo.Dice.RollDice();
+            RuntimeData.current.SoundHandler.PlayDiceShake();
         }
 
         public void DoExitPrisonMoney()
@@ -545,6 +551,12 @@ namespace Monopoly.Runtime
                 comm.DoBidAuction(clientUUID, bidAmount);
         }
 
+        public void DoUpdateProperty(int type)
+        {
+            if (comm != null)
+                comm.DoUpdateProperty(clientUUID, type);
+        }
+
         public void OnExchange(PacketActionExchange packet)
         {
             Player p = Player.PlayerFromUUID(players, packet.PlayerId);
@@ -606,6 +618,7 @@ namespace Monopoly.Runtime
             Destroy(currentExchange.gameObject);
             currentExchange = null;
             UIDirector.IsGameMenuOpen = false;
+            RuntimeData.current.SoundHandler.PlayPropertyBuy();
         }
 
         public void OnExchangeDecline(PacketActionExchangeDecline packet)
@@ -619,7 +632,7 @@ namespace Monopoly.Runtime
         {
             if (currentExchange == null)
                 return;
-            // TODO: IMPLEMENT
+            currentExchange.Counter();
         }
 
         public void OnExchangeCancel(PacketActionExchangeCancel packet)
@@ -732,6 +745,7 @@ namespace Monopoly.Runtime
                                 packet.Bid)));
                     }
                 }
+                RuntimeData.current.SoundHandler.PlayPropertyBuy();
             }
         }
 
@@ -752,6 +766,7 @@ namespace Monopoly.Runtime
             }
             LogMessage(string.Format("{0}: {1}",
                        PlayerNameLoggable(p), packet.Message));
+            RuntimeData.current.SoundHandler.PlayMessageBlip();
         }
 
         public void OnBuyHouse(PacketActionBuyHouseSucceed packet)
@@ -782,6 +797,7 @@ namespace Monopoly.Runtime
             }
             if (BoardCardDisplay.current.rendering)
                 BoardCardDisplay.current.Redraw();
+            RuntimeData.current.SoundHandler.PlayHouseBuy();
         }
 
         public void OnSellHouse(PacketActionSellHouseSucceed packet)
@@ -812,6 +828,7 @@ namespace Monopoly.Runtime
             }
             if (BoardCardDisplay.current.rendering)
                 BoardCardDisplay.current.Redraw();
+            RuntimeData.current.SoundHandler.PlayHouseSell();
         }
 
         public void OnBuyProperty(PacketActionBuyPropertySucceed packet)
@@ -841,6 +858,7 @@ namespace Monopoly.Runtime
             auctionButton.gameObject.SetActive(false);
             if (BoardCardDisplay.current.rendering)
                 BoardCardDisplay.current.Redraw();
+            RuntimeData.current.SoundHandler.PlayPropertyBuy();
         }
 
         public void OnEnterPrison(PacketPlayerEnterPrison packet)
@@ -894,6 +912,7 @@ namespace Monopoly.Runtime
                 if (os.Owner != null && os.Owner.Id.Equals(packet.PlayerId))
                 {
                     os.MortgageProperty();
+                    SquareCollider.Colliders[os.Id].SetMortgageMode(true);
                     LogAction(string.Format(
                         StringLocaliser.GetString("on_mortgage_property"),
                         PlayerNameLoggable(p),
@@ -920,6 +939,7 @@ namespace Monopoly.Runtime
                 if (os.Owner != null && os.Owner.Id.Equals(packet.PlayerId))
                 {
                     os.UnmortgageProperty();
+                    SquareCollider.Colliders[os.Id].SetMortgageMode(false);
                     LogAction(string.Format(
                         StringLocaliser.GetString("on_unmortgage_property"),
                         PlayerNameLoggable(p),
@@ -960,6 +980,20 @@ namespace Monopoly.Runtime
                 // take all from free parking pot
                 UpdateParkingMoney(0);
             }
+            RuntimeData.current.SoundHandler.PlayBalanceUpdate();
+        }
+
+        public void OnPropertyUpdate(PacketPlayerUpdateProperty packet)
+        {
+            Player p = 1 == 1 ? null :
+                Player.PlayerFromUUID(players, packet.PlayerId);
+            if (p != null)
+            {
+                Debug.LogWarning(string.Format("Could not find player '{0}'!",
+                                               packet.PlayerId));
+                return;
+            }
+            PropertyUpdateHandler.current.UpdateProperty(p, packet.PropertyId);
         }
 
         public void OnMove(PacketPlayerMove packet)
@@ -1089,6 +1123,7 @@ namespace Monopoly.Runtime
                 LogAction(msg);
                 break;
             }
+            RuntimeData.current.SoundHandler.PlayDiceRoll();
         }
 
         public void OnRoundRandomCard(PacketRoundRandomCard packet)
@@ -1114,6 +1149,12 @@ namespace Monopoly.Runtime
                     cardType == Card.CardType.CLOSEST_COMPANY)
                 {
                     val = 200; // these cards typically say to pass go for $200
+                    if (cardType == Card.CardType.GOTO_POSITION &&
+                        (packet.CardId == 1 || packet.CardId == 17) &&
+                        gameRules.EnableDoubleOnGo)
+                    {
+                        val *= 2; /* show $400 on go rather than $200 */
+                    }
                     message = string.Format(message, val);
                 }
                 else if (cardType == Card.CardType.GIVE_BOARD_HOUSES)
@@ -1126,12 +1167,6 @@ namespace Monopoly.Runtime
                 else
                 {
                     val = cardData[packet.CardId - 1]["value"];
-                    if (cardType == Card.CardType.GOTO_POSITION &&
-                        (packet.CardId == 1 || packet.CardId == 17) &&
-                        gameRules.EnableDoubleOnGo)
-                    {
-                        val *= 2; /* show $400 on go rather than $200 */
-                    }
                     message = string.Format(message, val);
                 }
             }
@@ -1198,6 +1233,7 @@ namespace Monopoly.Runtime
                 }
             }
             timeout.Hide();
+            RuntimeData.current.SoundHandler.PlayDiceRoll();
         }
 
         public void OnActionStart(PacketActionStart packet)
@@ -1234,11 +1270,15 @@ namespace Monopoly.Runtime
         public void OnActionTimeout(PacketActionTimeout packet)
         {
             CanPerformAction = false;
-            // TODO: do the same thing for auctions
             if (currentExchange != null)
             {
                 Destroy(currentExchange.gameObject);
                 currentExchange = null;
+            }
+            if (currentAuction != null)
+            {
+                Destroy(currentAuction.gameObject);
+                currentAuction = null;
             }
             UIDirector.IsGameMenuOpen = false;
             HideAllInteractButtons();
@@ -1273,16 +1313,22 @@ namespace Monopoly.Runtime
             foreach (OwnableSquare os in Board.SquareOwned(p))
             {
                 if (os.IsProperty())
-                {
-                    PropertySquare ps = (PropertySquare)os;
-                    for (int i = 0; i < ps.NbHouse; ++i)
-                        SquareCollider.Colliders[os.Id].RemoveHouse();
-                }
+                    SquareCollider.Colliders[os.Id].houseLevel = 0;
                 SquareCollider.Colliders[os.Id].RemoveSphereChild();
                 Board.BoardBank.RelinquishProperty(p, os);
             }
             // FIXME: REMOVE PLAYER PIECE FROM BOARD AND CHANGE MONEY INDICATOR
             // TO SKULL AND BONES
+        }
+
+        public void OnGameWin(PacketGameWin packet)
+        {
+
+        }
+
+        public void OnGameEnd(PacketGameEnd packet)
+        {
+
         }
 
     }

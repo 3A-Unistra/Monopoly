@@ -33,8 +33,6 @@ namespace Monopoly.Net
         private static readonly Dictionary<string, Type> packetTypes =
             new Dictionary<string, Type>()
         {
-                // TODO: ADD THE OTHERS HERE
-
             // LOBBY PACKETS
             { "AppletPrepare", typeof(PacketAppletPrepare) },
             { "BroadcastUpdateLobby", typeof(PacketBroadcastUpdateLobby) },
@@ -58,6 +56,7 @@ namespace Monopoly.Net
             { "Chat", typeof(PacketChat) },
             { "GameStart", typeof(PacketGameStart) },
             { "GameEnd", typeof(PacketGameEnd) },
+            { "GameWin", typeof(PacketGameWin) },
             { "PlayerReconnect", typeof(PacketPlayerReconnect) },
             { "PlayerDisconnect", typeof(PacketPlayerDisconnect) },
             { "PlayerDefeat", typeof(PacketPlayerDefeat) },
@@ -87,6 +86,7 @@ namespace Monopoly.Net
             { "ActionExchangeCancel", typeof(PacketActionExchangeCancel) },
             { "ActionExchangeTransfer", typeof(PacketActionExchangeTransfer) },
             { "PlayerUpdateBalance", typeof(PacketPlayerUpdateBalance) },
+            { "PlayerUpdateProperty", typeof(PacketPlayerUpdateProperty) },
             { "ActionAuctionProperty", typeof(PacketActionAuctionProperty) },
             { "AuctionBid", typeof(PacketAuctionBid) },
             { "AuctionEnd", typeof(PacketAuctionEnd) },

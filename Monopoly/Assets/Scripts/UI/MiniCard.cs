@@ -13,6 +13,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+using Monopoly.Classes;
 
 namespace Monopoly.UI
 {
@@ -39,7 +40,7 @@ namespace Monopoly.UI
         [HideInInspector]
         public bool editable = false;
 
-        void Start()
+        void Awake()
         {
             Selected = false;
             SelectButton.image.sprite = deselectSprite;
@@ -47,6 +48,14 @@ namespace Monopoly.UI
             PreviewButton.onClick.AddListener(delegate { previewCallback(); });
             if (!editable)
                 SelectButton.enabled = false;
+        }
+
+        void Start()
+        {
+            if (PropertySquare.IsPropertyIndex(Index))
+                Name.color = PropertySquare.GetColorIndex(Index);
+            else
+                Name.color = Color.white;
         }
 
         public void ToggleSelect(bool callback)

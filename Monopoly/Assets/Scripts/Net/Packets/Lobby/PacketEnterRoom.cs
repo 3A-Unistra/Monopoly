@@ -20,13 +20,17 @@ namespace Monopoly.Net.Packets
         [JsonProperty("game_token")]
         public string LobbyToken { get; private set; }
 
+        [JsonProperty("username")]
+        public string Username { get; private set; }
+
         [JsonProperty("password")]
         public string Password { get; private set; }
 
-        public PacketEnterRoom(string lobbyToken,
+        public PacketEnterRoom(string lobbyToken, string username,
                                string password) : base("EnterRoom")
         {
             this.LobbyToken = lobbyToken;
+            this.Username = username;
             this.Password = password;
         }
 

@@ -23,15 +23,19 @@ namespace Monopoly.Net.Packets
         [JsonProperty("player_token")]
         public string PlayerId { get; private set; }
 
+        [JsonProperty("host_token")]
+        public string HostId { get; private set; }
+
         [JsonProperty("username")]
         public string Username { get; private set; }
 
         public PacketEnterRoomSucceed(string lobbyToken, string playerId,
-                                      string username)
+                                      string hostId, string username)
             : base("EnterRoomSucceed")
         {
             this.LobbyToken = lobbyToken;
             this.PlayerId = playerId;
+            this.HostId = hostId;
             this.Username = username;
         }
 

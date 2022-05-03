@@ -51,7 +51,7 @@ namespace Monopoly.UI
 
         private List<AuctionPlayerField> fields;
 
-        void Start()
+        void Awake()
         {
             BidButton.onClick.AddListener(BidAction);
 
@@ -61,11 +61,14 @@ namespace Monopoly.UI
             PriceText.text = StringLocaliser.GetString("price");
             CurrentBidText.text = StringLocaliser.GetString("current_bid");
             BidField.placeholder.GetComponent<TextMeshProUGUI>().text = StringLocaliser.GetString("input_bid");
-            
+
             BidButton.enabled = false;
 
             fields = new List<AuctionPlayerField>();
+        }
 
+        void Start()
+        {
             BuildUI();
             BuildCard();
 
@@ -152,6 +155,7 @@ namespace Monopoly.UI
                     field.SetPrice(field.GetPrice(), false);
             }
             UpdatePrice(amount);
+            RuntimeData.current.SoundHandler.PlayAuctionBid();
             Timeout.Restart();
         }
 

@@ -35,6 +35,8 @@ namespace Monopoly.Runtime
         public static int port;
         public static ConnectMode connectMode;
 
+        public static string desiredClientUsername;
+
         private PacketLobbyCommunicator comm;
         private PacketSocket sock;
 
@@ -192,16 +194,16 @@ namespace Monopoly.Runtime
                                  int turnTime, int maxRounds,
                                  bool canBuyFirstCircle)
         {
-            comm.DoCreateGame(playerId, maxPlayers, password, gameName,
-                              privateGame, startBalance, auctions,
-                              doubleGo, turnTime, maxRounds,
+            comm.DoCreateGame(playerId, desiredClientUsername, maxPlayers,
+                              password, gameName, privateGame, startBalance,
+                              auctions, doubleGo, turnTime, maxRounds,
                               canBuyFirstCircle);
         }
 
         public void DoJoinGame(string lobbyToken, string password)
         {
 
-            comm.DoEnterRoom(lobbyToken, password);
+            comm.DoEnterRoom(lobbyToken, desiredClientUsername, password);
         }
 
         public void DoLeaveGame(string lobbyToken)
@@ -246,7 +248,9 @@ namespace Monopoly.Runtime
             GameObject CreateMenu = Instantiate(RuntimeData.current.CreateMenuPrefab,
                                                 Canvas.transform);
             MenuCreate menuScript = CreateMenu.GetComponent<MenuCreate>();
-            menuScript.UpdateFields(true);
+            menuScript.UpdateFields(true, clientUUID);
+            menuScript.EnableEdits(true);
+            menuScript.CurrentHost = clientUUID;
             currentLobby = packet.GameToken;
             clientPiece = packet.PieceId;
             clientUsername = packet.Username;
@@ -261,7 +265,8 @@ namespace Monopoly.Runtime
             clientUsername = packet.Username;
             GameObject CreateMenu = Instantiate(RuntimeData.current.CreateMenuPrefab, Canvas.transform);
             MenuCreate createScript = CreateMenu.GetComponent<MenuCreate>();
-            createScript.UpdateFields(false);
+            createScript.UpdateFields(false, packet.HostId);
+            createScript.EnableEdits(false);
             currentLobby = packet.LobbyToken;
             if (MenuLobby.current != null)
                 Destroy(MenuLobby.current.gameObject);
@@ -316,21 +321,22 @@ namespace Monopoly.Runtime
             MenuCreate.current.SetName(packet.GameName);
             //MenuCreate.current.SetPrivacy();
             MenuCreate.current.SetAuctionSwitch(packet.EnableAuctions);
-            //MenuCreate.current.SetBotsNumber(packet.);
+            //MenuCreate.current.SetBotsNumber(packet.b);
             MenuCreate.current.SetBuyingSwitch(packet.EnableFirstTourBuy);
             MenuCreate.current.SetNbTurns(packet.MaxRounds);
             MenuCreate.current.SetPlayerNumber(packet.MaxNumberPlayers);
             MenuCreate.current.SetStartingBalance(packet.StartingBalance);
             MenuCreate.current.SetTurnTime(packet.TurnTimeout);
             MenuCreate.current.SetDoubleOnStartSwitch(packet.EnableDoubleOnGo);
-            MenuCreate.current.UpdateFields();
+            MenuCreate.current.UpdateFields(null);
             MenuCreate.current.EnableEdits(true);
         }
 
         public void OnNewHost(PacketNewHost packet)
         {
             if (MenuCreate.current != null)
-                MenuCreate.current.UpdateFields(packet.PlayerId.Equals(clientUUID));
+                MenuCreate.current.UpdateFields(packet.PlayerId.Equals(clientUUID),
+                                                packet.PlayerId);
         }
 
         public void OnAppletPrepare(PacketAppletPrepare packet)

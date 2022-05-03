@@ -22,6 +22,7 @@ namespace Monopoly.Classes
     */
     public class Bank  
     {
+
         /**
         * <summary>
         * Nbhouse is the number of houses currently
@@ -33,6 +34,7 @@ namespace Monopoly.Classes
             get;
             set;
         }
+
         /**
         * <summary>
         * Nbhotel is the number of hotels currently
@@ -44,6 +46,7 @@ namespace Monopoly.Classes
             get;
             set;
         }
+
         /**
         * <summary>
         * Constructor
@@ -55,6 +58,7 @@ namespace Monopoly.Classes
             this.NbHouse = 32;
             this.NbHotel = 12;
         }
+
          /**
         * <summary>
         * takes a house from the bank if there are any
@@ -63,7 +67,7 @@ namespace Monopoly.Classes
         * true if you took a house frm the bank, false if there are none
         * </return>
         */
-         public bool BuyHouse()
+        public bool BuyHouse()
         {
             if( NbHouse > 0)
             {
@@ -72,6 +76,7 @@ namespace Monopoly.Classes
             }
             return false;
         }
+
         /**
         * <summary>
         * take a hotel from the bank if there are any
@@ -89,6 +94,7 @@ namespace Monopoly.Classes
             }   
             return false;
         }
+
         /**
         * <summary>
         * increment the number of houses by one as the player sells one
@@ -98,6 +104,7 @@ namespace Monopoly.Classes
         {
             NbHouse++;
         }
+
         /**
         * <summary>
         * increment the number of hotels by one as the player sells one
@@ -107,11 +114,11 @@ namespace Monopoly.Classes
         {
             NbHotel++;
         }
+
         /**
         * <summary>
         * player p buys the property on the square s
         * the square s owner is set to p
-        * the player p's money is decreased by the value of square s
         * </summary>
         * <param name="p">
         * player p the one who buys the square  
@@ -122,11 +129,8 @@ namespace Monopoly.Classes
         */
         public void BuyProperty(Player p, OwnableSquare s)
         {
-            if(p.Money > s.Price)
-            {
-                s.Owner = p;
-                p.Money -= s.Price;
-            }
+            s.Owner = p;
+            p.Money -= s.Price;
         }
 
         /**
@@ -146,12 +150,13 @@ namespace Monopoly.Classes
             if (s.Owner == p)
             {
                 s.Owner = null;
-                if (s.IsOwnable())
+                if (s.IsProperty())
                 {
                     PropertySquare ps = (PropertySquare) s;
                     ps.NbHouse = 0;
                 }
             }
         }
+
     }
 }

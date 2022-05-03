@@ -47,6 +47,7 @@ namespace Monopoly.UI
             {
                 // repeat forever until told to do otherwise
                 button.image.color = toggle ? darkColor : highlightColor;
+                toggle = !toggle;
                 yield return new WaitForSeconds(0.5f);
             }
         }

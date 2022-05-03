@@ -183,24 +183,6 @@ namespace Monopoly.Camera
          */
         private bool MoveCameraMouse()
         {
-            /* TODO: Disable mouse movement when mouse is over UI. */
-            /*if (!moveCameraByMouse)
-                return false;
-            if (RaycastUtil.IsMouseRaycast("UI"))
-                return false; // don't move the mouse if it's on a UI element
-            Vector3 mp = Input.mousePosition;
-            int sx = Screen.width, sy = Screen.height;
-            int dx = 0, dy = 0;
-            if (mp.x <= boundsMouse.x)
-                dx = -1;
-            else if (mp.x >= sx - boundsMouse.x)
-                dx = 1;
-            if (mp.y <= boundsMouse.y)
-                dy = -1;
-            else if (mp.y >= sy - boundsMouse.y)
-                dy = 1;
-            MoveCamera(dx, dy);
-            return dx != 0 || dy != 0;*/
             if (Input.GetMouseButtonDown(0))
             {
                 mouseDragOrigin = Input.mousePosition;
@@ -219,26 +201,21 @@ namespace Monopoly.Camera
             Vector3 pos = cam.ScreenToViewportPoint(
                 mouseDragLast - mouseDragOrigin) * look.desiredZoom * dragSpeed;
             Vector2 move = new Vector2(pos.x, pos.y);
-            Debug.Log("dragging by " + move + " from " + pivotPoint.transform.localPosition);
             MoveCamera(move.x, move.y, true);
             return move.x != 0 || move.y != 0;
         }
 
-        void Update()
+        void LateUpdate()
         {
             if (!look.Animating && !UIDirector.IsMenuOpen &&
                 !UIDirector.IsGameMenuOpen)
             {
-                // camera movement
-                //if (!MoveCameraMouse() && !UIDirector.IsEditingInputField())
-                //{
                 if (!MoveCameraMouse() && !UIDirector.IsEditingInputField())
                 {
                     MoveCamera(Input.GetAxis("Horizontal"),
                                Input.GetAxis("Vertical"),
                                false);
                 }
-                //}
             }
         }
 

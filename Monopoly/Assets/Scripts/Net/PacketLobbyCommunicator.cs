@@ -58,7 +58,8 @@ namespace Monopoly.Net
             socket.SendPacket(packet);
         }
 
-        public void DoCreateGame(string playerId, int maxPlayers,
+        public void DoCreateGame(string playerId, string username,
+                                 int maxPlayers,
                                  string password, string gameName,
                                  bool privateGame, int startBalance,
                                  bool auctions, bool doubleGo,
@@ -66,17 +67,18 @@ namespace Monopoly.Net
                                  bool canBuyFirstCircle)
         {
             PacketCreateGame packet =
-                new PacketCreateGame(playerId, maxPlayers, password, gameName,
-                                     privateGame, startBalance, auctions,
-                                     doubleGo, turnTime, maxPlayers,
+                new PacketCreateGame(playerId, username, maxPlayers, password,
+                                     gameName, privateGame, startBalance,
+                                     auctions, doubleGo, turnTime, maxPlayers,
                                      canBuyFirstCircle);
             socket.SendPacket(packet);
         }
 
-        public void DoEnterRoom(string lobbyToken, string password)
+        public void DoEnterRoom(string lobbyToken, string username,
+                                string password)
         {
             PacketEnterRoom packet =
-                new PacketEnterRoom(lobbyToken, password);
+                new PacketEnterRoom(lobbyToken, username, password);
             socket.SendPacket(packet);
         }
 

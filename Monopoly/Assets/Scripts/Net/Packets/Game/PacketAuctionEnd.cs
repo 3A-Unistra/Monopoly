@@ -19,7 +19,7 @@ namespace Monopoly.Net.Packets
         [JsonProperty("player_token")]
         public string PlayerId { get; private set; }
 
-        [JsonProperty("bid")]
+        [JsonProperty("highest_bid")]
         public int Bid { get; private set; }
 
         [JsonProperty("remaining_time")]
