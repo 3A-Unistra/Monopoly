@@ -80,14 +80,19 @@ namespace Monopoly.Runtime
             return msg;
         }
 
-        void OnSendMessage(string msg)
+        private void OnSendMessage(string msg)
         {
             msg = SanitiseInput(msg);
             if (msg.Length == 0)
                 return;
             chatInput.text = ""; // clear the input
-            EventSystem.current.SetSelectedGameObject(null, null);
+            //EventSystem.current.SetSelectedGameObject(null, null);
             ClientGameState.current.DoMessage(msg);
+        }
+
+        public bool IsOpen()
+        {
+            return chatToggle;
         }
 
     }

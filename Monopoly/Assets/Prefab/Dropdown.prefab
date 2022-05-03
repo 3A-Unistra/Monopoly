@@ -1064,6 +1064,8 @@ GameObject:
   - component: {fileID: 4151563610121394148}
   - component: {fileID: 2382128658037812059}
   - component: {fileID: 1412159117782074575}
+  - component: {fileID: 3720934890471695477}
+  - component: {fileID: 2440852416313767651}
   m_Layer: 5
   m_Name: Dropdown
   m_TagString: Untagged
@@ -1211,3 +1213,29 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &3720934890471695477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7277471389124532861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5166ae58ee98499c82d4818ff71f233, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2440852416313767651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7277471389124532861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bd232bafa32642f89bab020bf7c0198, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 0}
+  dropdown: {fileID: 2382128658037812059}

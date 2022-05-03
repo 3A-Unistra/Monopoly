@@ -324,7 +324,7 @@ namespace Monopoly.Camera
             }
         }
 
-        void Update()
+        void LateUpdate()
         {
             if (!UIDirector.IsEditingInputField())
             {

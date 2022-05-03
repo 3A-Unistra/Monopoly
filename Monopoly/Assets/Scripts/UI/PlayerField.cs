@@ -67,6 +67,19 @@ namespace Monopoly.UI
             ActiveKnob.gameObject.SetActive(active);
         }
 
+        private void SetMoneyDirect(int amount)
+        {
+            StringBuilder sb = new StringBuilder();
+            bool red = amount < 0;
+            if (red)
+                sb.Append("<color=#ff5555>");
+            sb.Append(string.Format(
+                StringLocaliser.GetString("money_format"), amount));
+            if (red)
+                sb.Append("</color>");
+            Money.text = sb.ToString();
+        }
+
         public void SetMoney(int amount, bool animate)
         {
             if (coroutine != null)
@@ -77,15 +90,7 @@ namespace Monopoly.UI
         private IEnumerator AnimateMoney(int amount, bool animate)
         {
             // show the actual money
-            StringBuilder sb = new StringBuilder();
-            bool red = amount < 0;
-            if (red)
-                sb.Append("<color=#ff5555>");
-            sb.Append(string.Format(
-                StringLocaliser.GetString("money_format"), amount));
-            if (red)
-                sb.Append("</color>");
-            Money.text = sb.ToString();
+            SetMoneyDirect(amount);
             if (animate && lastAmount != amount)
             {
                 // show the money modifier
@@ -103,6 +108,10 @@ namespace Monopoly.UI
                 MoneyModifier.gameObject.SetActive(true);
                 // wait a while
                 yield return new WaitForSeconds(1.5f);
+                MoneyModifier.gameObject.SetActive(false);
+            }
+            else
+            {
                 MoneyModifier.gameObject.SetActive(false);
             }
             lastAmount = amount;

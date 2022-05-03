@@ -17,6 +17,7 @@ namespace Monopoly.UI
         public TMP_Text ConnectText;
         public TMP_InputField IPInput;
         public TMP_InputField PortInput;
+        public TMP_InputField UsernameInput;
         public GameObject ErrorTextField;
         public TMP_Text ErrorText;
 
@@ -33,13 +34,18 @@ namespace Monopoly.UI
                 StringLocaliser.GetString("ip_address_input");
             PortInput.placeholder.GetComponent<TextMeshProUGUI>().text =
                 StringLocaliser.GetString("port_input");
+            UsernameInput.placeholder.GetComponent<TextMeshProUGUI>().text =
+                StringLocaliser.GetString("username_input");
 
             ErrorTextField.SetActive(false);
 
             string defaultIP = PlayerPrefs.GetString("favourite_ip", "");
             string defaultPort = PlayerPrefs.GetString("favourite_port", "");
+            string defaultUsername =
+                PlayerPrefs.GetString("favourite_offlineusername", "");
             IPInput.text = defaultIP;
             PortInput.text = defaultPort;
+            UsernameInput.text = defaultUsername;
 
             UIDirector.IsMenuOpen = true;
             UIDirector.IsUIBlockingNet = false;
@@ -79,7 +85,10 @@ namespace Monopoly.UI
             state.Canvas = transform.parent.gameObject;
             PlayerPrefs.SetString("favourite_ip", address);
             PlayerPrefs.SetString("favourite_port", port.ToString());
-            connector = state;
+            string usernameSelect = UsernameInput.text.Trim();
+            if (usernameSelect.Length > 32)
+                usernameSelect = usernameSelect.Substring(0, 32);
+            ClientLobbyState.desiredClientUsername = usernameSelect;
             // TODO: UPDATE TOKEN AND SHIT FROM LOCAL FILE
             state.StartCoroutine(
                 state.Connect(address, port,

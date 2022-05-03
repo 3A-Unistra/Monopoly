@@ -72,6 +72,7 @@ namespace Monopoly.UI
 
         private bool firstRound;
         private bool decisionToMake;
+        private bool isCounter;
 
         void Awake()
         {
@@ -108,6 +109,7 @@ namespace Monopoly.UI
 
             firstRound = true;
             decisionToMake = false;
+            isCounter = false;
         }
         
         void Start()
@@ -137,6 +139,8 @@ namespace Monopoly.UI
         private void DispatchMoney(string val, bool right)
         {
             val = val.Trim();
+            if (val.Length == 0)
+                return;
             // start an enumerator before sending to avoid spam
             if (right)
             {
@@ -300,8 +304,8 @@ namespace Monopoly.UI
             // FIXME: add community/chance swap
             //bool leftCommunity = ;
 
-            PopulateLeft(right);
-            PopulateRight(left);
+            PopulateLeft(right, rightPropertyChoice);
+            PopulateRight(left, leftPropertyChoice);
 
             foreach (int i in leftPropertyChoice)
                 ToggleSelectProperty(i, true);
@@ -316,13 +320,41 @@ namespace Monopoly.UI
             UpdateEditRights();
         }
 
+        public void Counter()
+        {
+            isCounter = true;
+            decisionToMake = false;
+
+            List<int> leftPropertyChoice = GetPropertySelectionLeft();
+            List<int> rightPropertyChoice = GetPropertySelectionRight();
+
+            PopulateLeft(playerPrimary);
+            PopulateRight(playerSecondary);
+
+            foreach (int i in leftPropertyChoice)
+                ToggleSelectProperty(i, false);
+            foreach (int i in rightPropertyChoice)
+                ToggleSelectProperty(i, true);
+
+            HideCardDisplayLeft();
+            HideCardDisplayRight();
+            UpdateEditRights();
+        }
+
         public void PopulateLeft(Player p)
+        {
+            PopulateLeft(p, null);
+        }
+
+        public void PopulateLeft(Player p, List<int> indices)
         {
             ClearCardList(CardListLeft);
             foreach (Square s in ClientGameState.current.Board.Elements)
             {
                 if (!s.IsOwnable())
                     continue;
+                if (indices != null && !indices.Exists((x) => s.Id == x))
+                    continue; // hide unselected
                 OwnableSquare os = (OwnableSquare)s;
                 if (os.Owner != p)
                     continue;
@@ -342,20 +374,28 @@ namespace Monopoly.UI
             PlayerLeftName.text = p.Name;
             // activate right side based on who we are
             PlayerRightName.gameObject.SetActive(
-                playerPrimary != ClientGameState.current.myPlayer);
+                playerPrimary != ClientGameState.current.myPlayer || isCounter);
             PlayerRightDropdown.gameObject.SetActive(
-                playerPrimary == ClientGameState.current.myPlayer);
+                playerPrimary == ClientGameState.current.myPlayer &&
+                !isCounter);
             HideCardDisplayLeft();
             UpdateEditRights();
         }
 
         public void PopulateRight(Player p)
         {
+            PopulateRight(p, null);
+        }
+
+        public void PopulateRight(Player p, List<int> indices)
+        {
             ClearCardList(CardListRight);
             foreach (Square s in ClientGameState.current.Board.Elements)
             {
                 if (!s.IsOwnable())
                     continue;
+                if (indices != null && !indices.Exists((x) => s.Id == x))
+                    continue; // hide unselected
                 OwnableSquare os = (OwnableSquare)s;
                 if (os.Owner != p)
                     continue;
@@ -376,6 +416,27 @@ namespace Monopoly.UI
             PlayerRightName.text = p.Name;
             HideCardDisplayRight();
             UpdateEditRights();
+        }
+
+        public void PopulatePlayers(List<Player> players)
+        {
+            PlayerRightDropdown.options.Clear();
+            playerList = new List<Player>();
+            for (int i = 0; i < players.Count; ++i)
+            {
+                Player p = players[i];
+                if (playerPrimary == p)
+                {
+                    playerPrimaryIndex = i;
+                    continue;
+                }
+                playerList.Add(p);
+                PlayerRightDropdown.options.Add(new TMP_Dropdown.OptionData(p.Name));
+            }
+            PlayerRightDropdown.value = 0;
+            PopulateRight(playerList[0]);
+            if (playerPrimary == ClientGameState.current.myPlayer)
+                ClientGameState.current.DoExchangeSelectPlayer(playerList[0].Id);
         }
 
         public void ToggleSelectProperty(int index, bool right)
@@ -424,12 +485,18 @@ namespace Monopoly.UI
 
         public void SetMoneyLeft(int val)
         {
-            MoneyPlayerLeft.text = val.ToString();
+            if (val == 0)
+                MoneyPlayerLeft.text = "";
+            else
+                MoneyPlayerLeft.text = val.ToString();
         }
 
         public void SetMoneyRight(int val)
         {
-            MoneyPlayerRight.text = val.ToString();
+            if (val == 0)
+                MoneyPlayerRight.text = "";
+            else
+                MoneyPlayerRight.text = val.ToString();
         }
 
         public int GetMoneyLeft()
@@ -446,48 +513,11 @@ namespace Monopoly.UI
             return money;
         }
 
-        public void PopulatePlayers(List<Player> players)
-        {
-            PlayerRightDropdown.options.Clear();
-            playerList = players;
-            int first = -1;
-            for (int i = 0; i < players.Count; ++i)
-            {
-                Player p = players[i];
-                if (playerPrimary == p)
-                {
-                    playerPrimaryIndex = i;
-                    continue;
-                }
-                if (first == -1)
-                    first = i;
-                PlayerRightDropdown.options.Add(new TMP_Dropdown.OptionData(p.Name));
-            }
-            //PlayerRightDropdown.value = -1;
-            PlayerRightDropdown.value = 0;
-            PopulateRight(playerList[first]);
-            if (playerPrimary == ClientGameState.current.myPlayer)
-                ClientGameState.current.DoExchangeSelectPlayer(playerList[first].Id);
-        }
-
         private void ChangePlayer(int index)
         {
-            int playerIdx = -1;
-            // not sure if the player list is guaranteed to be in the same order on
-            // all instances so its definitely safer to check for the correct person
-            // opposed to just assume
-            for (int i = 0; i < playerList.Count; ++i)
-            {
-                if (playerList[i].Name.Equals(PlayerRightDropdown.options[index].text))
-                    playerIdx = i;
-            }
-            if (playerIdx == -1)
-            {
-                // but if all else fails, go back to the original method I came up with
-                playerIdx = index >= playerPrimaryIndex ? index + 1 : index;
-            }
-            //PopulateRight(playerList[index]);
-            ClientGameState.current.DoExchangeSelectPlayer(playerList[index].Id);
+            if (playerPrimary == ClientGameState.current.myPlayer)
+                ClientGameState.current.DoExchangeSelectPlayer(
+                    playerList[index].Id);
         }
 
         private bool ValidateInput(string strval, bool right, out int val)
@@ -498,7 +528,6 @@ namespace Monopoly.UI
                 val <= playerMoney && val > 0)
             {
                 // valid bid amount
-                // TODO: add check for current high price
                 if (right)
                     MoneyPlayerRight.textComponent.color = Color.black;
                 else

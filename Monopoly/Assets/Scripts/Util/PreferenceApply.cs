@@ -13,7 +13,7 @@ using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-using Monopoly.UI;
+using Monopoly.Runtime;
 
 namespace Monopoly.Util
 {
@@ -27,7 +27,6 @@ namespace Monopoly.Util
         public static bool Antialiasing { get; set; }
         public static float Music { get; set; }
         public static float Sound { get; set; }
-
 
         private static Resolution[] ResolutionsArray = Screen.resolutions;
         public static void LoadSettings()
@@ -61,8 +60,8 @@ namespace Monopoly.Util
                     QualitySettings.antiAliasing = 4;
                 else
                     QualitySettings.antiAliasing = 0;
-                //TODO APPLY MUSIC PREFERENCES 
-                //TODO APPLY SOUND PREFERENCES
+                RuntimeData.current.SoundHandler.SetSoundLevel(Sound);
+                RuntimeData.current.SoundHandler.SetMusicLevel(Music);
             }
             else
             {
@@ -82,6 +81,8 @@ namespace Monopoly.Util
             PlayerPrefs.SetFloat("music", Music);
             PlayerPrefs.SetFloat("sound", Sound);
             PlayerPrefs.SetInt("chat_toggle", 0);
+            RuntimeData.current.SoundHandler.SetSoundLevel(Sound);
+            RuntimeData.current.SoundHandler.SetMusicLevel(Music);
         }
     }
 }

@@ -16,6 +16,8 @@ namespace Monopoly.Runtime
     public class RuntimeData : MonoBehaviour
     {
 
+        public SoundHandler SoundHandler;
+
         public Sprite[] pieceImages;
 
         public GameObject MainMenuPrefab;
@@ -26,7 +28,7 @@ namespace Monopoly.Runtime
         [HideInInspector]
         public static RuntimeData current;
 
-        void Start()
+        void Awake()
         {
             if (current != null)
             {

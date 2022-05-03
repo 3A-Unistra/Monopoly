@@ -333,7 +333,7 @@ namespace Monopoly.Graphics
             }           
         }
 
-        public void PlaceHouse()
+        private void PlaceHouse()
         {
             float offset = 0.255f;
             int nbHObj = houseObjects.Count;
@@ -429,13 +429,16 @@ namespace Monopoly.Graphics
             return;
            
         }
-        public void RemoveHouse()
+
+        private void RemoveHouse()
         {
             float offset = 0.255f;
             int nbHObj = houseObjects.Count;
+            if (houseObjects.Count <= 0)
+                return;
             int diffHouses = tempLvlhouse - houseLevel;
             Vector3 posCeiling =
-                new Vector3(0.38f - 0.255f * 
+                new Vector3(0.38f - 0.255f *
                 (tempLvlhouse - 1), 90.5f, -0.43f);
             Vector3 posFloor =
             new Vector3(0.38f - 0.255f * (tempLvlhouse - 1), 0.5f, -0.43f);
@@ -507,6 +510,12 @@ namespace Monopoly.Graphics
             CreateTextObjects();
             UpdateText();
             UpdateHouses();
+        }
+
+        public void SetMortgageMode(bool mortgaged)
+        {
+            if (ownerRenderer != null)
+                ownerRenderer.color = mortgaged ? Color.red : Color.white;
         }
 
         public void SetSphereChild(Player player)

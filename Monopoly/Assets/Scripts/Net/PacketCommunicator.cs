@@ -40,6 +40,7 @@ namespace Monopoly.Net
         // - ActionExchangeDecline      (also received)
         // - ActionExchangePlayerSelect (also received)
         // - ActionExchangeTradeSelect  (also received)
+        // - PlayerUpdateProperty       (also received)
 
         // Receive list:
         // - Exception
@@ -48,6 +49,7 @@ namespace Monopoly.Net
         // - GameStartDice
         // - GameStartDiceResults
         // - GameEnd
+        // - GameWin
         // - RoundStart
         // - RoundDiceResults
         // - RoundRandomCard
@@ -55,7 +57,7 @@ namespace Monopoly.Net
         // - PlayerReconnect
         // - PlayerDisconnect
         // - PlayerUpdateBalance
-        // - PlayerUpdateProperty
+        // - PlayerUpdateProperty       (also sent)
         // - PlayerEnterPrison
         // - PlayerExitPrison
         // - PlayerDefeat
@@ -87,6 +89,7 @@ namespace Monopoly.Net
         public event PacketDelegate<PacketGameStartDiceResults>
                                                          OnGameStartDiceResult;
         public event PacketDelegate<PacketGameEnd>           OnGameEnd;
+        public event PacketDelegate<PacketGameWin>           OnGameWin;
         public event PacketDelegate<PacketRoundStart>        OnRoundStart;
         public event PacketDelegate<PacketRoundDiceResults>  OnRoundDiceResult;
         public event PacketDelegate<PacketRoundRandomCard>   OnRoundRandomCard;
@@ -130,6 +133,8 @@ namespace Monopoly.Net
                                                          OnExchangeTradeSelect;
         public event PacketDelegate<PacketActionExchangeTransfer>
                                                          OnExchangeTransfer;
+        public event PacketDelegate<PacketPlayerUpdateProperty>
+                                                         OnPropertyUpdate;
 
         private PacketSocket socket;
 
@@ -295,6 +300,13 @@ namespace Monopoly.Net
             socket.SendPacket(packet);
         }
 
+        public void DoUpdateProperty(string uuid, int type)
+        {
+            PacketPlayerUpdateProperty packet =
+                new PacketPlayerUpdateProperty(uuid, type);
+            socket.SendPacket(packet);
+        }
+
         private void ReceivePacket(byte[] data)
         {
             if (data == null)
@@ -329,6 +341,8 @@ namespace Monopoly.Net
                 OnGameStartDiceResult(packet); break;
             case PacketGameEnd packet:
                 OnGameEnd(packet); break;
+            case PacketGameWin packet:
+                OnGameWin(packet); break;
             case PacketRoundStart packet:
                 OnRoundStart(packet); break;
             case PacketRoundDiceResults packet:
@@ -345,6 +359,8 @@ namespace Monopoly.Net
                 OnPlayerValidated(packet); break;
             case PacketPlayerUpdateBalance packet:
                 OnBalanceUpdate(packet); break;
+            case PacketPlayerUpdateProperty packet:
+                OnPropertyUpdate(packet); break;
             case PacketPlayerEnterPrison packet:
                 OnEnterPrison(packet); break;
             case PacketPlayerExitPrison packet:

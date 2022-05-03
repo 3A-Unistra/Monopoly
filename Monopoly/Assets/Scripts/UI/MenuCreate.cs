@@ -62,6 +62,8 @@ namespace Monopoly.UI
         private bool canEdit;
 
         private Coroutine updateRoutine;
+        [HideInInspector]
+        public string CurrentHost;
 
         void Awake()
         {
@@ -124,7 +126,7 @@ namespace Monopoly.UI
 
             playerFields = new List<LobbyPlayerField>();
 
-            canEdit = true;
+            canEdit = false;
         }
 
         void Start()
@@ -141,29 +143,28 @@ namespace Monopoly.UI
         public void EnableEdits(bool edit)
         {
             canEdit = IsHost && edit; // can't edit for others
-            this.IsHost = edit;
-            InviteButton.enabled = edit;
-            StartButton.gameObject.SetActive(edit);
-            HostInputObject.SetActive(edit);
-            InviteField.SetActive(edit);
-            LobbyName.enabled = edit;
-            PlayersDropdown.enabled = edit;
-            BotsDropdown.enabled = edit;
-            PrivateSwitch.enabled = edit;
-            TurnDuration.enabled = edit;
-            TurnNumbers.enabled = edit;
-            AuctionsSwitch.enabled = edit;
-            BuyFirstTurnSwitch.enabled = edit;
-            DoubleOnGoSwitch.enabled = edit;
-            StartingBalance.enabled = edit;
+            InviteButton.enabled = IsHost;
+            StartButton.enabled = IsHost;
+            HostInputObject.SetActive(IsHost);
+            LobbyName.enabled = canEdit;
+            PlayersDropdown.enabled = canEdit;
+            BotsDropdown.enabled = canEdit;
+            PrivateSwitch.enabled = canEdit;
+            TurnDuration.enabled = canEdit;
+            TurnNumbers.enabled = canEdit;
+            AuctionsSwitch.enabled = canEdit;
+            BuyFirstTurnSwitch.enabled = canEdit;
+            DoubleOnGoSwitch.enabled = canEdit;
+            StartingBalance.enabled = canEdit;
+            PrivateSwitch.enabled = canEdit;
         }
 
-        public void UpdateFields()
+        public void UpdateFields(string hostUUID)
         {
-            UpdateFields(IsHost);
+            UpdateFields(IsHost, hostUUID);
         }
 
-        public void UpdateFields(bool isHost)
+        public void UpdateFields(bool isHost, string hostUUID)
         {
             this.IsHost = isHost;
             InviteButton.enabled = IsHost;
@@ -180,10 +181,14 @@ namespace Monopoly.UI
             BuyFirstTurnSwitch.enabled = IsHost;
             DoubleOnGoSwitch.enabled = IsHost;
             StartingBalance.enabled = IsHost;
-            // FIXME: INCORRECT BOOLEAN COMPARISON, NEED TO GRAB HOST FROM A
-            // PACKET OR SOMETHING
-            foreach (LobbyPlayerField field in playerFields)
-                field.SetHost(field.HandlesPlayer(ClientLobbyState.clientUUID));
+            PrivateSwitch.enabled = IsHost;
+            if (hostUUID != null)
+                CurrentHost = hostUUID;
+            if (CurrentHost != null)
+            {
+                foreach (LobbyPlayerField field in playerFields)
+                    field.SetHost(field.HandlesPlayer(CurrentHost));
+            }
         }
 
         void OnDestroy()
@@ -209,7 +214,7 @@ namespace Monopoly.UI
             ManagePlayerList(packet.Reason,
                 packet.PlayerId, packet.Username,
                 null, packet.Piece);
-            UpdateFields();
+            UpdateFields(CurrentHost);
         }
 
         private bool IsPlayerListed(string uuid)
@@ -388,7 +393,7 @@ namespace Monopoly.UI
         private IEnumerator SetPacketStatusRoomEnumerator()
         {
             yield return new WaitForSeconds(1); // wait a second before send to avoid spam
-
+            // TODO: store defaults in data
             if (!int.TryParse(TurnNumbers.text, out int turnNumber))
                 turnNumber = 200;
             if (!int.TryParse(TurnDuration.text, out int turnDuration))

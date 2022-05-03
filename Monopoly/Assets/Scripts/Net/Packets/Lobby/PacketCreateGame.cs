@@ -20,6 +20,9 @@ namespace Monopoly.Net.Packets
         [JsonProperty("player_token")]
         public string PlayerId { get; private set; }
 
+        [JsonProperty("username")]
+        public string Username { get; private set; }
+
         [JsonProperty("max_nb_players")]
         public int MaxPlayers { get; private set; }
 
@@ -50,7 +53,8 @@ namespace Monopoly.Net.Packets
         [JsonProperty("option_first_round_buy")]
         public bool CanBuyFirstCircle { get; private set; }
 
-        public PacketCreateGame(string playerId, int maxPlayers,
+        public PacketCreateGame(string playerId, string username,
+                                int maxPlayers,
                                 string password, string gameName,
                                 bool privateGame, int startBalance,
                                 bool auctions, bool doubleGo,
@@ -58,6 +62,7 @@ namespace Monopoly.Net.Packets
                                 bool canBuyFirstCircle) : base("CreateGame")
         {
             this.PlayerId = playerId;
+            this.Username = username;
             this.MaxPlayers = maxPlayers;
             this.Password = password;
             this.GameName = gameName;

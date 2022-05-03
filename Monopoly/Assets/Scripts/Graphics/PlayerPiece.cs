@@ -4,7 +4,7 @@
  * 
  * Date created : 06/04/2022
  * Author       : Finn RAYMENT <rayment@etu.unistra.fr>
- * Author       : Christophe PIERSON <chrsitophe.pierson@etu.unistra.fr>
+ *              : Christophe PIERSON <chrsitophe.pierson@etu.unistra.fr>
  */
 
 using System;
@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Monopoly.Runtime;
-using Monopoly.Graphics;
 
 namespace Monopoly.Graphics
 {
@@ -251,6 +250,7 @@ namespace Monopoly.Graphics
                     oldIdx = idx;
                     dirty = true;
                     animating = false;
+                    RuntimeData.current.SoundHandler.PlayPieceMove();
                 }
             }
         }

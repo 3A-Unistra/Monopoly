@@ -26,12 +26,13 @@ namespace Monopoly.UI
 
         private int timeoutSeconds;
         private float animationTime;
-        private bool canAnimate;
+        private bool canAnimate = false;
 
         void Start()
         {
-            Restart();
-            canAnimate = false;
+            slider.value = 1;
+            fill.color = colorFull;
+            animationTime = 0.0f;
         }
 
         void Update()
