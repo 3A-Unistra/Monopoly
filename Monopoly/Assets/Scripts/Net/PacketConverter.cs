@@ -85,6 +85,7 @@ namespace Monopoly.Net
             { "ActionExchangeCounter", typeof(PacketActionExchangeCounter) },
             { "ActionExchangeAccept", typeof(PacketActionExchangeAccept) },
             { "ActionExchangeCancel", typeof(PacketActionExchangeCancel) },
+            { "ActionExchangeTransfer", typeof(PacketActionExchangeTransfer) },
             { "PlayerUpdateBalance", typeof(PacketPlayerUpdateBalance) },
             { "ActionAuctionProperty", typeof(PacketActionAuctionProperty) },
             { "AuctionBid", typeof(PacketAuctionBid) },

@@ -80,7 +80,7 @@ namespace Monopoly.UI
             UIDirector.IsGameMenuOpen = false;
         }
 
-        private void UpdatePrice(int amount)
+        public void UpdatePrice(int amount)
         {
             CurrentBid = amount;
             CurrentPrice.text = string.Format(

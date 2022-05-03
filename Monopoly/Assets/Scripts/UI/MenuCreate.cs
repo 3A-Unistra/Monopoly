@@ -180,6 +180,8 @@ namespace Monopoly.UI
             BuyFirstTurnSwitch.enabled = IsHost;
             DoubleOnGoSwitch.enabled = IsHost;
             StartingBalance.enabled = IsHost;
+            // FIXME: INCORRECT BOOLEAN COMPARISON, NEED TO GRAB HOST FROM A
+            // PACKET OR SOMETHING
             foreach (LobbyPlayerField field in playerFields)
                 field.SetHost(field.HandlesPlayer(ClientLobbyState.clientUUID));
         }

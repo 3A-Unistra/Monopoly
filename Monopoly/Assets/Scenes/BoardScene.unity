@@ -4445,6 +4445,7 @@ MonoBehaviour:
   zoomSpeed: 10
   zoomAmount: 0.2
   modeSpeed: 0.25
+  desiredZoom: 0
   rotateLeftButton: {fileID: 1103222866}
   rotateRightButton: {fileID: 225738051}
   perspectiveButton: {fileID: 802087797}
@@ -4463,6 +4464,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
+  dragSpeed: 2
   pivotPoint: {fileID: 793538218}
   boundsMin: {x: -5, y: -5}
   boundsMax: {x: 5, y: 5}
@@ -6757,6 +6759,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1149962431 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6147894803872191047, guid: f75b4aeffde534c378e60f41d56717a5, type: 3}
+  m_PrefabInstance: {fileID: 1149962427}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bab7096eedd3436999b7a47b4dfc1fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1157771824
 GameObject:
   m_ObjectHideFlags: 0
@@ -7892,6 +7905,7 @@ MonoBehaviour:
   boardObject: {fileID: 2121834452}
   chatBox: {fileID: 1149962429}
   chatScroller: {fileID: 1149962430}
+  chatHelper: {fileID: 1149962431}
   playerInfo: {fileID: 718354055}
   parkingMoneyText: {fileID: 1806639933}
   actionText: {fileID: 1283875477}

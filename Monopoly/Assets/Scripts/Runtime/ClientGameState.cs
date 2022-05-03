@@ -41,6 +41,7 @@ namespace Monopoly.Runtime
 
         public TMP_Text chatBox;
         public ScrollRect chatScroller;
+        public ChatHelper chatHelper;
         private bool scrollMoved = false;
         public UIPlayerInfo playerInfo;
 
@@ -236,6 +237,7 @@ namespace Monopoly.Runtime
             if (chatBox.text.Length > 0)
                 chatBox.text += "<br>";
             chatBox.text += msg;
+            chatHelper.Notify();
             if(!scrollMoved)
                 StartCoroutine(ScrollUpdate());
             Debug.Log(msg);
@@ -336,6 +338,7 @@ namespace Monopoly.Runtime
             comm.OnExchangeDecline += OnExchangeDecline;
             comm.OnExchangeCounter += OnExchangeCounter;
             comm.OnExchangeCancel += OnExchangeCancel;
+            comm.OnExchangeTransfer += OnExchangeTransfer;
             comm.OnAuctionStart += OnAuction;
             comm.OnAuctionBid += OnAuctionBid;
             comm.OnAuctionEnd += OnAuctionEnd;
@@ -628,6 +631,44 @@ namespace Monopoly.Runtime
             UIDirector.IsGameMenuOpen = false;
         }
 
+        public void OnExchangeTransfer(PacketActionExchangeTransfer packet)
+        {
+            Player from = Player.PlayerFromUUID(players, packet.FromId);
+            if (from == null)
+            {
+                Debug.LogWarning(string.Format("Could not find player '{0}'!",
+                                               packet.FromId));
+                return;
+            }
+            Player to = Player.PlayerFromUUID(players, packet.ToId);
+            if (to == null)
+            {
+                Debug.LogWarning(string.Format("Could not find player '{0}'!",
+                                               packet.ToId));
+                return;
+            }
+            if (packet.Type == PacketActionExchangeTransfer.TransferType.PROPERTY)
+            {
+                Square s = Board.GetSquare(packet.Value);
+                if (s.IsOwnable())
+                {
+                    OwnableSquare os = (OwnableSquare) s;
+                    os.Owner = to;
+                    SquareCollider.Colliders[os.Id].SetSphereChild(to);
+                    //LogAction(string.Format(
+                    //    StringLocaliser.GetString("on_buy_property"),
+                    //    PlayerNameLoggable(p),
+                    //    OwnableNameLoggable(os)));
+                }
+            }
+            else
+            {
+                // TODO: IMPLEMENT CARD TRANSFER
+            }
+            if (BoardCardDisplay.current.rendering)
+                BoardCardDisplay.current.Redraw();
+        }
+
         public void OnAuction(PacketActionAuctionProperty packet)
         {
             Player p = Player.PlayerFromUUID(players, packet.PlayerId);
@@ -642,8 +683,9 @@ namespace Monopoly.Runtime
                 Instantiate(AuctionPrefab, canvas.transform);
             currentAuction = auctionMenu.GetComponent<MenuAuction>();
             currentAuction.Index = packet.Property;
-            currentAuction.CurrentBid = packet.MinBid;
+            currentAuction.UpdatePrice(packet.MinBid);
             currentAuction.TimeoutDuration = timeouts["AUCTION_TOUR_WAIT"];
+            auctionButton.gameObject.SetActive(false);
         }
 
         public void OnAuctionBid(PacketAuctionBid packet)
@@ -662,6 +704,7 @@ namespace Monopoly.Runtime
             int houseId = currentAuction.Index;
             Destroy(currentAuction.gameObject);
             currentAuction = null;
+            auctionButton.gameObject.SetActive(false);
             UIDirector.IsGameMenuOpen = false;
             if (!packet.PlayerId.Trim().Equals(""))
             {
@@ -690,7 +733,6 @@ namespace Monopoly.Runtime
                     }
                 }
             }
-            // TODO: update timeout
         }
 
         public void OnError(PacketException packet)
