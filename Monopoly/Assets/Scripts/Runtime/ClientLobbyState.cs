@@ -335,8 +335,11 @@ namespace Monopoly.Runtime
         public void OnNewHost(PacketNewHost packet)
         {
             if (MenuCreate.current != null)
+            {
                 MenuCreate.current.UpdateFields(packet.PlayerId.Equals(clientUUID),
                                                 packet.PlayerId);
+                MenuCreate.current.EnableEdits(packet.PlayerId.Equals(clientUUID));
+            }
         }
 
         public void OnAppletPrepare(PacketAppletPrepare packet)

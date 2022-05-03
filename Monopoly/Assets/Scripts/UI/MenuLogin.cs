@@ -53,7 +53,7 @@ namespace Monopoly.UI
                 return;
             }
             StartCoroutine(
-                Login("monopoly2.schawnndev.fr", 80, username, password));
+                Login("mai-projet-integrateur.u-strasbg.fr/vmProjetIntegrateurgrp4-1/", 80, username, password));
             // FIXME: this is temporary to just let us into the board scene for
             // testing
             //Instantiate(LobbyMenuPrefab, transform.parent);
