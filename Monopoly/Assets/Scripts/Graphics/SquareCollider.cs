@@ -546,7 +546,11 @@ namespace Monopoly.Graphics
         public void RemoveSphereChild()
         {
             owner = null;
-            // TODO: animate
+            ownerTime = 0.0f;
+            dirtyOwner = true;
+            initPos = ownerChild.gameObject.transform.localPosition;
+            endPos = initPos;
+            endPos.y = 100.0f;            
         }
 
         private void AnimateSphere()
