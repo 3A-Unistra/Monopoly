@@ -25,6 +25,8 @@ namespace Monopoly.UI
 
         public Image Avatar;
         public Image ActiveKnob;
+        public Image ChanceKnob;
+        public Image CommunityKnob;
         public TMP_Text Username;
         public TMP_Text Money;
         public TMP_Text MoneyModifier;
@@ -43,6 +45,8 @@ namespace Monopoly.UI
         void Start()
         {
             ActiveKnob.gameObject.SetActive(false);
+            ChanceKnob.gameObject.SetActive(false);
+            CommunityKnob.gameObject.SetActive(false);
             MoneyModifier.gameObject.SetActive(false);
             coroutine = null;
         }
@@ -116,6 +120,16 @@ namespace Monopoly.UI
             }
             lastAmount = amount;
             coroutine = null;
+        }
+
+        public void SetChance(bool on)
+        {
+            ChanceKnob.gameObject.SetActive(on);
+        }
+
+        public void SetCommunity(bool on)
+        {
+            CommunityKnob.gameObject.SetActive(on);
         }
 
         public bool HandlesPlayer(Player player)

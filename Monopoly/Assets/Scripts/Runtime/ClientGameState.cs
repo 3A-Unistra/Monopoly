@@ -1090,18 +1090,21 @@ namespace Monopoly.Runtime
             exitPrisonCardButton.gameObject.SetActive(false);
             Player p = Player.PlayerFromUUID(players, packet.PlayerId);
             PlayerField pinfo = playerInfo.GetPlayerField(p);
+            // TODO: messages
             switch (packet.Reason)
             {
             case PacketRoundDiceResults.ResultEnum.JAIL_CARD_CHANCE:
                 Debug.Log(string.Format(
                     "Player {0} used a chance jail card.", packet.PlayerId));
                 pinfo.Dice.HideDice();
+                pinfo.SetChance(false);
                 break;
             case PacketRoundDiceResults.ResultEnum.JAIL_CARD_COMMUNITY:
                 Debug.Log(string.Format(
                     "Player {0} used a community jail card.",
                     packet.PlayerId));
                 pinfo.Dice.HideDice();
+                pinfo.SetCommunity(false);
                 break;
             case PacketRoundDiceResults.ResultEnum.JAIL_PAY:
                 Debug.Log(string.Format(
@@ -1168,6 +1171,15 @@ namespace Monopoly.Runtime
                 {
                     val = cardData[packet.CardId - 1]["value"];
                     message = string.Format(message, val);
+                }
+                if (cardType == Card.CardType.LEAVE_JAIL)
+                {
+                    Player p = Player.PlayerFromUUID(players, packet.PlayerId);
+                    PlayerField pinfo = playerInfo.GetPlayerField(p);
+                    if (type == TokenCard.CardType.CHANCE)
+                        pinfo.SetChance(true);
+                    else
+                        pinfo.SetCommunity(true);
                 }
             }
             catch (System.Exception)

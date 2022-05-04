@@ -81,6 +81,8 @@
     "property_longtext": "If a player owns ALL the Sites of any Colour-Group, the rent is Doubled on Unimproved Sites in that group.",
     "museum_longtext1": "    If one \"Museum\" is owned rent is 4 times amount shown on dice.",
     "museum_longtext2": "    If both \"Museums\" are owned rent is 10 times amount shown on dice.",
+    "mortgage_longtext": "Card must be turned this side up if property is mortgaged",
+    "mortgage_pricetext": "Mortgaged for {0} €",
     "mortgage_value": "MORTGAGE Value €",
     "tram_condition": "If {0} tram stops are owned",
     "site_only": "Site only",

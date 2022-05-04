@@ -24,13 +24,12 @@ namespace Monopoly.UI
     public class CardDisplay : MonoBehaviour
     {
 
-        // TODO: NULL checks!
-
         private RectTransform rect;
 
         public Transform hierarchyProperty;
         public Transform hierarchyTram;
         public Transform hierarchyMuseum;
+        public Transform hierarchyMortgage;
 
         // property UI pieces
         public TMP_Text titleProperty;
@@ -62,6 +61,11 @@ namespace Monopoly.UI
         public TMP_Text museumMortgageValue;
         public TMP_Text museumMortgageValueText;
 
+        // mortgage UI pieces
+        public TMP_Text titleMortgage;
+        public TMP_Text mortgageText;
+        public TMP_Text mortgageInfo;
+
         void Awake()
         {
             rect = GetComponent<RectTransform>();
@@ -73,6 +77,7 @@ namespace Monopoly.UI
             hierarchyProperty.gameObject.SetActive(false);
             hierarchyTram.gameObject.SetActive(false);
             hierarchyMuseum.gameObject.SetActive(false);
+            hierarchyMortgage.gameObject.SetActive(false);
             gameObject.SetActive(false);
         }
 
@@ -82,6 +87,7 @@ namespace Monopoly.UI
             hierarchyProperty.gameObject.SetActive(true);
             hierarchyTram.gameObject.SetActive(false);
             hierarchyMuseum.gameObject.SetActive(false);
+            hierarchyMortgage.gameObject.SetActive(false);
             gameObject.SetActive(true);
             string title = StringLocaliser.GetString(
                 string.Format("property{0}", idx));
@@ -157,6 +163,7 @@ namespace Monopoly.UI
             hierarchyProperty.gameObject.SetActive(false);
             hierarchyTram.gameObject.SetActive(true);
             hierarchyMuseum.gameObject.SetActive(false);
+            hierarchyMortgage.gameObject.SetActive(false);
             gameObject.SetActive(true);
             string title = StringLocaliser.GetString(
                 string.Format("station{0}", idx));
@@ -191,6 +198,7 @@ namespace Monopoly.UI
             hierarchyProperty.gameObject.SetActive(false);
             hierarchyTram.gameObject.SetActive(false);
             hierarchyMuseum.gameObject.SetActive(true);
+            hierarchyMortgage.gameObject.SetActive(false);
             gameObject.SetActive(true);
             string title = StringLocaliser.GetString(
                 string.Format("museum{0}", idx));
@@ -204,8 +212,42 @@ namespace Monopoly.UI
             museumMortgageValue.text = (data["buy_price"] / 2).ToString();
         }
 
+        private void ShowMortgage(int idx)
+        {
+            Square s = ClientGameState.current.Board.GetSquare(idx);
+            if (!s.IsOwnable())
+                return;
+            OwnableSquare os = (OwnableSquare) s;
+            string name = os.Name;
+            hierarchyProperty.gameObject.SetActive(false);
+            hierarchyTram.gameObject.SetActive(false);
+            hierarchyMuseum.gameObject.SetActive(false);
+            hierarchyMortgage.gameObject.SetActive(true);
+            gameObject.SetActive(true);
+            titleMortgage.text = name.ToUpper();
+            mortgageText.text = string.Format(
+                StringLocaliser.GetString("mortgage_pricetext"),
+                (int) Mathf.Floor(os.Price * 0.6f));
+            mortgageInfo.text = StringLocaliser.GetString("mortgage_longtext");
+        }
+
         public void Render(int square)
         {
+            if (square < 0 || square > 39)
+            {
+                HideAll();
+                return;
+            }
+            Square s = ClientGameState.current.Board.GetSquare(square);
+            if (s.IsOwnable())
+            {
+                OwnableSquare os = (OwnableSquare) s;
+                if (os.Mortgaged)
+                {
+                    ShowMortgage(square);
+                    return;
+                }
+            }
             if (PropertySquare.IsPropertyIndex(square))
                 ShowProperty(square);
             else if (StationSquare.IsStationIndex(square))
