@@ -34,6 +34,7 @@ namespace Monopoly.Runtime
         public static string address;
         public static int port;
         public static ConnectMode connectMode;
+        public static bool secureMode = false;
 
         public static string desiredClientUsername;
 
@@ -119,7 +120,7 @@ namespace Monopoly.Runtime
             else
                 par.Add("token", userId);
             PacketSocket socket =
-                PacketSocket.CreateSocket(address, port, par, null, false);
+                PacketSocket.CreateSocket(address, port, par, null, secureMode);
             socket.Connect();
             // wait for the socket to open or die
             yield return new WaitUntil(delegate
@@ -130,7 +131,7 @@ namespace Monopoly.Runtime
             MenuLogin loginConnector = null;
             if (mode == ConnectMode.BYIP)
             {
-                connectConnector = (MenuConnect)connector;
+                connectConnector = (MenuConnect) connector;
                 ClientLobbyState.token = userId;
                 ClientLobbyState.clientUsername = userId;
             }
