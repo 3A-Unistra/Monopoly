@@ -92,7 +92,8 @@ namespace Monopoly.Runtime
                   paramDic.ContainsKey("token") &&
                   paramDic.ContainsKey("game") &&
                   paramDic.ContainsKey("uuid") &&
-                  paramDic.ContainsKey("online")))
+                  paramDic.ContainsKey("online") &&
+                  paramDic.ContainsKey("secure")))
             {
                 // crap json data because I wasn't given the right data
                 // do nothing and die
@@ -123,6 +124,7 @@ namespace Monopoly.Runtime
                     ClientLobbyState.ConnectMode.BYIP;
             ClientLobbyState.currentLobby = paramDic["game"].Trim();
             ClientLobbyState.clientUUID = paramDic["uuid"].Trim();
+            ClientLobbyState.secureMode = paramDic["secure"].Trim().Equals("1");
 
             Debug.Log("WebGL has been bootstrapped!");
 

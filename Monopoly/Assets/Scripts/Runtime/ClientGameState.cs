@@ -199,7 +199,8 @@ namespace Monopoly.Runtime
                 string gameToken;
                 gameToken = ClientLobbyState.currentLobby;
                 PacketSocket socket =
-                    PacketSocket.CreateSocket(address, port, par, gameToken, false);
+                    PacketSocket.CreateSocket(address, port, par, gameToken,
+                                              ClientLobbyState.secureMode);
                 socket.Connect();
                 // wait for the socket to open or die
                 yield return new WaitUntil(delegate
