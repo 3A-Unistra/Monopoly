@@ -60,7 +60,8 @@ namespace Monopoly.UI
             AuctionText.text = StringLocaliser.GetString("auction");
             PriceText.text = StringLocaliser.GetString("price");
             CurrentBidText.text = StringLocaliser.GetString("current_bid");
-            BidField.placeholder.GetComponent<TextMeshProUGUI>().text = StringLocaliser.GetString("input_bid");
+            BidField.placeholder.GetComponent<TextMeshProUGUI>().text =
+                StringLocaliser.GetString("input_bid");
 
             BidButton.enabled = false;
 
@@ -126,7 +127,6 @@ namespace Monopoly.UI
                 val > CurrentBid)
             {
                 // valid bid amount
-                // TODO: add check for current high price
                 BidField.textComponent.color = Color.black;
                 BidButton.enabled = true;
                 bidWish = val;
@@ -157,6 +157,7 @@ namespace Monopoly.UI
             UpdatePrice(amount);
             RuntimeData.current.SoundHandler.PlayAuctionBid();
             Timeout.Restart();
+            ValidateInput(BidField.text);
         }
 
     }
