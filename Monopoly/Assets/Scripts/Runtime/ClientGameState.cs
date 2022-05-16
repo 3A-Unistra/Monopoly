@@ -1181,7 +1181,8 @@ namespace Monopoly.Runtime
                 // get card data for formatting
                 if (cardType == Card.CardType.GOTO_POSITION ||
                     cardType == Card.CardType.CLOSEST_STATION ||
-                    cardType == Card.CardType.CLOSEST_COMPANY)
+                    cardType == Card.CardType.CLOSEST_COMPANY ||
+                    cardType == Card.CardType.GOTO_JAIL)
                 {
                     val = 200; // these cards typically say to pass go for $200
                     if (cardType == Card.CardType.GOTO_POSITION &&
