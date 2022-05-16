@@ -102,7 +102,6 @@ namespace Monopoly.UI
             ClientLobbyState.desiredClientUsername = usernameSelect;
             PlayerPrefs.SetString("favourite_offlineusername", usernameSelect);
             PlayerPrefs.SetInt("favourite_secure", secure ? 1 : 0);
-            // TODO: UPDATE TOKEN AND SHIT FROM LOCAL FILE
             ClientLobbyState.secureMode = secure;
             state.StartCoroutine(
                 state.Connect(address, port,

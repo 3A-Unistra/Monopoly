@@ -139,7 +139,6 @@ namespace Monopoly.Runtime
             {
                 loginConnector = (MenuLogin) connector;
                 ClientLobbyState.token = token;
-                // TODO: CHANGE TO THE ACTUAL USERNAME
                 ClientLobbyState.clientUsername = userId;
             }
             if (socket.HasError())
