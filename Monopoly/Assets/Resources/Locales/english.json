@@ -127,6 +127,7 @@
     "quit": "Quit",
     "play_online": "Play online",
     "connect_ip": "Connect to IP",
+    "connect_secure": "Use secure connection",
     "search": "Search",
     "join": "Join",
     "main_menu": "Main menu",
