@@ -126,6 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerUUID: 
+  renderer: {fileID: 4768739828615748105}
   step1: 0
   moveSpeed: 8
   playerIndex: 0

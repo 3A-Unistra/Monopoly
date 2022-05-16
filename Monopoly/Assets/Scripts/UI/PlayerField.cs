@@ -38,9 +38,10 @@ namespace Monopoly.UI
 
         private Coroutine coroutine;
 
-        private static readonly Color playerColor =
-            new Color(1.0f, 0.86f, 0.32f);
-        private static readonly Color otherColor = Color.white;
+        private Color color;
+
+        //private static readonly Color playerColor =
+        //    new Color(1.0f, 0.86f, 0.32f);
 
         void Start()
         {
@@ -51,7 +52,7 @@ namespace Monopoly.UI
             coroutine = null;
         }
 
-        public void SetUser(Player player, bool me)
+        public void SetUser(Player player, Color color, bool me)
         {
             Username.text = player.Name;
             int avatar = player.CharacterIdx;
@@ -60,7 +61,10 @@ namespace Monopoly.UI
             {
                 Avatar.sprite = RuntimeData.current.pieceImages[avatar];
             }
-            Username.color = me ? playerColor : otherColor;
+            if (me)
+                Username.fontStyle = FontStyles.Italic;
+            Username.color = color; //me ? playerColor : otherColor;
+            this.color = color;
             uuid = player.Id;
             lastAmount = player.Money;
             SetMoney(player.Money, false);
@@ -140,6 +144,11 @@ namespace Monopoly.UI
         public bool HandlesPlayer(string uuid)
         {
             return uuid.Equals(this.uuid);
+        }
+
+        public Color getColor()
+        {
+            return color;
         }
 
     }

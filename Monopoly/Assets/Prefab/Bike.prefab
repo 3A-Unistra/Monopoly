@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerUUID: 
+  renderer: {fileID: 440090052211113446}
   step1: 0
   moveSpeed: 8
   playerIndex: 0

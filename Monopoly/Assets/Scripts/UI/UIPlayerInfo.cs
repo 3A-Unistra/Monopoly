@@ -25,12 +25,12 @@ namespace Monopoly.UI
         [HideInInspector]
         public List<PlayerField> FieldList;
 
-        public void AddPlayer(Player player, bool me)
+        public void AddPlayer(Player player, Color color, bool me)
         {
             GameObject field =
                 Instantiate(PlayerFieldPrefab, FieldObject.transform);
             PlayerField fieldScript = field.GetComponent<PlayerField>();
-            fieldScript.SetUser(player, me);
+            fieldScript.SetUser(player, color, me);
             FieldList.Add(fieldScript);
         }
 

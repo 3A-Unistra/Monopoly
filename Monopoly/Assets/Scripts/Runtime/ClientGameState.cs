@@ -36,6 +36,8 @@ namespace Monopoly.Runtime
         public GameObject ExchangePrefab;
         public GameObject AuctionPrefab;
 
+        public Color[] playerColors;
+
         public GameObject[] piecePrefabs;
         public GameObject boardObject;
 
@@ -391,9 +393,10 @@ namespace Monopoly.Runtime
             pp.playerUUID = p.Id;
             pp.playerIndex = p.CharacterIdx;
             pp.MoveToPosition(0, true, null);
+            pp.SetColor(playerColors[p.CharacterIdx]);
             playerDoneMove = true;
             playerPieces.Add(pp);
-            playerInfo.AddPlayer(p, me);
+            playerInfo.AddPlayer(p, playerColors[p.CharacterIdx], me);
             if (me)
                 myPlayer = p;
         }
@@ -1232,7 +1235,8 @@ namespace Monopoly.Runtime
             foreach (PacketGameStateInternal playerData in packet.Players)
             {
                 Player player = new Player(playerData.PlayerId,
-                    playerData.PlayerName, playerData.Money, playerData.Piece);
+                    playerData.PlayerName, playerData.Money,
+                    playerData.Piece-1);
                 ManuallyRegisterPlayer(player,
                                        playerData.PlayerId.Equals(clientUUID));
                 playerInfo.SetMoney(player, player.Money);
