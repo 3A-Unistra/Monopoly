@@ -33,6 +33,14 @@ namespace Monopoly.UI
         public Button LeaveJailCommunityLeftButton;
         public Button LeaveJailChanceRightButton;
         public Button LeaveJailCommunityRightButton;
+        public TMP_Text LeaveJailChanceLeftText;
+        public TMP_Text LeaveJailCommunityLeftText;
+        public TMP_Text LeaveJailChanceRightText;
+        public TMP_Text LeaveJailCommunityRightText;
+        public bool LeaveJailChanceLeftActive;
+        public bool LeaveJailCommunityLeftActive;
+        public bool LeaveJailChanceRightActive;
+        public bool LeaveJailCommunityRightActive;
         public TMP_InputField MoneyPlayerLeft;
         public TMP_InputField MoneyPlayerRight;
 
@@ -74,6 +82,9 @@ namespace Monopoly.UI
         private bool decisionToMake;
         private bool isCounter;
 
+        private readonly Color cardActiveColor = Color.white;
+        private readonly Color cardInactiveColor = Color.gray;
+
         void Awake()
         {
             SendButton.onClick.AddListener(SendAction);
@@ -81,10 +92,14 @@ namespace Monopoly.UI
             RefuseButton.onClick.AddListener(RefuseAction);
             CounterButton.onClick.AddListener(CounterAction);
             AcceptButton.onClick.AddListener(AcceptAction);
-            LeaveJailChanceLeftButton.onClick.AddListener(LeaveJailChanceLeftAction);
-            LeaveJailCommunityLeftButton.onClick.AddListener(LeaveJailCommunityLeftAction);
-            LeaveJailChanceRightButton.onClick.AddListener(LeaveJailChanceRightAction);
-            LeaveJailCommunityRightButton.onClick.AddListener(LeaveJailCommunityRightAction);
+            LeaveJailChanceLeftButton.onClick.AddListener(
+                LeaveJailChanceLeftAction);
+            LeaveJailCommunityLeftButton.onClick.AddListener(
+                LeaveJailCommunityLeftAction);
+            LeaveJailChanceRightButton.onClick.AddListener(
+                LeaveJailChanceRightAction);
+            LeaveJailCommunityRightButton.onClick.AddListener(
+                LeaveJailCommunityRightAction);
             CardHideButtonLeft.onClick.AddListener(HideCardDisplayLeft);
             CardHideButtonRight.onClick.AddListener(HideCardDisplayRight);
 
@@ -99,6 +114,14 @@ namespace Monopoly.UI
             ExchangeText.text = StringLocaliser.GetString("exchange");
             RefuseText.text = StringLocaliser.GetString("refuse");
             ReturnText.text = StringLocaliser.GetString("return");
+            LeaveJailChanceLeftText.text =
+                StringLocaliser.GetString("chance_short");
+            LeaveJailCommunityLeftText.text =
+                StringLocaliser.GetString("community_short");
+            LeaveJailChanceRightText.text =
+                StringLocaliser.GetString("chance_short");
+            LeaveJailCommunityRightText.text =
+                StringLocaliser.GetString("community_short");
             MoneyPlayerLeft.placeholder.GetComponent<TextMeshProUGUI>().text =
                 StringLocaliser.GetString("input_send_money");
             MoneyPlayerRight.placeholder.GetComponent<TextMeshProUGUI>().text =
@@ -106,6 +129,8 @@ namespace Monopoly.UI
 
             CardListLeft = new List<MiniCard>();
             CardListRight = new List<MiniCard>();
+
+            ResetCardButtons();
 
             firstRound = true;
             decisionToMake = false;
@@ -180,7 +205,8 @@ namespace Monopoly.UI
         private void DispatchCard(int idx, bool selected, bool right)
         {
             ClientGameState.current.DoExchangeSelectTrade(right, idx,
-                Net.Packets.PacketActionExchangeTradeSelect.SelectType.PROPERTY);
+                Net.Packets.PacketActionExchangeTradeSelect.
+                SelectType.PROPERTY);
         }
 
         private void UpdateEditRights()
@@ -196,10 +222,14 @@ namespace Monopoly.UI
             RefuseButton.gameObject.SetActive(decisionToMake && active);
             CounterButton.gameObject.SetActive(decisionToMake && active);
             AcceptButton.gameObject.SetActive(decisionToMake && active);
-            LeaveJailChanceLeftButton.enabled = !decisionToMake && active;
-            LeaveJailChanceRightButton.enabled = !decisionToMake && active;
-            LeaveJailCommunityLeftButton.enabled = !decisionToMake && active;
-            LeaveJailCommunityRightButton.enabled = !decisionToMake && active;
+            LeaveJailChanceLeftButton.gameObject.SetActive(
+                !decisionToMake && active && playerPrimary.ChanceJailCard);
+            LeaveJailChanceRightButton.gameObject.SetActive(
+                !decisionToMake && active && playerSecondary.ChanceJailCard);
+            LeaveJailCommunityLeftButton.gameObject.SetActive(
+                !decisionToMake && active && playerPrimary.CommunityJailCard);
+            LeaveJailCommunityRightButton.gameObject.SetActive(
+                !decisionToMake && active && playerSecondary.CommunityJailCard);
 
             foreach (MiniCard m in CardListLeft)
                 m.SelectButton.enabled = !decisionToMake && active;
@@ -272,22 +302,30 @@ namespace Monopoly.UI
 
         private void LeaveJailChanceLeftAction()
         {
-
+            ClientGameState.current.DoExchangeSelectTrade(false, 0,
+                Net.Packets.PacketActionExchangeTradeSelect.
+                SelectType.LEAVE_JAIL_CHANCE_CARD);
         }
 
         private void LeaveJailCommunityLeftAction()
         {
-
+            ClientGameState.current.DoExchangeSelectTrade(false, 0,
+                Net.Packets.PacketActionExchangeTradeSelect.
+                SelectType.LEAVE_JAIL_COMMUNITY_CARD);
         }
 
         private void LeaveJailChanceRightAction()
         {
-
+            ClientGameState.current.DoExchangeSelectTrade(true, 0,
+                Net.Packets.PacketActionExchangeTradeSelect.
+                SelectType.LEAVE_JAIL_CHANCE_CARD);
         }
 
         private void LeaveJailCommunityRightAction()
         {
-
+            ClientGameState.current.DoExchangeSelectTrade(true, 0,
+                Net.Packets.PacketActionExchangeTradeSelect.
+                SelectType.LEAVE_JAIL_COMMUNITY_CARD);
         }
 
         public void Swap()
@@ -301,8 +339,10 @@ namespace Monopoly.UI
             List<int> rightPropertyChoice = GetPropertySelectionRight();
             int leftMoney = GetMoneyLeft();
             int rightMoney = GetMoneyRight();
-            // FIXME: add community/chance swap
-            //bool leftCommunity = ;
+            bool leftChance = GetSelectCard(false, false);
+            bool rightChance = GetSelectCard(false, true);
+            bool leftCommunity = GetSelectCard(true, false);
+            bool rightCommunity = GetSelectCard(true, true);
 
             PopulateLeft(right, rightPropertyChoice);
             PopulateRight(left, leftPropertyChoice);
@@ -311,6 +351,15 @@ namespace Monopoly.UI
                 ToggleSelectProperty(i, true);
             foreach (int i in rightPropertyChoice)
                 ToggleSelectProperty(i, false);
+
+            if (leftChance)
+                ToggleSelectCard(false, false);
+            if (rightChance)
+                ToggleSelectCard(false, true);
+            if (leftCommunity)
+                ToggleSelectCard(true, false);
+            if (rightCommunity)
+                ToggleSelectCard(true, true);
 
             SetMoneyLeft(rightMoney);
             SetMoneyRight(leftMoney);
@@ -327,6 +376,10 @@ namespace Monopoly.UI
 
             List<int> leftPropertyChoice = GetPropertySelectionLeft();
             List<int> rightPropertyChoice = GetPropertySelectionRight();
+            bool leftChance     = GetSelectCard(false, false);
+            bool rightChance    = GetSelectCard(false, true);
+            bool leftCommunity  = GetSelectCard(true,  false);
+            bool rightCommunity = GetSelectCard(true,  true);
 
             PopulateLeft(playerPrimary);
             PopulateRight(playerSecondary);
@@ -335,6 +388,15 @@ namespace Monopoly.UI
                 ToggleSelectProperty(i, false);
             foreach (int i in rightPropertyChoice)
                 ToggleSelectProperty(i, true);
+
+            if (leftChance)
+                ToggleSelectCard(false, false);
+            if (rightChance)
+                ToggleSelectCard(false, true);
+            if (leftCommunity)
+                ToggleSelectCard(true, false);
+            if (rightCommunity)
+                ToggleSelectCard(true, true);
 
             HideCardDisplayLeft();
             HideCardDisplayRight();
@@ -358,7 +420,8 @@ namespace Monopoly.UI
                 OwnableSquare os = (OwnableSquare)s;
                 if (os.Owner != p)
                     continue;
-                GameObject cardObject = Instantiate(MiniCardPrefab, CardViewportLeft.transform);
+                GameObject cardObject = Instantiate(MiniCardPrefab,
+                                                    CardViewportLeft.transform);
                 MiniCard cardScript = cardObject.GetComponent<MiniCard>();
                 cardScript.Price.text = os.Price.ToString();
                 cardScript.Index = s.Id;
@@ -380,6 +443,7 @@ namespace Monopoly.UI
                 !isCounter);
             HideCardDisplayLeft();
             UpdateEditRights();
+            ResetCardButtons();
         }
 
         public void PopulateRight(Player p)
@@ -399,7 +463,8 @@ namespace Monopoly.UI
                 OwnableSquare os = (OwnableSquare)s;
                 if (os.Owner != p)
                     continue;
-                GameObject cardObject = Instantiate(MiniCardPrefab, CardViewportRight.transform);
+                GameObject cardObject =
+                    Instantiate(MiniCardPrefab, CardViewportRight.transform);
                 MiniCard cardScript = cardObject.GetComponent<MiniCard>();
                 cardScript.Price.text = os.Price.ToString();
                 cardScript.Index = s.Id;
@@ -431,12 +496,31 @@ namespace Monopoly.UI
                     continue;
                 }
                 playerList.Add(p);
-                PlayerRightDropdown.options.Add(new TMP_Dropdown.OptionData(p.Name));
+                PlayerRightDropdown.options.Add(
+                    new TMP_Dropdown.OptionData(p.Name));
             }
             PlayerRightDropdown.value = 0;
             PopulateRight(playerList[0]);
             if (playerPrimary == ClientGameState.current.myPlayer)
-                ClientGameState.current.DoExchangeSelectPlayer(playerList[0].Id);
+            {
+                ClientGameState.current.DoExchangeSelectPlayer(
+                    playerList[0].Id);
+            }
+        }
+
+        private void ResetCardButtons()
+        {
+            ColorBlock c = LeaveJailCommunityLeftButton.colors;
+            c.normalColor = cardInactiveColor;
+            LeaveJailCommunityLeftButton.colors = c;
+            LeaveJailCommunityRightButton.colors = c;
+            LeaveJailChanceLeftButton.colors = c;
+            LeaveJailChanceRightButton.colors = c;
+
+            LeaveJailChanceLeftActive = false;
+            LeaveJailCommunityLeftActive = false;
+            LeaveJailChanceRightActive = false;
+            LeaveJailCommunityRightActive = false;
         }
 
         public void ToggleSelectProperty(int index, bool right)
@@ -449,6 +533,70 @@ namespace Monopoly.UI
                     m.ToggleSelect(false);
                     break;
                 }
+            }
+        }
+
+        public void ToggleSelectCard(bool community, bool right)
+        {
+            if (community)
+            {
+                if (right)
+                {
+                    LeaveJailCommunityRightActive =
+                        !LeaveJailCommunityRightActive;
+                    ColorBlock c = LeaveJailCommunityRightButton.colors;
+                    c.normalColor = LeaveJailCommunityRightActive ?
+                                    cardActiveColor : cardInactiveColor;
+                    LeaveJailCommunityRightButton.colors = c;
+                }
+                else
+                {
+                    LeaveJailCommunityLeftActive =
+                        !LeaveJailCommunityLeftActive;
+                    ColorBlock c = LeaveJailCommunityLeftButton.colors;
+                    c.normalColor = LeaveJailCommunityLeftActive ?
+                                    cardActiveColor : cardInactiveColor;
+                    LeaveJailCommunityLeftButton.colors = c;
+                }
+            }
+            else
+            {
+                if (right)
+                {
+                    LeaveJailChanceRightActive =
+                        !LeaveJailChanceRightActive;
+                    ColorBlock c = LeaveJailChanceRightButton.colors;
+                    c.normalColor = LeaveJailChanceRightActive ?
+                                    cardActiveColor : cardInactiveColor;
+                    LeaveJailChanceRightButton.colors = c;
+                }
+                else
+                {
+                    LeaveJailChanceLeftActive =
+                        !LeaveJailChanceLeftActive;
+                    ColorBlock c = LeaveJailChanceLeftButton.colors;
+                    c.normalColor = LeaveJailChanceLeftActive ?
+                                    cardActiveColor : cardInactiveColor;
+                    LeaveJailChanceLeftButton.colors = c;
+                }
+            }
+        }
+
+        private bool GetSelectCard(bool community, bool right)
+        {
+            if (community)
+            {
+                if (right)
+                    return LeaveJailCommunityRightActive;
+                else
+                    return LeaveJailCommunityLeftActive;
+            }
+            else
+            {
+                if (right)
+                    return LeaveJailChanceRightActive;
+                else
+                    return LeaveJailChanceLeftActive;
             }
         }
 
@@ -523,7 +671,8 @@ namespace Monopoly.UI
         private bool ValidateInput(string strval, bool right, out int val)
         {
             strval = strval.Trim();
-            int playerMoney = right ? playerSecondary.Money : playerPrimary.Money;
+            int playerMoney =
+                right ? playerSecondary.Money : playerPrimary.Money;
             if (int.TryParse(strval, out val) &&
                 val <= playerMoney && val > 0)
             {

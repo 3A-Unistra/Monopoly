@@ -603,7 +603,16 @@ namespace Monopoly.Runtime
                 currentExchange.ToggleSelectProperty
                     (packet.Value, packet.AffectsRecipient);
                 break;
-            // TODO: implement the rest
+            case PacketActionExchangeTradeSelect.SelectType.
+                 LEAVE_JAIL_CHANCE_CARD:
+                currentExchange.ToggleSelectCard(
+                    false, packet.AffectsRecipient);
+                break;
+            case PacketActionExchangeTradeSelect.SelectType.
+                 LEAVE_JAIL_COMMUNITY_CARD:
+                currentExchange.ToggleSelectCard(
+                    true, packet.AffectsRecipient);
+                break;
             }
         }
 
@@ -661,6 +670,8 @@ namespace Monopoly.Runtime
                                                packet.ToId));
                 return;
             }
+            PlayerField fromInfo = playerInfo.GetPlayerField(from);
+            PlayerField toInfo = playerInfo.GetPlayerField(to);
             if (packet.Type == PacketActionExchangeTransfer.TransferType.PROPERTY)
             {
                 Square s = Board.GetSquare(packet.Value);
@@ -675,9 +686,24 @@ namespace Monopoly.Runtime
                     //    OwnableNameLoggable(os)));
                 }
             }
-            else
+            else if (packet.Type ==
+                     PacketActionExchangeTransfer.TransferType.CARD)
             {
-                // TODO: IMPLEMENT CARD TRANSFER
+                bool chance = Card.IsChanceCardIndex(packet.Value);
+                if (chance)
+                {
+                    from.ChanceJailCard = false;
+                    to.ChanceJailCard = true;
+                    fromInfo.SetChance(false);
+                    toInfo.SetChance(true);
+                }
+                else
+                {
+                    from.CommunityJailCard = false;
+                    to.CommunityJailCard = true;
+                    fromInfo.SetCommunity(false);
+                    toInfo.SetCommunity(true);
+                }
             }
             if (BoardCardDisplay.current.rendering)
                 BoardCardDisplay.current.Redraw();
@@ -1097,6 +1123,7 @@ namespace Monopoly.Runtime
             case PacketRoundDiceResults.ResultEnum.JAIL_CARD_CHANCE:
                 Debug.Log(string.Format(
                     "Player {0} used a chance jail card.", packet.PlayerId));
+                p.ChanceJailCard = false;
                 pinfo.Dice.HideDice();
                 pinfo.SetChance(false);
                 break;
@@ -1104,6 +1131,7 @@ namespace Monopoly.Runtime
                 Debug.Log(string.Format(
                     "Player {0} used a community jail card.",
                     packet.PlayerId));
+                p.CommunityJailCard = false;
                 pinfo.Dice.HideDice();
                 pinfo.SetCommunity(false);
                 break;
@@ -1178,9 +1206,15 @@ namespace Monopoly.Runtime
                     Player p = Player.PlayerFromUUID(players, packet.PlayerId);
                     PlayerField pinfo = playerInfo.GetPlayerField(p);
                     if (type == TokenCard.CardType.CHANCE)
+                    {
+                        p.ChanceJailCard = true;
                         pinfo.SetChance(true);
+                    }
                     else
+                    {
+                        p.CommunityJailCard = true;
                         pinfo.SetCommunity(true);
+                    }
                 }
             }
             catch (System.Exception)
