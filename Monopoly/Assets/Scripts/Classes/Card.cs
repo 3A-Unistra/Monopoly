@@ -50,6 +50,16 @@ namespace Monopoly.Classes
             this.community = community;
         }
 
+        public static bool IsChanceCardIndex(int idx)
+        {
+            return idx >= 1 && idx <= 16;
+        }
+
+        public static bool IsCommunityCardIndex(int idx)
+        {
+            return idx >= 17 && idx <= 32;
+        }
+
         public enum CardType
         {
             RECEIVE_BANK = 0,

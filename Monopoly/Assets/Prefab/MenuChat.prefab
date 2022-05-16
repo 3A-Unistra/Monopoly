@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &1306159600
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -928,8 +928,36 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5948687702495956343, guid: ebd97bc7047150cb89a70a3c11ad2469, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5948687702495956343, guid: ebd97bc7047150cb89a70a3c11ad2469, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5948687702495956343, guid: ebd97bc7047150cb89a70a3c11ad2469, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5948687702495956343, guid: ebd97bc7047150cb89a70a3c11ad2469, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5948687702495956343, guid: ebd97bc7047150cb89a70a3c11ad2469, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5948687702495956345, guid: ebd97bc7047150cb89a70a3c11ad2469, type: 3}
+      propertyPath: m_HorizontalFit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5948687703266732384, guid: ebd97bc7047150cb89a70a3c11ad2469, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 7033888185816625950, guid: 757bd08b67118469283709d351148d81, type: 3}
+    - target: {fileID: 5948687703266732384, guid: ebd97bc7047150cb89a70a3c11ad2469, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5948687703266732414, guid: ebd97bc7047150cb89a70a3c11ad2469, type: 3}
       propertyPath: m_Pivot.x

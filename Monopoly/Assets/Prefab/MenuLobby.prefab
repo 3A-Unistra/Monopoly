@@ -1000,6 +1000,34 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5948687703266732384, guid: ebd97bc7047150cb89a70a3c11ad2469, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 7033888185816625950, guid: 757bd08b67118469283709d351148d81, type: 3}
+    - target: {fileID: 5948687703266732384, guid: ebd97bc7047150cb89a70a3c11ad2469, type: 3}
+      propertyPath: m_Color.a
+      value: 0.4392157
+      objectReference: {fileID: 0}
+    - target: {fileID: 5948687703266732384, guid: ebd97bc7047150cb89a70a3c11ad2469, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5948687703266732384, guid: ebd97bc7047150cb89a70a3c11ad2469, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5948687703266732384, guid: ebd97bc7047150cb89a70a3c11ad2469, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5948687703266732384, guid: ebd97bc7047150cb89a70a3c11ad2469, type: 3}
+      propertyPath: m_FillCenter
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5948687703266732384, guid: ebd97bc7047150cb89a70a3c11ad2469, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5948687703266732414, guid: ebd97bc7047150cb89a70a3c11ad2469, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

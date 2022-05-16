@@ -23,6 +23,8 @@ namespace Monopoly.Graphics
         [HideInInspector]
         public string playerUUID;
 
+        public Renderer renderer;
+
         private float animateTime = 0.0f;
 
         private bool dirty = true;
@@ -255,12 +257,17 @@ namespace Monopoly.Graphics
             }
         }
 
-
         void Update()   
         {
             if (oldIdx != idx)
                 AnimationPawn(idx);
         }
+
+        public void SetColor(Color c)
+        {
+            renderer.material.color = c;
+        }
+
     }
 
 }

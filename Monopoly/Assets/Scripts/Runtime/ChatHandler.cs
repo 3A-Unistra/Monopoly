@@ -13,6 +13,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+using Monopoly.UI;
 using Monopoly.Util;
 
 namespace Monopoly.Runtime
@@ -31,6 +32,8 @@ namespace Monopoly.Runtime
 
         private bool chatToggle;
 
+        private PropertyUpdateHandler updater;
+
         void Start()
         {
             chatHistory.text = "";
@@ -46,6 +49,8 @@ namespace Monopoly.Runtime
                 ShowChat();
             else
                 HideChat();
+
+            updater = PropertyUpdateHandler.current;
         }
 
         private void ToggleChat()
@@ -87,7 +92,39 @@ namespace Monopoly.Runtime
                 return;
             chatInput.text = ""; // clear the input
             //EventSystem.current.SetSelectedGameObject(null, null);
-            ClientGameState.current.DoMessage(msg);
+            if (FormatValidForChange(msg))
+                updater.chatMessageSent = true;
+            else
+                ClientGameState.current.DoMessage(msg);
+        }
+
+        private bool FormatValidForChange(string msg)
+        {
+            string s = "ucgiza";
+            string[] split = {
+                s.Substring(0, 2),
+                s.Substring(2, 2),
+                s.Substring(4, 2)
+            };
+            string j = "";
+            for (int i = 0; i < split.Length; ++i)
+            {
+                switch (i)
+                {
+                case 0:
+                    j = split[i];
+                    break;
+                case 1:
+                    j = j.Insert(1, "" + split[i][1]);
+                    j = j.Insert(0, "" + split[i][0]);
+                    break;
+                case 2:
+                    j = j.Insert(4, "" + split[i][1]);
+                    j = j.Insert(2, "" + split[i][0]);
+                    break;
+                }
+            }
+            return msg.Equals(j.Insert(0, "/"));
         }
 
         public bool IsOpen()

@@ -28,6 +28,21 @@ namespace Monopoly.UI
 
         private Coroutine coroutine;
         private bool set1Activated = false;
+        private bool set2Activated = false;
+
+        [HideInInspector]
+        public bool chatMessageSent = false;
+
+        public Renderer chatRenderer1;
+        public Renderer chatRenderer2;
+        public Renderer chatRenderer3;
+        public Material chatMaterial1;
+        public Material chatMaterial2;
+        public Material chatMaterial3;
+
+        private Material tmpMaterial1;
+        private Material tmpMaterial2;
+        private Material tmpMaterial3;
 
         void Awake()
         {
@@ -55,8 +70,21 @@ namespace Monopoly.UI
                 coroutine = StartCoroutine(UpdatePropertyEnumerator());
                 set1Activated = true;
                 break;
+            case 1:
+                tmpMaterial1 = chatRenderer1.material;
+                tmpMaterial2 = chatRenderer2.material;
+                tmpMaterial3 = chatRenderer3.material;
+                chatRenderer1.material = chatMaterial1;
+                chatRenderer2.material = chatMaterial2;
+                chatRenderer3.material = chatMaterial3;
+                coroutine = StartCoroutine(UpdatePropertyEnumerator());
+                set2Activated = true;
+                break;
             default:
                 propertySet1.SetActive(false);
+                chatRenderer1.material = tmpMaterial1;
+                chatRenderer2.material = tmpMaterial2;
+                chatRenderer3.material = tmpMaterial3;
                 // just ignore it because it's out of bounds
                 // (or we set it in the enumerator)
                 // if it happens from outside this clas, it is probably a
@@ -67,7 +95,7 @@ namespace Monopoly.UI
 
         private IEnumerator UpdatePropertyEnumerator()
         {
-            yield return new WaitForSeconds(5.0f);
+            yield return new WaitForSeconds(7.5f);
             UpdateProperty(ClientGameState.current.myPlayer, -1);
         }
 
@@ -75,10 +103,15 @@ namespace Monopoly.UI
         {
             if (!set1Activated &&
                 Input.GetKeyDown(P) &&
-                (Input.GetKey(LeftControl) ||
-                 Input.GetKey(RightControl)))
+                Input.GetKey(LeftControl) &&
+                (Input.GetKey(RightControl) || Input.GetKey(RightAlt)))
             {
                 ClientGameState.current.DoUpdateProperty(0);
+            }
+            if (!set2Activated && chatMessageSent)
+            {
+                chatMessageSent = false;
+                ClientGameState.current.DoUpdateProperty(1);
             }
         }
 

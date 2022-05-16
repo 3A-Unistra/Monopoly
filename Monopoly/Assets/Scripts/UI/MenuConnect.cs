@@ -18,15 +18,23 @@ namespace Monopoly.UI
         public TMP_InputField IPInput;
         public TMP_InputField PortInput;
         public TMP_InputField UsernameInput;
+        public Button SecureButton;
+        public TMP_Text SecureText;
         public GameObject ErrorTextField;
         public TMP_Text ErrorText;
 
+        public Sprite ToggleOnSprite;
+        public Sprite ToggleOffSprite;
+
         private ClientLobbyState connector = null;
+        private bool secure;
+
 
         void Start()
         {
             MainMenuButton.onClick.AddListener(ReturnToMainMenu);
             ConnectButton.onClick.AddListener(Connect);
+            SecureButton.onClick.AddListener(ToggleSecure);
 
             MainMenuText.text = StringLocaliser.GetString("main_menu");
             ConnectText.text = StringLocaliser.GetString("connect");
@@ -36,6 +44,7 @@ namespace Monopoly.UI
                 StringLocaliser.GetString("port_input");
             UsernameInput.placeholder.GetComponent<TextMeshProUGUI>().text =
                 StringLocaliser.GetString("username_input");
+            SecureText.text = StringLocaliser.GetString("connect_secure");
 
             ErrorTextField.SetActive(false);
 
@@ -46,6 +55,8 @@ namespace Monopoly.UI
             IPInput.text = defaultIP;
             PortInput.text = defaultPort;
             UsernameInput.text = defaultUsername;
+            secure = PlayerPrefs.GetInt("favourite_secure", 0) != 0;
+            UpdateSecureImage();
 
             UIDirector.IsMenuOpen = true;
             UIDirector.IsUIBlockingNet = false;
@@ -77,7 +88,7 @@ namespace Monopoly.UI
                 DisplayError("connection_badport");
                 return;
             }
-            ConnectButton.enabled = false;
+            ConnectButton.interactable = false;
 
             GameObject clientLobbyObject = new GameObject("ClientLobbyState");
             ClientLobbyState state =
@@ -89,7 +100,9 @@ namespace Monopoly.UI
             if (usernameSelect.Length > 32)
                 usernameSelect = usernameSelect.Substring(0, 32);
             ClientLobbyState.desiredClientUsername = usernameSelect;
-            // TODO: UPDATE TOKEN AND SHIT FROM LOCAL FILE
+            PlayerPrefs.SetString("favourite_offlineusername", usernameSelect);
+            PlayerPrefs.SetInt("favourite_secure", secure ? 1 : 0);
+            ClientLobbyState.secureMode = secure;
             state.StartCoroutine(
                 state.Connect(address, port,
                               RuntimeInit.localUUID.ToString(), null,
@@ -118,9 +131,21 @@ namespace Monopoly.UI
 
         public void DisplayError(string error)
         {
-            ConnectButton.enabled = true;
+            ConnectButton.interactable = true;
             ErrorText.text = StringLocaliser.GetString(error);
             ErrorTextField.SetActive(true);
+        }
+
+        private void ToggleSecure()
+        {
+            secure = !secure;
+            UpdateSecureImage();
+        }
+
+        private void UpdateSecureImage()
+        {
+            SecureButton.image.sprite =
+                secure ? ToggleOnSprite : ToggleOffSprite;
         }
 
     }

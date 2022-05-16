@@ -138,25 +138,27 @@ namespace Monopoly.UI
                              ClientLobbyState.clientPiece);*/
             UIDirector.IsMenuOpen = true;
             UIDirector.IsUIBlockingNet = false;
+
+            EnableEdits(true);
         }
 
         public void EnableEdits(bool edit)
         {
             canEdit = IsHost && edit; // can't edit for others
-            InviteButton.enabled = IsHost;
-            StartButton.enabled = IsHost;
+            InviteButton.interactable = IsHost;
+            StartButton.interactable = IsHost && playerFields.Count > 1;
             HostInputObject.SetActive(IsHost);
-            LobbyName.enabled = canEdit;
-            PlayersDropdown.enabled = canEdit;
-            BotsDropdown.enabled = canEdit;
-            PrivateSwitch.enabled = canEdit;
-            TurnDuration.enabled = canEdit;
-            TurnNumbers.enabled = canEdit;
-            AuctionsSwitch.enabled = canEdit;
-            BuyFirstTurnSwitch.enabled = canEdit;
-            DoubleOnGoSwitch.enabled = canEdit;
-            StartingBalance.enabled = canEdit;
-            PrivateSwitch.enabled = canEdit;
+            LobbyName.interactable = canEdit;
+            PlayersDropdown.interactable = canEdit;
+            BotsDropdown.interactable = canEdit;
+            PrivateSwitch.interactable = canEdit;
+            TurnDuration.interactable = canEdit;
+            TurnNumbers.interactable = canEdit;
+            AuctionsSwitch.interactable = canEdit;
+            BuyFirstTurnSwitch.interactable = canEdit;
+            DoubleOnGoSwitch.interactable = canEdit;
+            StartingBalance.interactable = canEdit;
+            PrivateSwitch.interactable = canEdit;
         }
 
         public void UpdateFields(string hostUUID)
@@ -167,21 +169,21 @@ namespace Monopoly.UI
         public void UpdateFields(bool isHost, string hostUUID)
         {
             this.IsHost = isHost;
-            InviteButton.enabled = IsHost;
+            InviteButton.interactable = IsHost;
             StartButton.gameObject.SetActive(IsHost);
             HostInputObject.SetActive(IsHost);
             InviteField.SetActive(IsHost);
-            LobbyName.enabled = IsHost;
-            PlayersDropdown.enabled = IsHost;
-            BotsDropdown.enabled = IsHost;
-            PrivateSwitch.enabled = IsHost;
-            TurnDuration.enabled = IsHost;
-            TurnNumbers.enabled = IsHost;
-            AuctionsSwitch.enabled = IsHost;
-            BuyFirstTurnSwitch.enabled = IsHost;
-            DoubleOnGoSwitch.enabled = IsHost;
-            StartingBalance.enabled = IsHost;
-            PrivateSwitch.enabled = IsHost;
+            LobbyName.interactable = IsHost;
+            PlayersDropdown.interactable = IsHost;
+            BotsDropdown.interactable = IsHost;
+            PrivateSwitch.interactable = IsHost;
+            TurnDuration.interactable = IsHost;
+            TurnNumbers.interactable = IsHost;
+            AuctionsSwitch.interactable = IsHost;
+            BuyFirstTurnSwitch.interactable = IsHost;
+            DoubleOnGoSwitch.interactable = IsHost;
+            StartingBalance.interactable = IsHost;
+            PrivateSwitch.interactable = IsHost;
             if (hostUUID != null)
                 CurrentHost = hostUUID;
             if (CurrentHost != null)
@@ -255,6 +257,7 @@ namespace Monopoly.UI
                 fieldScript.SetUser(uuid, username, piece,
                     uuid.Equals(ClientLobbyState.clientUUID));
                 playerFields.Add(fieldScript);
+                StartButton.interactable = IsHost && playerFields.Count > 1;
                 break;
             case PacketBroadcastUpdateRoom.UpdateReason.PLAYER_LEFT:
                 LobbyPlayerField field = GetPlayerField(uuid);
@@ -263,6 +266,7 @@ namespace Monopoly.UI
                     playerFields.Remove(field);
                     Destroy(field.gameObject);
                 }
+                StartButton.interactable = IsHost && playerFields.Count > 1;
                 break;
             }
         }
@@ -284,6 +288,7 @@ namespace Monopoly.UI
                         --i; // go again
                     }
                 }
+                StartButton.interactable = IsHost && playerFields.Count > 1;
             }
             foreach (PacketStatusInternal playerData in players)
             {
@@ -299,7 +304,7 @@ namespace Monopoly.UI
             if (IsHost)
                 return;
             LobbyName.text = lobbyName;
-            LobbyName.enabled = IsHost;
+            LobbyName.interactable = IsHost;
         }
 
         public void SetPlayerNumber(int n)
@@ -307,7 +312,7 @@ namespace Monopoly.UI
             if (IsHost)
                 return;
             PlayersDropdown.value = n - 2;
-            PlayersDropdown.enabled = IsHost;
+            PlayersDropdown.interactable = IsHost;
         }
 
         public void SetBotsNumber(int n)
@@ -315,7 +320,7 @@ namespace Monopoly.UI
             if (IsHost)
                 return;
             BotsDropdown.value = n;
-            BotsDropdown.enabled = IsHost;
+            BotsDropdown.interactable = IsHost;
         }
 
         public void SetAuctionSwitch(bool auction)
@@ -324,8 +329,8 @@ namespace Monopoly.UI
                 return;
             if(AuctionsSwitch.GetComponent<OnOff>().switchOn != auction)
                 AuctionsSwitch.onClick.Invoke();
-            AuctionsSwitch.enabled = IsHost;
-            AuctionsSwitch.GetComponent<OnOff>().Front.enabled = IsHost;
+            AuctionsSwitch.interactable = IsHost;
+            AuctionsSwitch.GetComponent<OnOff>().Front.interactable = IsHost;
 
         }
 
@@ -335,8 +340,8 @@ namespace Monopoly.UI
                 return;
             if(DoubleOnGoSwitch.GetComponent<OnOff>().switchOn != doubleOnStart)
                 DoubleOnGoSwitch.onClick.Invoke();
-            DoubleOnGoSwitch.enabled = IsHost; 
-            DoubleOnGoSwitch.GetComponent<OnOff>().Front.enabled = IsHost;
+            DoubleOnGoSwitch.interactable = IsHost; 
+            DoubleOnGoSwitch.GetComponent<OnOff>().Front.interactable = IsHost;
         }
 
         public void SetBuyingSwitch(bool canBuy)
@@ -345,8 +350,8 @@ namespace Monopoly.UI
                 return;
             if(BuyFirstTurnSwitch.GetComponent<OnOff>().switchOn != canBuy)
                 BuyFirstTurnSwitch.onClick.Invoke();
-            BuyFirstTurnSwitch.enabled = IsHost;
-            BuyFirstTurnSwitch.GetComponent<OnOff>().Front.enabled = IsHost;
+            BuyFirstTurnSwitch.interactable = IsHost;
+            BuyFirstTurnSwitch.GetComponent<OnOff>().Front.interactable = IsHost;
         }
 
         public void SetPrivacy(bool isPrivate)
@@ -355,8 +360,8 @@ namespace Monopoly.UI
                 return;
             if(PrivateSwitch.GetComponent<OnOff>().switchOn != isPrivate)
                 PrivateSwitch.onClick.Invoke();
-            PrivateSwitch.enabled = IsHost;
-            PrivateSwitch.GetComponent<OnOff>().Front.enabled = IsHost;
+            PrivateSwitch.interactable = IsHost;
+            PrivateSwitch.GetComponent<OnOff>().Front.interactable = IsHost;
         }
 
         public void SetStartingBalance(int balance)
@@ -364,7 +369,7 @@ namespace Monopoly.UI
             if (IsHost)
                 return;
             StartingBalance.text = balance.ToString();
-            StartingBalance.enabled = IsHost;
+            StartingBalance.interactable = IsHost;
         }
 
         public void SetTurnTime(int time)
@@ -372,7 +377,7 @@ namespace Monopoly.UI
             if (IsHost)
                 return;
             TurnDuration.text = time.ToString();
-            TurnDuration.enabled = IsHost;
+            TurnDuration.interactable = IsHost;
         }
 
         public void SetNbTurns(int nb)
@@ -380,7 +385,7 @@ namespace Monopoly.UI
             if (IsHost)
                 return;
             TurnNumbers.text = nb.ToString();
-            TurnNumbers.enabled = IsHost;
+            TurnNumbers.interactable = IsHost;
         }
         
         private void SetPacketStatusRoom()

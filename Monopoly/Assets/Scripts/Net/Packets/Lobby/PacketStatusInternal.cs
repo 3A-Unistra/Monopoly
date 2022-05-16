@@ -33,7 +33,7 @@ namespace Monopoly.Net.Packets
             this.PlayerId = playerId;
             this.Username = username;
             this.AvatarURL = avatar;
-            this.Piece = piece;
+            this.Piece = piece-1;
         }
 
     }

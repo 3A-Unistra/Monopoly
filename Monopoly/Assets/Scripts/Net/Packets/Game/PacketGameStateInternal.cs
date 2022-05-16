@@ -61,7 +61,7 @@ namespace Monopoly.Net.Packets
             this.JailCards = jailCards;
             this.IsInJail = inJail;
             this.IsBankrupt = bankrupt;
-            this.Piece = piece;
+            this.Piece = piece-1;
         }
 
     }

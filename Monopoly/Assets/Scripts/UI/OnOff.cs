@@ -37,8 +37,8 @@ namespace Monopoly.UI
             }
             set
             {
-                Back.enabled = value;
-                Front.enabled = value;
+                Back.interactable = value;
+                Front.interactable = value;
                 this._enabled = value;
             }
         }
