@@ -40,9 +40,6 @@ namespace Monopoly.UI
 
         private Color color;
 
-        //private static readonly Color playerColor =
-        //    new Color(1.0f, 0.86f, 0.32f);
-
         void Start()
         {
             ActiveKnob.gameObject.SetActive(false);

@@ -1236,7 +1236,7 @@ namespace Monopoly.Runtime
             {
                 Player player = new Player(playerData.PlayerId,
                     playerData.PlayerName, playerData.Money,
-                    playerData.Piece-1);
+                    playerData.Piece);
                 ManuallyRegisterPlayer(player,
                                        playerData.PlayerId.Equals(clientUUID));
                 playerInfo.SetMoney(player, player.Money);

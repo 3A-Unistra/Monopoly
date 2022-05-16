@@ -36,7 +36,7 @@ namespace Monopoly.Net.Packets
             this.GameToken = gameToken;
             this.PlayerId = playerId;
             this.Username = username;
-            this.PieceId = pieceId;
+            this.PieceId = pieceId-1;
         }
 
     }
