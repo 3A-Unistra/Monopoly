@@ -60,6 +60,9 @@ namespace Monopoly.UI
         public TMP_Text museumText2;
         public TMP_Text museumMortgageValue;
         public TMP_Text museumMortgageValueText;
+        public Image museumImage;
+        public Sprite museum1Sprite;
+        public Sprite museum2Sprite;
 
         // mortgage UI pieces
         public TMP_Text titleMortgage;
@@ -210,6 +213,7 @@ namespace Monopoly.UI
             Dictionary<string, int> data =
                 ClientGameState.current.GetSquareDataIndex(idx);
             museumMortgageValue.text = (data["buy_price"] / 2).ToString();
+            museumImage.sprite = idx == 12 ? museum1Sprite : museum2Sprite;
         }
 
         private void ShowMortgage(int idx)
