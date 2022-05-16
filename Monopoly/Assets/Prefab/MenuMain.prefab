@@ -781,14 +781,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 39ae30156c2aef917b1bc7062fad7766, type: 3}
---- !u!224 &7237313296440823027 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 8453934663218045687, guid: 39ae30156c2aef917b1bc7062fad7766, type: 3}
-  m_PrefabInstance: {fileID: 1234675486234783236}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &416258846989310778 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1505517185894806846, guid: 39ae30156c2aef917b1bc7062fad7766, type: 3}
+  m_PrefabInstance: {fileID: 1234675486234783236}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &7237313296440823027 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8453934663218045687, guid: 39ae30156c2aef917b1bc7062fad7766, type: 3}
   m_PrefabInstance: {fileID: 1234675486234783236}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &5745498167896233442
@@ -822,6 +822,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9199250584282826480}
     m_Modifications:
+    - target: {fileID: 1140857239959367521, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 7033888185816625950, guid: 757bd08b67118469283709d351148d81, type: 3}
+    - target: {fileID: 1140857239959367521, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1183849932625934016, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
       propertyPath: m_text
       value: Quit
@@ -944,17 +952,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
---- !u!114 &3252844619555882530 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1183849932625934016, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
-  m_PrefabInstance: {fileID: 4416216832892121314}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7146682480030013079 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6802564188059264629, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
@@ -971,6 +968,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4852369086178567842, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
   m_PrefabInstance: {fileID: 4416216832892121314}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3252844619555882530 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1183849932625934016, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
+  m_PrefabInstance: {fileID: 4416216832892121314}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8451544640925557681
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -978,13 +986,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9199250584282826480}
     m_Modifications:
+    - target: {fileID: 1140857239959367521, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 7033888185816625950, guid: 757bd08b67118469283709d351148d81, type: 3}
+    - target: {fileID: 1140857239959367521, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1183849932625934016, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
       propertyPath: m_text
       value: Connect to IP
       objectReference: {fileID: 0}
     - target: {fileID: 1183849932625934016, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
       propertyPath: m_fontSize
-      value: 32
+      value: 21.8
       objectReference: {fileID: 0}
     - target: {fileID: 1183849932625934016, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
       propertyPath: m_fontAsset
@@ -1111,6 +1127,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &3899828015709537555 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4852369086178567842, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
+  m_PrefabInstance: {fileID: 8451544640925557681}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3111559653875090884 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6802564188059264629, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
@@ -1122,11 +1143,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &3899828015709537555 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4852369086178567842, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
-  m_PrefabInstance: {fileID: 8451544640925557681}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8951904146970092511
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1134,13 +1150,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9199250584282826480}
     m_Modifications:
+    - target: {fileID: 1140857239959367521, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 7033888185816625950, guid: 757bd08b67118469283709d351148d81, type: 3}
+    - target: {fileID: 1140857239959367521, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1183849932625934016, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
       propertyPath: m_text
       value: Play online
       objectReference: {fileID: 0}
     - target: {fileID: 1183849932625934016, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
       propertyPath: m_fontSize
-      value: 32
+      value: 26.15
       objectReference: {fileID: 0}
     - target: {fileID: 1183849932625934016, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
       propertyPath: m_fontAsset

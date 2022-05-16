@@ -813,6 +813,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4677655864073460008}
     m_Modifications:
+    - target: {fileID: 1140857239959367521, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 7033888185816625950, guid: 757bd08b67118469283709d351148d81, type: 3}
+    - target: {fileID: 1140857239959367521, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1183849932625934016, guid: 1ad6ff91a206fb66296c03020bd13d1f, type: 3}
       propertyPath: m_text
       value: Main Menu
