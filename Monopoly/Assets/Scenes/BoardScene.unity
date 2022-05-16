@@ -7509,7 +7509,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1273659070}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -8394,6 +8394,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   propertySet1: {fileID: 1092983711}
+  chatMessageSent: 0
+  chatRenderer1: {fileID: 2121834454}
+  chatRenderer2: {fileID: 741461974}
+  chatRenderer3: {fileID: 717539982}
+  chatMaterial1: {fileID: 2100000, guid: d5d81f30223434a4cab53bbeecad3395, type: 2}
+  chatMaterial2: {fileID: 2100000, guid: 8fae36f0c138b4dbf9d9fc2b1c077e93, type: 2}
+  chatMaterial3: {fileID: 2100000, guid: ef4cbae8d2c9c41a2b8dd1f1b743b23e, type: 2}
 --- !u!1 &1373167034
 GameObject:
   m_ObjectHideFlags: 0
