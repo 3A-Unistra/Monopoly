@@ -37,9 +37,13 @@ namespace Monopoly.UI
         public TMP_Text LeaveJailCommunityLeftText;
         public TMP_Text LeaveJailChanceRightText;
         public TMP_Text LeaveJailCommunityRightText;
+        [HideInInspector]
         public bool LeaveJailChanceLeftActive;
+        [HideInInspector]
         public bool LeaveJailCommunityLeftActive;
+        [HideInInspector]
         public bool LeaveJailChanceRightActive;
+        [HideInInspector]
         public bool LeaveJailCommunityRightActive;
         public TMP_InputField MoneyPlayerLeft;
         public TMP_InputField MoneyPlayerRight;
