@@ -226,14 +226,34 @@ namespace Monopoly.UI
             RefuseButton.gameObject.SetActive(decisionToMake && active);
             CounterButton.gameObject.SetActive(decisionToMake && active);
             AcceptButton.gameObject.SetActive(decisionToMake && active);
-            LeaveJailChanceLeftButton.gameObject.SetActive(
-                !decisionToMake && active && playerPrimary.ChanceJailCard);
-            LeaveJailChanceRightButton.gameObject.SetActive(
-                !decisionToMake && active && playerSecondary.ChanceJailCard);
-            LeaveJailCommunityLeftButton.gameObject.SetActive(
-                !decisionToMake && active && playerPrimary.CommunityJailCard);
-            LeaveJailCommunityRightButton.gameObject.SetActive(
-                !decisionToMake && active && playerSecondary.CommunityJailCard);
+            if (playerPrimary != null)
+            {
+                LeaveJailChanceLeftButton.gameObject.SetActive(
+                    !decisionToMake && active &&
+                    playerPrimary.ChanceJailCard);
+                LeaveJailCommunityLeftButton.gameObject.SetActive(
+                    !decisionToMake && active &&
+                    playerPrimary.CommunityJailCard);
+            }
+            else
+            {
+                LeaveJailChanceLeftButton.gameObject.SetActive(false);
+                LeaveJailCommunityLeftButton.gameObject.SetActive(false);
+            }
+            if (playerSecondary != null)
+            {
+                LeaveJailChanceRightButton.gameObject.SetActive(
+                    !decisionToMake && active &&
+                    playerSecondary.ChanceJailCard);
+                LeaveJailCommunityRightButton.gameObject.SetActive(
+                    !decisionToMake && active &&
+                    playerSecondary.CommunityJailCard);
+            }
+            else
+            {
+                LeaveJailChanceRightButton.gameObject.SetActive(false);
+                LeaveJailCommunityRightButton.gameObject.SetActive(false);
+            }
 
             foreach (MiniCard m in CardListLeft)
                 m.SelectButton.enabled = !decisionToMake && active;
