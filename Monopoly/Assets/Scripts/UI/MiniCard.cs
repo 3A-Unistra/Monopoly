@@ -47,7 +47,7 @@ namespace Monopoly.UI
             SelectButton.onClick.AddListener(delegate { ToggleSelect(true); });
             PreviewButton.onClick.AddListener(delegate { previewCallback(); });
             if (!editable)
-                SelectButton.enabled = false;
+                SelectButton.interactable = false;
         }
 
         void Start()

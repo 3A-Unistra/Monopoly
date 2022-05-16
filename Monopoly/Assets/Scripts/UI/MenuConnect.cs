@@ -77,7 +77,7 @@ namespace Monopoly.UI
                 DisplayError("connection_badport");
                 return;
             }
-            ConnectButton.enabled = false;
+            ConnectButton.interactable = false;
 
             GameObject clientLobbyObject = new GameObject("ClientLobbyState");
             ClientLobbyState state =
@@ -118,7 +118,7 @@ namespace Monopoly.UI
 
         public void DisplayError(string error)
         {
-            ConnectButton.enabled = true;
+            ConnectButton.interactable = true;
             ErrorText.text = StringLocaliser.GetString(error);
             ErrorTextField.SetActive(true);
         }

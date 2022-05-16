@@ -221,8 +221,8 @@ namespace Monopoly.UI
 
             SendButton.gameObject.SetActive(!decisionToMake && active);
             ReturnButton.gameObject.SetActive(firstRound && active);
-            MoneyPlayerLeft.enabled = !decisionToMake && active;
-            MoneyPlayerRight.enabled = !decisionToMake && active;
+            MoneyPlayerLeft.interactable = !decisionToMake && active;
+            MoneyPlayerRight.interactable = !decisionToMake && active;
             RefuseButton.gameObject.SetActive(decisionToMake && active);
             CounterButton.gameObject.SetActive(decisionToMake && active);
             AcceptButton.gameObject.SetActive(decisionToMake && active);
@@ -256,9 +256,9 @@ namespace Monopoly.UI
             }
 
             foreach (MiniCard m in CardListLeft)
-                m.SelectButton.enabled = !decisionToMake && active;
+                m.SelectButton.interactable = !decisionToMake && active;
             foreach (MiniCard m in CardListRight)
-                m.SelectButton.enabled = !decisionToMake && active;
+                m.SelectButton.interactable = !decisionToMake && active;
         }
 
         private void HideCardDisplayLeft()
@@ -289,9 +289,9 @@ namespace Monopoly.UI
 
         private void SendAction()
         {
-            SendButton.enabled = false;
-            MoneyPlayerLeft.enabled = false;
-            MoneyPlayerRight.enabled = false;
+            SendButton.interactable = false;
+            MoneyPlayerLeft.interactable = false;
+            MoneyPlayerRight.interactable = false;
             StartCoroutine(SendActionEnumerator());
         }
 
@@ -705,7 +705,7 @@ namespace Monopoly.UI
                     MoneyPlayerRight.textComponent.color = Color.black;
                 else
                     MoneyPlayerLeft.textComponent.color = Color.black;
-                SendButton.enabled = true;
+                SendButton.interactable = true;
                 return true;
             }
             else
@@ -715,7 +715,7 @@ namespace Monopoly.UI
                     MoneyPlayerRight.textComponent.color = Color.red;
                 else
                     MoneyPlayerLeft.textComponent.color = Color.red;
-                SendButton.enabled = false;
+                SendButton.interactable = false;
                 return false;
             }
         }

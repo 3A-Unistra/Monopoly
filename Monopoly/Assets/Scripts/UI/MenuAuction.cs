@@ -63,7 +63,7 @@ namespace Monopoly.UI
             BidField.placeholder.GetComponent<TextMeshProUGUI>().text =
                 StringLocaliser.GetString("input_bid");
 
-            BidButton.enabled = false;
+            BidButton.interactable = false;
 
             fields = new List<AuctionPlayerField>();
         }
@@ -128,14 +128,14 @@ namespace Monopoly.UI
             {
                 // valid bid amount
                 BidField.textComponent.color = Color.black;
-                BidButton.enabled = true;
+                BidButton.interactable = true;
                 bidWish = val;
             }
             else
             {
                 // invalid bid amount
                 BidField.textComponent.color = Color.red;
-                BidButton.enabled = false;
+                BidButton.interactable = false;
             }
         }
 
