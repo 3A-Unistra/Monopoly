@@ -4,6 +4,7 @@
  * 
  * Date created : 22/02/2022
  * Author       : Christophe Pierson <christophe.pierson@etu.unistra.fr>
+ *              : Finn Rayment <rayment@etu.unistra.fr>
  */
 
 
@@ -175,6 +176,17 @@ namespace Monopoly.Classes
             get;
             set;
         }
+
+        /**
+         * <summary>
+         * Return true if the player has completed an entire tour of the board.
+         * </summary>
+         */
+        public bool PassedGo
+        {
+            get;
+            set;
+        }
         
         /**
         * <summary>
@@ -198,6 +210,7 @@ namespace Monopoly.Classes
             this.ChanceJailCard = false;
             this.CommunityJailCard = false;
             this.Bot = false;
+            this.PassedGo = false;
         }
         /**
         * <summary>
@@ -261,6 +274,7 @@ namespace Monopoly.Classes
             if(p.Owner == this)
                 p.Owner = to;
         }
+
         /**
         * <summary>
         * The player gives an out of jail card to another player 

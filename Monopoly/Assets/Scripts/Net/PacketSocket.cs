@@ -15,7 +15,25 @@ namespace Monopoly.Net
 
         private string loc;
         public WebSocket Sock { get; private set; }
-        private bool open, error;
+        private bool open, error, tlserror;
+
+        public static string SpliceAddress(string addr, int port)
+        {
+            // splice together the address with the port
+            // foo.bar port 80 becomes foo.bar:80
+            // foo.bar/bam port 80 becomes foo.bar:80/bam
+            string[] addressPieces = addr.Split('/');
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < addressPieces.Length; ++i)
+            {
+                sb.Append(addressPieces[i]);
+                if (i == 0)
+                    sb.Append(string.Format(":{0}", port));
+                if (i < addressPieces.Length - 1)
+                    sb.Append('/');
+            }
+            return sb.ToString();
+        }
 
         public static PacketSocket CreateSocket(string address, int port,
                                                 string gameToken, bool secure)
@@ -32,20 +50,7 @@ namespace Monopoly.Net
                     "Cannot create socket with invalid port number.");
                 return null;
             }
-            // splice together the address with the port
-            // foo.bar port 80 becomes foo.bar:80
-            // foo.bar/bam port 80 becomes foo.bar:80/bam
-            string[] addressPieces = address.Split('/');
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < addressPieces.Length; ++i)
-            {
-                sb.Append(addressPieces[i]);
-                if (i == 0)
-                    sb.Append(string.Format(":{0}", port));
-                if (i < addressPieces.Length - 1)
-                    sb.Append('/');
-            }
-            return CreateSocket(sb.ToString(),
+            return CreateSocket(SpliceAddress(address, port),
                                 paramsdic, gameToken, secure);
         }
 
@@ -115,11 +120,9 @@ namespace Monopoly.Net
         private PacketSocket(string loc)
         {
             this.loc = loc;
-            open = error = false;
+            open = error = tlserror = false;
             Dictionary<string, string> headers =
                 new Dictionary<string, string>();
-            // FIXME: FETCH CORRECT ORIGIN
-            //headers.Add("Origin", "http://192.168.43.2");
             try
             {
                 Sock = new WebSocket(loc, headers);
@@ -156,6 +159,7 @@ namespace Monopoly.Net
                     string.Format("WebSocket closed at '{0}' with code {1}",
                     loc, e));
                 open = false;
+                tlserror = e == WebSocketCloseCode.TlsHandshakeFailure;
             };
         }
 
@@ -179,6 +183,11 @@ namespace Monopoly.Net
         }
 
         public bool HasError()
+        {
+            return error;
+        }
+
+        public bool HasTLSError()
         {
             return error;
         }

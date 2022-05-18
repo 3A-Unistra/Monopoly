@@ -207,9 +207,11 @@ namespace Monopoly.Runtime
                 // wait for the socket to open or die
                 yield return new WaitUntil(delegate
                 {
-                    return socket.HasError() || socket.IsOpen();
+                    return socket.HasError() ||
+                           socket.HasTLSError() ||
+                           socket.IsOpen();
                 });
-                if (socket.HasError())
+                if (socket.HasError() || socket.HasTLSError())
                 {
                     //if (mode == ClientLobbyState.ConnectMode.BYIP)
                     //connectConnector.DisplayError("connection_fail");
@@ -1039,6 +1041,11 @@ namespace Monopoly.Runtime
             auctionButton.gameObject.SetActive(false);
             if (packet.DestinationSquare >= 0 && packet.DestinationSquare <= 39)
             {
+                if (p.Position > packet.DestinationSquare ||
+                    packet.DestinationSquare == 0)
+                {
+                    p.PassedGo = true;
+                }
                 p.Position = packet.DestinationSquare;
                 playerDoneMove = false;
                 playerPieces[GetPlayerPieceIndex(p.Id)].
@@ -1306,7 +1313,8 @@ namespace Monopoly.Runtime
                 OwnableSquare os = (OwnableSquare)square;
                 if (os.Owner == null)
                 {
-                    buyPropertyButton.gameObject.SetActive(true);
+                    buyPropertyButton.gameObject.SetActive(
+                        gameRules.EnableFirstTourBuy || myPlayer.PassedGo);
                     auctionButton.gameObject.SetActive(
                         gameRules.EnableAuctions);
                 }

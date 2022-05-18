@@ -9,7 +9,7 @@ variables:
   BUILD_NAME: Monopoly
   UNITY_ACTIVATION_FILE: ./unity3d.alf
   IMAGE: unityci/editor # https://hub.docker.com/r/unityci/editor
-  IMAGE_VERSION: "0.17" # https://github.com/game-ci/docker/releases
+  IMAGE_VERSION: "1.0.1" # https://github.com/game-ci/docker/releases
   UNITY_DIR: $CI_PROJECT_DIR/Monopoly # this needs to be an absolute path. Defaults to the root of your tree.
   # You can expose this in Unity via Application.version 
   VERSION_NUMBER_VAR: $CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID-$CI_JOB_ID

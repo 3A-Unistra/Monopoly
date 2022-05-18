@@ -57,6 +57,13 @@ namespace Monopoly.UI
             set1Activated = false;
         }
 
+        void Start()
+        {
+            tmpMaterial1 = chatRenderer1.material;
+            tmpMaterial2 = chatRenderer2.material;
+            tmpMaterial3 = chatRenderer3.material;
+        }
+
         public void UpdateProperty(Player player, int index)
         {
             if (coroutine != null)
