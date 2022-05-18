@@ -33,18 +33,38 @@ namespace Monopoly.Runtime
         public AudioClip soundHouseBuy;
         public AudioClip soundHouseSell;
         public AudioClip soundMessageBlip;
+        public AudioClip soundRoomJoin;
+        public AudioClip soundRoomLeave;
         public AudioClip soundButtonBlip;
+
+        public AudioClip soundMessageBlipAlt;
+        public AudioClip soundRoomJoinAlt;
+        public AudioClip soundRoomLeaveAlt;
+        public AudioClip soundButtonBlipAlt;
+
+        public AudioClip[] musicTracks;
+        private int currentMusicTrack = 0;
 
         void Start()
         {
             SetSoundLevel(PreferenceApply.Sound);
             SetMusicLevel(PreferenceApply.Music);
+            soundPlayer.loop = false;
+            musicPlayer.loop = false;
         }
 
         private static float ToDecibels(float level)
         {
             // need to clamp it to stop it turning right off and overflowing
             return Mathf.Log10(Mathf.Clamp(level, 0.0001f, 1.0f)) * 20;
+        }
+
+        public void SwapAltSound()
+        {
+            soundMessageBlip = soundMessageBlipAlt;
+            soundRoomJoin = soundRoomJoinAlt;
+            soundRoomLeave = soundRoomLeaveAlt;
+            soundButtonBlip = soundButtonBlipAlt;
         }
 
         public void SetSoundLevel(float level)
@@ -59,7 +79,18 @@ namespace Monopoly.Runtime
 
         public void PlaySound(AudioClip clip)
         {
-            soundPlayer.PlayOneShot(clip);
+            if (clip != null)
+                soundPlayer.PlayOneShot(clip);
+        }
+
+        public void PlayRoomJoin()
+        {
+            PlaySound(soundRoomJoin);
+        }
+
+        public void PlayRoomLeave()
+        {
+            PlaySound(soundRoomLeave);
         }
 
         public void PlayPieceMove()
@@ -110,6 +141,21 @@ namespace Monopoly.Runtime
         public void PlayButtonBlip()
         {
             PlaySound(soundButtonBlip);
+        }
+
+        void Update()
+        {
+            if (!musicPlayer.isPlaying)
+            {
+                AudioClip clip = musicTracks[currentMusicTrack++];
+                if (clip != null)
+                {
+                    musicPlayer.clip = clip;
+                    musicPlayer.Play();
+                }
+                currentMusicTrack =
+                    Mathf.Clamp(currentMusicTrack, 0, musicTracks.Length - 1);
+            }
         }
 
     }

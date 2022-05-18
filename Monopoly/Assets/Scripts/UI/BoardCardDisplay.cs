@@ -138,8 +138,9 @@ namespace Monopoly.UI
                         if (ClientGameState.current.Board.OwnSameColorSet
                             (ps.Owner, ps) && !ps.Mortgaged)
                         {
-                            canBuy = ps.NbHouse < 5;
-                            canSell = ps.NbHouse > 0;
+                            canMortgage &= ps.NbHouse == 0;
+                            canBuy = ps.NbHouse < 5 && !os.Mortgaged;
+                            canSell = ps.NbHouse > 0 && !os.Mortgaged;
                         }
                     }
                 }

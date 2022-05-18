@@ -477,8 +477,13 @@ namespace NativeWebSocket
             }
             catch (Exception ex)
             {
-                OnError?.Invoke(ex.Message);
-                OnClose?.Invoke(WebSocketCloseCode.Abnormal);
+                string msg = ex.ToString();
+                OnError?.Invoke(ex.ToString());
+                if (ex.InnerException is
+                    System.Security.Authentication.AuthenticationException)
+                    OnClose?.Invoke(WebSocketCloseCode.TlsHandshakeFailure);
+                else
+                    OnClose?.Invoke(WebSocketCloseCode.Abnormal);
             }
             finally
             {

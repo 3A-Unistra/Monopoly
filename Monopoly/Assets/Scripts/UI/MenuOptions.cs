@@ -16,6 +16,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using Monopoly.Graphics;
+using Monopoly.Runtime;
 using Monopoly.Util;
 
 namespace Monopoly.UI
@@ -49,6 +50,8 @@ namespace Monopoly.UI
         public Button Close;
         public TMP_Text CloseText;
         private Resolution[] AvailableResolutions;
+
+        private int altChanger = 0;
 
         public static MenuOptions current = null;
 
@@ -241,6 +244,9 @@ namespace Monopoly.UI
         
         public void ApplyChanges()
         {
+            ++altChanger;
+            if (altChanger >= 10)
+                RuntimeData.current.SoundHandler.SwapAltSound();
             PreferenceApply.Resolution = ResolutionDropdown.value;
             PreferenceApply.Quality = QualityDropdown.value;
             PreferenceApply.Language = LanguageDropdown.value;

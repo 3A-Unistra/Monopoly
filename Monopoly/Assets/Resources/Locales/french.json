@@ -157,6 +157,7 @@
     "connection_baddata": "Erreur en traitant la location du server !",
     "connection_nouser": "Veuillez spécifier votre nom d'utilisateur et mot de passe !",
     "connection_badcreds": "Nom d'utilisateur ou mot de passe invalid !",
+    "connection_tls": "Erreur de TLS!",
     "error_4201": "Mot de passe incorrect.",
     "error_4202": "Le lobby a atteint son nombre maximal de joueurs.",
     "error_4205": "Accès refusé.",

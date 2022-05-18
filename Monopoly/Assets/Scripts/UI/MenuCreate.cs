@@ -142,11 +142,17 @@ namespace Monopoly.UI
             EnableEdits(true);
         }
 
+        public void EnableEdits(bool edit, bool host)
+        {
+            IsHost = host;
+            EnableEdits(edit);
+        }
+
         public void EnableEdits(bool edit)
         {
             canEdit = IsHost && edit; // can't edit for others
-            InviteButton.interactable = IsHost;
-            StartButton.interactable = IsHost && playerFields.Count > 1;
+            //InviteButton.interactable = IsHost;
+            //StartButton.interactable = IsHost && playerFields.Count > 1;
             HostInputObject.SetActive(IsHost);
             LobbyName.interactable = canEdit;
             PlayersDropdown.interactable = canEdit;
@@ -169,10 +175,11 @@ namespace Monopoly.UI
         public void UpdateFields(bool isHost, string hostUUID)
         {
             this.IsHost = isHost;
-            InviteButton.interactable = IsHost;
-            StartButton.gameObject.SetActive(IsHost);
+            //InviteButton.interactable = IsHost;
+            //StartButton.gameObject.SetActive(IsHost);
+            StartButton.gameObject.SetActive(true);
             HostInputObject.SetActive(IsHost);
-            InviteField.SetActive(IsHost);
+            //InviteField.SetActive(IsHost);
             LobbyName.interactable = IsHost;
             PlayersDropdown.interactable = IsHost;
             BotsDropdown.interactable = IsHost;
@@ -247,6 +254,7 @@ namespace Monopoly.UI
             switch (reason)
             {
             case PacketBroadcastUpdateRoom.UpdateReason.NEW_PLAYER:
+                RuntimeData.current.SoundHandler.PlayRoomJoin();
                 if (IsPlayerListed(uuid))
                     return; // no need to duplicate the player id
                 GameObject playerField =
@@ -260,6 +268,7 @@ namespace Monopoly.UI
                 StartButton.interactable = IsHost && playerFields.Count > 1;
                 break;
             case PacketBroadcastUpdateRoom.UpdateReason.PLAYER_LEFT:
+                RuntimeData.current.SoundHandler.PlayRoomLeave();
                 LobbyPlayerField field = GetPlayerField(uuid);
                 if (field != null)
                 {

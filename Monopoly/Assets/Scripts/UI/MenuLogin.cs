@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
+using Monopoly.Net;
 using Monopoly.Runtime;
 
 namespace Monopoly.UI
@@ -23,6 +24,17 @@ namespace Monopoly.UI
         public TMP_Text ErrorText;
 
         private ClientLobbyState connector = null;
+        private bool connecting = false;
+
+        // needed because the Uni server uses a self-signed certificate which
+        // simply is not recognised by Unity on some platforms
+        private class BypassCertificate : CertificateHandler
+        {
+            protected override bool ValidateCertificate(byte[] certificateData)
+            {
+                return true;
+            }
+        }
 
         void Start()
         {
@@ -31,12 +43,15 @@ namespace Monopoly.UI
 
             MainMenuText.text = StringLocaliser.GetString("main_menu");
             ConnectText.text = StringLocaliser.GetString("connect");
-            UsernameInput.placeholder.GetComponent<TextMeshProUGUI>().text = StringLocaliser.GetString("username");
-            PasswordInput.placeholder.GetComponent<TextMeshProUGUI>().text = StringLocaliser.GetString("password");
+            UsernameInput.placeholder.GetComponent<TextMeshProUGUI>().text =
+                StringLocaliser.GetString("username");
+            PasswordInput.placeholder.GetComponent<TextMeshProUGUI>().text =
+                StringLocaliser.GetString("password");
 
             ErrorTextField.SetActive(false);
 
-            string defaultUsername = PlayerPrefs.GetString("favourite_username", "");
+            string defaultUsername =
+                PlayerPrefs.GetString("favourite_username", "");
             UsernameInput.text = defaultUsername;
 
             UIDirector.IsMenuOpen = true;
@@ -52,12 +67,13 @@ namespace Monopoly.UI
                 DisplayError("connection_nouser");
                 return;
             }
-            StartCoroutine(
-                Login("mai-projet-integrateur.u-strasbg.fr/vmProjetIntegrateurgrp4-1/", 80, username, password));
-            // FIXME: this is temporary to just let us into the board scene for
-            // testing
-            //Instantiate(LobbyMenuPrefab, transform.parent);
-            //Destroy(this.gameObject);
+            if (ClientLobbyState.current == null && !connecting)
+            {
+                connecting = true;
+                StartCoroutine(Login(
+                "mai-projet-integrateur.u-strasbg.fr/vmProjetIntegrateurgrp4-1"
+                , 443, username, password));
+            }
         }
 
         private IEnumerator Login(string address, int port, string username, string password)
@@ -66,13 +82,17 @@ namespace Monopoly.UI
             dic.Add("username", username);
             dic.Add("password", password);
 
-            // FIXME: gonna use a reverse proxy, change this and remove the port
-            // field from the function!!!!!
             string json = JsonConvert.SerializeObject(dic);
-            string addr = string.Format("http://{0}:{1}/api/users/login",
-                                        address, port);
+            string addr = string.Format(
+                "https://{0}/api/users/login",
+                PacketSocket.SpliceAddress(address, port));
 
-            UnityWebRequest req = new UnityWebRequest(addr, "POST");
+            Debug.Log(string.Format("Logging into server '{0}'...", addr));
+
+            UnityWebRequest req = new UnityWebRequest(addr, "POST")
+            {
+                certificateHandler = new BypassCertificate()
+            };
             byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
             req.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
             req.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
@@ -93,6 +113,8 @@ namespace Monopoly.UI
                     DisplayError("connection_fail");
                     break;
                 }
+                req.Dispose();
+                connecting = false;
             }
             else
             {
@@ -103,13 +125,16 @@ namespace Monopoly.UI
                 GameObject clientLobbyObject = new GameObject("ClientLobbyState");
                 ClientLobbyState state =
                     clientLobbyObject.AddComponent<ClientLobbyState>();
+                ClientLobbyState.secureMode = true;
                 state.Canvas = transform.parent.gameObject;
                 connector = state;
                 PlayerPrefs.SetString("favourite_username", username);
+                req.Dispose();
                 state.StartCoroutine(
                     state.Connect(address, port,
                                   packet["userid"], packet["token"],
                                   this, ClientLobbyState.ConnectMode.ONLINE));
+                connecting = false;
             }
         }
 

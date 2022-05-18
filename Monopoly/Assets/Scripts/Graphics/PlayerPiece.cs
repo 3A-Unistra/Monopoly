@@ -23,7 +23,7 @@ namespace Monopoly.Graphics
         [HideInInspector]
         public string playerUUID;
 
-        public Renderer renderer;
+        public new Renderer renderer;
 
         private float animateTime = 0.0f;
 
@@ -214,6 +214,7 @@ namespace Monopoly.Graphics
         public void AnimationPawn(int idx)
         {
             animateTime += Time.deltaTime * moveSpeed;
+            animating = true;
             Quaternion targetRotation = CalculateDesiredRotation(idx);
             Vector3 pos = CalculateDesiredPosition(idx);
             Vector3 targetScale = CalculateDesiredScale(idx);

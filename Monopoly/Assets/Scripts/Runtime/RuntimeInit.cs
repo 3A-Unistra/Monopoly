@@ -12,6 +12,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Monopoly.Util;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
+using System.Net.Security;
 
 namespace Monopoly.Runtime
 {
@@ -158,6 +161,7 @@ namespace Monopoly.Runtime
             // it is never destroyed. this allows for global runtime handlers or
             // other important events to be handled 'statically'.
             DontDestroyOnLoad(gameObject);
+
 #if UNITY_WEBGL
             WebGLNuke();
 #else

@@ -66,6 +66,8 @@ namespace Monopoly.Runtime
             //MenuLobby.lobbyElements.Clear();
             if (sock != null)
                 sock.Close();
+            if (current == this)
+                current = null;
         }
 
         public void Crash()
@@ -125,7 +127,9 @@ namespace Monopoly.Runtime
             // wait for the socket to open or die
             yield return new WaitUntil(delegate
             {
-                return socket.HasError() || socket.IsOpen();
+                return socket.HasError() ||
+                       socket.HasTLSError() ||
+                       socket.IsOpen();
             });
             MenuConnect connectConnector = null;
             MenuLogin loginConnector = null;
@@ -141,12 +145,14 @@ namespace Monopoly.Runtime
                 ClientLobbyState.token = token;
                 ClientLobbyState.clientUsername = userId;
             }
-            if (socket.HasError())
+            if (socket.HasError() || socket.HasTLSError())
             {
+                string err = socket.HasTLSError() ?
+                    "connection_tls" : "connection_fail";
                 if (mode == ConnectMode.BYIP)
-                    connectConnector.DisplayError("connection_fail");
+                    connectConnector.DisplayError(err);
                 else
-                    loginConnector.DisplayError("connection_fail");
+                    loginConnector.DisplayError(err);
                 Debug.LogWarning("Error occured opening lobby state!");
                 Destroy(this.gameObject);
                 yield break;
@@ -209,13 +215,6 @@ namespace Monopoly.Runtime
         public void DoLeaveGame(string lobbyToken)
         {
             comm.DoLeaveRoom(clientUUID);
-            /* leave lobby immediately because there's no point forcing the user
-               to wait for the succeed packet */
-            /*UIDirector.IsMenuOpen = false;
-            GameObject lobbyMenu = Instantiate(LobbyMenuPrefab, Canvas.transform);
-            currentLobby = null;
-            if (MenuCreate.current != null)
-                Destroy(MenuCreate.current.gameObject);*/
         }
         
         public void DoRoomModify(string lobbyName, int nbPlayers, 
@@ -263,7 +262,9 @@ namespace Monopoly.Runtime
             UIDirector.IsMenuOpen = false;
             UIDirector.IsUIBlockingNet = true;
             clientUsername = packet.Username;
-            GameObject CreateMenu = Instantiate(RuntimeData.current.CreateMenuPrefab, Canvas.transform);
+            GameObject CreateMenu =
+                Instantiate(RuntimeData.current.CreateMenuPrefab,
+                            Canvas.transform);
             MenuCreate createScript = CreateMenu.GetComponent<MenuCreate>();
             createScript.UpdateFields(false, packet.HostId);
             createScript.EnableEdits(false);
@@ -276,7 +277,9 @@ namespace Monopoly.Runtime
         {
             UIDirector.IsMenuOpen = false;
             UIDirector.IsUIBlockingNet = true;
-            GameObject lobbyMenu = Instantiate(RuntimeData.current.LobbyMenuPrefab, Canvas.transform);
+            GameObject lobbyMenu =
+                Instantiate(RuntimeData.current.LobbyMenuPrefab,
+                            Canvas.transform);
             currentLobby = null;
             if (MenuCreate.current != null)
                 Destroy(MenuCreate.current.gameObject);
@@ -312,11 +315,11 @@ namespace Monopoly.Runtime
             // this packet comes way too fast so we need to do a little delay
             // to allow the menu to open. if it still doesn't load in time then
             // tough shit, your computer is a potato
-            yield return new WaitForSeconds(0.5f);
-            // FIXME: fix the updates and let them be sent off too!!!!!
+            yield return new WaitUntilForSeconds(
+                () => MenuCreate.current != null, 0.5f);
             if (MenuCreate.current == null)
                 yield break;
-            MenuCreate.current.EnableEdits(false);
+            MenuCreate.current.EnableEdits(false, false);
             MenuCreate.current.UpdateParticipants(packet.Players);
             MenuCreate.current.SetName(packet.GameName);
             //MenuCreate.current.SetPrivacy();
@@ -328,8 +331,8 @@ namespace Monopoly.Runtime
             MenuCreate.current.SetStartingBalance(packet.StartingBalance);
             MenuCreate.current.SetTurnTime(packet.TurnTimeout);
             MenuCreate.current.SetDoubleOnStartSwitch(packet.EnableDoubleOnGo);
+            MenuCreate.current.EnableEdits(true, true);
             MenuCreate.current.UpdateFields(null);
-            MenuCreate.current.EnableEdits(true);
         }
 
         public void OnNewHost(PacketNewHost packet)

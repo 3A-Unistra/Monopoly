@@ -184,7 +184,15 @@ MonoBehaviour:
   soundHouseBuy: {fileID: 8300000, guid: fc44241ca72c04cde9ca4471650172af, type: 3}
   soundHouseSell: {fileID: 8300000, guid: e577b840bfbf144baaf817d283bb53de, type: 3}
   soundMessageBlip: {fileID: 8300000, guid: 86028f482db8747e5ba7446a288290e2, type: 3}
+  soundRoomJoin: {fileID: 0}
+  soundRoomLeave: {fileID: 0}
   soundButtonBlip: {fileID: 8300000, guid: 251d28d1f760346c1a95993bcbc74119, type: 3}
+  soundMessageBlipAlt: {fileID: 8300000, guid: 51b35e6baf73349c194e7b09b429f42a, type: 3}
+  soundRoomJoinAlt: {fileID: 8300000, guid: 28ac7edf94003420ab6960b2e93e0537, type: 3}
+  soundRoomLeaveAlt: {fileID: 8300000, guid: 3a4b36662b68d4b5eb8ddfbf5873e1cb, type: 3}
+  soundButtonBlipAlt: {fileID: 8300000, guid: 51b35e6baf73349c194e7b09b429f42a, type: 3}
+  musicTracks:
+  - {fileID: 8300000, guid: 6f7c81605abc148b38cec20ff268d125, type: 3}
 --- !u!1 &2776724000377816898
 GameObject:
   m_ObjectHideFlags: 0

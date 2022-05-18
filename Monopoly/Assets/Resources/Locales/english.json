@@ -157,6 +157,7 @@
     "connection_baddata": "Error parsing server location!",
     "connection_nouser": "Both username and password required!",
     "connection_badcreds": "Invalid username or password!",
+    "connection_tls": "TLS error!",
     "error_4201": "Incorrect lobby password.",
     "error_4202": "Lobby is full.",
     "error_4205": "Permission denied.",
