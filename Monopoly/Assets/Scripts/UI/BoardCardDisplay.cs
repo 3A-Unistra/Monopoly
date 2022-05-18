@@ -138,7 +138,20 @@ namespace Monopoly.UI
                         if (ClientGameState.current.Board.OwnSameColorSet
                             (ps.Owner, ps) && !ps.Mortgaged)
                         {
-                            canMortgage &= ps.NbHouse == 0;
+                            Color c = PropertySquare.GetColorIndex(ps.Id);
+                            List<PropertySquare> ss = 
+                                ClientGameState.current.Board.GetPropertySet(c);
+                            foreach (PropertySquare s in ss)
+                            {
+                                // check each property of the set
+                                // if any contain a house then the others cannot
+                                // be mortgaged (and conversely, unmortgaged)
+                                if (s.NbHouse > 0)
+                                {
+                                    canMortgage = false;
+                                    canUnmortgage = false;
+                                }
+                            }
                             canBuy = ps.NbHouse < 5 && !os.Mortgaged;
                             canSell = ps.NbHouse > 0 && !os.Mortgaged;
                         }
