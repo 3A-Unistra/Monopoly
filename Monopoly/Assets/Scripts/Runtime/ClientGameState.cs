@@ -203,6 +203,7 @@ namespace Monopoly.Runtime
                 PacketSocket socket =
                     PacketSocket.CreateSocket(address, port, par, gameToken,
                                               ClientLobbyState.secureMode);
+                comm = new PacketCommunicator(socket);
                 socket.Connect();
                 // wait for the socket to open or die
                 yield return new WaitUntil(delegate
@@ -315,7 +316,6 @@ namespace Monopoly.Runtime
             this.clientUUID = uuid;
             this.token = token;
             this.sock = sock;
-            comm = new PacketCommunicator(sock);
             comm.OnError += OnError;
             comm.OnMessage += OnMessage;
             comm.OnBuyHouse += OnBuyHouse;
