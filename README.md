@@ -15,6 +15,16 @@ Once Unity is installed, you may import the Unity project which is housed in the
 Editor. There are additional C# solutions available in the project for use in
 Visual Studio.
 
+## Documentation
+
+A small portion of the project has been documented. The supplied `Doxfile` may
+be used with Doxygen to generate documenetation for all of the C# code with the
+following command:
+
+```
+doxygen Doxyfile
+```
+
 ## Platform support
 
 The game was designed to run on Windows, Linux (Mono and IL2CPP), macOS as well
@@ -35,4 +45,13 @@ for the relevant code.
 This project is licensed under the GNU Affero General Public License v3.0.
 Please see the included [COPYING](https://github.com/3A-Unistra/Monopoly/blob/main/COPYING)
 file for more information.
+
+The subfolder [3rdParty](https://github.com/3A-Unistra/Monopoly/tree/main/Monopoly/Assets/3rdParty)
+is subject to the specific licenses as provided by the authors of each project.
+
+Two images (`MuseumPalaisRohan.png` and `MuseumTomiUngerer.png`) are licensed
+under Creative Commons. You may read more information in the
+[CREDITS](https://github.com/3A-Unistra/Monopoly/blob/main/CREDITS) file.
+Finally, the two fonts used in the project each include license files in their
+subfolders.
 
