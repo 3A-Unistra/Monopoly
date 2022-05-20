@@ -33,5 +33,6 @@ for the relevant code.
 ## License
 
 This project is licensed under the GNU Affero General Public License v3.0.
-Please see the included `COPYING` file for more information.
+Please see the included [COPYING](https://github.com/3A-Unistra/Monopoly/blob/main/COPYING)
+file for more information.
 
