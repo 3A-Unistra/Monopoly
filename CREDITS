@@ -7,6 +7,13 @@ Library used for WebGL compatible WebSockets.
 Licensed under Apache 2.0.
 https://github.com/endel/NativeWebSocket
 
+Newtonsoft Json for Unity
+-------------------------
+Library used for Json serialisation and deserialisation.
+Newtonsoft Json is originally by James Newton-King.
+Licensed under MIT.
+https://github.com/jilleJr/Newtonsoft.Json-for-Unity
+
 Photo of Palais Rohan, Strasbourg
 ---------------------------------
 Taken by Radek Kucharski, 2020.
